@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-07-29-s35cd-partner-card.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-partner-card.html
 
 ## הטקסט שעל המסך
 

@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-08-29-s8-split-rail.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-08-29-s8-split-rail.html
 
 ## הטקסט שעל המסך
 

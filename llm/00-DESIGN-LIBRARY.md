@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/00-DESIGN-LIBRARY.html`
+https://dov-cyber.github.io/hub-ui-preview/m/00-DESIGN-LIBRARY.html
 
 ## הטקסט שעל המסך
 

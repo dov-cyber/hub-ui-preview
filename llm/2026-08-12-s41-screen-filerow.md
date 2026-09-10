@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-08-12-s41-screen-filerow.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-08-12-s41-screen-filerow.html
 
 ## הטקסט שעל המסך
 

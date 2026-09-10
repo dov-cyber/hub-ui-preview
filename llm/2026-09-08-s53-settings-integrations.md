@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-09-08-s53-settings-integrations.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-09-08-s53-settings-integrations.html
 
 ## הטקסט שעל המסך
 

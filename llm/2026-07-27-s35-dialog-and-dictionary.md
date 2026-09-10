@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-07-27-s35-dialog-and-dictionary.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s35-dialog-and-dictionary.html
 
 ## הטקסט שעל המסך
 

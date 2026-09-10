@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-08-13-s41-tagon-backfill.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-08-13-s41-tagon-backfill.html
 
 ## הטקסט שעל המסך
 

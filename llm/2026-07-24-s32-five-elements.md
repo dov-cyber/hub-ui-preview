@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-07-24-s32-five-elements.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-07-24-s32-five-elements.html
 
 ## הטקסט שעל המסך
 

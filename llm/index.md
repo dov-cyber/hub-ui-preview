@@ -27,7 +27,7 @@
 
 - תאריך: 27.07.2026 (v4) · סשן: כל סבבי העיצוב
 - מזהה: `00-DESIGN-LIBRARY` · גרסה 4
-- מסך: `m/00-DESIGN-LIBRARY.html` · טקסט: `llm/00-DESIGN-LIBRARY.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/00-DESIGN-LIBRARY.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/00-DESIGN-LIBRARY.md
 - הערה: חיה - נגזרת מהקוד בכלי ונשמרת בשער. גרסה 5 הוצעה ב-S35-CD.
 
 ## פעיל
@@ -38,7 +38,7 @@
 
 - תאריך: 10.09.2026 · סשן: S55 עיצוב ← S56 בנייה
 - מזהה: `2026-09-10-s55-catalog-accommodation` · גרסה 2
-- מסך: `m/2026-09-10-s55-catalog-accommodation.html` · טקסט: `llm/2026-09-10-s55-catalog-accommodation.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-09-10-s55-catalog-accommodation.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-09-10-s55-catalog-accommodation.md
 - הערה: v2 - לאישור דב. v1 עם עורך במגירה נמשך באותו יום בהוראת דב (אין חלונות צפים).
 
 ### הגדרות וחיבורים - v1.3 - בעבודה
@@ -47,7 +47,7 @@
 
 - תאריך: 08.09.2026 · סשן: S53
 - מזהה: `2026-09-08-s53-settings-integrations-v1.3` · גרסה 1.3.6
-- מסך: `m/2026-09-08-s53-settings-integrations-v1.3.html` · טקסט: `llm/2026-09-08-s53-settings-integrations-v1.3.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-09-08-s53-settings-integrations-v1.3.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-09-08-s53-settings-integrations-v1.3.md
 - הערה: דב אישר את מחוון החיבור בלבד (09.09.2026). יתר העיצוב בבדיקה. הקטלוג והתבניות מחייבים דיון. אין אישור פריסה.
 
 ### הגדרות וחיבורים - v1.2 - מאושר
@@ -56,7 +56,7 @@
 
 - תאריך: 08.09.2026 · סשן: S53
 - מזהה: `2026-09-08-s53-settings-integrations` · גרסה 1.2
-- מסך: `m/2026-09-08-s53-settings-integrations.html` · טקסט: `llm/2026-09-08-s53-settings-integrations.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-09-08-s53-settings-integrations.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-09-08-s53-settings-integrations.md
 - הערה: מאושר בידי דב, 08.09.2026. בדיקת דפדפן וזרימות עדיין נדרשת; אין אישור פריסה.
 
 ## ארכיון
@@ -67,7 +67,7 @@
 
 - תאריך: 29.07.2026 · סשן: S35-BUILD-B
 - מזהה: `2026-07-29-s35cd-order-card-redesign` · גרסה 4
-- מסך: `m/2026-07-29-s35cd-order-card-redesign.html` · טקסט: `llm/2026-07-29-s35cd-order-card-redesign.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-order-card-redesign.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-29-s35cd-order-card-redesign.md
 - הערה: הסטטוס באינדקס - בעבודה אחרי סבב הביקורת. הסשן שבנה לפיו (S35-BUILD-B) נסגר מאז.
 
 ### כרטיס ה-CIT כתוכנית - בעבודה
@@ -76,7 +76,7 @@
 
 - תאריך: 29.07.2026 · סשן: S35-BUILD-B
 - מזהה: `2026-07-29-s35cd-cit-card` · גרסה 1
-- מסך: `m/2026-07-29-s35cd-cit-card.html` · טקסט: `llm/2026-07-29-s35cd-cit-card.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-cit-card.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-29-s35cd-cit-card.md
 - הערה: הסטטוס באינדקס - בעבודה; דב אישר את הבסיס. הסשן שבנה לפיו נסגר מאז.
 
 ### כרטיס השותף - בעבודה
@@ -85,7 +85,7 @@
 
 - תאריך: 29.07.2026 · סשן: S35-BUILD-B
 - מזהה: `2026-07-29-s35cd-partner-card` · גרסה 1
-- מסך: `m/2026-07-29-s35cd-partner-card.html` · טקסט: `llm/2026-07-29-s35cd-partner-card.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-partner-card.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-29-s35cd-partner-card.md
 - הערה: הסטטוס באינדקס - בעבודה אחרי סבב הביקורת. הסשן שבנה לפיו נסגר מאז.
 
 ### אזור ההגדרות - טיוטה ראשונה - בעבודה
@@ -94,7 +94,7 @@
 
 - תאריך: 29.07.2026 · סשן: S35-BUILD-B
 - מזהה: `2026-07-29-s35cd-settings-area` · גרסה 1
-- מסך: `m/2026-07-29-s35cd-settings-area.html` · טקסט: `llm/2026-07-29-s35cd-settings-area.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-settings-area.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-29-s35cd-settings-area.md
 - הערה: הוחלף בפועל על ידי מוקאפ ההגדרות של S53 (08.09.2026).
 
 ### בולק בשורש הסייר - מאושר
@@ -103,7 +103,7 @@
 
 - תאריך: 29.07.2026 · סשן: S35-BUILD-B
 - מזהה: `2026-07-29-s35cd-folders-root-bulk`
-- מסך: `m/2026-07-29-s35cd-folders-root-bulk.html` · טקסט: `llm/2026-07-29-s35cd-folders-root-bulk.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-folders-root-bulk.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-29-s35cd-folders-root-bulk.md
 - הערה: סגור עיצובית בהכרעת דב, 29.07.2026.
 
 ### תהליך התמחור המלא - מאושר
@@ -112,7 +112,7 @@
 
 - תאריך: 27.07.2026 · סשן: S34-S35
 - מזהה: `2026-07-27-s32f-pricing-flow-e2e`
-- מסך: `m/2026-07-27-s32f-pricing-flow-e2e.html` · טקסט: `llm/2026-07-27-s32f-pricing-flow-e2e.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s32f-pricing-flow-e2e.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-27-s32f-pricing-flow-e2e.md
 - הערה: אושר סופית בפתיחת S35. זהו חוזה העיצוב של מנוע התמחור.
 
 ### חלון החישוב והדיאלוג - מאושר
@@ -121,7 +121,7 @@
 
 - תאריך: 27.07.2026 · סשן: S34-S35
 - מזהה: `2026-07-27-s32f-calc-window-dialog`
-- מסך: `m/2026-07-27-s32f-calc-window-dialog.html` · טקסט: `llm/2026-07-27-s32f-calc-window-dialog.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s32f-calc-window-dialog.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-27-s32f-calc-window-dialog.md
 - הערה: אושר סופית בפתיחת S35; הוכרע ב-S34.
 
 ### אנטומיית הכרטיס - מאושר
@@ -130,7 +130,7 @@
 
 - תאריך: 27.07.2026 · סשן: S34-S35
 - מזהה: `2026-07-27-s32f-card-anatomy`
-- מסך: `m/2026-07-27-s32f-card-anatomy.html` · טקסט: `llm/2026-07-27-s32f-card-anatomy.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s32f-card-anatomy.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-27-s32f-card-anatomy.md
 - הערה: אושר סופית בפתיחת S35.
 
 ### הדיאלוג ומסך המילון - מאושר
@@ -139,7 +139,7 @@
 
 - תאריך: 27.07.2026 · סשן: S35
 - מזהה: `2026-07-27-s35-dialog-and-dictionary`
-- מסך: `m/2026-07-27-s35-dialog-and-dictionary.html` · טקסט: `llm/2026-07-27-s35-dialog-and-dictionary.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s35-dialog-and-dictionary.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-27-s35-dialog-and-dictionary.md
 - הערה: מאושר בידי דב, 27.07.2026.
 
 ### חמישה אלמנטים - בעבודה
@@ -148,7 +148,7 @@
 
 - תאריך: 24.07.2026 · סשן: S32c-S32e
 - מזהה: `2026-07-24-s32-five-elements`
-- מסך: `m/2026-07-24-s32-five-elements.html` · טקסט: `llm/2026-07-24-s32-five-elements.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-24-s32-five-elements.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-24-s32-five-elements.md
 - הערה: הרצף אושר; חלופות פר אלמנט לא נבחרו.
 
 ### מעטפת ספריית העיצוב - מאושר
@@ -157,7 +157,7 @@
 
 - תאריך: 21.08.2026 · סשן: S38-LIBFILL
 - מזהה: `2026-08-21-s38-libfill-shells`
-- מסך: `m/2026-08-21-s38-libfill-shells.html` · טקסט: `llm/2026-08-21-s38-libfill-shells.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-21-s38-libfill-shells.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-21-s38-libfill-shells.md
 - הערה: כותרת הקובץ אומרת מוקאפ מאושר. אינו רשום באינדקס ה-README.
 
 ### סרגל הצד - סטטוס לא ידוע
@@ -166,7 +166,7 @@
 
 - תאריך: 29.08.2026 · סשן: S8-SPLIT
 - מזהה: `2026-08-29-s8-split-rail`
-- מסך: `m/2026-08-29-s8-split-rail.html` · טקסט: `llm/2026-08-29-s8-split-rail.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-29-s8-split-rail.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-29-s8-split-rail.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד.
 
 ### עוזר ה-AI על הדשבורד - סטטוס לא ידוע
@@ -175,7 +175,7 @@
 
 - תאריך: 19.08.2026 · סשן: S37-ASSIST
 - מזהה: `2026-08-19-s37-assist` · גרסה 5
-- מסך: `m/2026-08-19-s37-assist.html` · טקסט: `llm/2026-08-19-s37-assist.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-19-s37-assist.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-19-s37-assist.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד. הסשנים שבנו את העוזר נסגרו.
 
 ### מסך המילוי לאחור בתיוג - סטטוס לא ידוע
@@ -184,7 +184,7 @@
 
 - תאריך: 13.08.2026 · סשן: S41-TAGON
 - מזהה: `2026-08-13-s41-tagon-backfill`
-- מסך: `m/2026-08-13-s41-tagon-backfill.html` · טקסט: `llm/2026-08-13-s41-tagon-backfill.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-13-s41-tagon-backfill.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-13-s41-tagon-backfill.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד. הסשן נסגר.
 
 ### חיפוש אחד על הכל - סטטוס לא ידוע
@@ -193,7 +193,7 @@
 
 - תאריך: 12.08.2026 · סשן: S41-SEARCH
 - מזהה: `2026-08-12-s41-search`
-- מסך: `m/2026-08-12-s41-search.html` · טקסט: `llm/2026-08-12-s41-search.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-12-s41-search.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-12-s41-search.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד. הסשן נסגר.
 
 ### שורת התוצאה בחיפוש - סטטוס לא ידוע
@@ -202,7 +202,7 @@
 
 - תאריך: 12.08.2026 · סשן: S41-SCREEN
 - מזהה: `2026-08-12-s41-screen-filerow`
-- מסך: `m/2026-08-12-s41-screen-filerow.html` · טקסט: `llm/2026-08-12-s41-screen-filerow.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-12-s41-screen-filerow.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-12-s41-screen-filerow.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד. הסשן נסגר.
 
 ### סייר התיקיות - סטטוס לא ידוע
@@ -211,7 +211,7 @@
 
 - תאריך: 11.08.2026 · סשן: S41-EXPLORER
 - מזהה: `2026-08-11-s41-explorer`
-- מסך: `m/2026-08-11-s41-explorer.html` · טקסט: `llm/2026-08-11-s41-explorer.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-08-11-s41-explorer.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-08-11-s41-explorer.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד. הסשן נסגר.
 
 ### לוח ניהול הפרויקט - סטטוס לא ידוע
@@ -220,7 +220,7 @@
 
 - תאריך: 31.07.2026 · סשן: S39-STATE
 - מזהה: `2026-07-31-s39-widget-mockup`
-- מסך: `m/2026-07-31-s39-widget-mockup.html` · טקסט: `llm/2026-07-31-s39-widget-mockup.md`
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-07-31-s39-widget-mockup.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-07-31-s39-widget-mockup.md
 - הערה: אינו רשום באינדקס ה-README - הסטטוס לא תועד. הסשן נסגר.
 
 ---

@@ -16,7 +16,7 @@ v2 - לאישור דב. v1 עם עורך במגירה נמשך באותו יום
 
 ## המסך המעוצב
 
-`../m/2026-09-10-s55-catalog-accommodation.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-09-10-s55-catalog-accommodation.html
 
 ## הטקסט שעל המסך
 

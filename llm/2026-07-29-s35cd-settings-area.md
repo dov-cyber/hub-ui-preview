@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-07-29-s35cd-settings-area.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-07-29-s35cd-settings-area.html
 
 ## הטקסט שעל המסך
 

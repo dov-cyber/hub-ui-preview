@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-07-31-s39-widget-mockup.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-07-31-s39-widget-mockup.html
 
 ## הטקסט שעל המסך
 

@@ -16,7 +16,7 @@
 
 ## המסך המעוצב
 
-`../m/2026-07-27-s32f-calc-window-dialog.html`
+https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s32f-calc-window-dialog.html
 
 ## הטקסט שעל המסך
 
