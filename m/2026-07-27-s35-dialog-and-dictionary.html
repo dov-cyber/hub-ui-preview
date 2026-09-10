@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S35 - תוספות הדיאלוג המולטימודלי + מסך ניהול המילון</title>
+<style>
+/* ============================================================================
+   1:1 מול spa/src/global.css - הטוקנים והמחלקות הועתקו כלשונם.
+   כל מה שמתחיל ב-mk- הוא פיגום המוקאפ בלבד ואינו חלק מהעיצוב המוצע.
+   ============================================================================ */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-bg:#fdf7ea; --cc-warning-fg:#92400e; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-ease:.15s ease; --cc-shadow:0 8px 28px rgba(0,0,0,.12);
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:28px;line-height:1.5}
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 14px;
+  font-family:var(--cc-font);font-size:14px;background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--primary{background:var(--cc-action);border-color:var(--cc-action);color:#fff;font-weight:600}
+.cc-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--cc-row-h);height:var(--cc-row-h);
+  border:0;background:transparent;border-radius:var(--cc-radius-sm);cursor:pointer;color:var(--cc-text-2);font-size:16px}
+.cc-icon-btn:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-icon-btn--sm{width:34px;height:34px}
+/* מתג מפולח חי - cc-seg (global.css:1760) */
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden}
+.cc-seg button{min-height:var(--cc-row-h);padding:0 18px;border:0;background:var(--cc-surface);
+  font:inherit;font-size:14px;color:var(--cc-text-2);cursor:pointer}
+.cc-seg button+button{border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--sm button{min-height:36px;padding:0 12px;font-size:13px}
+/* טבלת נתונים - cc-table (global.css:2085) */
+.cc-table-wrap{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);overflow:visible}
+.cc-table{width:100%;border-collapse:collapse;font-size:14px}
+.cc-table th{text-align:start;font-weight:600;color:var(--cc-text-3);font-size:11.5px;letter-spacing:.2px;
+  border-bottom:1px solid var(--cc-border-strong);padding:10px 12px;white-space:nowrap;background:var(--cc-surface)}
+.cc-table td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);color:var(--cc-text);vertical-align:middle}
+.cc-table tr:last-child td{border-bottom:0}
+.cc-table tbody tr:hover{background:var(--cc-bg)}
+.cc-table .ltr{direction:ltr;text-align:right;font-size:13px;color:var(--cc-text-2)}
+.cc-table .primary{font-weight:500;color:var(--cc-text)}
+.cc-filterbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.cc-input{width:100%;height:40px;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);
+  padding:0 12px;font-size:14px;font-family:inherit;color:var(--cc-text);background:var(--cc-surface)}
+.cc-field-msg{font-size:12px;margin-top:5px;display:flex;align-items:center;gap:5px}
+.cc-field-msg--error{color:var(--cc-danger-fg)}
+.cc-field-msg--success{color:var(--cc-success-fg)}
+/* טולטיפ גלובלי קיים - cc-tip (global.css, D-071) */
+.cc-tip-demo{background:var(--cc-surface);color:var(--cc-text);font-size:13px;line-height:1.5;padding:8px 12px;
+  max-width:240px;border:.5px solid var(--cc-border);border-right:3px solid var(--cc-action);border-radius:8px;
+  box-shadow:0 6px 20px rgba(0,0,0,.10)}
+/* מעטפת דיאלוג - app-dialog (global.css:1942), רוחב 520 מסולם הרחבים */
+.app-dialog{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:14px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);padding:18px 20px;width:330px;max-width:92%;font-family:var(--cc-font)}
+.app-dialog__title{font-size:16px;font-weight:600;color:var(--cc-text);margin-bottom:6px}
+.app-dialog__body{font-size:13px;color:var(--cc-text-2);line-height:1.5;margin-bottom:12px}
+.app-dialog__actions{display:flex;gap:10px;margin-top:16px}
+.ie-input,.ie-textarea{width:100%;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);
+  padding:8px 10px;font-size:14px;color:var(--cc-text);font-family:inherit;background:var(--cc-surface)}
+.ie-input{height:38px}
+.ie-textarea{min-height:62px;resize:vertical;line-height:1.5}
+/* ============================================================================
+   הדיאלוג המולטימודלי (dlg-*) - כפי שאושר ב-S32f, עם תוספות S35 המסומנות
+   ============================================================================ */
+.dlg{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);
+  display:flex;flex-direction:column;max-width:480px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.dlg__head{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--cc-border);
+  background:var(--cc-sunken);flex-wrap:wrap}
+.dlg__title{font-size:13.5px;font-weight:700}
+.dlg__body{padding:14px;display:flex;flex-direction:column;gap:10px;max-height:430px;overflow:auto}
+.dlg-msg{max-width:88%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.55}
+.dlg-msg--user{align-self:flex-start;background:var(--cc-sunken);border-start-start-radius:4px}
+.dlg-msg--ai{align-self:flex-end;background:var(--cc-info-bg);border:1px solid var(--cc-border);border-start-end-radius:4px}
+.dlg__bar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--cc-border)}
+.dlg__input{flex:1;min-height:38px;padding:0 12px;font:inherit;font-size:13.5px;border:1px solid var(--cc-border-strong);
+  border-radius:var(--cc-radius-pill);background:var(--cc-surface)}
+.dlg-ico{width:38px;height:38px;border-radius:50%;border:1px solid var(--cc-border-strong);background:var(--cc-surface);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;font-size:16px}
+/* --- תוספות S35 (מוצע בסבב זה) --- */
+.dlg-note{align-self:center;font-size:11.5px;color:var(--cc-text-3);background:var(--cc-bg);
+  border:1px dashed var(--cc-border);border-radius:var(--cc-radius-pill);padding:3px 12px;text-align:center}
+.dlg-model{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--cc-text-2);
+  background:var(--cc-surface);border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-pill);
+  padding:3px 9px;cursor:pointer}
+.dlg-model:hover{border-color:var(--cc-action);color:var(--cc-action)}
+.dlg-modelmenu{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:10px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);padding:6px;width:230px;font-size:13px}
+.dlg-modelmenu button{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;
+  background:transparent;font:inherit;font-size:13px;color:var(--cc-text);padding:7px 10px;border-radius:6px;cursor:pointer}
+.dlg-modelmenu button:hover{background:var(--cc-bg)}
+.dlg-modelmenu button.is-active{background:var(--cc-action-weak);color:var(--cc-action);font-weight:600}
+/* פיגום מוקאפ בלבד */
+.mk-h1{font-size:20px;font-weight:700;margin:0 0 6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:22px;max-width:880px}
+.mk-sec{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:18px;margin-bottom:22px;max-width:1000px}
+.mk-sec>h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.mk-sec>.mk-why{font-size:13px;color:var(--cc-text-2);margin-bottom:16px}
+.mk-var{border:1px dashed var(--cc-border-strong);border-radius:var(--cc-radius-sm);padding:14px;margin-bottom:12px}
+.mk-var>.mk-vt{font-size:12px;font-weight:700;color:var(--cc-action);margin-bottom:10px}
+.mk-note{font-size:12px;color:var(--cc-text-3);margin-top:10px;line-height:1.6}
+.mk-cols{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.mk-new{display:inline-flex;font-size:10.5px;font-weight:700;color:var(--cc-action);background:var(--cc-action-weak);
+  border:1px solid var(--cc-action-border);border-radius:var(--cc-radius-pill);padding:1px 8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">מוקאפ S35 - תוספות הדיאלוג המולטימודלי + מסך ניהול המילון</div>
+<div class="mk-sub">
+  שני משלימים למוקאפים המאושרים של S32f, לפי הכרעות דב בפתיחת S35 (27.07.2026): (1) חלון הדיאלוג עם
+  כפתור הרחבה, מתג הקשר, בורר מודל והודעות הסבר; (2) מסך ניהול המילון בהגדרות - הצרכן הראשון של
+  צינור מילון-כדאטה. תגית <span class="mk-new">חדש S35</span> מסמנת מה נוסף מעבר למאושר.
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>1. חלון הדיאלוג - כותרת מורחבת <span class="mk-new">חדש S35</span></h2>
+  <div class="mk-why">
+    הבסיס (בועות, כרטיס הצעת פעולה, פס קלט עם מיקרופון וקובץ) - כפי שאושר ב-S32f, ללא שינוי.
+    התוספות: שורת הכותרת בלבד.
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">איפה זה חי במסך - החלון נפתח מהכפתור הצף בפינה, צף מעליו; לעולם לא באמצע המסך</div>
+    <div style="position:relative;border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-bg);height:300px;max-width:860px;overflow:hidden">
+      <div style="position:absolute;inset:0;padding:14px;font-size:12px;color:var(--cc-text-3)">
+        (המסך הפעיל - כרטיס ההזמנה / אזור התמחור - נשאר גלוי ופעיל מאחור)
+      </div>
+      <div style="position:absolute;bottom:16px;left:16px;display:flex;flex-direction:column;align-items:flex-start;gap:10px">
+        <div class="dlg" style="width:330px;box-shadow:0 10px 30px rgba(0,0,0,.14)">
+          <div class="dlg__head">
+            <span class="dlg__title">שיחה עם המודל</span>
+            <span class="cc-chip">BK-1061 · תמחור</span>
+            <span style="margin-inline-start:auto;display:inline-flex;gap:2px">
+              <button class="cc-icon-btn cc-icon-btn--sm" title="הרחבה לפאנל צד">⤢</button>
+              <button class="cc-icon-btn cc-icon-btn--sm" title="סגירה">✕</button>
+            </span>
+          </div>
+          <div style="padding:12px;font-size:12px;color:var(--cc-text-3)">(גוף השיחה)</div>
+        </div>
+        <button style="position:relative;display:inline-flex;align-items:center;gap:9px;background:var(--cc-surface);
+          border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-pill);padding:9px 16px;font-size:13.5px;
+          font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.09);font-family:inherit">
+          <span style="width:9px;height:9px;border-radius:50%;background:#22c55e"></span>שיחה עם המודל</button>
+      </div>
+    </div>
+    <div class="mk-note">הכפתור הצף (מהמוקאפ המאושר של S32f) יושב בפינה התחתונה של כל מסך פעולה; לחיצה פותחת
+    את החלון הצף מעליו. ⤢ הופך אותו לפאנל צד בגובה מלא (למטה). שאר המוקאפ מציג את הרכיב מוגדל לצורך בחינת הפרטים בלבד.</div>
+  </div>
+
+  <div class="mk-cols">
+    <div class="dlg">
+      <div class="dlg__head" style="flex-wrap:nowrap">
+        <span class="dlg__title">שיחה עם המודל</span>
+        <button class="dlg-model" title="ההקשר הפעיל - לחיצה מחליפה בין המסך הנוכחי לשיחה כללית">BK-1061 · תמחור ▾</button>
+        <span style="margin-inline-start:auto;display:inline-flex;align-items:center;gap:2px">
+          <button class="dlg-model" title="המודל הפעיל - מרשימת ניהול מודלי ה-AI בהגדרות; דריסה לשיחה זו בלבד">3.6 Flash ▾</button>
+          <button class="cc-icon-btn cc-icon-btn--sm" title="הרחבה לפאנל צד">⤢</button>
+          <button class="cc-icon-btn cc-icon-btn--sm" title="סגירה">✕</button>
+        </span>
+      </div>
+      <div class="dlg__body">
+        <span class="dlg-note">השיחה נשמרת לעיון בכרטיס ההזמנה · שיחה חדשה מתחילה נקייה (מוצג בפתיחה ראשונה בלבד - נעלם, לא תופס שורה)</span>
+        <div class="dlg-msg dlg-msg--user">מה ההבדל בין "מגולם במחיר" ל"שורה נפרדת"?</div>
+        <div class="dlg-msg dlg-msg--ai">
+          בשני המצבים העמלה בצד המטייל והרווח מוגן - ההבדל הוא בהצגה: "מגולם במחיר" מטמיע את עמלת
+          הסליקה במחיר לנוסע; "שורה נפרדת" מציג אותה כשורה גלויה בהצעה. (מונח 7 במילון; ההסבר המלא -
+          בתחנת הסליקה בחלון החישוב.)
+        </div>
+      </div>
+      <div class="dlg__bar">
+        <button class="dlg-ico" title="הקלטה קולית">🎙</button>
+        <button class="dlg-ico" title="צירוף קובץ">📎</button>
+        <input class="dlg__input" placeholder="הקלדה, דיבור, או גרירת קובץ לכאן...">
+        <button class="cc-btn cc-btn--sm">שליחה</button>
+      </div>
+    </div>
+
+    <div style="max-width:280px;display:flex;flex-direction:column;gap:14px">
+      <div>
+        <div class="cc-label">בורר המודל (נפתח מהצ'יפ)</div>
+        <div class="dlg-modelmenu">
+          <button class="is-active">Gemini 3.6 Flash <span class="cc-chip">ברירת מחדל</span></button>
+          <button>Gemini 3.1 Pro <span class="cc-chip">להסברים מורכבים</span></button>
+        </div>
+        <div class="cc-help">הרשימה נשאבת מניהול מודלי ה-AI בהגדרות (S26) - הדיאלוג הוא פעולה מנוהלת.
+        בחירה כאן = דריסה לשיחה הנוכחית בלבד; אפס רשימות קשיחות.</div>
+      </div>
+      <div>
+        <div class="cc-label">צ'יפ ההקשר = הפקד (נפתח בלחיצה; חוסך שורה)</div>
+        <div class="dlg-modelmenu">
+          <button class="is-active">הקשר: המסך הנוכחי <span class="cc-chip">BK-1061 · תמחור</span></button>
+          <button>שיחה כללית</button>
+        </div>
+        <div class="cc-label" style="margin-top:10px">במצב כללי - הצ'יפ מתחלף וצבוע אזהרה:</div>
+        <span class="dlg-model" style="background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)">שיחה כללית - מנותקת מהמסך ▾</span>
+        <div class="cc-help">ברגע ההחלפה מופיעה הודעת מערכת חולפת בגוף השיחה: "פעולות על הנתונים מושבתות;
+        אפשר לשאול כל שאלה על המערכת והמילון". הכותרת נשארת שורה אחת תמיד - אפס גזילת שטח מהשיחה.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mk-var" style="margin-top:16px">
+    <div class="mk-vt">מצב מורחב - פאנל צד בגובה מלא (כפתור ⤢; הכרעת דב - דפוס רוחבי, נכנס לספרייה)</div>
+    <div style="display:flex;gap:0;border:1px solid var(--cc-border);border-radius:var(--cc-radius);overflow:hidden;max-width:860px">
+      <div style="flex:1;background:var(--cc-bg);padding:14px;font-size:12px;color:var(--cc-text-3);min-height:150px">
+        (המסך הפעיל - הכרטיס / אזור התמחור - נשאר גלוי ופעיל)
+      </div>
+      <div style="width:6px;background:var(--cc-sunken);border-inline:1px solid var(--cc-border);cursor:col-resize"
+           title="גרירת רוחב - resizeDrawer (S25b)"></div>
+      <div style="width:340px;background:var(--cc-surface);display:flex;flex-direction:column">
+        <div class="dlg__head" style="border-bottom:1px solid var(--cc-border)">
+          <span class="dlg__title">שיחה עם המודל</span>
+          <span style="margin-inline-start:auto;display:inline-flex;gap:4px">
+            <button class="cc-icon-btn cc-icon-btn--sm" title="חזרה לחלון צף">⤡</button>
+            <button class="cc-icon-btn cc-icon-btn--sm" title="סגירה">✕</button>
+          </span>
+        </div>
+        <div style="flex:1;padding:12px;font-size:12px;color:var(--cc-text-3)">(אותה שיחה, גובה מלא -
+          נוח לשיחת עבודה ארוכה עם כמה כרטיסי פעולה)</div>
+      </div>
+    </div>
+    <div class="mk-note">הגרירה באמצע = action משותף resizeDrawer הקיים מ-S25b; רוחב ברירת מחדל 340px.
+    המצב הצף (480px) נשאר ברירת המחדל.</div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>2. מסך ניהול המילון - הגדרות ← מילון המונחים <span class="mk-new">חדש S35</span></h2>
+  <div class="mk-why">
+    הצרכן הראשון של צינור מילון-כדאטה: כל מונח, תווית וטולטיפ של מנוע התמחור - רשומה ממופתחת באוסף
+    אחד. הסוכנים מעדכנים דרך ה-seed בריפו; המסך הזה עורך את אותו אוסף דרך פעולה שמורה. מעקות הבטיחות
+    מהתייעצות 12 שאומצו: ולידציה לפני שמירה · תצוגה מקדימה · גרסאות עם שחזור.
+  </div>
+
+  <div class="cc-filterbar">
+    <input class="cc-input" style="max-width:260px" placeholder="חיפוש מונח, תווית או מפתח...">
+    <span class="cc-seg cc-seg--sm">
+      <button class="is-active">הכל · 36</button>
+      <button>תחנות החישוב</button>
+      <button>עמלות ומרווח</button>
+      <button>הרכב וצוות</button>
+      <button>הודעות מסך</button>
+    </span>
+    <span class="cc-chip" style="margin-inline-start:auto">גרסת מילון: 7 · נטענת לכל שיחה ו-trace</span>
+  </div>
+
+  <div class="cc-table-wrap">
+    <table class="cc-table">
+      <thead>
+        <tr><th>מפתח</th><th>תווית (עברית)</th><th>טולטיפ</th><th>עודכן</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ltr">fee.card_handling</td>
+          <td class="primary">עמלת סליקה - מגולם במחיר / שורה נפרדת</td>
+          <td style="max-width:340px;color:var(--cc-text-2);font-size:13px">בשני המצבים העמלה בצד המטייל
+            והרווח מוגן; מחלק (1-3%)...</td>
+          <td><span class="cc-chip">v3 · 27.07 · דב</span></td>
+          <td><button class="cc-icon-btn cc-icon-btn--sm" title="עריכה">✎</button></td>
+        </tr>
+        <tr>
+          <td class="ltr">margin.group_profit</td>
+          <td class="primary">רווח לקבוצה</td>
+          <td style="max-width:340px;color:var(--cc-text-2);font-size:13px">סכום הרווח על ההזמנה כולה,
+            נייטרלי לתפקיד - לא "רווח DMC"...</td>
+          <td><span class="cc-chip">v1 · 27.07 · seed</span></td>
+          <td><button class="cc-icon-btn cc-icon-btn--sm" title="עריכה">✎</button></td>
+        </tr>
+        <tr>
+          <td class="ltr">staff.local_guide</td>
+          <td class="primary">מדריך מקומי</td>
+          <td style="max-width:340px;color:var(--cc-text-2);font-size:13px">שני סוגים: מלווה לאורך המסלול /
+            מצטרף נקודתית...</td>
+          <td><span class="cc-chip">v1 · 27.07 · seed</span></td>
+          <td><button class="cc-icon-btn cc-icon-btn--sm" title="עריכה">✎</button></td>
+        </tr>
+        <tr>
+          <td class="ltr">fx.buffer</td>
+          <td class="primary">חיץ מטבע</td>
+          <td style="max-width:340px;color:var(--cc-text-2);font-size:13px">תוספת ×(1+b) פר מקטע שמטבעו שונה
+            ממטבע ההצעה - מגן מתנודת שער...</td>
+          <td><span class="cc-chip">v2 · 27.07 · דב</span></td>
+          <td><button class="cc-icon-btn cc-icon-btn--sm" title="עריכה">✎</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mk-note">העמודה "עודכן" מציגה גרסה · תאריך · מי (seed = מהריפו; שם = מהמסך). המפתחות LTR
+  טבלריים לפי כלל 3. שורת מונח נלחצת פותחת את דיאלוג העריכה:</div>
+
+  <div class="mk-cols" style="margin-top:14px">
+    <div class="app-dialog" style="width:520px">
+      <div class="app-dialog__title">עריכת מונח - עמלת סליקה <span class="cc-chip ltr">fee.card_handling</span></div>
+      <div class="app-dialog__body">
+        <label class="cc-label">תווית מסך</label>
+        <input class="ie-input" value="עמלת סליקה - מגולם במחיר / שורה נפרדת">
+        <div class="cc-field-msg cc-field-msg--success">✓ עומד בכללי הלשון (אין "ספיגה"; מקף צמוד)</div>
+        <label class="cc-label" style="margin-top:12px">טקסט הטולטיפ</label>
+        <textarea class="ie-textarea">בשני המצבים העמלה בצד המטייל והרווח מוגן - ההבדל בהצגה: "מגולם במחיר" מטמיע את העמלה במחיר לנוסע; "שורה נפרדת" מציג אותה כשורה גלויה בהצעה. בשניהם אותו מחלק (1-3%).</textarea>
+        <div class="cc-field-msg cc-field-msg--error" style="visibility:hidden">✗ (דוגמת שגיאה)</div>
+        <label class="cc-label" style="margin-top:12px">תצוגה מקדימה - כך ייראה ה-"?" במסך</label>
+        <div class="cc-tip-demo">בשני המצבים העמלה בצד המטייל והרווח מוגן - ההבדל בהצגה: "מגולם במחיר"
+          מטמיע את העמלה במחיר לנוסע; "שורה נפרדת" מציג אותה כשורה גלויה בהצעה.</div>
+      </div>
+      <div class="app-dialog__actions">
+        <button class="cc-btn cc-btn--primary">שמירה כגרסה 4</button>
+        <button class="cc-btn">היסטוריית גרסאות</button>
+        <button class="cc-btn">ביטול</button>
+      </div>
+      <div class="cc-help" style="margin-top:8px">שמירה = פעולה שמורה עם רישום מי-ומתי; שחזור גרסה קודמת -
+      מתוך ההיסטוריה. השינוי חל מיידית בכל טולטיפ, מסך ושיחת דיאלוג.</div>
+    </div>
+
+    <div style="max-width:300px">
+      <div class="cc-label">הכניסה בהגדרות (שורה בדפוס set-rows הקיים)</div>
+      <div style="border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:12px 14px;background:var(--cc-surface);display:flex;align-items:center;gap:10px">
+        <span style="font-size:14px;font-weight:600">מילון המונחים</span>
+        <span class="cc-chip">36 מונחים · גרסה 7</span>
+        <span style="margin-inline-start:auto;color:var(--cc-text-3)">›</span>
+      </div>
+      <div class="cc-help">יושב בהגדרות לצד מודלי AI, תבניות, הרשאות ויעדים. בעתיד יתרחב לניהול תצוגה
+      ותרגום - על אותו אוסף ואותו מפתח קנוני; המסך הזה בנוי כך שלא יידרש שכתוב.</div>
+      <div class="cc-msg" style="margin-top:12px;font-size:12.5px">הטולטיפים בכל מסכי המנוע משתמשים
+      ברכיב cc-tip הקיים (D-071) - אותו רכיב, התוכן מהמילון.</div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-note">מוקאפ בלבד - אין קוד חי מאחורי המסכים. S35 · 27.07.2026 · הבסיס המאושר: מוקאפי S32f + ספריית העיצוב v4.</div>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S41-TAGON - תיוג הקבצים: מסך המילוי לאחור</title>
+<style>
+/* 1:1 מול spa/src/global.css + GscSyncScreen.svelte החי (הערכים הועתקו מהדיסק ב-13.08). mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-icon-deco:#888888;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --cc-progress-bg:#f3f4f6; --cc-progress-fg:#374151; --cc-progress-bar:#aa0000;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  --cc-ease:140ms cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+bdi{unicode-bidi:isolate}
+
+/* ---- יסודות הספרייה (1:1 global.css) ---- */
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--primary{background:var(--cc-surface);border-color:var(--cc-border-strong);color:var(--cc-text)}
+.cc-btn--primary:hover{background:var(--cc-action-weak);border-color:var(--cc-action);color:var(--cc-action)}
+.cc-icon{width:20px;height:20px;flex:0 0 auto;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cc-icon--sm{width:16px;height:16px}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px}
+.cc-chip--muted{color:var(--cc-text-3);background:transparent;border:1px dashed var(--cc-border)}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;
+  border-inline-start:4px solid var(--cc-info-bar);border-radius:var(--cc-radius-sm);
+  background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-msg .cc-icon{color:inherit;margin-top:1px}
+.cc-msg--info{background:var(--cc-info-bg);color:var(--cc-info-fg);border-color:var(--cc-info-bar)}
+.cc-msg--success{background:var(--cc-success-bg);color:var(--cc-success-fg);border-color:var(--cc-success-bar)}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.cc-msg--danger{background:var(--cc-danger-bg);color:var(--cc-danger-fg);border-color:var(--cc-danger-bar)}
+.cc-msg--progress{background:var(--cc-progress-bg);color:var(--cc-progress-fg);border-color:var(--cc-progress-bar)}
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden}
+.cc-seg button{min-height:var(--cc-row-h);padding:0 18px;border:0;background:var(--cc-surface);font-family:var(--cc-font);
+  font-size:14px;font-weight:600;color:var(--cc-text-2);cursor:pointer;transition:background var(--cc-ease)}
+.cc-seg button + button{border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--sm button{min-height:36px;padding:0 12px;font-size:13px}
+
+/* ---- דפוס מסך הכלי (2ה) ---- */
+.tool-view{padding:18px 20px}
+.tool-view__col{max-width:720px}
+.tool-view__title{font-size:18px;font-weight:500;color:var(--cc-text)}
+.tool-view__desc{font-size:13px;color:var(--cc-text-2);margin-top:3px;max-width:440px;line-height:1.5}
+.tool-result{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:10px;padding:14px 16px}
+.tool-result__title{font-size:13px;font-weight:500;color:var(--cc-text-3);margin-bottom:10px}
+.tool-result__row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:.5px solid var(--cc-divider);font-size:13px}
+.tool-result__row:last-child{border-bottom:0}
+.tool-result__row .k{color:var(--cc-text-2)}
+.tool-result__row .v{color:var(--cc-text)}
+.tool-pill{font-size:11px;border-radius:999px;padding:2px 9px;background:var(--cc-sunken);color:var(--cc-text-2)}
+.tool-pill-danger{font-size:11px;border-radius:999px;padding:2px 9px;background:var(--cc-danger-bg);color:var(--cc-danger-fg)}
+.tool-pill-warn{font-size:11px;border-radius:999px;padding:2px 9px;background:var(--cc-warning-bg);color:var(--cc-warning-fg)}
+.tool-field{margin-top:16px}
+.tool-field__label{font-size:13px;font-weight:600;color:var(--cc-text-2);margin-bottom:7px;display:block}
+.tool-field__hint{font-size:12px;color:var(--cc-text-3);margin-top:6px}
+.tool-spin{width:15px;height:15px;border:2px solid #9ca3af;border-top-color:transparent;border-radius:50%;
+  animation:tsp .8s linear infinite;flex-shrink:0;display:inline-block;margin-inline-end:8px;vertical-align:-2px}
+@keyframes tsp{to{transform:rotate(360deg)}}
+
+/* ---- פיגום המוקאפ בלבד ---- */
+.mk-h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:22px;max-width:900px}
+.mk-sec{margin:30px 0 12px;font-size:15px;font-weight:600;color:var(--cc-action);border-bottom:1px solid var(--cc-border);padding-bottom:6px}
+.mk-cap{font-size:12px;color:var(--cc-text-3);margin:0 0 8px}
+.mk-frame{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);margin-bottom:18px;overflow:hidden}
+.mk-note{background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:14px 16px;font-size:13px;margin:10px 0 18px;max-width:900px}
+.mk-note b{color:var(--cc-action)}
+.mk-note ul{margin:6px 22px 0 0}
+.mk-note li{margin-bottom:5px}
+.mk-tbl{width:100%;max-width:900px;border-collapse:collapse;font-size:13px;background:var(--cc-surface);margin-bottom:18px}
+.mk-tbl th,.mk-tbl td{border:1px solid var(--cc-border);padding:7px 10px;text-align:right;vertical-align:top}
+.mk-tbl th{background:var(--cc-sunken);font-weight:600;color:var(--cc-text-2)}
+.mk-miss{display:inline-block;font-size:11px;border:1px dashed var(--cc-danger-bar);color:var(--cc-danger-fg);
+  border-radius:var(--cc-radius-pill);padding:2px 9px}
+</style>
+</head>
+
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+<symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+<symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+</defs></svg>
+
+<div class="mk-h1">S41-TAGON - תיוג הקבצים: מסך המילוי לאחור (גרסה מצומצמת)</div>
+<div class="mk-note">
+<b>עודכן 18.08.2026 (S41-TAGLEVEL · B-1239 · B-1243).</b> המשפטים על מצב הדגלים - הצמצום והתיוג השוטף - היו כתובים כאן ובמסך כטקסט קבוע, והם נעשו שגויים ביום שהדגלים הופעלו: המוקאפ והמסך אמרו שהצמצום כבוי בעוד הוא דלוק, ואמרו שקובץ שנוצר ביד אינו נושא תג בעוד התיוג השוטף חותם אותו. 🔴 <b>ותיקון של התיקון, באותו יום</b>: הסבב הראשון החליף <b>שתיים</b> מההצהרות והצהיר שאלה כל ההופעות - <b>ובקובץ היו שלוש</b>. השלישית, בנוסח אחר, שרדה במסגרת "לפני ההרצה" עד שביקורת הסגירה תפסה אותה. <b>הספירה נעשתה על מחרוזת אחת מדויקת במקום על המחלקה</b>, וזה בדיוק מה שאיפשר לה לחמוק - גם מהעין וגם מהשער.
+<ul>
+<li><b>שלוש הצורות שהוחלפו</b>, ושלושתן נשמרות כאן ולא נמחקות: "הצמצום נשאר כבוי" · "קובץ שנוצר ישירות בכונן אחרי המדידה הזאת אינו נושא תג" · <b>"הצמצום בחיפוש כבוי"</b> - זו האחרונה שנתפסה. אין לכתוב אף אחת מהן שוב, באף מסך ובאף מוקאפ.</li>
+<li><b>הצורה שנקבעה</b> - שני המשפטים <b>נגזרים ממצב הדגלים שהשרת מדווח</b>, ואין במסך אף משפט שקובע מצב דגל. המוקאפ מציג כאן את המצב החי ביום העדכון: הצמצום דלוק, התיוג השוטף חי.</li>
+<li><b>וכל משפט כאן שנוקב במצב דגל הוא <u>דוגמה לפלט נגזר</u>, ומסומן בשורה שלפניו</b> - מוקאפ מציג רגע אחד, והרגע מתיישן. סימון חסר הוא ממצא, ולא קישוט.</li>
+<li><b>וכשהמצב אינו נקרא</b> - שרת ישן, טעינה שנכשלה או סירוב הרשאה - הכיתוב הוא "מצב הצמצום לא נקרא", <b>לעולם לא "כבוי"</b>. ברירת מחדל בהיעדר מידע היא בדיוק הפגם שהרשומות האלה נפתחו עליו.</li>
+</ul>
+</div>
+<div class="mk-sub">מוקאפ לאישור, 13.08.2026. מסך אחד, כפתור אחד, מספר אחד. הוסרו מהגרסה הראשונה: בורר ההיקף וכפתור הספירה מחדש - שניהם לא קנו דבר, וההיקף אף סתר את עצמו (הרצה על חלק מהעץ אינה סוגרת את השער).</div>
+
+<div class="mk-note">
+<b>מה המסך אומר, במשפט:</b> כמה קבצים בעץ המנוהל עדיין בלי תג, וכפתור שמסמן אותם. זהו.
+</div>
+
+<div class="mk-sec">לפני ההרצה</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="tool-view__title">תיוג הקבצים - מילוי לאחור</div>
+  <div class="tool-view__desc">סימון הקבצים הקיימים בעץ המנוהל בתג הבעלות. ניתן לעצור באמצע ולהמשיך מנקודת העצירה.</div>
+  <div class="cc-msg cc-msg--warning" style="margin-top:14px">
+    <svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
+    <!-- נגזר --><span><bdi>2,417</bdi> קבצים מתוך <bdi>18,930</bdi> עדיין בלי תג. הצמצום דלוק · התיוג השוטף חי.</span>
+  </div>
+  <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+    <button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>הרצת המילוי לאחור</button>
+  </div>
+</div></div></div>
+
+<div class="mk-sec">בזמן ההרצה</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="tool-view__title">תיוג הקבצים - מילוי לאחור</div>
+  <div class="tool-view__desc">סימון הקבצים הקיימים בעץ המנוהל בתג הבעלות. ניתן לעצור באמצע ולהמשיך מנקודת העצירה.</div>
+  <div class="cc-msg cc-msg--progress" style="margin-top:14px">
+    <span class="tool-spin"></span>
+    <span>מסמן - <bdi>1,204</bdi> מתוך <bdi>2,417</bdi>. מה שכבר סומן נשמר.</span>
+  </div>
+  <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+    <button class="cc-btn cc-btn--primary" disabled><span class="tool-spin"></span>הרצת המילוי לאחור</button>
+    <button class="cc-btn cc-btn--sm">עצירה</button>
+  </div>
+</div></div></div>
+
+<div class="mk-sec">הסתיים, והעץ נקי</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="tool-view__title">תיוג הקבצים - מילוי לאחור</div>
+  <div class="tool-view__desc">סימון הקבצים הקיימים בעץ המנוהל בתג הבעלות. ניתן לעצור באמצע ולהמשיך מנקודת העצירה.</div>
+  <div class="cc-msg cc-msg--success" style="margin-top:14px">
+    <svg class="cc-icon cc-icon--sm"><use href="#i-circle-check"/></svg>
+    <!-- נגזר --><span>כל <bdi>18,930</bdi> הקבצים נושאים תג, נכון לסיום המעבר.
+        קובץ שנוצר ישירות בכונן נחתם על ידי התיוג השוטף, ולכן אין הוא מיישן את המספר הזה.
+        הצמצום דלוק · התיוג השוטף חי.</span>
+  </div>
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">ההרצה האחרונה - 13.08.2026, 10:18</div>
+    <div class="tool-result__row"><span class="k">סומנו</span><span class="v"><bdi>2,417</bdi></span></div>
+    <div class="tool-result__row"><span class="k">נותרו בלי תג</span><span class="v"><bdi>0</bdi></span></div>
+  </div>
+  <div style="margin-top:18px"><button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>הרצה חוזרת</button></div>
+</div></div></div>
+
+<div class="mk-sec">הסתיים, ונשארו שאריות</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="tool-view__title">תיוג הקבצים - מילוי לאחור</div>
+  <div class="tool-view__desc">סימון הקבצים הקיימים בעץ המנוהל בתג הבעלות. ניתן לעצור באמצע ולהמשיך מנקודת העצירה.</div>
+  <div class="cc-msg cc-msg--warning" style="margin-top:14px">
+    <svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
+    <!-- נגזר --><span><bdi>34</bdi> קבצים עדיין בלי תג: <bdi>26</bdi> שבעלותם לא נקבעה, ו<bdi>8</bdi> שנכשלו. הצמצום דלוק · התיוג השוטף חי.</span>
+  </div>
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">ההרצה האחרונה - 13.08.2026, 10:31</div>
+    <div class="tool-result__row"><span class="k">סומנו</span><span class="v"><bdi>2,383</bdi></span></div>
+    <div class="tool-result__row"><span class="k">נותרו בלי תג</span><span class="v"><bdi>34</bdi></span></div>
+  </div>
+  <div style="margin-top:18px"><button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>הרצה חוזרת</button></div>
+</div></div></div>
+
+<div class="mk-sec">שני נוסחים של אותה שורה, ואינם מסכים נוספים</div>
+<div class="mk-note">
+<ul>
+<li><b>הספירה לא הושלמה</b> - הבאנר אומר "מספר הקבצים בלי תג - לא ידוע", ולא אפס. אפס שם נקרא כנקי ומזמין הדלקה על עץ שלא נמדד.</li>
+<li><b>הכלי טרם הופעל</b> - הכפתור מרונדר מושבת במקומו ואינו מוסתר, כמו בכל מסך כלי אחר.</li>
+</ul>
+</div>
+
+<div class="mk-sec">מלאי האלמנטים</div>
+<table class="mk-tbl">
+<tr><th>האלמנט</th><th>שם הספרייה</th><th>מקור</th></tr>
+<tr><td>מעטפת, כותרת ותיאור</td><td>tool-view · tool-view__title · tool-view__desc</td><td>קיים</td></tr>
+<tr><td>הבאנרים</td><td>cc-msg--warning · cc-msg--success · cc-msg--progress + tool-spin</td><td>קיים</td></tr>
+<tr><td>טבלת התוצאה</td><td>tool-result · tool-result__row</td><td>קיים</td></tr>
+<tr><td>גלולת אזהרה בשורת תוצאה</td><td>tool-pill-warn</td><td>🔴 <b>ויתור - D-357, 13.08</b>: ברירת המחדל נכנסה לתוקף והמספר מוצג בלי גלולה. האלמנט הוסר מהמוקאפ ב-17.08, אחרי שנמדד שהוא עדיין מרונדר כאן בעוד הקוד החי כבר ויתר עליו.</td></tr>
+<tr><td>אייקון עצירה</td><td>-</td><td><span class="mk-miss">אין בספרייט</span> - כפתור בלי אייקון, ואינו מוחלף בקירוב (D-348)</td></tr>
+</table>
+
+<div class="mk-sec">יומן הקובץ</div>
+<table class="mk-tbl">
+<tr><th>התאריך</th><th>מה השתנה</th><th>מי</th></tr>
+<tr><td>2026-08-13</td><td>המוקאפ נוצר ב-S41-TAGON.</td><td>Coworker</td></tr>
+<tr><td>2026-08-13</td><td>צומצם בהערת דב: הוסרו בורר ההיקף וכפתור הספירה מחדש; שני מצבים הפכו לנוסח של שורה אחת. נשארו ארבעה מצבים.</td><td>Coworker</td></tr>
+<tr><td>2026-08-17</td><td>הבאנר הירוק הפסיק להזמין להדליק את הצמצום (D-363: המונה הנקי הוא תנאי ואינו מספיק); גלולת האזהרה שוויתרנו עליה ב-D-357 הוסרה; והמקף אחרי ו&#39; החיבור הוסר לפי המילון.</td><td>Coworker</td></tr>
+<tr><td>2026-08-18</td><td>ההצהרות על מצב שני הדגלים חדלו להיות טקסט קבוע: שלוש ההופעות בקובץ הזה מציגות עכשיו את הפלט הנגזר, וכל אחת מסומנת בשורה שלפניה כדוגמה לפלט. הצורות שפרשו נשמרו בהערת העדכון ולא נמחקו.</td><td>Coworker</td></tr>
+<tr><td>2026-08-18</td><td>תיקון של התיקון, באותו יום: הסבב הראשון החליף שתיים מתוך שלוש והצהיר שסיים. ביקורת הסגירה מצאה את השלישית, והספירה תוקנה מהמחרוזת אל המחלקה.</td><td>Coworker</td></tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מוקאפ - לוח ניהול הפרויקט (S39-STATE)</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-bg:#fdf7ea; --cc-warning-fg:#92400e; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.12);
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  --cc-ease:140ms cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);margin:0;padding:24px 20px 60px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto}
+
+/* ---------- כותרת ---------- */
+.hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.hd h1{font-size:22px;margin:0;font-weight:700}
+.hd .sub{font-size:13px;color:var(--cc-text-3)}
+.gen{font-size:12px;color:var(--cc-text-3);background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 10px}
+
+/* ---------- פס מספרים ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 22px}
+.kpi{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:12px 14px}
+.kpi .n{font-size:26px;font-weight:700;line-height:1.1}
+.kpi .l{font-size:12px;color:var(--cc-text-3);margin-top:2px}
+.kpi.act{border-color:var(--cc-action-border);background:var(--cc-action-weak)}
+.kpi.act .n{color:var(--cc-action)}
+
+/* ---------- מקטע ---------- */
+.sec{margin:0 0 26px}
+.sec > h2{font-size:13px;font-weight:700;color:var(--cc-text-3);letter-spacing:.3px;margin:0 0 10px;
+  display:flex;align-items:center;gap:8px}
+.sec > h2::after{content:"";flex:1;height:1px;background:var(--cc-divider)}
+
+/* ---------- כרטיס הסשן הנוכחי ---------- */
+.now{background:var(--cc-surface);border:1px solid var(--cc-border);border-right:3px solid var(--cc-action);
+  border-radius:var(--cc-radius);padding:18px 20px;box-shadow:var(--cc-shadow)}
+.now .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.now .id{font-size:19px;font-weight:700;direction:ltr;unicode-bidi:isolate}
+.now .ttl{font-size:15px;color:var(--cc-text-2);margin:6px 0 14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.step{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:9px 11px;background:var(--cc-bg)}
+.step .k{font-size:11px;color:var(--cc-text-3);font-weight:700}
+.step .v{font-size:13px;margin-top:2px}
+.step.on{border-color:var(--cc-action-border);background:var(--cc-action-weak)}
+.step.ok{border-color:var(--cc-success-bar);background:var(--cc-success-bg)}
+.step.ok .v{color:var(--cc-success-fg)}
+
+/* ---------- שורת סשן ---------- */
+.row{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);margin-bottom:8px;overflow:hidden}
+.row > summary{list-style:none;cursor:pointer;min-height:var(--cc-row-h);display:flex;align-items:center;gap:12px;
+  padding:9px 14px;transition:background var(--cc-ease)}
+.row > summary::-webkit-details-marker{display:none}
+.row > summary:hover{background:var(--cc-sunken)}
+.row .ord{width:26px;height:26px;flex:none;border-radius:var(--cc-radius-pill);background:var(--cc-sunken);
+  color:var(--cc-text-3);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.row .id{font-weight:700;font-size:14px;direction:ltr;unicode-bidi:isolate;flex:none;min-width:118px}
+.row .ttl{font-size:13px;color:var(--cc-text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .meta{display:flex;gap:6px;align-items:center;flex:none}
+.row .caret{color:var(--cc-text-disabled);font-size:12px;flex:none;transition:transform var(--cc-ease)}
+.row[open] .caret{transform:rotate(180deg)}
+.row .body{padding:2px 14px 14px 14px;border-top:1px solid var(--cc-divider);font-size:13px;color:var(--cc-text-2)}
+.row .body ul{margin:10px 0 0;padding-inline-start:18px}
+.row .body li{margin-bottom:4px}
+.row.next{border-color:var(--cc-action-border)}
+.row.blocked{border-color:var(--cc-warning-bar)}
+
+/* ---------- צ'יפים ---------- */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent;white-space:nowrap}
+.chip.warn{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.chip.dang{background:var(--cc-danger-bg);color:var(--cc-danger-fg);border-color:var(--cc-danger-bar)}
+.chip.ok{background:var(--cc-success-bg);color:var(--cc-success-fg);border-color:var(--cc-success-bar)}
+.chip.act{background:var(--cc-action-weak);color:var(--cc-action);border-color:var(--cc-action-border)}
+.chip .num{font-weight:700;direction:ltr}
+.pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;
+  padding:3px 9px;border-radius:var(--cc-radius-pill)}
+.pill.now{background:var(--cc-action);color:#fff}
+.pill.nxt{background:var(--cc-action-weak);color:var(--cc-action);border:1px solid var(--cc-action-border)}
+.pill.done{background:var(--cc-success-bg);color:var(--cc-success-fg)}
+
+/* ---------- ממתין לך ---------- */
+.ask{background:var(--cc-warning-bg);border:1px solid var(--cc-warning-bar);border-right:3px solid var(--cc-warning-bar);
+  border-radius:var(--cc-radius);padding:12px 16px;margin-bottom:8px}
+.ask .q{font-weight:700;font-size:14px;color:var(--cc-warning-fg)}
+.ask .w{font-size:13px;color:var(--cc-text-2);margin-top:4px}
+.ask .who{font-size:12px;color:var(--cc-text-3);margin-top:6px}
+
+/* ---------- הושלם ---------- */
+.done-wrap > summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--cc-text-3);background:var(--cc-surface);border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-pill);padding:7px 14px;transition:background var(--cc-ease)}
+.done-wrap > summary::-webkit-details-marker{display:none}
+.done-wrap > summary:hover{background:var(--cc-sunken)}
+.done-wrap[open] > summary{margin-bottom:10px}
+.drow{display:flex;align-items:center;gap:12px;min-height:38px;padding:6px 14px;border-bottom:1px solid var(--cc-divider);font-size:13px}
+.drow:last-child{border-bottom:none}
+.drow .id{font-weight:600;direction:ltr;unicode-bidi:isolate;min-width:118px;flex:none;color:var(--cc-text-2)}
+.drow .ttl{color:var(--cc-text-3);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dbox{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius)}
+
+.note{font-size:12px;color:var(--cc-text-3);background:var(--cc-info-bg);border-right:3px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);padding:10px 14px;margin-top:22px}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr}
+  .row .id{min-width:auto}.row .ttl{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <h1>לוח הפרויקט</h1>
+    <span class="sub">Authentico Studio</span>
+    <span class="gen">נוצר אוטומטית · 31.07.2026 06:40</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">6</div><div class="l">סשנים לפני סגירת מנוע התמחור</div></div>
+    <div class="kpi"><div class="n">66</div><div class="l">פריטים פתוחים</div></div>
+    <div class="kpi act"><div class="n">1</div><div class="l">ממתין להכרעה שלך</div></div>
+    <div class="kpi"><div class="n">17</div><div class="l">סשנים הושלמו</div></div>
+  </div>
+
+  <!-- ===== איפה אנחנו ===== -->
+  <div class="sec">
+    <h2>איפה אנחנו</h2>
+    <div class="now">
+      <div class="top">
+        <span class="pill now">בעבודה</span>
+        <span class="id">S39-STATE</span>
+        <span class="chip">מורכבות גבוהה מאוד</span>
+        <span class="chip ok">הכל ירוק · 9 מתוך 9 בדיקות</span>
+      </div>
+      <div class="ttl">מצב מובנה · ווידג'ט נגזר · העברת האכיפה לקוד</div>
+      <div class="steps">
+        <div class="step ok"><div class="k">1</div><div class="v">מלאי ✓</div></div>
+        <div class="step on"><div class="k">2</div><div class="v">מוקאפ - ממתין לאישורך</div></div>
+        <div class="step"><div class="k">3</div><div class="v">מצב מובנה</div></div>
+        <div class="step"><div class="k">4</div><div class="v">מחולל הווידג'ט</div></div>
+        <div class="step"><div class="k">5</div><div class="v">בדיקה K</div></div>
+        <div class="step"><div class="k">6</div><div class="v">PI + פרוטוקולים + סקילים</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ממתין לך ===== -->
+  <div class="sec">
+    <h2>ממתין להכרעה שלך</h2>
+    <div class="ask">
+      <div class="q">האם עברית מותרת בקובץ קטלוג השגיאות של מנוע התמחור?</div>
+      <div class="w">שתי מחרוזות עברית נוספו לקובץ שסורק הנוסח אינו בודק. או חריג מתועד, או העברת הקטלוג למילון.</div>
+      <div class="who">חוסם פריט אחד · הבית: S35-FIX-3 · פתוח מאז 30.07</div>
+    </div>
+  </div>
+
+  <!-- ===== הבא בתור ===== -->
+  <div class="sec">
+    <h2>הבא בתור</h2>
+
+    <details class="row next">
+      <summary>
+        <span class="ord">1</span><span class="id">S35-FIX-3</span>
+        <span class="ttl">חוב הביקורת של S35-BUILD-B - סבב תיקון ייעודי</span>
+        <span class="meta">
+          <span class="chip warn"><span class="num">1</span> ממתין לך</span>
+          <span class="chip"><span class="num">12</span> פריטים</span>
+          <span class="chip">גבוהה</span>
+        </span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">
+        חמישה פגמים בקוד מחובר · חמישה בלוגיקה שאין לה קורא · שער שצר ממה שהוצהר עליו · ארבע סתירות תיעוד.
+        <ul>
+          <li><b>חוסם:</b> ההכרעה שלך על העברית בקטלוג השגיאות.</li>
+          <li><b>למה לפניו:</b> אין לפרוס קוד שידוע שיש בו פגמים.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="row">
+      <summary>
+        <span class="ord">2</span><span class="id">S35-DEPLOY-2</span>
+        <span class="ttl">פריסה, אימות חי וניסוי B-485</span>
+        <span class="meta">
+          <span class="chip"><span class="num">6</span> פריטים</span>
+          <span class="chip">בינונית</span>
+        </span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">
+        פריסת כל מה שנבנה בשני סבבי הבנייה, ואימות חי של תשעה תיקונים שטרם נראו במערכת החיה.
+        <ul><li><b>אחרי:</b> S35-FIX-3.</li>
+        <li>תוצאת הניסוי מכריעה את דחיפות עורכי העומק בקטלוג.</li></ul>
+      </div>
+    </details>
+
+    <details class="row">
+      <summary>
+        <span class="ord">3</span><span class="id">S35-CARD</span>
+        <span class="ttl">רדיזיין הכרטיס ומשפחתו + חזות ההגדרות</span>
+        <span class="meta">
+          <span class="chip"><span class="num">15</span> פריטים</span>
+          <span class="chip">גבוהה מאוד</span>
+        </span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">
+        כל מה שמרונדר בתוך הכרטיס: 14 האזורים לטאבים · רספונסיביות · כרטיס CIT · החלפת אמוג'י בספריית האייקונים.
+        <ul><li><b>תנאי כניסה:</b> חמשת המוקאפים נעולים ✓</li></ul>
+      </div>
+    </details>
+
+    <details class="row">
+      <summary>
+        <span class="ord">4</span><span class="id">S35-B2C</span>
+        <span class="ttl">שכבת ה-B2C הנגזרת - פיצ'ר, לא תיקון</span>
+        <span class="meta"><span class="chip"><span class="num">1</span> פריט</span><span class="chip">גבוהה מאוד</span></span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">שכבת מחיר ללקוח הסופי על אותה הזמנה, עם בידוד מלא מהשותף. המנוע כבר תומך - חסרה העטיפה.</div>
+    </details>
+
+    <details class="row">
+      <summary>
+        <span class="ord">5</span><span class="id">S35-TRACE</span>
+        <span class="ttl">גרסאות הצעת מחיר + שמירת חישוב</span>
+        <span class="meta"><span class="chip"><span class="num">2</span> פריטים</span><span class="chip">גבוהה</span></span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">
+        מנגנון גרסה בלתי משתנה להצעת מחיר.
+        <ul><li><b>אחרי:</b> S35-B2C - אחרת הגרסה תצלם מבנה שעומד להשתנות.</li></ul>
+      </div>
+    </details>
+
+    <details class="row">
+      <summary>
+        <span class="ord">6</span><span class="id">S35-BUILD-C</span>
+        <span class="ttl">המילון על המסך</span>
+        <span class="meta"><span class="chip"><span class="num">12</span> פריטים</span><span class="chip">גבוהה</span></span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">56 הטולטיפים החסרים, 14 היתומים, וזריעת 32 המפתחות החדשים.</div>
+    </details>
+
+    <details class="row">
+      <summary>
+        <span class="ord">7</span><span class="id">S35-CALC</span>
+        <span class="ttl">QA נתיב הכסף</span>
+        <span class="meta"><span class="chip"><span class="num">1</span> פריט</span><span class="chip">בינונית-גבוהה</span></span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">סבב ה-QA שסוגר את מנוע התמחור.</div>
+    </details>
+  </div>
+
+  <!-- ===== אחר כך ===== -->
+  <div class="sec">
+    <h2>אחר כך</h2>
+    <details class="row blocked">
+      <summary>
+        <span class="ord">8</span><span class="id">S32b</span>
+        <span class="ttl">מדריכים + מיילים למדריכים + בולק + הגדרות</span>
+        <span class="meta"><span class="chip"><span class="num">4</span> פריטים</span><span class="chip">גבוהה</span></span>
+        <span class="caret">▾</span>
+      </summary>
+      <div class="body">כולל אזור הצוות בקטלוג ותקציב לינת צוות - שני פערים שנחשפו בהבהרות שלך ב-30.07.</div>
+    </details>
+    <details class="row">
+      <summary>
+        <span class="ord">9</span><span class="id">S38-CD</span>
+        <span class="ttl">סבב עיצוב: אזורי הניהול והמיילים</span>
+        <span class="meta"><span class="chip">גבוהה</span></span><span class="caret">▾</span>
+      </summary>
+      <div class="body">שלוש שורות הרדיזיין - עיצוב, בנייה, מיילים.</div>
+    </details>
+    <details class="row">
+      <summary>
+        <span class="ord">10</span><span class="id">S37a</span>
+        <span class="ttl">מנוע היצירה - עיצוב ואפיון (אפס קוד)</span>
+        <span class="meta"><span class="chip">גבוהה</span></span><span class="caret">▾</span>
+      </summary>
+      <div class="body">תחילת שכתוב מנוע היצירה. אחרי S33ב - תיעוד הכשלים שמזין אותו.</div>
+    </details>
+  </div>
+
+  <!-- ===== הושלם ===== -->
+  <div class="sec">
+    <details class="done-wrap">
+      <summary>▸ הושלם · 17 סשנים</summary>
+      <div class="dbox">
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S35-BUILD-B</span><span class="ttl">הבסיס, החיווי וההתנהגות</span><span class="chip">30.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S35-BUILD-A</span><span class="ttl">נתיב הדיאלוג והקטלוג</span><span class="chip">30.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S35-CD</span><span class="ttl">רדיזיין כרטיס ההזמנה - חמישה מוקאפים</span><span class="chip">29.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S35-LEX</span><span class="ttl">לשון המנוע + שער האלגברה</span><span class="chip">29.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S35-DEPLOY</span><span class="ttl">פריסה ואימות חי + פרוטוקול הסשן</span><span class="chip">29.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S35-FIX-2</span><span class="ttl">תיקונים פונקציונליים אחרונים</span><span class="chip">28.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S36</span><span class="ttl">ספריית העיצוב</span><span class="chip">27.07</span></div>
+        <div class="drow"><span class="pill done">נסגר</span><span class="id">S34</span><span class="ttl">מנוע התמחור - בנייה 1</span><span class="chip">27.07</span></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="note">
+    <b>מוקאפ להמחשה.</b> כל המספרים והשמות כאן נלקחו מהמצב האמיתי של 31.07, כדי שתשפוט על תוכן ולא על טקסט מומצא.
+    בגרסה החיה כל מה שמופיע כאן <b>נגזר אוטומטית</b> - אף מספר לא נכתב ביד, ולכן אינו יכול להיות שגוי.
+  </div>
+
+</div>
+</body>
+</html>

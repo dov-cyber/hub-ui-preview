@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S35-CD - אזור ההגדרות (טיוטה 1)</title>
+<style>
+/* 1:1 מול spa/src/global.css + ספריית העיצוב 00-DESIGN-LIBRARY.html. mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --status-impl-bg:#dcfce7; --status-impl-fg:#15803d; --status-impl-dot:#22c55e;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+
+/* ---- יסודות הספרייה ---- */
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent;white-space:nowrap}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}  /* השם הקנוני */
+.nh-diff{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}  /* השם הקנוני */
+.cc-chip--attn{border-color:var(--cc-action);color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--danger{background:var(--cc-action);border-color:var(--cc-action);color:#fff}  /* הקנוני לכפתור הפעולה האדום (בחי הכפתור האדום המלא הוא cc-btn--danger; cc-btn--primary החי ניטרלי) */
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}  /* הווריאנט הקנוני הקטן */
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-size:15px;font-family:var(--cc-font);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-surface);color:var(--cc-text)}
+.cc-input:focus{outline:none;border-color:var(--cc-action);box-shadow:0 0 0 3px var(--cc-action-weak)}
+.cc-input--ltr{direction:ltr;text-align:left}
+.cc-input--ltr:placeholder-shown{direction:rtl;text-align:right}  /* placeholder עברי ("לא ידוע") מוצג כעברית; ערך מוקלד (מספר) חוזר ל-LTR */
+
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden;background:var(--cc-surface)}
+.cc-seg>button{border:0;background:var(--cc-surface);font:inherit;font-size:14px;font-weight:600;color:var(--cc-text-2);min-height:var(--cc-row-h);padding:0 18px;cursor:pointer;border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg--sm>button{min-height:36px;padding:0 12px;font-size:13px}  /* cc-seg--sm הקנוני */
+.cc-seg>button:first-child{border-inline-start:0}
+.cc-seg>button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--unset{border-color:var(--cc-action);box-shadow:0 0 0 2px var(--cc-action-weak)}
+.cc-msg{font-size:14px;border-radius:var(--cc-radius-sm);padding:10px 14px;line-height:1.55}  /* בחי גם display:flex+gap לאייקון; כאן הודעות פרוזה */
+.cc-msg--info{background:var(--cc-info-bg);color:var(--cc-info-fg);border-inline-start:4px solid var(--cc-info-bar)}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-inline-start:4px solid var(--cc-warning-bar)}
+.cc-pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;padding:3px 9px;border-radius:var(--cc-radius-pill);direction:ltr}
+.cc-pill--bk{background:var(--status-impl-bg);color:var(--status-impl-fg)}
+.cc-pill--cit{background:#cffafe;color:#0e7490}
+.ph-q{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;
+  border:1px solid var(--cc-border-strong);background:var(--cc-surface);color:var(--cc-text-3);font-size:11px;cursor:help;flex:0 0 auto}
+.nhtag{display:inline-flex;align-items:center;height:15px;font-size:10px;font-weight:700;color:#1d4ed8;background:#eef3fb;
+  border:1px solid #1d4ed833;border-radius:4px;padding:0 6px;margin-inline-start:6px}  /* קנוני: תג ראי-CRM בלבד */
+.pr-src{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:4px}
+.pr-src--cat{background:#eef3fb;color:#1d4ed8;border:1px solid #1d4ed833}
+.pr-src--man{background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-src--ovr{background:#fef9c3;color:#a16207;border:1px solid #eab30855}
+
+/* ---- פיגום המוקאפ ---- */
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:14px;max-width:980px}
+.mk-controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px;font-size:13px}
+.mk-note-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--cc-surface);color:var(--cc-action);border:1.5px solid var(--cc-action);font-size:11px;font-weight:700;flex:0 0 auto;vertical-align:middle;cursor:default}
+.mk-notes{max-width:980px;margin-top:26px;font-size:13px;line-height:1.7}
+.mk-notes h2{font-size:15.5px;margin-bottom:8px}
+.mk-notes li{margin-bottom:8px;list-style:none}
+.mk-decide{max-width:980px;margin-top:22px;background:var(--cc-warning-bg);border:1px solid var(--cc-warning-fg);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-decide h2{font-size:15px;color:var(--cc-warning-fg);margin-bottom:6px}
+
+
+.drawer{display:flex;flex-direction:column;max-height:82vh}
+.dr-body{overflow-y:auto;flex:1;padding:14px 16px;scroll-behavior:smooth}
+.dr-sticky{background:var(--cc-sunken);border-bottom:1px solid var(--cc-border)}
+.grip:hover{background:var(--cc-action-weak)}
+.fhint{font-size:12px;color:var(--cc-text-3);margin-top:4px;line-height:1.5}  /* = cc-help */
+.dr-foot{flex-wrap:wrap}
+.popov{position:absolute;bottom:104px;inset-inline-start:14px;z-index:5;box-shadow:var(--cc-shadow);border-radius:var(--cc-radius-sm);background:var(--cc-surface)}
+
+/* ---- המגירה (drawer) ---- */
+.drawer{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius);background:var(--cc-surface);
+  box-shadow:var(--cc-shadow);overflow:hidden;transition:max-width .25s;position:relative;margin-inline-start:22px}
+.drawer.w1040{max-width:1040px}.drawer.w780{max-width:780px}.drawer.w540{max-width:540px}
+.grip{position:absolute;inset-inline-start:0;top:0;bottom:0;width:10px;cursor:ew-resize;  /* = cc-drawer-resize החי */
+  background:linear-gradient(90deg,var(--cc-border) 2px,transparent 2px);opacity:.85}
+.grip::after{content:'⋮';position:absolute;top:50%;inset-inline-start:-2px;color:var(--cc-text-3);font-size:14px}
+
+.dr-head{padding:12px 16px 0;background:var(--cc-sunken);border-bottom:1px solid var(--cc-border)}
+.dr-head__r1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dr-title{font-size:15.5px;font-weight:700}
+.dr-close{margin-inline-start:auto;border:1px solid transparent;background:transparent;font-size:17px;color:var(--cc-text-3);cursor:pointer;width:var(--cc-row-h);height:var(--cc-row-h);display:inline-flex;align-items:center;justify-content:center;border-radius:var(--cc-radius-sm)}  /* = cc-icon-btn 44px */
+.dr-head__r2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--cc-text-2)}
+.dr-sum{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-bottom:10px}
+.sum-chip{display:inline-flex;flex-direction:column;gap:1px;background:var(--cc-surface);border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-sm);padding:5px 11px;min-width:104px}
+.sum-chip b{font-size:14px}
+.sum-chip span{font-size:10.5px;color:var(--cc-text-3)}
+.steps{display:flex;gap:2px;background:var(--cc-sunken);padding:0 10px;overflow-x:auto}
+.steps{padding:10px 12px;gap:7px;align-items:center;min-height:64px;overflow-y:visible}
+.step{border:1px solid var(--cc-border-strong);background:var(--cc-surface);font:inherit;font-size:14px;font-weight:600;color:var(--cc-text);
+  padding:0 18px;min-height:42px;cursor:pointer;border-radius:var(--cc-radius-sm);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.step:hover{border-color:var(--cc-action)}
+.step.active{background:var(--cc-action-weak);color:var(--cc-action);border-color:var(--cc-action);font-weight:700}
+.steps::after{content:'';flex:0 0 6px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--cc-border-strong);flex:0 0 auto}
+.sdot--done{background:var(--status-impl-dot)}
+.sdot--dirty{background:#eab308}
+.dr-body{padding:16px;min-height:340px}
+.dr-foot{display:flex;align-items:center;gap:8px;padding:11px 16px;border-top:1px solid var(--cc-border);background:var(--cc-sunken)}
+.dr-foot .spacer{flex:1}
+
+.zone{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:12px;margin-bottom:12px;position:relative;background:var(--cc-surface)}
+.zone>h4{font-size:13px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 14px}
+.w780 .grid3{grid-template-columns:repeat(2,1fr)}
+.w540 .grid3,.w540 .grid2{grid-template-columns:1fr}
+.w540 .dr-sum{gap:6px}.w540 .sum-chip{min-width:88px}
+.fld input,.fld select{width:100%}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}  /* = cc-table הקנונית */
+.tbl th{font-size:11.5px;font-weight:600;color:var(--cc-text-3);letter-spacing:.2px;text-align:start;padding:10px 12px;border-bottom:1px solid var(--cc-border-strong);white-space:nowrap;background:var(--cc-surface)}
+.tbl td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);vertical-align:middle}
+.pr-tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--cc-surface)}  /* 1:1 global.css */
+.pr-tbl th{text-align:start;font-weight:600;font-size:12px;color:var(--cc-text-2);padding:8px 10px;border-bottom:2px solid var(--cc-border-strong);background:var(--cc-sunken)}
+.pr-tbl td{padding:7px 10px;border-bottom:1px solid var(--cc-divider);vertical-align:middle}
+.selbox{accent-color:var(--cc-action);width:16px;height:16px}
+.tbl input{width:100%;min-height:34px;padding:0 8px;font-size:13px}  /* קלט-טבלה קומפקטי 34px (רצפת הווריאנט המוקטן, כמו cc-btn--sm) - מוצהר ב-2ז */
+.unit-tag{display:inline-block;font-size:10px;color:var(--cc-info-fg);background:var(--cc-info-bg);border:1px solid var(--cc-info-bar);border-radius:4px;padding:0 5px;white-space:nowrap}
+.seg-tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider);margin-bottom:12px;flex-wrap:wrap}
+.seg-tab{border:0;background:transparent;font:inherit;font-size:13.5px;color:var(--cc-text-2);padding:9px 13px;cursor:pointer;border-bottom:2px solid transparent}  /* = הטאב הקווי הקנוני (.tabs/.tab) - דפוס טאב-תמיד */
+.seg-tab.active{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:700}
+.calcw{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-sunken);padding:10px 12px;font-size:12.5px}
+.calcw .lvl{font-weight:700;font-size:12px;color:var(--cc-text-2);margin:6px 0 3px}
+.calcw .st{display:flex;justify-content:space-between;gap:10px;padding:2.5px 0;border-bottom:1px dashed var(--cc-divider)}
+.calcw .st span:last-child{direction:ltr;font-variant-numeric:tabular-nums}
+.tot{display:inline-flex;flex-direction:column;gap:2px;background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:8px 13px;min-width:130px}  /* = totalbox של הכרטיס החי */
+.tot .tl{font-size:11.5px;color:var(--cc-text-3)}
+.tot b{font-size:17px;font-weight:700}
+.fab{position:absolute;bottom:64px;inset-inline-start:14px;display:inline-flex;align-items:center;gap:7px;
+  background:var(--cc-surface);border:1.5px solid var(--cc-action);color:var(--cc-action);font-weight:700;font-size:12.5px;
+  border-radius:var(--cc-radius-pill);padding:7px 14px;box-shadow:var(--cc-shadow);cursor:pointer}
+.approval{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);max-width:360px;background:var(--cc-surface)}
+.approval>h5{font-size:12.5px;font-weight:700;padding:8px 11px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken);display:flex;gap:8px;align-items:center}
+.approval .rows{padding:7px 11px;font-size:12.5px}
+.approval .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed var(--cc-divider)}
+.approval .row span:first-child{color:var(--cc-text-3)}
+.approval .foot{display:flex;gap:8px;padding:9px 11px;border-top:1px solid var(--cc-border)}
+.hide{display:none !important}
+bdi{unicode-bidi:isolate}
+</style>
+<style>
+.icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--cc-sunken);border:1px solid var(--cc-border);font-size:15px;color:var(--cc-text-2)}
+.setgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:900px}
+.setcard{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);padding:13px;display:flex;gap:11px;align-items:flex-start;cursor:pointer}
+.setcard:hover{border-color:var(--cc-action)}
+.setcard b{font-size:13.5px;display:block}
+.setcard span.d{font-size:12px;color:var(--cc-text-3);line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">S35-CD - חזות אזור ההגדרות - טיוטה 1</div>
+<div class="mk-sub">
+  האזור שעלה מ-12.10 בהכרעתך (פיצול לפי תלות). בפנים: הבית החדש של ההגדרות עם <b>אייקוני ספרייה במקום אמוג'י (B-475)</b>,
+  <b>רדיזיין מסך המילון (B-480)</b>, <b>ברירת המחדל בבורר השותף בקטלוג (B-483)</b>. מה שנשאר ב-12.10: רק מה שתלוי ב-S32b (עורכי העומק B-496, זרימת התיקייה B-486).
+</div>
+
+<div class="mk-notes" style="margin-top:0;margin-bottom:18px">
+  <h2>"לא לשכוח כלום" - חמשת הפאנלים הקיימים + הבאים</h2>
+  <table class="tbl" style="max-width:960px">
+    <tr><th>קיים היום (מהקוד)</th><th>במוקאפ</th></tr>
+    <tr><td>ניהול מודלי AI (ברירת מחדל, חריגות פר פעולה, מודל ההתייעצויות, שחזור)</td><td>כרטיס בבית ההגדרות; הפאנל עצמו ללא שינוי מבני</td></tr>
+    <tr><td>ניהול הרשאות (הענקה לשותפים, שינויים שטרם הוחלו)</td><td>כרטיס בבית; דפוס "תצוגה מקדימה והחלה" הקיים</td></tr>
+    <tr><td>ניהול יעדים, תבניות מייל</td><td>כרטיסים בבית</td></tr>
+    <tr><td>ניהול מילון (טבלה, עריכה, ולידציה, היסטוריה, שחזור, המונחים שדולגו)</td><td>רדיזיין B-480 למטה - כל היכולות נשמרות</td></tr>
+    <tr><td>קטלוג השירותים (10 קטלוגים, + פריט חדש, ארכיון, משותף)</td><td>רדיזיין הכניסה + B-483 למטה; עורכי העומק פר קטלוג = B-496 (12.10)</td></tr>
+    <tr><td>בקרוב: ניהול תצוגה, דגלים, entitlements</td><td>כרטיסים מושבתים במקומם (כלל העתיד)</td></tr>
+    <tr><td>עוזר ה-AI במסכי הקטלוג והמילון (B-485)</td><td>הגלולה הצפה קיימת בשני המסכים - אותו כלל חזותי (B-501)</td></tr>
+  </table>
+</div>
+
+<!-- בית ההגדרות -->
+<div class="zone" style="max-width:960px">
+  <h4>בית ההגדרות - אייקוני ספרייה במקום אמוג'י (B-475) <span class="mk-note-dot">1</span></h4>
+  <div class="setgrid">
+    <div class="setcard"><span class="icon">◈</span><span><b>מודלי AI</b><span class="d">ברירת מחדל, חריגות פר פעולה, מודל ההתייעצויות</span></span></div>
+    <div class="setcard"><span class="icon">▤</span><span><b>קטלוג השירותים</b><span class="d">10 קטלוגים - תעריפים, יחידות, מע"מ, שותפים</span></span></div>
+    <div class="setcard"><span class="icon">✎</span><span><b>מילון המונחים</b><span class="d">תוויות וטולטיפים של כל מסכי המנוע</span></span></div>
+    <div class="setcard"><span class="icon">⛬</span><span><b>הרשאות</b><span class="d">גישת שותפים לתיקיות</span></span></div>
+    <div class="setcard"><span class="icon">✉</span><span><b>תבניות מייל</b><span class="d">נוסחי שליחה לשותפים ולמטיילים</span></span></div>
+    <div class="setcard"><span class="icon">◎</span><span><b>יעדים</b><span class="d">מרשם היעדים, עברית ורוסית</span></span></div>
+    <div class="setcard" style="opacity:.55;cursor:default"><span class="icon">▦</span><span><b>ניהול תצוגה</b><span class="d">בקרוב (12.8)</span></span></div>
+    <div class="setcard" style="opacity:.55;cursor:default"><span class="icon">⚑</span><span><b>דגלים והרשאות ארגון</b><span class="d">בקרוב (12.9ב) - כולל B2B / B2C / שניהם פר ארגון</span></span></div>
+  </div>
+  <div class="fhint">למערכת יש כבר ספריית אייקוני SVG חיה (cc-icon - sprite עם מזהי #i-*: archive, trash-2, arrow-swap, loader ועוד). הסמלים כאן הם מצייני מקום; בבנייה כל אייקון נלקח מאותו sprite קיים - לא אמוג'י ולא ספרייה חדשה. זו התשובה המלאה ל-B-475.</div>
+</div>
+
+<!-- מסך המילון B-480 -->
+<div class="zone" style="max-width:960px">
+  <h4>מסך המילון - רדיזיין (B-480) <span class="mk-note-dot">2</span></h4>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+    <input class="cc-input" placeholder="חיפוש מונח..." style="max-width:220px">
+    <select class="cc-input" style="max-width:170px"><option>כל הקבוצות (10)</option><option>תחנות</option><option>עמלות</option><option>הודעות</option></select>
+    <span class="cc-chip">79 מונחים</span>
+    <span class="cc-chip nh-diff">56 בלי טולטיפ</span>
+    <button class="cc-btn">טעינת מונחים מהריפו</button>
+  </div>
+  <table class="tbl">
+    <tr><th style="width:20%">מפתח</th><th style="width:26%">תווית (עברית)</th><th>טולטיפ</th><th style="width:11%">עודכן</th><th></th></tr>
+    <tr><td><bdi>station.fx_buffer</bdi></td><td>חיץ מטבע</td><td style="color:var(--cc-text-3)">תוספת אחוזית על עלות המקטע, המגנה מפני תנודות...</td><td>29.07</td><td><button class="cc-btn">עריכה</button></td></tr>
+    <tr><td><bdi>margin.group_profit</bdi></td><td>רווח לקבוצה</td><td style="color:var(--cc-text-3)">סכום הרווח על ההזמנה כולה...</td><td>27.07</td><td><button class="cc-btn">עריכה</button></td></tr>
+    <tr><td><bdi>transport.water</bdi></td><td>מים בתחבורה</td><td><span class="cc-chip nh-diff">אין טולטיפ - אין "?"</span></td><td>28.07</td><td><button class="cc-btn">עריכה</button></td></tr>
+  </table>
+  <div class="fhint">התיקון מול היום: סרגל אחד במקום עשרה כפתורי קבוצות ששוברים אותו; עמודת התווית קיבלה רוחב אמיתי והטולטיפ מוצג כתקציר. העריכה, הוולידציה, ההיסטוריה, השחזור ו"המונחים שדולגו" - כולם נשמרים כפי שהם.</div>
+</div>
+
+<!-- קטלוג B-483 -->
+<div class="zone" style="max-width:960px">
+  <h4>קטלוג השירותים - ברירת המחדל בבורר השותף (B-483) <span class="mk-note-dot">3</span></h4>
+  <div class="grid3" style="max-width:760px">
+    <div class="fld"><label class="cc-label">שם הפריט</label><input class="cc-input cc-input--ltr" value="Movenpick Petra"></div>
+    <div class="fld"><label class="cc-label">שותף</label>
+      <select class="cc-input"><option>&#x2068;Arminas Travel&#x2069; (ברירת המחדל - שותף הקטלוג)</option><option>שותף אחר...</option><option>משותף - כל השותפים (בחירה מפורשת)</option></select></div>
+    <div class="fld"><label class="cc-label">תעריף</label><input class="cc-input cc-input--ltr" value="95"> <bdi>JOD</bdi></div>
+  </div>
+  <div class="cc-msg cc-msg--info" style="margin-top:9px">ההיפוך של B-483: פריט חדש נולד משויך לשותף (ברירת המחדל: השותף שממנו נכנסת - מכרטיס שותף או לפי מדינת הפריט); "משותף - כל השותפים" הופך לבחירה מפורשת, כי מלון בטשקנט אינו רלוונטי לכל שותף. מטבע הפריט יורש מהשותף (B-494) עם דריסה.</div>
+</div>
+
+<!-- B-465 הוצא לקובץ משלו -->
+<div class="cc-msg cc-msg--info" style="max-width:960px;margin-bottom:14px"><b>B-465 הוצא מהקובץ הזה</b> - הוא שייך לסייר התיקיות, לא להגדרות (תיקון 29.07 בעקבות הערת דב). המוקאפ: <code>2026-07-29-s35cd-folders-root-bulk.html</code>.</div>
+
+<div class="zone" style="max-width:960px">
+  <h4>הרוחב - תשובה לשאלתך</h4>
+  <div class="cc-msg cc-msg--info">היום מסך ההגדרות החי נצמד לצד ההתחלה ברוחב צר, והשאר ריק - זה "הרוחב המוזר" שראית. ההצעה: <b>רוחב תוכן אחיד לכל אזורי הניהול - 1040, ממורכז</b> - אותו רוחב של כרטיס ההזמנה, כך שכל המערכת מדברת רוחב אחד; ברשת הכרטיסים 3 עמודות שיורדות ל-2 ול-1 בצר. זה חל גם על ניהול תוכן ושאר אזורי הרשימות שהראית.</div>
+</div>
+
+<div class="mk-decide" style="margin-top:18px">
+  <h2>נקודות להכרעתך</h2>
+  1. <b>בית ההגדרות ככרטיסים</b> (במקום שורות) עם אייקוני הספרייה - מקובל?<br>
+  2. <b>מסך המילון</b>: קבוצות כרשימה נפתחת אחת במקום עשרה כפתורים - מקובל?<br>
+  3. <b>B-483</b>: ברירת המחדל = שותף ספציפי, ו"משותף" בחירה מפורשת - מאשר את ההיפוך?<br>
+  5. <b>רוחב אחיד 1040 ממורכז</b> לכל אזורי הניהול - מאשר?
+</div>
+</body>
+</html>

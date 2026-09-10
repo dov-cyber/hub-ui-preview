@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S8-SPLIT - סרגל הצד: הקבוצה המתקפלת, פקד הכיווץ, והמבנה השטוח</title>
+<style>
+/* 🔴 גזור מהקוד החי ולא הועתק ביד (29.08.2026): הטוקנים מ-:root של global.css,
+   כללי .rail ו-.cc-icon כלשונם מאותו קובץ, והספרייט מקובץ ההגשה. mk- = פיגום מוקאפ בלבד. */
+:root {
+  --auth-red: #aa0000;
+  --auth-gray-dark: #5e5e5e;
+  --auth-gray-light: #b8b8b8;
+  --auth-white: #ffffff;
+  --auth-bg: #fafafa;
+  --auth-bg-soft: #f5f3ec;
+  --auth-border: #e5e5e5;
+  --auth-text: #2a2a2a;
+  --auth-text-muted: #6b6b6b;
+  --auth-success: #2e7d32;
+  --auth-warning: #ed6c02;
+
+  /* === Phase 6.3 additions === */
+
+  /* Status palette (rec_status) - bg + fg + dot trio
+     Used by: .stat, .badge, sidebar status indicators */
+  --status-not-impl-bg: #dbeafe;      --status-not-impl-fg: #1e40af;      --status-not-impl-dot: #3b82f6;
+  --status-partial-bg: #fef9c3;       --status-partial-fg: #a16207;       --status-partial-dot: #eab308;
+  --status-core-bg: #cffafe;          --status-core-fg: #0e7490;          --status-core-dot: #06b6d4;
+  --status-impl-bg: #dcfce7;          --status-impl-fg: #15803d;          --status-impl-dot: #22c55e;
+  --status-suspended-bg: #fee2e2;     --status-suspended-fg: #991b1b;     --status-suspended-dot: #ef4444;
+  --status-cornerstone-bg: #fef3c7;   --status-cornerstone-fg: #b45309;   --status-cornerstone-dot: #f59e0b;
+  --status-pending-bg:     #fef9c3;   --status-pending-fg:     #a16207;   --status-pending-dot:     #eab308;
+
+  /* Approval palette - matches .stat.approval-* and .badge.approval-* */
+  --approval-draft-bg: #f3f4f6;       --approval-draft-fg: #6b7280;       --approval-draft-dot: #9ca3af;
+  --approval-approved-bg: #d3f0ec;    --approval-approved-fg: #0f766e;    --approval-approved-dot: #0d9488;
+  --approval-suspended-bg: #fee2e2;   --approval-suspended-fg: #991b1b;   --approval-suspended-dot: #ef4444;
+
+  /* Score palette (Yoast-native colors) */
+  --score-gray-bg: #f3f4f6;           --score-gray-fg: #6b7280;
+  --score-red-bg: #fee2e2;            --score-red-fg: #991b1b;
+  --score-orange-bg: #fef3c7;         --score-orange-fg: #92400e;
+  --score-green-bg: #dcfce7;          --score-green-fg: #15803d;
+
+  /* Alert palette - lighter than badges (alerts are full-width strips) */
+  --alert-implemented-bg: #f0fdf4;    --alert-implemented-fg: #15803d;    --alert-implemented-border: #15803d;
+  --alert-suspended-bg: #fef2f2;      --alert-suspended-fg: #991b1b;      --alert-suspended-border: #991b1b;
+  --alert-pending-bg: #fffbeb;        --alert-pending-fg: #92400e;        --alert-pending-border: #ca8a04;
+  --alert-no-rec-bg: #eff6ff;         --alert-no-rec-fg: #1e40af;         --alert-no-rec-border: #2563eb;
+
+  /* AI Search section (Phase 6.3) */
+  --color-ai-bg: #ffffff;
+  --color-ai-border: #e5e5e5;
+  --color-ai-accent: #aa0000;
+  --color-ai-chip-bg: #f3f4f6;
+  --color-ai-card-bg: #ffffff;
+  --color-risk-bg: #fef2f2;
+  --color-risk-border: #fecaca;
+  --color-risk-text: #991b1b;
+
+  /* Spacing scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+
+  /* Font size scale */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 13px;
+  --font-size-lg: 15px;
+
+  /* Radius scale */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  /* Breakpoints used in this app (reference - CSS vars don't work inside @media)
+     - Desktop: >= 1200px (primary target)
+     - Tablet: 768-1199px (degraded - sidebar narrower)
+     - Mobile: < 768px (NOT SUPPORTED - viewport forces desktop) */
+
+  /* ===================================================================
+     Cluster Console (2026-06-08) - new "Google admin console" language.
+     Prefixed --cc-* so nothing here touches existing dashboard tokens.
+     Foundation only: used by the cluster console + future shell migration.
+     =================================================================== */
+  /* neutrals (90% of the surface) */
+  --cc-surface: #ffffff;
+  --cc-bg: #fafafa;
+  --cc-sunken: #f3f4f6;
+  --cc-border: #e5e5e5;
+  --cc-border-strong: #d4d4d4;
+  --cc-divider: #ededed;
+  --cc-text: #333333;          /* primary */
+  --cc-text-2: #5e5e5e;        /* secondary */
+  --cc-text-3: #6e6e6e;        /* tertiary - AA safe (replaced #888888) */
+  --cc-text-disabled: #b8b8b8;
+  --cc-icon-deco: #888888;     /* decorative icons only, >=18px */
+  /* the single action signature: brand red */
+  --cc-action: #aa0000;
+  --cc-action-hover: #8e0000;
+  --cc-action-active: #7a0000;
+  --cc-action-weak: #fbe9e9;
+  --cc-action-border: #f0cccc;
+  /* type tags */
+  --cc-umbrella-bg: #fbe9e9;   --cc-umbrella-fg: #8e0000;
+  --cc-single-bg: #f3f4f6;     --cc-single-fg: #4b5563;
+  /* severity (message system) - tint + side-bar + dark text, never white-on-saturated */
+  --cc-info-bg: #f6f7f8;       --cc-info-fg: #4b5563;   --cc-info-bar: #c2c6cc;
+  --cc-success-bg: #f2f8f4;    --cc-success-fg: #15803d; --cc-success-bar: #9bc7ac;
+  --cc-warning-bg: #fdf7ea;    --cc-warning-fg: #92400e; --cc-warning-bar: #ebd29a;
+  --cc-danger-bg: #fcf1f1;     --cc-danger-fg: #991b1b;  --cc-danger-bar: #e0a9a9;
+  --cc-progress-bg: #f3f4f6;   --cc-progress-fg: #374151; --cc-progress-bar: #aa0000;
+  /* metrics */
+  --cc-row-h: 44px;            /* touch target floor (Dov touch screen) */
+  --cc-radius: 10px;
+  /* B-1300 - 16px was already the rendered value of the console surface, through an
+     undeclared reference with a fallback. Declaring it changes nothing on screen and
+     removes a silent reference; the name enters the token catalogue with its consumer. */
+  --cc-radius-lg: 16px;
+  --cc-radius-sm: 6px;
+  --cc-radius-pill: 999px;
+  --cc-shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --cc-ease: 140ms cubic-bezier(.2,0,0,1);
+  --cc-font: 'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  /* S38-ONE (B-1309): named anonymous literals - values verbatim, one token per family role.
+     Same values across families stay separate tokens on purpose: RULED (in Dov's name,
+     26.08.2026) - the table exposes the near-duplication, and families stay unwelded. */
+  --cc-on-accent: #fff;            /* text on action-colored chips (asst-live, dlgp-live); the cc-btn--danger whites are older literals, still on the debt list */
+  --cc-shade-soft: rgba(0,0,0,.06);   /* elevation shadows, by strength */
+  --cc-shade-mid: rgba(0,0,0,.10);
+  --cc-shade-strong: rgba(0,0,0,.14);
+  --cc-shade-pop: rgba(0,0,0,.12);      /* B-1308: the floating-note shadow the screens carried inline */
+  --rec-replace-fg: #854f0b;           /* B-1308: the "improve" recommendation-tag amber - the one FAQ_TAGS color with no existing token */
+  /* B-1372 (S38-ONE): the shared sheet's own literal colors, named - values verbatim.
+     Same values across families stay separate tokens on purpose; RULED (in Dov's name,
+     26.08.2026) - the closeness stays visible in the table, the families stay apart. */
+  --cc-pressed: #ececec;               /* button pressed surface */
+  --cc-shade-04: rgba(0,0,0,0.04);     /* elevation/overlay alphas, by value - joins soft/mid/pop/strong */
+  --cc-shade-05: rgba(0,0,0,.05);
+  --cc-shade-08: rgba(0,0,0,.08);
+  --cc-shade-16: rgba(0,0,0,.16);
+  --cc-shade-18: rgba(0,0,0,0.18);
+  --cc-scrim: rgba(0,0,0,.32);         /* modal overlays */
+  --cc-scrim-light: rgba(0,0,0,.28);
+  --cc-scrim-heavy: rgba(0,0,0,.35);
+  --abtn-primary-hover: #880000;       /* legacy action-btn family */
+  --abtn-warn-bg: #fef3c7;
+  --abtn-warn-bg-hover: #fde68a;
+  --abtn-warn-border: #f0c060;
+  --alertbox-warn-bg: #fef3c7;         /* legacy alert boxes (.error, .glossary-alert) */
+  --alertbox-warn-border: #b45309;
+  --alertbox-err-bg: #fee2e2;
+  --intent-informational-fg: #1e40af;  /* intent classification badges and dots */
+  --intent-informational-bg: #dbeafe;
+  --intent-commercial-fg: #15803d;
+  --intent-commercial-bg: #dcfce7;
+  --intent-transactional-fg: #92400e;
+  --intent-transactional-bg: #fef3c7;
+  --intent-unknown: #9ca3af;
+  --intent-dot-fg: #4b5563;
+  --score-dot-red: #d32f2f;            /* score dots that had no token */
+  --score-dot-gray: #c0c0c0;
+  --stage-dot: #d1d5db;                /* stage/progress idle dots */
+  --kq-muted: #6B7280;                 /* keyword-quality secondary text */
+  --cit-fg: #0e7490;                   /* citation pill */
+  --cit-bg: #cffafe;
+  --kp-proposed-bg: #fffaf3;           /* proposed keyphrase card tint */
+  --entity-selected-bg: #fdf2f2;       /* entity list selection tint */
+  --pr-cat-fg: #1d4ed8;                /* pricing source tags */
+  --pr-cat-bg: #eef3fb;
+  --pr-cat-border: #1d4ed833;
+  --pr-ovr-fg: #a16207;
+  --pr-ovr-bg: #fef9c3;
+  --pr-ovr-border: #eab30855;
+  --sync-fg: #1d4ed8;                  /* CRM sync indicator */
+  --sync-fg-weak: rgba(29,78,216,0.20);
+  --sync-stale-bg: rgba(239,68,68,0.10);
+  --push-fg: #0C447C;                  /* push-progress banner (blue family) */
+  --push-fg-strong: #042C53;
+  --push-bg: #E6F1FB;
+  --push-border: #378ADD;
+  --push-accent: #185FA5;
+  --gen-spinner: #BA7517;              /* generation banner spinner amber. RULED (in Dov's name, 26.08.2026): the name and the two-spinner split (gen vs tool) stay as measured */
+
+  --apchip-ok-fg: #15803d;         /* wizard approval chip (Step7). RULED (in Dov's name, 26.08.2026): stays its own family - values sit near the success family and the closeness is visible in the token table; welding is a mockup-gated change */
+  --apchip-ok-bg: #dcfce7;
+  --apchip-ok-border: #15803d33;
+  --pchip-bg: #fbfcfe;             /* group-step selected-partner chip */
+  --cluster-fg: #4b5563;           /* entity-list cluster chip */
+  --cluster-none: #9ca3af;
+  --acc-none: #cbd5e1;             /* partners ACCESS-sync dots and tags (accessSync.js) - same state machine as the settings pdots, values diverge; RULED (in Dov's name, 26.08.2026): the two palettes stay as measured - unification is a visible change and happens only with an approved mockup */
+  --acc-upd-bg: #eef4ff;
+  --acc-upd-fg: #1e40af;
+  --nh-tag-bg: #eef3fb;            /* nethunt segment tag */
+  --nh-tag-fg: #1d4ed8;
+  --nh-tag-border: #1d4ed833;
+  --pdot-green: #16a34a;           /* settings permission-sync dots (accessSync.js) - same state machine as the partners acc dots, values diverge; RULED (in Dov's name, 26.08.2026): stays as measured - see the acc-none note */
+  --pdot-yellow: #eab308;
+  --pdot-red: #dc2626;
+  --pdot-none: #b8b8b8;
+  --set-warn-bg: #fef9e7;          /* settings permissions-overview pending-changes warning (.set-pk = picker row) */
+  --set-warn-fg: #a16207;
+  --set-warn-border: #eab30855;
+  --tool-spin: #9ca3af;            /* tool screens spinner */
+  --rme-white: #fff;               /* mail editor: paper, chips, popup, and the on-dark text of .rme-html.on. RULED (in Dov's name, 26.08.2026): the paper-white stays split from the chrome-white - the mail body is the email medium's surface, not the app's */
+  --rme-ink: #222;                 /* mail editor body text */
+  --rme-sig-ink: #444;             /* signature text */
+  --rme-dark-bg: #20222a;          /* HTML-source dark scheme */
+  --rme-dark-fg: #d7dae0;
+  --rme-dark-border: #3a3d47;
+  --rme-fld-bg: #eef2ff;           /* merge-field chip */
+  --rme-fld-fg: #3949ab;
+
+}
+
+.cc-icon { width: 20px; height: 20px; flex: 0 0 auto; fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+
+.rail { flex: 0 0 auto; width: 196px; border-inline-start: 1px solid var(--cc-border);
+  background: var(--cc-surface); padding: 8px 6px; display: flex; flex-direction: column;
+  gap: 2px; transition: width var(--cc-ease); }
+.rail.collapsed { width: 56px; }
+.rail-toggle { display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 9px;
+  border: 0; background: transparent; color: var(--cc-text-3); cursor: pointer;
+  font-family: var(--cc-font); font-size: 13px; border-radius: var(--cc-radius-sm); }
+.rail-toggle:hover { background: var(--cc-sunken); color: var(--cc-text); }
+.rail-group { font-size: 11px; color: var(--cc-text-3); padding: 10px 10px 4px; }
+.rail-item { position: relative; display: flex; align-items: center; gap: 10px; min-height: 44px;
+  padding: 0 9px; border-radius: var(--cc-radius-sm); color: var(--cc-text); cursor: pointer;
+  font-size: 14px; text-decoration: none; }
+.rail-item:hover { background: var(--cc-sunken); }
+.rail-item.active { background: var(--cc-action-weak); color: var(--cc-action); }
+.rail-item.active::before { content:""; position: absolute; inset-inline-start: 0; top: 8px;
+  bottom: 8px; width: 3px; background: var(--cc-action); border-radius: 2px; }
+.rail-item .cc-icon, .rail-toggle .cc-icon { flex: 0 0 auto; }
+.rail-spacer { margin-top: auto; }
+.rail-sep { border-top: 0.5px solid var(--cc-divider); margin: 6px 4px; }
+.rail-label { white-space: nowrap; overflow: hidden; }
+.rail.collapsed .rail-label, .rail.collapsed .rail-group { display: none; }
+.rail.collapsed .rail-item, .rail.collapsed .rail-toggle { justify-content: center; padding: 0; }
+.rail.collapsed .rail-item.active::before { top: 8px; bottom: 8px; }
+.rail-item--disabled { color: var(--cc-text-disabled); cursor: default; pointer-events: none; }
+.rail-item--disabled .cc-icon { color: var(--cc-text-disabled); }
+.cc-icon--sm { width: 16px; height: 16px; }
+
+/* ===== 🔴 חדש - טעון אישור דב והוספה לספרייה ===== */
+/* rail-fold: קבוצה מתקפלת בסרגל. אין לה מקבילה בספרייה היום. */
+.rail-toggle__hint { margin-inline-start: auto; color: var(--cc-text-3); }
+.rail-fold { display: flex; align-items: center; gap: 10px; min-height: 44px;
+  padding: 0 9px; border: 0; background: transparent; border-radius: var(--cc-radius-sm);
+  color: var(--cc-text); font-family: var(--cc-font); font-size: 14px; cursor: pointer;
+  width: 100%; text-align: start; }
+.rail-fold:hover { background: var(--cc-sunken); }
+.rail-fold__caret { margin-inline-start: auto; color: var(--cc-text-3);
+  transition: transform var(--cc-ease); }
+.rail-fold[aria-expanded="true"] .rail-fold__caret { transform: rotate(-90deg); }
+.rail-fold-body { display: flex; flex-direction: column; gap: 2px; }
+.rail-fold-body[hidden] { display: none; }
+.rail-item--nested { padding-inline-start: 22px; }
+.rail.collapsed .rail-fold, .rail.collapsed .rail-fold-body { display: none; }
+
+/* פיגום המוקאפ בלבד */
+body { margin: 0; background: var(--cc-bg); font-family: var(--cc-font); color: var(--cc-text); }
+.mk-wrap { display: flex; gap: 28px; padding: 24px; align-items: flex-start; flex-wrap: wrap; }
+.mk-col { display: flex; flex-direction: column; gap: 8px; }
+.mk-cap { font-size: 12px; color: var(--cc-text-3); }
+.mk-rail { align-self: flex-start; }
+.mk-note { max-width: 760px; padding: 24px; font-size: 14px; line-height: 1.7; }
+.mk-note h1 { font-size: 18px; margin: 0 0 12px; }
+.mk-note h2 { font-size: 14px; margin: 20px 0 6px; }
+.mk-note ul { margin: 6px 0; padding-inline-start: 20px; }
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></symbol>
+<symbol id="i-network" viewBox="0 0 24 24"><path d="M5.931 6.936l1.275 4.249m5.607 5.609l4.251 1.275"/><path d="M11.683 12.317l5.759 -5.759"/><path d="M5.5 5.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path d="M18.5 5.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path d="M18.5 18.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path d="M8.5 15.5m-4.5 0a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0"/></symbol>
+<symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="m7.5 4.27 9 5.15"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+<symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></symbol>
+<symbol id="i-chart-bar" viewBox="0 0 24 24"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+<symbol id="i-chart-pie" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+</svg>
+
+<div class="mk-wrap">
+
+  <div class="mk-col">
+    <div class="mk-cap">1 - מורחב, קבוצת אותנטיקו פתוחה</div>
+    <nav class="rail mk-rail" aria-label="ניווט ראשי">
+      <button class="rail-toggle" aria-label="כיווץ התפריט" title="כיווץ התפריט">
+        <svg class="cc-icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="cc-icon cc-icon--sm rail-toggle__hint" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+      </button>
+      <a class="rail-item active" href="#top" aria-current="page"><svg class="cc-icon"><use href="#i-package"></use></svg><span class="rail-label">הזמנות והצעות</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-users"></use></svg><span class="rail-label">שותפים</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-folder"></use></svg><span class="rail-label">סייר תיקיות</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-sparkles"></use></svg><span class="rail-label">יצירת תוכן</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-tag"></use></svg><span class="rail-label">תיוג הקבצים</span></a>
+
+      <div class="rail-sep"></div>
+      <button class="rail-fold" aria-expanded="true" aria-controls="fold-ak">
+        <span class="rail-label">אותנטיקו</span>
+        <svg class="cc-icon cc-icon--sm rail-fold__caret" aria-hidden="true"><use href="#i-chevron-left"></use></svg>
+      </button>
+      <div class="rail-fold-body" id="fold-ak">
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-list"></use></svg><span class="rail-label">GEO &amp; SEO</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-network"></use></svg><span class="rail-label">אשכולות</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-file-text"></use></svg><span class="rail-label">סוגי תוכן</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-refresh-cw"></use></svg><span class="rail-label">רענון מהאתר</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-chart-bar"></use></svg><span class="rail-label">Search Console</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-target"></use></svg><span class="rail-label">סיווג Intent</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-table"></use></svg><span class="rail-label">מלאי תוכן</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-activity"></use></svg><span class="rail-label">בריאות הפלטפורמה</span></a>
+        <a class="rail-item rail-item--nested" href="#top"><svg class="cc-icon"><use href="#i-cloud"></use></svg><span class="rail-label">בדיקת חיבור</span></a>
+      </div>
+
+      <div class="rail-spacer"></div>
+      <div class="rail-sep"></div>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-history"></use></svg><span class="rail-label">יומן</span></a>
+      <a class="rail-item rail-item--disabled" href="#top"><svg class="cc-icon"><use href="#i-chart-pie"></use></svg><span class="rail-label">דוחות</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-settings"></use></svg><span class="rail-label">הגדרות</span></a>
+    </nav>
+  </div>
+
+  <div class="mk-col">
+    <div class="mk-cap">2 - מורחב, קבוצת אותנטיקו מקופלת</div>
+    <nav class="rail mk-rail" aria-label="ניווט ראשי">
+      <button class="rail-toggle" aria-label="כיווץ התפריט" title="כיווץ התפריט">
+        <svg class="cc-icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="cc-icon cc-icon--sm rail-toggle__hint" aria-hidden="true"><use href="#i-chevron-right"></use></svg>
+      </button>
+      <a class="rail-item active" href="#top" aria-current="page"><svg class="cc-icon"><use href="#i-package"></use></svg><span class="rail-label">הזמנות והצעות</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-users"></use></svg><span class="rail-label">שותפים</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-folder"></use></svg><span class="rail-label">סייר תיקיות</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-sparkles"></use></svg><span class="rail-label">יצירת תוכן</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-tag"></use></svg><span class="rail-label">תיוג הקבצים</span></a>
+      <div class="rail-sep"></div>
+      <button class="rail-fold" aria-expanded="false" aria-controls="fold-ak2">
+        <span class="rail-label">אותנטיקו</span>
+        <svg class="cc-icon cc-icon--sm rail-fold__caret" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+      </button>
+      <div class="rail-fold-body" id="fold-ak2" hidden></div>
+      <div class="rail-spacer"></div>
+      <div class="rail-sep"></div>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-history"></use></svg><span class="rail-label">יומן</span></a>
+      <a class="rail-item rail-item--disabled" href="#top"><svg class="cc-icon"><use href="#i-chart-pie"></use></svg><span class="rail-label">דוחות</span></a>
+      <a class="rail-item" href="#top"><svg class="cc-icon"><use href="#i-settings"></use></svg><span class="rail-label">הגדרות</span></a>
+    </nav>
+  </div>
+
+  <div class="mk-col">
+    <div class="mk-cap">3 - מכווץ (הסמל נשאר כפי שהוא)</div>
+    <nav class="rail collapsed mk-rail" aria-label="ניווט ראשי">
+      <button class="rail-toggle" aria-label="הרחבת התפריט" title="הרחבת התפריט">
+        <svg class="cc-icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+      </button>
+      <a class="rail-item active" href="#top" aria-current="page" title="הזמנות והצעות"><svg class="cc-icon"><use href="#i-package"></use></svg><span class="rail-label">הזמנות והצעות</span></a>
+      <a class="rail-item" href="#top" title="שותפים"><svg class="cc-icon"><use href="#i-users"></use></svg><span class="rail-label">שותפים</span></a>
+      <a class="rail-item" href="#top" title="סייר תיקיות"><svg class="cc-icon"><use href="#i-folder"></use></svg><span class="rail-label">סייר תיקיות</span></a>
+      <a class="rail-item" href="#top" title="יצירת תוכן"><svg class="cc-icon"><use href="#i-sparkles"></use></svg><span class="rail-label">יצירת תוכן</span></a>
+      <a class="rail-item" href="#top" title="תיוג הקבצים"><svg class="cc-icon"><use href="#i-tag"></use></svg><span class="rail-label">תיוג הקבצים</span></a>
+      <div class="rail-sep"></div>
+      <a class="rail-item" href="#top" title="GEO &amp; SEO"><svg class="cc-icon"><use href="#i-list"></use></svg><span class="rail-label">GEO &amp; SEO</span></a>
+      <a class="rail-item" href="#top" title="אשכולות"><svg class="cc-icon"><use href="#i-network"></use></svg><span class="rail-label">אשכולות</span></a>
+      <a class="rail-item" href="#top" title="סוגי תוכן"><svg class="cc-icon"><use href="#i-file-text"></use></svg><span class="rail-label">סוגי תוכן</span></a>
+      <a class="rail-item" href="#top" title="רענון מהאתר"><svg class="cc-icon"><use href="#i-refresh-cw"></use></svg><span class="rail-label">רענון מהאתר</span></a>
+      <a class="rail-item" href="#top" title="Search Console"><svg class="cc-icon"><use href="#i-chart-bar"></use></svg><span class="rail-label">Search Console</span></a>
+      <a class="rail-item" href="#top" title="סיווג Intent"><svg class="cc-icon"><use href="#i-target"></use></svg><span class="rail-label">סיווג Intent</span></a>
+      <a class="rail-item" href="#top" title="מלאי תוכן"><svg class="cc-icon"><use href="#i-table"></use></svg><span class="rail-label">מלאי תוכן</span></a>
+      <a class="rail-item" href="#top" title="בריאות הפלטפורמה"><svg class="cc-icon"><use href="#i-activity"></use></svg><span class="rail-label">בריאות הפלטפורמה</span></a>
+      <a class="rail-item" href="#top" title="בדיקת חיבור"><svg class="cc-icon"><use href="#i-cloud"></use></svg><span class="rail-label">בדיקת חיבור</span></a>
+      <div class="rail-spacer"></div>
+      <div class="rail-sep"></div>
+      <a class="rail-item" href="#top" title="יומן"><svg class="cc-icon"><use href="#i-history"></use></svg><span class="rail-label">יומן</span></a>
+      <a class="rail-item rail-item--disabled" href="#top" title="דוחות"><svg class="cc-icon"><use href="#i-chart-pie"></use></svg><span class="rail-label">דוחות</span></a>
+      <a class="rail-item" href="#top" title="הגדרות"><svg class="cc-icon"><use href="#i-settings"></use></svg><span class="rail-label">הגדרות</span></a>
+    </nav>
+  </div>
+
+  <div class="mk-note">
+    <h1>מה משתנה, ומה טעון אישור</h1>
+    <p><b>עודכן אחרי הערות דב:</b> נוסף חיווי כיווץ לצד סמל התפריט (שברון, בלי צורה חדשה) · הוסר הגלובוס מכותרת הקבוצה · והוסר הגובה הקבוע שחתך את תוכן הקבוצה בתצוגה.</p>
+
+    <h2>מה יורד</h2>
+    <ul>
+      <li>שלוש כותרות הקבוצות - ניהול · כלים · מעקב.</li>
+      <li>הטקסט "הרחבה או כיווץ" לצד פקד הכיווץ. הפקד נשאר, והסמל שלו לא משתנה.</li>
+    </ul>
+
+    <h2>מה נכנס</h2>
+    <ul>
+      <li><b>קבוצת "אותנטיקו" מתקפלת</b> - כל מה שנוגע לאתר ולהמלצות, נפתח ונסגר בלחיצה.</li>
+      <li>הבנים מוזחים פנימה, כמו בדוגמה שמסרת.</li>
+    </ul>
+
+    <h2>אלמנט אחד באמת חדש - וזה מה שטעון אישורך</h2>
+    <p><b>הקבוצה המתקפלת</b> אינה קיימת בספרייה, ולכן היא תוספת אלמנט. <b>ופקד הכיווץ קיים בקוד אך הספרייה אינה מציירת אותו</b> - ולכן נכנס בלי צורה חדשה. אלה שני הפריטים שנפתחו על הסרגל.</p>
+
+    <h2>מה שלא נגעתי בו</h2>
+    <ul>
+      <li>הסמלים - נשארים כפי שהם, ואף סמל חדש לא נדרש.</li>
+      <li>מצב מכווץ - הפריטים נפרשים שטוח, כפי שהם היום.</li>
+      <li>בריאות הפלטפורמה - העדכון שדיברנו עליו הוא פריט נפרד, ולא כאן.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

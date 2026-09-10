@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S32f - אנטומיית הכרטיס: IT/BK עם התקציב + כרטיס CIT</title>
+<style>
+/* 1:1 מול spa/src/global.css + ספריית העיצוב. mk- = פיגום בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d;
+  --cc-warning-fg:#92400e;
+  --status-impl-dot:#22c55e;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:28px;line-height:1.5}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:0 11px;font-size:13px;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--primary{background:var(--cc-action);border-color:var(--cc-action);color:#fff;font-weight:600}
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider)}
+.tab{border:0;background:transparent;font:inherit;font-size:13px;color:var(--cc-text-2);padding:7px 12px;cursor:pointer;border-bottom:2px solid transparent}
+.tab.active{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:700}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}
+.nh-diff{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}
+
+/* אנטומיה - מסגרת כרטיס סכמטית */
+.card{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius);background:var(--cc-surface);
+  max-width:760px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.card__head{padding:14px 16px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken)}
+.card__title{font-size:15.5px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.zone{border:1.5px dashed var(--cc-action-border);border-radius:var(--cc-radius-sm);margin:10px 14px;padding:10px 12px;position:relative}
+.zone--exist{border-color:var(--cc-border-strong)}
+.zone__tag{position:absolute;top:-9px;inset-inline-start:12px;background:var(--cc-surface);padding:0 8px;
+  font-size:11px;font-weight:700;color:var(--cc-action)}
+.zone--exist .zone__tag{color:var(--cc-text-3)}
+.zone__body{font-size:12.5px;color:var(--cc-text-2);line-height:1.7}
+.card__foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid var(--cc-border);background:var(--cc-sunken)}
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:20px;max-width:900px}
+.mk-cols{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
+.mk-col{flex:1;min-width:380px}
+.mk-col>h2{font-size:15.5px;font-weight:700;margin-bottom:10px}
+.mk-note{font-size:12px;color:var(--cc-text-3);margin-top:10px;line-height:1.6;max-width:760px}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">אנטומיית הכרטיס - איפה התקציב יושב</div>
+<div class="mk-sub">
+  מסגרת מקווקוות אדומה = אזור חדש של המנוע · מסגרת אפורה = קיים היום ואינו משתנה. הכל בתוך הכרטיס המאוחד
+  של S29 - אפס מסכים חדשים, כפתור שמירה אחד.
+</div>
+
+<div class="mk-cols">
+  <!-- ============ IT/BK ============ -->
+  <div class="mk-col">
+    <h2>כרטיס הזמנה/הצעה (IT/BK)</h2>
+    <div class="card">
+      <div class="card__head">
+        <div class="card__title">IT-1067 · משפחת בן ארי
+          <span class="cc-chip">הצעה</span>
+          <span class="cc-chip nh-ok">CRM מקושר</span>
+        </div>
+        <div class="tabs" style="margin-top:10px">
+          <button class="tab active">הכרטיס</button>
+          <button class="tab">גרסאות ההצעה <span class="cc-chip" style="font-size:10px">חדש</span></button>
+          <button class="tab">מיילים</button>
+        </div>
+      </div>
+
+      <div class="zone zone--exist"><span class="zone__tag">קיים - ראש הכרטיס</span>
+        <div class="zone__body">פרטי הטיול · יעדים (נגזר, אנגלית) · סה"כ לקריאה בלבד (הכלל ההיברידי: ראי CRM ← סכום מקטעים)</div>
+      </div>
+
+      <div class="zone"><span class="zone__tag">חדש - תמחור בראש</span>
+        <div class="zone__body">הרכב: 6 מבוגרים · ילדה 3-6 · FOC 1 (חיווי הפרש מול Pax total) ·
+        מטבע ההצעה + שערים נעולים · לוח תשלומים מול <b>המטייל</b> (מזין את הצעת המחיר ללקוח הסופי - לא B2B): מקדמה במעמד ההזמנה - % או סכום, דינמי · תשלום אחרון X ימים לפני יציאה - דינמי (40/30/14)</div>
+      </div>
+
+      <div class="zone zone--exist"><span class="zone__tag">קיים - טאבי המקטעים (טאב-תמיד)</span>
+        <div class="zone__body">מקטע 1 · Georgia · שותף · מדריך · תאריכים · COGS / שולם / יתרה
+          <div class="zone" style="margin:8px 0 2px"><span class="zone__tag">חדש - תקציב המקטע</span>
+            <div class="zone__body">גישה (FLAT / קטלוג) · שורות עלות או נטו · צוות (TL/LG/נהג) · מטבע המקטע + חיץ ·
+            <b>COGS הופך לנגזרת של השורות</b> (supplier_cogs_net)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zone"><span class="zone__tag">חדש - תמחור ההזמנה (על המצרף, פעם אחת)</span>
+        <div class="zone__body">מודל המרווח · עמלות (בנק · סליקה · סוכן) · מחיר ורשת · קבוצות מתומחרות ·
+        חלון החישוב · תקציב מלא + ייצוא לתיקיית המסמך ·
+        <b>הקשר B2B/B2C</b> (דב 27.07): B2B (DMC↔שותף) ← אחסון בתיקיית השותף · B2C (מוכר↔מטייל) ← אחסון בתיקיית מוכר הטיול; בהקשר B2C מוצג מחיר ה-B2B כקלט העלות (ניסוח סופי - אימות בפתיחת S34)</div>
+      </div>
+
+      <div class="card__foot">
+        <button class="cc-btn">ביטול שינויים</button>
+        <button class="cc-btn cc-btn--primary">שמירה</button>
+      </div>
+    </div>
+    <div class="mk-note">שמירה אחת + dirty מאוחד מכסים גם את התקציב. טאב הגרסאות חדש, לצד הקיימים.</div>
+  </div>
+
+  <!-- ============ CIT ============ -->
+  <div class="mk-col">
+    <h2>כרטיס CIT (קטלוג) - מעוצב לראשונה</h2>
+    <div class="card">
+      <div class="card__head">
+        <div class="card__title">CIT-2031 · Georgia Classic 8D
+          <span class="cc-chip">קטלוג · 2026</span>
+        </div>
+        <div class="tabs" style="margin-top:10px">
+          <button class="tab active">התוכנית</button>
+          <button class="tab">תקציב הבסיס</button>
+        </div>
+      </div>
+
+      <div class="zone zone--exist"><span class="zone__tag">קיים - זהות הקטלוג (S31c)</span>
+        <div class="zone__body">שנת קטלוג (ניתנת לעריכה) · יעד קטלוגי · שם התוכנית ·
+        קישור למסמך ב-Core Itineraries + תצוגה מקדימה. <b>אין</b>: לקוח, קבוצה, תאריכי עסקה, סטטוס תשלום, ראי CRM</div>
+      </div>
+
+      <div class="zone"><span class="zone__tag">חדש - תקציב הבסיס השנתי</span>
+        <div class="zone__body">אותו אזור תקציב בדיוק (גישה · שורות מקטלוג · צוות) על הרכב ייחוס
+        (למשל 2 / 4 / 6 / 8 משלמים) · מודל מרווח + עמלות · <b>רשת מחירי הבסיס</b> -
+        זו האינדיקציה שמזינה את דפי החבילות באתר (עם מחירים, D-14)</div>
+      </div>
+
+      <div class="zone"><span class="zone__tag">חדש - פעולות</span>
+        <div class="zone__body" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button class="cc-btn cc-btn--primary">יצירת IT מהתוכנית</button>
+          <button class="cc-btn" disabled title="מחזור העדכון השנתי - הכרעה פתוחה">גלגול לשנה הבאה</button>
+          <span class="cc-chip nh-diff">CIT לעולם אינו הופך להזמנה - IT נולד ממנו כעותק</span>
+        </div>
+      </div>
+
+      <div class="card__foot">
+        <button class="cc-btn">ביטול שינויים</button>
+        <button class="cc-btn cc-btn--primary">שמירה</button>
+      </div>
+    </div>
+    <div class="mk-note">
+      "יצירת IT מהתוכנית" מעתיקה את תקציב הבסיס להזמנה חדשה - וכל שורה משוחררת להתאמה אישית מלאה
+      (מלונות, ימים, שירותים). "גלגול לשנה הבאה" מושבת במקומו - מחזור העדכון השנתי הוא הכרעה פתוחה
+      (מי מגלגל, מה קורה להזמנות פתוחות, האם הזמנה נצמדת לגרסת בסיס).
+    </div>
+  </div>
+</div>
+
+<div class="mk-note" style="margin-top:16px">מוקאפ בלבד · S32f · 2026-07-27 · נספח: mockups/00-DESIGN-LIBRARY.html · משלים את cd-s32f-pricing-flow-e2e.html ו-cd-s32f-calc-window-dialog.html.</div>
+
+</body>
+</html>

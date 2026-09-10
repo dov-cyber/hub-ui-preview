@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S35-CD - בולק בשורש הסייר (B-465)</title>
+<style>
+/* 1:1 מול spa/src/global.css + FoldersScreen.svelte החי. mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-icon-deco:#888888;
+  --cc-action:#aa0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  --cc-ease:140ms cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+bdi{unicode-bidi:isolate}
+
+/* ---- יסודות הספרייה (1:1 global.css) ---- */
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-icon{width:20px;height:20px;flex:0 0 auto;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cc-icon--sm{width:16px;height:16px}
+.cc-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--cc-row-h);height:var(--cc-row-h);padding:0;
+  border:1px solid transparent;border-radius:var(--cc-radius-sm);background:transparent;color:var(--cc-text-2);cursor:pointer;transition:background var(--cc-ease)}
+.cc-icon-btn:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-icon-btn--sm{width:34px;height:34px}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px}
+
+/* סייר: פירורי דרך + פס הכותרת (1:1 global.css) */
+.cc-crumbs{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--cc-text-2);flex-wrap:wrap;min-height:var(--cc-row-h)}
+.cc-crumbs a{color:var(--cc-text-2);cursor:pointer;text-decoration:none;padding:2px 4px;border-radius:4px}
+.cc-crumbs a:hover{color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-crumbs b{color:var(--cc-text);font-weight:600}
+.cc-crumbs .sep{color:var(--cc-text-3);font-size:12px}
+.cc-explorer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--cc-divider)}
+.cc-spacer{margin-inline-start:auto}
+
+/* כרטיס תיקייה (1:1 global.css: cc-card + cc-card--folder) */
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:16px}  /* רוחב העמודות כפי שמקודד בסייר החי */
+.cc-card{position:relative;background:var(--cc-surface);border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius);padding:14px 16px;cursor:pointer;min-height:104px;
+  display:flex;flex-direction:column;gap:10px;transition:border-color var(--cc-ease),box-shadow var(--cc-ease)}
+.cc-card:hover{border-color:var(--cc-border-strong);box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.cc-card--folder{min-height:96px}
+.cc-card--folder .ficon{width:34px;height:34px;color:var(--cc-icon-deco)}
+.cc-card-name{font-size:15px;font-weight:600;color:var(--cc-text);flex:1 1 auto;word-break:break-word;line-height:1.4}
+.cc-card-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:auto}
+.cc-menu-wrap{position:relative}
+/* תפריט ⋮ בפינה העליונה - 1:1 FoldersScreen (S30); מוגדר אחרי cc-menu-wrap כמו בסדר הטעינה החי (סגנון רכיב אחרי global) */
+.cc-card-menu{position:absolute;top:4px;inset-inline-end:4px}
+.cc-menu{position:absolute;inset-inline-end:0;top:calc(var(--cc-row-h) + 2px);min-width:160px;background:var(--cc-surface);
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);box-shadow:var(--cc-shadow);z-index:20;overflow:hidden}
+.cc-menu button{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:0 14px;border:0;background:transparent;
+  font-family:var(--cc-font);font-size:14px;color:var(--cc-text);cursor:pointer;text-align:start}
+.cc-menu button:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+
+/* פרימיטיבי הבחירה של הסייר עצמו - 1:1 FoldersScreen (B-428ב) */
+.selbox{width:16px;height:16px;accent-color:var(--cc-action);cursor:pointer}
+.bulkbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);
+  background:var(--cc-surface);padding:8px 12px;margin-bottom:12px;font-size:13px}
+
+/* B-465 - התוספת היחידה למלאי: ריבוע הסימון בפינת הכרטיס (מוצהר בהערה 2) */
+.cc-card-sel{position:absolute;top:8px;inset-inline-start:8px}
+
+/* ---- פיגום המוקאפ ---- */
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:14px;max-width:980px}
+.mk-note-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--cc-surface);color:var(--cc-action);border:1.5px solid var(--cc-action);font-size:11px;font-weight:700;flex:0 0 auto;vertical-align:middle;cursor:default}
+.mk-notes{max-width:980px;margin-top:26px;font-size:13px;line-height:1.7}
+.mk-notes h2{font-size:15.5px;margin-bottom:8px}
+.mk-notes li{margin-bottom:8px;list-style:none}
+.mk-decide{max-width:980px;margin-top:22px;background:var(--cc-warning-bg);border:1px solid var(--cc-warning-fg);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-decide h2{font-size:15px;color:var(--cc-warning-fg);margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">S35-CD - B-465 - פעולות בולק ברמות הכרטיסים של סייר התיקיות</div>
+<div class="mk-sub">
+  <b>איפה זה חי</b>: סרגל הצד ← סייר תיקיות. ברמת השורש (Partner Workspaces - אזורי המדינות) וברמת המדינה (תיקיות השותפים) הסייר מציג <b>כרטיסי תיקייה</b> - אייקון תיקייה גדול, שם, ותפריט ⋮ בפינה. זה מראה אחר ממסך השותפים - וכאן הכל מצויר 1:1 מהסייר עצמו.
+  <b>מה חסר היום</b>: פס הבחירה של הסייר (שכבר קיים בו) מופיע רק בתצוגת הטבלה שבתוך תיקייה; ברמות הכרטיסים אין סימון ואין פס.
+  <b>מה B-465 מוסיף</b>: ריבוע סימון בפינת כל כרטיס + אותו פס בחירה קיים, מעל רשת הכרטיסים. שום רכיב חדש לא הומצא.
+</div>
+
+<div style="max-width:1040px">
+
+  <!-- פס הכותרת של הסייר - 1:1 מהחי (בשורש: העלאה ותיקייה חדשה מושבתים, כמו היום) -->
+  <div class="cc-explorer-bar">
+    <nav class="cc-crumbs" aria-label="נתיב"><b><bdi>Partner Workspaces</bdi></b></nav>
+    <button class="cc-btn cc-btn--sm cc-spacer" style="flex:0 0 auto" disabled title="יש לפתוח תיקיית יעד לפני העלאה">
+      <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>העלאת קבצים</button>
+    <button class="cc-btn cc-btn--sm" style="flex:0 0 auto" disabled title="אזורים נוצרים אוטומטית לפי מדינת השותף">
+      <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6M9 13h6"/></svg>תיקייה חדשה</button>
+  </div>
+
+  <!-- פס הבחירה - ה-bulkbar הקיים של הסייר, כלשונו (נוסח המונה, סדר הכפתורים, cc-btn--sm) -->
+  <div class="bulkbar">
+    <span>2 פריטים נבחרו</span>
+    <button class="cc-btn cc-btn--sm">בחירת כל המוצגים</button>
+    <button class="cc-btn cc-btn--sm" disabled title="ברמת השורש אין העברה - האזורים נגזרים ממדינת השותף. ברמת המדינה הכפתור פעיל (העברת תיקיית שותף לאזור אחר, משתקף ב-Drive)">
+      <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>העברה...</button>
+    <button class="cc-btn cc-btn--sm">ניקוי בחירה</button>
+    <span class="mk-note-dot" style="margin-inline-start:auto">1</span>
+  </div>
+
+  <!-- רשת כרטיסי התיקייה - 1:1 מהסייר החי: אייקון 34px · שם · ⋮ בפינה. התוספת: selbox בפינה הנגדית -->
+  <div class="cc-grid">
+    <div class="cc-card cc-card--folder" role="button" tabindex="0">
+      <input type="checkbox" class="selbox cc-card-sel" checked aria-label="בחירת Jordan">
+      <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      <div class="cc-card-name" style="font-size:14px"><bdi>Jordan</bdi></div>
+      <span class="cc-menu-wrap cc-card-menu">
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+      </span>
+      <span class="mk-note-dot" style="position:absolute;bottom:8px;inset-inline-end:8px">2</span>
+    </div>
+    <div class="cc-card cc-card--folder" role="button" tabindex="0">
+      <input type="checkbox" class="selbox cc-card-sel" checked aria-label="בחירת Uzbekistan">
+      <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      <div class="cc-card-name" style="font-size:14px"><bdi>Uzbekistan</bdi></div>
+      <span class="cc-menu-wrap cc-card-menu">
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+      </span>
+    </div>
+    <div class="cc-card cc-card--folder" role="button" tabindex="0">
+      <input type="checkbox" class="selbox cc-card-sel" aria-label="בחירת Georgia">
+      <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      <div class="cc-card-name" style="font-size:14px"><bdi>Georgia</bdi></div>
+      <span class="cc-menu-wrap cc-card-menu">
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+      </span>
+    </div>
+    <div class="cc-card cc-card--folder" role="button" tabindex="0">
+      <input type="checkbox" class="selbox cc-card-sel" aria-label="בחירת Mexico">
+      <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      <div class="cc-card-name" style="font-size:14px"><bdi>Mexico</bdi></div>
+      <span class="cc-menu-wrap cc-card-menu">
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+      </span>
+    </div>
+    <div class="cc-card cc-card--folder" role="button" tabindex="0" style="opacity:.9">
+      <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      <div class="cc-card-name" style="font-size:14px">הזמנות ללא שיוך</div>
+      <div class="cc-card-chips"><span class="cc-chip">הזמנות ללא שיוך</span></div>
+      <span class="mk-note-dot" style="position:absolute;bottom:8px;inset-inline-end:8px">3</span>
+    </div>
+  </div>
+</div>
+
+<div class="mk-notes">
+  <h2>הערות</h2>
+  <li><span class="mk-note-dot">1</span> <b>הפס אינו חדש</b> - זה ה-bulkbar שכבר קיים בסייר (בתצוגת הטבלה שבתוך תיקייה), כלשונו: מונה כטקסט בנוסח החי ("פריט אחד נבחר" / "N פריטים נבחרו"), "בחירת כל המוצגים" (הופך ל"ביטול בחירת הכל" כשהכל מסומן), "העברה...", "ניקוי בחירה" אחרון, כל הכפתורים cc-btn cc-btn--sm. B-465 רק מציג אותו גם מעל רשת הכרטיסים. "העברה..." ברמת השורש מושבת עם הסבר ב-title (אזורים נגזרים ממדינת השותף); ברמת המדינה - פעיל.</li>
+  <li><span class="mk-note-dot">2</span> <b>התוספת היחידה למלאי</b>: ריבוע הסימון (selbox הקיים, 16px) בפינה העליונה ההתחלתית של הכרטיס - הפינה הנגדית לתפריט ⋮ (שיושב היום ב-top:4px בפינת הסיום). לחיצה על הריבוע לא פותחת את התיקייה. הכרטיס עצמו ללא שינוי: אייקון תיקייה 34px (צבע האייקון הדקורטיבי), שם בגופן 14, תפריט ⋮ עם שלוש הפעולות הקיימות (שינוי שם, העברה..., פתיחה ב-Drive). הבנייה: S35-BUILD-B.</li>
+  <li><span class="mk-note-dot">3</span> כרטיס "הזמנות ללא שיוך" הוא מיוחד (special) - בחי אין לו תפריט ⋮, ולכן גם לא ריבוע סימון: הוא לא משתתף בבולק.</li>
+</div>
+
+<div class="mk-decide">
+  <h2>הוכרע (דב, 29.07.2026)</h2>
+  <b>אין "עדכון שמות" בבולק</b> - שינוי שם הוא פעולה פרטנית בלבד (בתפריט ⋮ של הכרטיס/השורה). הפעולות בפס ברמות הכרטיסים הן <b>בדיוק הקיימות</b>: בחירת כל המוצגים, העברה..., ניקוי בחירה. שום פעולה חדשה לא נוספת.
+</div>
+</body>
+</html>

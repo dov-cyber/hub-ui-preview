@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S41-SCREEN - שורת התוצאה בחיפוש: טבלת סייר מול טבלת תוצאות</title>
+<style>
+/* 1:1 מול spa/src/global.css + FoldersScreen.svelte החי (הערכים אומתו מול הדיסק ב-11.08). mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-icon-deco:#888888;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --status-not-impl-bg:#dbeafe; --status-not-impl-fg:#1e40af;
+  --status-impl-bg:#dcfce7; --status-impl-fg:#15803d;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  --cc-ease:140ms cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+bdi{unicode-bidi:isolate}
+
+/* ---- יסודות הספרייה (1:1 global.css) ---- */
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--danger{background:var(--cc-action);border-color:var(--cc-action);color:#fff}
+.cc-btn--danger:hover{background:var(--cc-action-hover);border-color:var(--cc-action-hover);color:#fff}
+.cc-btn--danger:disabled{background:var(--cc-action);border-color:var(--cc-action);color:#fff;opacity:.5}
+.cc-icon{width:20px;height:20px;flex:0 0 auto;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cc-icon--sm{width:16px;height:16px}
+.cc-icon--lg{width:24px;height:24px}
+.cc-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--cc-row-h);height:var(--cc-row-h);padding:0;
+  border:1px solid transparent;border-radius:var(--cc-radius-sm);background:transparent;color:var(--cc-text-2);cursor:pointer;transition:background var(--cc-ease)}
+.cc-icon-btn:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-icon-btn--sm{width:34px;height:34px}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px}
+.cc-pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;padding:3px 9px;border-radius:var(--cc-radius-pill);direction:ltr}
+.cc-pill--it{background:var(--status-not-impl-bg);color:var(--status-not-impl-fg)}
+.cc-pill--bk{background:var(--status-impl-bg);color:var(--status-impl-fg)}
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-family:var(--cc-font);font-size:15px;color:var(--cc-text);
+  background:var(--cc-surface);border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm)}
+.cc-searchwrap{position:relative;flex:1 1 220px;min-width:180px}
+.cc-searchwrap > .cc-icon{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);color:var(--cc-text-3);pointer-events:none}
+.cc-searchwrap .cc-input{padding-inline-start:36px;padding-inline-end:34px}
+.cc-searchclear{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:0;border-radius:50%;
+  background:var(--cc-sunken);color:var(--cc-text-3);font-size:13px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.cc-msg--danger{background:var(--cc-danger-bg);color:var(--cc-danger-fg);border-color:var(--cc-danger-bar)}
+.cc-msg--success{background:var(--cc-success-bg);color:var(--cc-success-fg);border-color:var(--cc-success-bar)}
+.cc-empty{text-align:center;padding:48px 24px;color:var(--cc-text-3)}
+.cc-empty .cc-icon{width:40px;height:40px;color:var(--cc-icon-deco);margin-bottom:12px}
+.cc-empty h4{font-size:16px;font-weight:600;color:var(--cc-text-2);margin:0 0 6px}
+.cc-empty p{font-size:14px;margin:0 0 16px}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-spacer{margin-inline-start:auto}
+
+/* סייר: פירורי דרך + פס הכותרת (1:1 global.css) */
+.cc-crumbs{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--cc-text-2);flex-wrap:wrap;min-height:var(--cc-row-h)}
+.cc-crumbs a{color:var(--cc-text-2);cursor:pointer;text-decoration:none;padding:2px 4px;border-radius:4px}
+.cc-crumbs b{color:var(--cc-text);font-weight:600}
+.cc-crumbs .sep{color:var(--cc-text-3);font-size:12px}
+.cc-explorer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--cc-divider)}
+
+/* כרטיס תיקייה (1:1 global.css) */
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:16px}
+.cc-card{position:relative;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);
+  padding:14px 16px;cursor:pointer;min-height:104px;display:flex;flex-direction:column;gap:10px;
+  transition:border-color var(--cc-ease),box-shadow var(--cc-ease)}
+.cc-card:hover{border-color:var(--cc-border-strong);box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.cc-card--folder{min-height:96px}
+.cc-card--folder .ficon{width:34px;height:34px;color:var(--cc-icon-deco)}
+.cc-card-name{font-size:15px;font-weight:600;color:var(--cc-text);flex:1 1 auto;word-break:break-word;line-height:1.4}
+
+/* טבלת הנתונים (1:1 global.css) */
+.cc-table-wrap{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);overflow:visible}
+.cc-table{width:100%;border-collapse:collapse;font-size:14px}
+.cc-table th{text-align:start;font-weight:600;color:var(--cc-text-3);font-size:11.5px;letter-spacing:.2px;
+  border-bottom:1px solid var(--cc-border-strong);padding:10px 12px;white-space:nowrap;background:var(--cc-surface)}
+.cc-table td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);color:var(--cc-text);vertical-align:middle}
+.cc-table tr:last-child td{border-bottom:0}
+.cc-table .ltr{direction:ltr;text-align:right;font-size:13px;color:var(--cc-text-2)}
+.cc-table .primary{font-weight:500;color:var(--cc-text)}
+.cc-table .sub{font-size:12px;color:var(--cc-text-3)}
+.cell-actions{display:flex;align-items:center;gap:6px}
+
+/* תפריט השורה (1:1 global.css) */
+.cc-menu-wrap{position:relative}
+/* 🔴 מוגדר אחרי cc-menu-wrap במכוון, כמו סדר הטעינה החי (סגנון רכיב אחרי global).
+   בגרסה 2 הכלל ישב לפניו, position:relative דרס אותו, וה-⋮ נפל לתחתית הכרטיס. */
+.cc-card-menu{position:absolute;top:7px;inset-inline-end:6px}
+.cc-menu{position:absolute;inset-inline-end:0;top:calc(var(--cc-row-h) + 2px);min-width:170px;background:var(--cc-surface);
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);box-shadow:var(--cc-shadow);z-index:20;overflow:hidden}
+.cc-menu button{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:0 14px;border:0;background:transparent;
+  font-family:var(--cc-font);font-size:14px;color:var(--cc-text);cursor:pointer;text-align:start}
+.cc-menu button:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-menu button.cc-menu--danger{color:var(--cc-danger-fg)}
+.cc-menu button.cc-menu--danger:hover{background:var(--cc-danger-bg)}
+.cc-menu .cc-menu-sep{height:1px;background:var(--cc-divider);margin:4px 0}
+
+/* פרימיטיבי הבחירה (1:1 FoldersScreen, B-428ב) */
+.selbox{width:16px;height:16px;accent-color:var(--cc-action);cursor:pointer}
+.bulkbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);
+  background:var(--cc-surface);padding:8px 12px;margin-bottom:12px;font-size:13px}
+
+/* דיאלוג (1:1 global.css) */
+.app-dialog-ov{position:relative;background:rgba(0,0,0,.32);border-radius:var(--cc-radius);padding:26px;display:flex;justify-content:center}
+.app-dialog{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.12);
+  padding:18px 20px;width:330px;max-width:92%;font-family:var(--cc-font)}
+.app-dialog__title{font-size:16px;font-weight:600;color:var(--cc-text);margin-bottom:6px}
+.app-dialog__actions{display:flex;gap:10px;margin-top:16px}
+
+/* טולטיפ הספרייה (1:1 global.css; במוקאפ מוצג פתוח, ולכן position ו-opacity שונים במכוון) */
+.cc-tip{position:absolute;z-index:30;background:var(--cc-surface);color:var(--cc-text);font-family:var(--cc-font);font-size:13px;
+  line-height:1.5;padding:8px 12px;max-width:240px;border:.5px solid var(--cc-border);border-right:3px solid var(--cc-action);
+  border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.10)}
+
+/* ================= שתי התוספות למלאי (מסומנות, ולא יותר) ================= */
+/* תוספת 1 - שורת הנתיב בתוצאת חיפוש (הערה 1) */
+.cc-respath{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:12px;color:var(--cc-text-3);margin-top:2px}
+.cc-respath .sep{color:var(--cc-text-3);font-size:11px}
+.cc-respath a{color:var(--cc-text-3);text-decoration:none;border-radius:4px;padding:1px 3px;cursor:pointer}
+.cc-respath a:hover{color:var(--cc-action);background:var(--cc-action-weak)}
+/* תוספת 2 - רצועת הפקדים בראש כרטיס התיקייה (B-1110, הערה 9).
+   🔴 השינוי המהותי: הכרטיס שומר רצועה בראשו לשני הפקדים, והאייקון והשם מתחילים מתחתיה.
+   כך אף פקד אינו עולה על האייקון. אין שינוי במבנה ה-HTML - רק ריפוד עליון וגובה אחיד. */
+.cc-card--folder.has-strip{padding-top:46px}   /* רק בכרטיס שיש בו פקדים */
+.cc-card-sel{position:absolute;top:7px;inset-inline-start:6px;z-index:2;width:34px;height:34px;display:inline-flex;
+  align-items:center;justify-content:center;line-height:0;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);
+  background:var(--cc-surface);cursor:pointer;transition:border-color var(--cc-ease),background var(--cc-ease)}
+.cc-card-sel:hover{border-color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-card-sel.is-on{border-color:var(--cc-action);background:var(--cc-action-weak)}
+/* הצורה הישנה, לתצוגת ההשוואה בלבד - לא לבנייה */
+.mk-before.cc-card--folder{padding-top:14px}
+.mk-old-sel{position:absolute;top:8px;inset-inline-start:8px}
+
+/* ---- פיגום המוקאפ ---- */
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:14px;max-width:1040px}
+.mk-sec{max-width:1040px;margin-top:30px}
+.mk-sec > h2{font-size:15.5px;margin-bottom:4px}
+.mk-sec > .mk-lead{font-size:13px;color:var(--cc-text-2);margin-bottom:12px}
+.mk-note-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--cc-surface);color:var(--cc-action);border:1.5px solid var(--cc-action);font-size:11px;font-weight:700;flex:0 0 auto;vertical-align:middle;cursor:default}
+.mk-notes{max-width:1040px;margin-top:30px;font-size:13px;line-height:1.7}
+.mk-notes h2{font-size:15.5px;margin-bottom:8px}
+.mk-notes li{margin-bottom:9px;list-style:none}
+.mk-decide{max-width:1040px;margin-top:22px;background:var(--cc-warning-bg);border:1px solid var(--cc-warning-fg);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-decide h2{font-size:15px;color:var(--cc-warning-fg);margin-bottom:6px}
+.mk-block{max-width:1040px;margin-top:22px;background:var(--cc-danger-bg);border:1px solid var(--cc-danger-bar);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-block h2{font-size:15px;color:var(--cc-danger-fg);margin-bottom:6px}
+.mk-open{max-width:1040px;margin-top:22px;background:var(--cc-info-bg);border:1px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-open h2{font-size:15px;color:var(--cc-info-fg);margin-bottom:6px}
+.mk-frame{border:1px dashed var(--cc-border-strong);border-radius:var(--cc-radius);padding:16px;background:var(--cc-surface)}
+.mk-ab{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mk-ab h3{font-size:13px;font-weight:600;margin-bottom:8px}
+
+/* ===== נמשך מילה במילה מ-00-DESIGN-LIBRARY.html (12.08) - המחלקות שהמוקאפ הזה
+   הוא הראשון שמשתמש בהן, ולכן לא היו בגוש שהועתק ממוקאפ 11.08. ===== */
+:root{ --cc-progress-bg:#f3f4f6; --cc-progress-fg:#374151; --cc-progress-bar:#aa0000; }
+.cc-btn--primary{background:var(--cc-action);border-color:var(--cc-action);color:#fff;font-weight:600}
+.cc-btn--primary:hover{background:var(--cc-action-hover)}
+.cc-msg--progress{background:var(--cc-progress-bg);color:var(--cc-progress-fg);border-color:var(--cc-progress-bar)}
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden}
+.cc-seg button{min-height:var(--cc-row-h);padding:0 18px;border:0;background:var(--cc-surface);font-family:var(--cc-font);
+  font-size:14px;font-weight:600;color:var(--cc-text-2);cursor:pointer;transition:background var(--cc-ease)}
+.cc-seg button + button{border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--sm button{min-height:36px;padding:0 12px;font-size:13px}
+.tool-spin{width:15px;height:15px;border:2px solid #9ca3af;border-top-color:transparent;border-radius:50%;
+  animation:tsp .8s linear infinite;flex-shrink:0;display:inline-block;margin-inline-end:8px;vertical-align:-2px}
+@keyframes tsp{to{transform:rotate(360deg)}}
+
+/* פיגום להשוואה בלבד - מחלקות הסייר החיות, כדי שהצד "היום" יהיה נאמן */
+.sorth{cursor:pointer;user-select:none;white-space:nowrap}
+.sorth:hover{color:var(--cc-action)}
+.sarrow{color:var(--cc-action);font-size:10px;margin-inline-start:4px}
+.cell-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.cell-actions a.cc-btn{text-decoration:none}
+.selbox{width:34px}
+.mk-side{display:grid;grid-template-columns:1fr;gap:18px}
+.mk-tag{display:inline-flex;align-items:center;gap:6px;font:700 11px var(--cc-font);padding:3px 9px;border-radius:var(--cc-radius-pill)}
+.mk-tag--now{background:var(--cc-sunken);color:var(--cc-text-2)}
+.mk-tag--rec{background:var(--cc-success-bg);color:var(--cc-success-fg)}
+.mk-eye{font-size:12px;color:var(--cc-text-3);margin:0 0 8px}
+.mk-grp{font-size:12px;font-weight:600;color:var(--cc-text-3);margin:16px 0 6px}
+.mk-grp span{font-weight:400}
+.mk-grp:first-child{margin-top:0}
+</style>
+
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol><symbol id="i-arrow-swap" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="i-more-vertical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
+</defs></svg>
+
+
+<div class="mk-h1">S41-SCREEN - שורת התוצאה בחיפוש: מה המפעיל מסתכל עליו</div>
+<div class="mk-sub">
+  <b>השאלה, ורק היא</b>: איך נראית שורת <b>קובץ</b> ברשימת תוצאות החיפוש. כל השאר במסך הזה כבר אושר - ‏D-341 ו-D-345 - ואינו נפתח כאן.
+  <b>מה שמוצג</b>: אותן שלוש קבוצות, אותם נתונים, אותו מונח חיפוש ("לוי") - בשתי צורות.
+  <b>אפס מחלקות חדשות</b> - <code>cc-table</code> · <code>cc-respath</code> · <code>cc-chip</code> · <code>cc-pill</code> · <code>cc-btn</code>.
+  <br><b style="color:var(--cc-danger-fg)">אפס אייקונים חדשים, ואפס אמוג'י</b>: שלושת האייקונים בקובץ הזה הם <b>אותם קווי SVG בדיוק</b> שהאפליקציה החיה מרנדרת - <code>#i-folder</code> · <code>#i-file-text</code> · <code>#i-more-vertical</code> - הועתקו מהספרייט של האפליקציה והוטמעו כאן, ונצבעים בצבע האייקון של הספרייה. <b>הגרסה הקודמת של הקובץ הזה השתמשה בגליפים <code>U+1F4C1</code> ו-<code>U+1F4C4</code>, והם נרנדרו כאמוג'י צבעוני</b> שאין לו דבר עם המערכת; זה תוקן, ולא יחזור. <b>חץ המיון <code>▲</code> אינו אייקון</b> - זה התו שהמסך החי מרנדר, באדום הפעולה, וכך הוא נראה היום.
+</div>
+
+<!-- ============ א ============ -->
+<div class="mk-sec">
+  <h2>צורה א · מה שחי היום <span class="mk-tag mk-tag--now">אינה ההמלצה</span></h2>
+  <div class="mk-lead">קבוצת הקבצים משתמשת בטבלת הסייר: שלוש כותרות ממיינות, עמודת סוג, עמודת תאריך, ועד שלוש פעולות. שתי הקבוצות שמעליה - שורות רזות בלי כותרות.</div>
+  <div class="mk-frame">
+
+    <div class="mk-grp">הזמנות והצעות <span>· לפי מספר, שם לקוח, שם קבוצה, מדינה ושותף</span></div>
+    <div class="cc-table-wrap" style="margin-bottom:18px">
+      <table class="cc-table"><tbody>
+        <tr>
+          <td><span dir="auto"><bdi>BK-1062</bdi> · <bdi>משפחת לוי</bdi> · 10.05.2026 - 18.05.2026</span>
+            <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a></div>
+          </td>
+          <td style="width:90px"><span class="cc-pill cc-pill--bk">BK</span></td>
+          <td style="width:140px"><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button></td>
+        </tr>
+      </tbody></table>
+    </div>
+
+    <div class="mk-grp">קבצים ותיקיות <span>· לפי שם הקובץ, ולפי מה שכתוב בתוכו</span></div>
+    <div class="cc-table-wrap">
+      <table class="cc-table">
+        <thead><tr>
+          <th class="selbox"><input type="checkbox" aria-label="בחירת הכל"></th>
+          <th style="width:34px"></th>
+          <th class="sorth">שם <span class="sarrow">▲</span></th>
+          <th class="sorth">סוג</th>
+          <th class="sorth">עודכן</th>
+          <th></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="selbox"><input type="checkbox" aria-label="בחירת שורה"></td>
+            <td style="width:34px"><svg class="cc-icon cc-icon--sm" aria-hidden="true" style="color:var(--cc-icon-deco)"><use href="#i-file-text"></use></svg></td>
+            <td class="primary"><span dir="auto"><bdi>ואוצר מלון - משפחת לוי.pdf</bdi></span>
+              <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>BK-1062</bdi></a></div>
+            </td>
+            <td class="sub">PDF</td>
+            <td class="ltr">08.05.2026</td>
+            <td><div class="cell-actions">
+              <a class="cc-btn cc-btn--sm">צפייה</a><a class="cc-btn cc-btn--sm">PDF</a><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+              <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-more-vertical"></use></svg></button>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="selbox"><input type="checkbox" aria-label="בחירת שורה"></td>
+            <td style="width:34px"><svg class="cc-icon cc-icon--sm" aria-hidden="true" style="color:var(--cc-icon-deco)"><use href="#i-file-text"></use></svg></td>
+            <td class="primary"><span dir="auto"><bdi>תוכנית מפורטת.docx</bdi></span>
+              <div class="cc-respath"><a><bdi>Argentina</bdi></a><span class="sep">›</span><a><bdi>Andes DMC</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>IT-1044</bdi></a> <span style="color:var(--cc-text-3)">· נמצא לפי התוכן</span></div>
+            </td>
+            <td class="sub">מסמך</td>
+            <td class="ltr">02.11.2026</td>
+            <td><div class="cell-actions">
+              <a class="cc-btn cc-btn--sm">צפייה</a><a class="cc-btn cc-btn--sm">PDF</a><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+              <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-more-vertical"></use></svg></button>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="selbox"><input type="checkbox" aria-label="בחירת שורה"></td>
+            <td style="width:34px"><svg class="cc-icon cc-icon--sm" aria-hidden="true" style="color:var(--cc-icon-deco)"><use href="#i-folder"></use></svg></td>
+            <td class="primary"><span dir="auto"><bdi>BK-1062 | משפחת לוי</bdi></span>
+              <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a></div>
+            </td>
+            <td class="sub">תיקייה</td>
+            <td class="ltr">10.05.2026</td>
+            <td><div class="cell-actions">
+              <button class="cc-btn cc-btn--sm">פתיחה</button>
+              <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-more-vertical"></use></svg></button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mk-notes">
+    <span>🔴 <b>מה שהעין פוגשת</b>: שתי עמודות מיושרות - סוג ותאריך - יושבות בגובה השם ובבהירות מלאה, בעוד <b>הנתיב</b> הוא שורה משנית קטנה מתחתיו. <b>הנתיב הוא הדבר היחיד שמבדיל בין שתי תוצאות באותו שם</b>, וזו ההכרעה שכבר כתובה במוקאפ המאושר.</span>
+    <span>🔴 <b>הכותרות הממיינות שולטות בקבוצה אחת מתוך שלוש.</b> לחיצה על "עודכן" ממיינת את הקבצים בלבד - ההזמנות שמעליהן אינן זזות. <b>הן נקראות כמיון הרשימה, והן אינן.</b></span>
+    <span><b>ועוד</b>: שלוש קבוצות באותו מסך בשתי שפות עיצוב - שתיים רזות ובלי כותרות, ואחת טבלה מלאה.</span>
+  </div>
+</div>
+
+<!-- ============ ב ============ -->
+<div class="mk-sec">
+  <h2>צורה ב · השורה הרזה <span class="mk-tag mk-tag--rec">🔴 זו ההמלצה</span></h2>
+  <div class="mk-lead">אותם נתונים, אותה ספרייה. הכותרות הממיינות, עמודת הסוג ועמודת התאריך יורדות; הפעולות נשארות; הסימון "נמצא לפי התוכן" עולה לצבע הטקסט הרגיל.</div>
+  <div class="mk-frame">
+
+    <div class="mk-grp">הזמנות והצעות <span>· לפי מספר, שם לקוח, שם קבוצה, מדינה ושותף</span></div>
+    <div class="cc-table-wrap" style="margin-bottom:18px">
+      <table class="cc-table"><tbody>
+        <tr>
+          <td><span dir="auto"><bdi>BK-1062</bdi> · <bdi>משפחת לוי</bdi> · 10.05.2026 - 18.05.2026</span>
+            <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a></div>
+          </td>
+          <td style="width:90px"><span class="cc-pill cc-pill--bk">BK</span></td>
+          <td style="width:140px"><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button></td>
+        </tr>
+      </tbody></table>
+    </div>
+
+    <div class="mk-grp">קבצים ותיקיות <span>· לפי שם הקובץ, ולפי מה שכתוב בתוכו</span></div>
+    <div class="cc-table-wrap">
+      <table class="cc-table"><tbody>
+        <tr>
+          <td style="width:34px"><input type="checkbox" aria-label="בחירת ואוצר"></td>
+          <td class="primary"><span dir="auto"><bdi>ואוצר מלון - משפחת לוי.pdf</bdi></span>
+            <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>BK-1062</bdi></a></div>
+          </td>
+          <td style="width:240px"><div class="cell-actions">
+            <a class="cc-btn cc-btn--sm">צפייה</a><a class="cc-btn cc-btn--sm">PDF</a><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+          </div></td>
+        </tr>
+        <tr>
+          <td style="width:34px"><input type="checkbox" aria-label="בחירת תוכנית"></td>
+          <td class="primary"><span dir="auto"><bdi>תוכנית מפורטת.docx</bdi></span>
+            <div class="cc-respath"><a><bdi>Argentina</bdi></a><span class="sep">›</span><a><bdi>Andes DMC</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>IT-1044</bdi></a> <span class="sep">·</span> <span style="color:var(--cc-text)">נמצא לפי התוכן</span></div>
+          </td>
+          <td style="width:240px"><div class="cell-actions">
+            <a class="cc-btn cc-btn--sm">צפייה</a><a class="cc-btn cc-btn--sm">PDF</a><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+          </div></td>
+        </tr>
+        <tr>
+          <td style="width:34px"><input type="checkbox" aria-label="בחירת תיקייה"></td>
+          <td class="primary"><span dir="auto"><bdi>BK-1062 | משפחת לוי</bdi></span>
+            <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a></div>
+          </td>
+          <td style="width:240px"><div class="cell-actions">
+            <button class="cc-btn cc-btn--sm">פתיחה</button>
+          </div></td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="mk-notes">
+    <span>1 · <b>שלוש הקבוצות מדברות אותה שפה</b> - שם, נתיב, פעולה. התשובה נקראת כתשובה אחת ולא כשלושה מסכים.</span>
+    <span>2 · <b>הנתיב חוזר להיות מה שהעין פוגשת</b> אחרי השם, ואין עמודה שמתחרה בו.</span>
+    <span>3 · 🔴 <b>שני תיקונים למוקאפ המאושר, והם תוספת ולא סטייה</b>: <b>צפייה ו-PDF נשארות</b> - לקובץ, להבדיל מתיקייה, "פתיחה" בסייר אינה פעולה בעלת משמעות · <b>ו"נמצא לפי התוכן" עולה לצבע הטקסט הרגיל</b>, כי הוא התשובה לשאלה למה הקובץ ברשימה ולא הערת שוליים.</span>
+    <span>4 · <b>מה שיורד, ונאמר במפורש</b>: מיון בתצוגת החיפוש, עמודת הסוג, עמודת התאריך, ואייקון הסוג בראש השורה. <b>בתצוגת התיקייה כולן נשארות כפי שהן</b> - שם המפעיל בהקשר אחד, והטבלה המלאה נכונה.</span>
+    <span>5 · 🔴 <b>תיבת הבחירה נשארת, ואני מתקן כאן טענה שלי שהייתה שגויה.</b> אמרתי שהיא יורדת; <b>נמדד במוקאפ המאושר - היא קיימת בו בשורת הקובץ.</b> היא נשארת בשתי הצורות, ולא נגעתי בה.</span>
+  </div>
+</div>
+
+<!-- ============ ג ============ -->
+<!-- ============ תפריט שלוש הנקודות ============ -->
+<div class="mk-sec">
+  <h2>תפריט שלוש הנקודות בשורת החיפוש - מה יש בו, ומה ההצעה</h2>
+  <div class="mk-lead">
+    <b>זה מה שקיים היום</b> בכל שורת קובץ בתוצאות החיפוש, מימין לפעולות. הוא <b>אינו</b> בצורה ב שאושרה, ולכן הוא נמסר לך לראות לפני שהוא יורד או נשאר.
+  </div>
+  <div class="mk-frame">
+
+    <div class="mk-eye">היום - השורה נגמרת בתפריט, וזה מה שנפתח ממנו:</div>
+    <div class="cc-table-wrap" style="margin-bottom:6px">
+      <table class="cc-table"><tbody>
+        <tr>
+          <td style="width:34px"><input type="checkbox" aria-label="בחירה"></td>
+          <td class="primary"><span dir="auto"><bdi>ואוצר מלון - משפחת לוי.pdf</bdi></span>
+            <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>BK-1062</bdi></a></div>
+          </td>
+          <td style="width:280px"><div class="cell-actions">
+            <a class="cc-btn cc-btn--sm">צפייה</a><a class="cc-btn cc-btn--sm">PDF</a><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+            <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-more-vertical"></use></svg></button>
+          </div></td>
+        </tr>
+      </tbody></table>
+    </div>
+    <div style="display:inline-block;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);background:var(--cc-surface);box-shadow:var(--cc-shadow);padding:4px;min-width:190px;margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:14px"><svg class="cc-icon cc-icon--sm" aria-hidden="true" style="color:var(--cc-icon-deco)"><use href="#i-pencil"></use></svg><span>שינוי שם</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:14px"><svg class="cc-icon cc-icon--sm" aria-hidden="true" style="color:var(--cc-icon-deco)"><use href="#i-arrow-swap"></use></svg><span>העברה...</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:14px;background:var(--cc-danger-bg);border-radius:var(--cc-radius-sm)"><svg class="cc-icon cc-icon--sm" aria-hidden="true" style="color:var(--cc-icon-deco)"><use href="#i-external-link"></use></svg><span>פתיחה ב-<bdi>Drive</bdi></span></div>
+    </div>
+
+    <div class="mk-eye">ההצעה - אותה שורה בלי התפריט:</div>
+    <div class="cc-table-wrap">
+      <table class="cc-table"><tbody>
+        <tr>
+          <td style="width:34px"><input type="checkbox" aria-label="בחירה"></td>
+          <td class="primary"><span dir="auto"><bdi>ואוצר מלון - משפחת לוי.pdf</bdi></span>
+            <div class="cc-respath"><a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>BK-1062</bdi></a></div>
+          </td>
+          <td style="width:240px"><div class="cell-actions">
+            <a class="cc-btn cc-btn--sm">צפייה</a><a class="cc-btn cc-btn--sm">PDF</a><button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+          </div></td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="mk-notes">
+    <span>1 · <b>שלוש הפעולות שבתפריט</b>: שינוי שם · העברה · פתיחה ב-<bdi>Drive</bdi>. <b>השלישית מסומנת באדום למעלה</b> מפני שהמוקאפ המאושר של החיפוש מצהיר <b>אפס הופעות של המילה Drive בטקסט מסך</b>, וזו ההופעה.</span>
+    <span>2 · 🔴 <b>מה זה עולה אם הוא יורד</b>: שינוי שם והעברה של קובץ <b>מתוך תוצאות החיפוש</b> לא יהיו אפשריים - צריך להיכנס לתיקייה. <b>מה שזה מרוויח</b>: השורה זהה לצורה שאושרה, והמילה Drive יורדת מהמסך.</span>
+    <span>3 · <b>בתצוגת התיקייה התפריט נשאר כפי שהוא בכל מקרה</b> - שם המפעיל בהקשר אחד וזה מקומו הטבעי.</span>
+    <span>4 · <b>ההמלצה: להוריד בחיפוש.</b> תוצאת חיפוש היא תשובה, ופעולות ניהול על קובץ נעשות מהתיקייה שבה הוא יושב - וממילא יש בשורה כפתור שמוביל לשם.</span>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>מה שלא נפתח כאן</h2>
+  <div class="mk-notes">
+    <span>🔴 <b>תיבת הבחירה נשארת בשתי הצורות</b> - היא קיימת במוקאפ המאושר, ואינה חלק מההמלצה כאן. <b>מה שכן נשאר פתוח היא שאלה אחרת</b>: האם מותר לבחור בבת אחת קבצים שיושבים בתיקיות שונות ולהעביר אותם. <b>זו שאלת מוצר ולא שאלת שורה</b>, ואיני מכריע בה - ביתה שורה שנוגעת בהעברות.</span>
+    <span><b>קבוצת השותפים ואנשי הקשר</b> אינה משתנה בשתי הצורות, ולכן אינה מצוירת כאן פעמיים.</span>
+    <span><b>נגישות</b>: גובה השורה 44px בשתי הצורות. הנתיב בצבע המשני עובר AA מול לבן; <b>הסימון "נמצא לפי התוכן" עולה לצבע הרגיל בהמלצה</b> מפני שהוא נושא משמעות ולא קישוט.</span>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>פתוח לאישור דב - ארבע שאלות על <span style="color:var(--cc-success-fg)">צורה ב</span></h2>
+  <div class="mk-lead">🔴 <b>ההמלצה היא צורה ב, ורק היא.</b> ארבע השאלות למטה ממוספרות ואינן נושאות אותיות, מפני שהאותיות שבהן התנגשו עם אותיות הצורות - <b>הן פירטו את צורה ב ונקראו כאילו הן מצביעות על צורה א.</b> זה היה פגם בקובץ הזה, והוא תוקן.</div>
+  <div class="mk-notes">
+    <span>1 · <b>לאמץ את צורה ב בתצוגת החיפוש</b>, והטבלה המלאה נשארת בתצוגת התיקייה. <b>ההמלצה: כן</b> - תיבת החיפוש נבנתה כדי למצוא אחד ולהגיע אליו, וזו הצורה שמשרתת את זה.</span>
+    <span>2 · <b>בתוך צורה ב: צפייה ו-PDF נשארות בשורת הקובץ.</b> ההמלצה: כן.</span>
+    <span>3 · <b>בתוך צורה ב: "נמצא לפי התוכן" בצבע הטקסט הרגיל.</b> ההמלצה: כן.</span>
+    <span>4 · <b>בתוך צורה ב: אייקון הסוג בראש השורה</b> - יורד, כמו במוקאפ המאושר. ההמלצה: כן - סוג הקובץ כבר קריא מהסיומת שבשם, והאייקון הוא עמודה שלישית שמתחרה בנתיב.</span>
+  </div>
+</div>
+
+</body>
+</html>

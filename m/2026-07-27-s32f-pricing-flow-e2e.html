@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S32f - תהליך התמחור המלא: מהגישה ועד המחיר</title>
+<style>
+/* ============================================================================
+   1:1 מול spa/src/global.css + ספריית העיצוב (mockups/00-DESIGN-LIBRARY.html).
+   כל מה שמתחיל ב-mk- הוא פיגום המוקאפ בלבד.
+   ============================================================================ */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-bg:#fdf7ea; --cc-warning-fg:#92400e; --cc-warning-bar:#ebd29a;
+  --status-impl-dot:#22c55e; --status-pending-dot:#eab308;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:28px;line-height:1.5}
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-family:var(--cc-font);font-size:15px;
+  color:var(--cc-text);background:var(--cc-surface);border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm)}
+.cc-input--ltr{direction:ltr;text-align:left}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 14px;
+  font-family:var(--cc-font);font-size:14px;background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--primary{background:var(--cc-action);border-color:var(--cc-action);color:#fff;font-weight:600}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider)}
+.tab{border:0;background:transparent;font:inherit;font-size:13.5px;color:var(--cc-text-2);padding:8px 13px;cursor:pointer;border-bottom:2px solid transparent}
+.tab.active{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:700}
+.seg-pill{display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;border-radius:var(--cc-radius-pill);
+  padding:3px 10px;font-size:13px;font-weight:600;color:var(--cc-text-2)}
+.acc-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.acc-dot--green{background:var(--status-impl-dot)}
+.acc-dot--none{background:#cbd5e1}
+
+/* מוצע חדש - זרימת התמחור (pr-*) */
+.pr-steps{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.pr-step{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--cc-text-2);
+  background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius-pill);padding:5px 13px}
+.pr-step b{width:17px;height:17px;border-radius:50%;background:var(--cc-sunken);display:inline-flex;
+  align-items:center;justify-content:center;font-size:11px;color:var(--cc-text-2)}
+.pr-step.active{border-color:var(--cc-action);color:var(--cc-action);font-weight:700}
+.pr-step.active b{background:var(--cc-action);color:#fff}
+.pr-arrow{color:var(--cc-text-3);font-size:12px}
+.pr-approach{display:flex;gap:12px;flex-wrap:wrap}
+.pr-card{flex:1;min-width:280px;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius);
+  background:var(--cc-surface);padding:16px;cursor:pointer}
+.pr-card.sel{border-color:var(--cc-action);box-shadow:0 0 0 1px var(--cc-action)}
+.pr-card h3{font-size:14.5px;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.pr-card p{font-size:12.5px;color:var(--cc-text-2)}
+.pr-card .pr-radio{width:15px;height:15px;border-radius:50%;border:2px solid var(--cc-border-strong);flex:0 0 auto}
+.pr-card.sel .pr-radio{border-color:var(--cc-action);box-shadow:inset 0 0 0 3px #fff;background:var(--cc-action)}
+.pr-card--locked{opacity:.55;cursor:default}
+.pr-models{display:flex;gap:8px;flex-wrap:wrap}
+.pr-model{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-surface);
+  padding:9px 13px;font-size:13px;cursor:pointer;min-width:150px}
+.pr-model.sel{border-color:var(--cc-action);box-shadow:0 0 0 1px var(--cc-action)}
+.pr-model b{display:block;font-size:12.5px;margin-bottom:2px}
+.pr-model span{font-size:11.5px;color:var(--cc-text-3)}
+.pr-tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--cc-surface)}
+.pr-tbl th{text-align:start;font-weight:600;font-size:12px;color:var(--cc-text-2);padding:8px 10px;
+  border-bottom:2px solid var(--cc-border-strong);background:var(--cc-sunken)}
+.pr-tbl td{padding:7px 10px;border-bottom:1px solid var(--cc-divider);vertical-align:middle}
+.pr-tbl .num{direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.pr-src{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:4px}
+.pr-src--cat{background:#eef3fb;color:#1d4ed8;border:1px solid #1d4ed833}
+.pr-src--man{background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-src--ovr{background:#fef9c3;color:#a16207;border:1px solid #eab30855}
+.pr-vat{font-size:10.5px;padding:1px 7px;border-radius:var(--cc-radius-pill);background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-fees{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.pr-fee{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:10px 13px;background:var(--cc-surface);min-width:170px}
+.pr-fee .cc-label{margin-bottom:4px}
+.pr-toggle{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-pill);overflow:hidden}
+.pr-toggle button{border:0;background:transparent;font:inherit;font-size:12px;padding:4px 12px;cursor:pointer;color:var(--cc-text-2)}
+.pr-toggle button.on{background:var(--cc-action);color:#fff;font-weight:700}
+.pr-result{background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:14px;
+  display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.pr-result .rv{font-size:19px;font-weight:700}
+.pr-result .rv small{font-size:11px;color:var(--cc-text-3);font-weight:600;margin-inline-end:4px}
+
+/* דיאלוג (מהמוקאפ הקודם) + קובץ */
+.dlg{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);
+  display:flex;flex-direction:column;max-width:500px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.dlg__head{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken)}
+.dlg__title{font-size:13.5px;font-weight:700}
+.dlg__body{padding:14px;display:flex;flex-direction:column;gap:10px}
+.dlg-msg{max-width:90%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.55}
+.dlg-msg--user{align-self:flex-start;background:var(--cc-sunken);border-start-start-radius:4px}
+.dlg-msg--ai{align-self:flex-end;background:var(--cc-info-bg);border:1px solid var(--cc-border);border-start-end-radius:4px}
+.dlg-file{display:inline-flex;align-items:center;gap:8px;background:var(--cc-surface);border:1px solid var(--cc-border-strong);
+  border-radius:var(--cc-radius-sm);padding:7px 11px;font-size:12.5px;margin-top:6px}
+.dlg-file i{font-style:normal;font-size:16px}
+.dlg-act{border:1px solid var(--cc-action-border);background:var(--cc-action-weak);border-radius:var(--cc-radius-sm);
+  padding:10px 12px;font-size:13px;margin-top:8px}
+.dlg-act__t{font-weight:700;color:var(--cc-action);margin-bottom:5px;font-size:12.5px}
+.dlg-act__btns{display:flex;gap:8px;margin-top:9px}
+.dlg__bar{display:flex;align-items:center;gap:7px;padding:10px 12px;border-top:1px solid var(--cc-border)}
+.dlg__input{flex:1;min-height:38px;padding:0 12px;font:inherit;font-size:13.5px;border:1px solid var(--cc-border-strong);
+  border-radius:var(--cc-radius-pill);background:var(--cc-surface)}
+.dlg-ico{width:38px;height:38px;border-radius:50%;border:1px solid var(--cc-border-strong);background:var(--cc-surface);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;font-size:15px}
+
+/* ניהול קטלוג (הגדרות) */
+.set-picker{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);overflow:hidden;max-width:560px}
+.set-pk{display:flex;align-items:center;gap:10px;width:100%;padding:10px 13px;border:0;
+  border-bottom:1px solid var(--cc-divider);background:transparent;font:inherit;color:var(--cc-text);text-align:start;cursor:pointer}
+.set-pk:last-child{border-bottom:0}
+.set-pk__meta{font-size:11.5px;color:var(--cc-text-3);margin-inline-start:auto}
+
+/* פיגום */
+.mk-h1{font-size:20px;font-weight:700;margin:0 0 6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:20px;max-width:920px}
+.mk-sec{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:18px;margin-bottom:20px;max-width:1020px}
+.mk-sec>h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.mk-sec>.mk-why{font-size:13px;color:var(--cc-text-2);margin-bottom:14px}
+.mk-note{font-size:12px;color:var(--cc-text-3);margin-top:10px;line-height:1.6}
+.mk-gap{height:12px}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">מוקאפ S32f - תהליך התמחור המלא: מהגישה ועד המחיר</div>
+<div class="mk-sub">
+  המסע השלם, בשפת העיצוב החיה (הנספח הקבוע: <b>mockups/00-DESIGN-LIBRARY.html</b>).
+  חמישה שלבים: גישה ← הזנה (לפי המסלול) ← מודל מרווח ← עמלות ← מחיר. לצידם: ניהול הקטלוג בהגדרות,
+  והדיאלוג המולטימודלי - טקסט, אודיו וקובץ.
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>0. פס השלבים - עומד בראש אזור התמחור בכל רגע</h2>
+  <div class="cc-label">מסלול קטלוג</div>
+  <div class="pr-steps">
+    <span class="pr-step active"><b>1</b>גישה</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>2</b>מסמך CIT/IT</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>3</b>הרכבת עלויות + צוות</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>4</b>מטבע ושערים</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>5</b>מודל ועמלות</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>6</b>מחיר</span>
+  </div>
+  <div class="cc-label" style="margin-top:8px">מסלול FLAT - קצר יותר</div>
+  <div class="pr-steps">
+    <span class="pr-step active"><b>1</b>גישה</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>2</b>מסמך CIT/IT</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>3</b>הזנת נטו</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>4</b>מודל ועמלות</span><span class="pr-arrow">←</span>
+    <span class="pr-step"><b>5</b>מחיר</span>
+  </div>
+  <div class="cc-help">ב-FLAT היוזר מדלג על הרכבת העלויות, הצוות והקטלוג - משמירת הנטו הוא מוקפץ <b>ישירות לשלב המודל והעמלות</b>. שלב המטבע מופיע ב-FLAT רק כשיש ריבוי מטבעות. אפשר לחזור אחורה בכל עת; החישוב מתעדכן חי.</div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>שלב 1 - בחירת הגישה</h2>
+  <div class="mk-why">מוצג כאן מצב שבו <b>שתי הגישות פתוחות</b> ליוזר. בפועל כל משתמש רואה <b>רק את הגישות שהוקצו לו</b> על ידי CORE (שלוש הרמות של D-03) - גישה שלא הוקצתה אינה מוצגת כלל. כשפתוחה גישה אחת בלבד - אין שלב בחירה, נכנסים ישר אליה.</div>
+  <div class="pr-approach">
+    <div class="pr-card sel">
+      <h3><span class="pr-radio"></span>הזנת נטו (FLAT)</h3>
+      <p>השותף/המפעיל חישב את ההוצאות בכלים שלו ומזין <b>מחירי נטו מוכנים</b> ל-CIT/IT - לקבוצה או לנוסע.
+      המנוע ממשיך מהנטו: מודל מרווח, עמלות, מחיר.</p>
+    </div>
+    <div class="pr-card">
+      <h3><span class="pr-radio"></span>הרכבה מקטלוג</h3>
+      <p>החבילה נבנית <b>משורות שירותים ורכיבים</b> - מלונות, תחבורה, כניסות, ארוחות, פעילויות - עם ברירות
+      מחדל חכמות מהקטלוג ודריסה בשורה. המנוע מרכיב את העלות מהשורות.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>שלב 2 - שיוך למסמך CIT/IT + תצוגה מקדימה</h2>
+  <div class="mk-why">התמחור חי בדשבורד וממופתח למזהה המסמך (הכרעת S31b) - לכן כל תמחור נפתח בשיוך למסמך התוכנית, עם תצוגה מקדימה שלו לאורך כל העבודה.</div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <span class="seg-pill" style="font-size:13.5px;padding:7px 14px">📄 <bdi>CIT-2031 | Georgia | Classic 8D | v2</bdi></span>
+    <button class="cc-btn cc-btn--sm">תצוגה מקדימה</button>
+    <button class="cc-btn cc-btn--sm">החלפת מסמך</button>
+    <span class="cc-chip nh-ok">התוכנית ללא מחירים - D-11</span>
+  </div>
+  <div class="mk-note">התצוגה המקדימה פותחת את מסמך התוכנית לצד אזור התמחור - המשתמש מתמחר מול מה שהלקוח יראה.
+  ב-IT שנולד מ-CIT, התקציב נפתח כעותק של תקציב הבסיס וכל שורה פתוחה להתאמה.</div>
+</div>
+
+<div class="mk-sec">
+  <h2>שלב 2א - מסלול FLAT: הזנת הנטו</h2>
+  <div class="mk-why">טבלה מינימלית: הרכב ← נטו. הכל במטבע המקטע; ריבוי מקטעים = טאב לכל מקטע כרגיל.</div>
+  <table class="pr-tbl" style="max-width:640px">
+    <tr><th>סוג נוסע</th><th>כמות</th><th>נטו לנוסע</th><th>מטבע</th></tr>
+    <tr><td>מבוגר · DBL</td><td class="num">6</td><td class="num">2,400.00</td><td>USD</td></tr>
+    <tr><td>ילד 3-6</td><td class="num">1</td><td class="num">1,680.00</td><td>USD</td></tr>
+    <tr><td>תוספת חדר יחיד (נגזרת: SGL - DBL/2)</td><td class="num">2</td><td class="num">300.00</td><td>USD</td></tr>
+  </table>
+  <div class="cc-help">FOC מוזן בהרכב (בראש הכרטיס) ואינו שורה כאן - עלויותיו כבר בתוך הנטו שחושב מחוץ למערכת. <b>אחרי שמירת הנטו היוזר מוקפץ ישירות לשלב המודל והעמלות.</b></div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>שלב 2ב - מסלול הקטלוג: הרכבת שורות העלות</h2>
+  <div class="mk-why">כל שורה: מקור (קטלוג / ידני / דריסה) · סיווג חישוב FIX/VAR · סוג נוסע · מע"מ · הצמדה ליום · כלול/בתשלום. ברירת המחדל מהקטלוג; תיקון בשורה מסומן.</div>
+  <table class="pr-tbl">
+    <tr><th>מקור</th><th>שירות</th><th>סיווג</th><th>סוג נוסע</th><th>כמות</th><th>מחיר יח'</th><th>מע"מ</th><th>יום · תאריך</th><th>תכולה</th><th>סה"כ</th></tr>
+    <tr>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+      <td>מלון בוטיק · DBL · BB · עונה גבוהה</td><td>VAR</td><td>מבוגר</td>
+      <td class="num">4 לילות</td><td class="num">250.00</td><td><span class="pr-vat">כלול</span></td>
+      <td class="num">1-4 · 10-13.05</td><td>כלול</td><td class="num">USD 1,000.00</td>
+    </tr>
+    <tr>
+      <td><span class="pr-src pr-src--ovr">דריסה</span></td>
+      <td>מיניבוס ספרינטר · 5 ימים · כולל הכל</td><td>FIX</td><td>-</td>
+      <td class="num">5 ימים</td><td class="num">430.00</td><td><span class="pr-vat">להוסיף 18%</span></td>
+      <td class="num">1-5 · 10-14.05</td><td>כלול</td><td class="num">USD 2,537.00</td>
+    </tr>
+    <tr>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+      <td>העברת שדה"ת · פר טרנספר (משולב עם היומי)</td><td>FIX</td><td>-</td>
+      <td class="num">2</td><td class="num">65.00</td><td><span class="pr-vat">להוסיף 18%</span></td>
+      <td class="num">1, 5 · 10.05, 14.05</td><td>כלול</td><td class="num">USD 153.40</td>
+    </tr>
+    <tr>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+      <td>דמי כניסה · מבצר נאריקלה</td><td>VAR</td><td>ילד 3-6</td>
+      <td class="num">1</td><td class="num">8.00</td><td><span class="pr-vat">ללא</span></td>
+      <td class="num">2 · 11.05</td><td>כלול</td><td class="num">USD 8.00</td>
+    </tr>
+    <tr>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+      <td>לינת מדריך · תעריף צוות</td><td>FIX</td><td>FOC</td>
+      <td class="num">4 לילות</td><td class="num">80.00</td><td><span class="pr-vat">כלול</span></td>
+      <td class="num">1-4 · 10-13.05</td><td>כלול</td><td class="num">USD 320.00</td>
+    </tr>
+    <tr>
+      <td><span class="pr-src pr-src--man">ידני</span></td>
+      <td>אשרת כניסה - הנפקה ע"י השותף</td><td>VAR</td><td>מבוגר</td>
+      <td class="num">1</td><td class="num">35.00</td><td><span class="pr-vat">ללא</span></td>
+      <td class="num">-</td><td><b>בתשלום נפרד</b></td><td class="num">USD 35.00</td>
+    </tr>
+  </table>
+  <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="cc-btn cc-btn--sm">+ מהקטלוג</button>
+    <button class="cc-btn cc-btn--sm">+ תחבורה (7 מודלים · ניתן לשלב)</button>
+    <button class="cc-btn cc-btn--sm">+ שורה ידנית</button>
+    <span class="cc-chip nh-diff">💡 12 משתתפים - הקטלוג מציע להוסיף מערכת שמע (וויספר)</span>
+  </div>
+  <div class="mk-gap"></div>
+  <div class="cc-label">בורר מודלי התחבורה (נפתח מ"+ תחבורה") · בחירה מרובה - ניתן לשלב</div>
+  <span class="pr-toggle" style="flex-wrap:wrap">
+    <button class="on">✓ יומי כולל הכל</button><button>השכרה + דלק ואגרות</button><button>שעה + ק"מ</button><button>ש"נ וחריגת ק"מ</button><button class="on">✓ לינת נהג</button><button class="on">✓ פר טרנספר</button><button class="on">✓ שעות המתנה</button>
+  </span>
+  <div class="cc-help">חמשת מודלי האפיון + שתי התוספות שלך (פר טרנספר · שעות המתנה). <b>שילוב מותר ונפוץ</b>: כל בחירה מוסיפה את שורות ה-FIX_GROUP שלה לטבלה, והן חיות זו לצד זו. בדוגמה: יומי כולל הכל לימי הסיור + פר טרנספר להעברות שדה"ת + שעות המתנה + לינת נהג. חריג אחד: "יומי כולל הכל" מול "השכרה + דלק ואגרות" על אותם ימים - התנגשות, והמערכת מתריעה על חפיפת תאריכים.</div>
+  <div class="mk-note">
+    "בתשלום נפרד" = הפריט נכנס לבלוק "אפשרויות נוספות בתשלום" בתוצר - בלי מחיר (D-11). המחיר שלו חי בהצעת המחיר.
+    שורת FOC נצבעת מוקצית לתקורת המלווה - מחוץ למכנה, בפנים בעלות. תג המע"מ פר שורה - ברירת מחדל משיעור השותף.
+    <b>כלל יום · תאריך (דב, 27.07)</b>: ב-CIT (קטלוג, אין תאריכים) מוצג מספר יום בלבד; ב-IT/BK התאריך נגזר
+    מתאריך היציאה ומוצג לצד מספר היום <b>בכל מקום שמופיע יום</b> - טבלת ההרכבה, מקטע הצוות, חלון החישוב,
+    תצוגת התקציב וגרסאות ההצעה. שינוי תאריך יציאה מזיז את כל התאריכים הנגזרים ומפעיל את בדיקת התאימות מקטע-תאריכים (ג6).
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>שלב 3ב - צוות הטיול: מלווה קבוצה (TL) · מדריך מקומי (LG) · נהג</h2>
+  <div class="mk-why">בחירת מודל השילוב פר תפקיד: FOC או בעלות הטיול - ובשני המצבים איש הצוות אינו משלם; ההבדל הוא רק איך העלות נכנסת לחישוב. התעריפים מקטלוג השירותים (תעריף צוות), עם דריסה.</div>
+  <table class="pr-tbl">
+    <tr><th>תפקיד</th><th>מודל העלות</th><th>לינה</th><th>תעריף לינה ללילה</th><th>אש"ל ליום</th><th>ארוחות עם הקבוצה</th><th>מקור</th></tr>
+    <tr>
+      <td><b>מלווה קבוצה (TL)</b></td>
+      <td><span class="pr-toggle"><button class="on">FOC</button><button>בעלות הטיול</button></span></td>
+      <td>אותם מלונות כמו הקבוצה</td><td class="num">-</td><td class="num">-</td>
+      <td><b>5 מתוך 5</b> · <a href="#" style="color:var(--cc-action)">בחירת הארוחות ▾</a></td>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+    </tr>
+    <tr>
+      <td><b>מדריך מקומי (LG)</b></td>
+      <td><span class="pr-toggle"><button class="on">FOC</button><button>בעלות הטיול</button></span></td>
+      <td>תעריף קבוע (לן במקומות זולים יותר)</td><td class="num">USD 70.00</td><td class="num">USD 35.00</td>
+      <td><b>3 מתוך 5</b> · <a href="#" style="color:var(--cc-action)">בחירת הארוחות ▾</a></td>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+    </tr>
+    <tr>
+      <td><b>נהג</b></td>
+      <td><span class="pr-toggle"><button>FOC</button><button class="on">בעלות הטיול</button></span></td>
+      <td>תעריף קבוע · רק מחוץ לעיר מגוריו</td><td class="num">USD 60.00</td><td class="num">USD 35.00</td>
+      <td><b>2 מתוך 5</b> · <a href="#" style="color:var(--cc-action)">בחירת הארוחות ▾</a></td>
+      <td><span class="pr-src pr-src--cat">קטלוג</span></td>
+    </tr>
+  </table>
+  <div class="cc-label" style="margin-top:12px">"בחירת הארוחות" - הרשימה נגזרת משורות הארוחות של הקבוצה בתקציב (דוגמה, LG):</div>
+  <table class="pr-tbl" style="max-width:560px">
+    <tr><th>✓</th><th>יום · תאריך</th><th>ארוחה</th><th>תעריף צוות</th></tr>
+    <tr><td>✓</td><td>יום 2 · 11.05</td><td>צהריים · מסעדה מקומית</td><td class="num">USD 12.00</td></tr>
+    <tr><td>✓</td><td>יום 3 · 12.05</td><td>צהריים · פיקניק</td><td class="num">USD 8.00</td></tr>
+    <tr><td>✓</td><td>יום 4 · 13.05</td><td>ערב · ערב פולקלור</td><td class="num">USD 20.00</td></tr>
+    <tr><td style="color:var(--cc-text-disabled)">-</td><td style="color:var(--cc-text-disabled)">יום 2 · 11.05</td><td style="color:var(--cc-text-disabled)">ערב · מלון</td><td class="num" style="color:var(--cc-text-disabled)">-</td></tr>
+    <tr><td style="color:var(--cc-text-disabled)">-</td><td style="color:var(--cc-text-disabled)">יום 5 · 14.05</td><td style="color:var(--cc-text-disabled)">צהריים · חופשי</td><td class="num" style="color:var(--cc-text-disabled)">-</td></tr>
+  </table>
+  <div class="mk-note">
+    <b>"בעלות הטיול" במקום "משלם" (דב, 27.07)</b>: איש צוות לעולם אינו משלם - שני המצבים הם חלק מעלות הטיול.
+    FOC = נספר כ-FOC בהרכב (מחוץ למכנה, עלויותיו מתחלקות על המשלמים); בעלות הטיול = עלויותיו שורות קבוצה רגילות.
+    <b>ארוחות - בחירה פרטנית ולא חלוקה גסה (דב, 27.07)</b>: לקבוצה יכולות להיות 5 ארוחות ואיש הצוות משתתף רק
+    ב-2-3; המונה "X מתוך Y" נפתח לרשימת הארוחות בפועל וכל שורה מסומנת/לא. ארוחות מתומחרות בתעריף צוות מהקטלוג.
+    לינת LG/נהג בעיר מגוריהם = אין שורת לינה לאותם לילות; מספר הלילות מחוץ לעיר - הזנה ידנית.
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>שלב 4 - מטבע ושערים (ברומטר המטבע)</h2>
+  <div class="mk-why">מטבע ההצעה, השערים הנעולים, וחיץ המטבע - פר מקטע שמטבעו שונה. מופיע בשני המסלולים כשיש ריבוי מטבעות.</div>
+  <div class="pr-fees">
+    <div class="pr-fee">
+      <label class="cc-label">מטבע ההצעה</label>
+      <span class="pr-toggle"><button class="on">USD</button><button>EUR</button><button>ILS</button></span>
+      <div class="cc-help">מטבעות שונים במקטעים - בחירה ידנית (D-29)</div>
+    </div>
+    <div class="pr-fee">
+      <label class="cc-label">שער תמחור · <bdi>EUR</bdi></label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="cc-input cc-input--ltr" value="1.08" style="max-width:90px">
+        <span class="cc-chip nh-ok">ננעל על ההצעה</span>
+      </div>
+      <div class="cc-help">דב קובע את השער; כל תשלום בפועל מומר בשער משלו (D-26/D-28)</div>
+    </div>
+    <div class="pr-fee">
+      <label class="cc-label">חיץ מטבע · מקטע 2 (EUR)</label>
+      <input class="cc-input cc-input--ltr" value="2.5%" style="max-width:80px">
+      <div class="cc-help">תוספת x(1+b), רק במקטע שמטבעו שונה</div>
+    </div>
+    <div class="pr-fee">
+      <label class="cc-label">עמלות בנק צפויות</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="cc-input cc-input--ltr" value="100" style="max-width:90px">
+        <span class="cc-chip">ברירת מחדל מההגדרות</span>
+      </div>
+      <div class="cc-help">עמלת סגירה לכל התיק; ניתנת לעריכה פר הזמנה</div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>שלבים 3-4 - מודל המרווח והעמלות (משותף לשני המסלולים)</h2>
+  <div class="pr-models">
+    <div class="pr-model"><b>מודל 1 · % מרווח</b><span>אחוז מההכנסה · מחלק</span></div>
+    <div class="pr-model sel"><b>מודל 3 · $ לנוסע</b><span>סכום קבוע פר נוסע</span></div>
+    <div class="pr-model"><b>מודל 2 · $ לקבוצה</b><span>סכום קבוע לכל הקבוצה</span></div>
+    <div class="pr-model"><b>מודל 4 · מדורג</b><span>מדרגות לפי גודל קבוצה</span></div>
+  </div>
+  <div class="mk-gap"></div>
+  <div class="cc-label">מודל 4 - עורך המדרגות (מוצג רק כשמודל 4 נבחר)</div>
+  <table class="pr-tbl" style="max-width:560px;margin-bottom:14px">
+    <tr><th>עד כמה משלמים</th><th>מודל המדרגה</th><th>ערך</th></tr>
+    <tr><td class="num">4</td><td>מודל 3 · $ לנוסע</td><td class="num">USD 400</td></tr>
+    <tr><td class="num">9</td><td>מודל 3 · $ לנוסע</td><td class="num">USD 250</td></tr>
+    <tr><td><b>ללא הגבלה (מדרגה פתוחה - חובה)</b></td><td>מודל 2 · $ לקבוצה</td><td class="num">USD 2,600</td></tr>
+  </table>
+  <div class="cc-help" style="margin-bottom:14px">המדרגה נקבעת לפי מספר המשלמים בהזמנה; כל מדרגה פותרת למודל 2 או 3. קבוצה גדולה מכל תקרה בלי מדרגה פתוחה - שגיאה, לא ברירת מחדל.</div>
+  <div class="pr-fees">
+    <div class="pr-fee">
+      <label class="cc-label">רווח לנוסע</label>
+      <input class="cc-input cc-input--ltr" value="300" style="max-width:120px">
+    </div>
+    <div class="pr-fee">
+      <label class="cc-label">עמלת סגירה בנקאית · לכל התיק</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="pr-toggle"><button class="on">פעיל</button><button>כבוי</button></span>
+        <input class="cc-input cc-input--ltr" value="100" style="max-width:90px">
+      </div>
+    </div>
+    <div class="pr-fee">
+      <label class="cc-label">עמלת סליקה</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="pr-toggle"><button class="on">מגולם במחיר</button><button>שורה נפרדת</button><button>כבוי</button></span>
+        <input class="cc-input cc-input--ltr" value="3%" style="max-width:70px">
+      </div>
+      <div class="cc-help">בשני המצבים העמלה בצד המטייל והרווח מוגן במלואו; ההבדל בתצוגה ללקוח בלבד</div>
+    </div>
+    <div class="pr-fee">
+      <label class="cc-label">עמלת סוכן משנה</label>
+      <span class="pr-toggle"><button class="on">ללא · 0%</button><button>עמלה גלומה %</button><button>Markup $</button></span>
+      <div class="cc-help">"ללא" = מסירת נטו, התחנה כבויה (0%)</div>
+    </div>
+  </div>
+  <div class="mk-note">הפרופיל של השותף קובע מה זמין וברירות מחדל; ההזמנה קובעת מה חל בעסקה (ש-8א). תחנה כבויה = "לא רלוונטי" בחלון החישוב.</div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>שלב 5 - המחיר</h2>
+  <div class="pr-result">
+    <span class="rv"><small>USD</small>2,100.00 <span style="font-size:12px;color:var(--cc-text-3);font-weight:400">מבוגר · DBL</span></span>
+    <span class="rv"><small>USD</small>1,470.00 <span style="font-size:12px;color:var(--cc-text-3);font-weight:400">ילד 3-6</span></span>
+    <span class="rv"><small>USD</small>+300.00 <span style="font-size:12px;color:var(--cc-text-3);font-weight:400">תוספת יחיד</span></span>
+    <span style="margin-inline-start:auto;display:flex;gap:8px">
+      <button class="cc-btn cc-btn--sm">חלון החישוב</button>
+      <button class="cc-btn cc-btn--sm">רשת מחירים</button>
+      <button class="cc-btn cc-btn--sm cc-btn--primary">שמירה כגרסת הצעה</button>
+    </span>
+  </div>
+  <div class="mk-gap"></div>
+  <div class="cc-label">רשת המחירים - תצוגה מקדימה (כל תא מחושב ומעוגל בנפרד)</div>
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
+    <span class="pr-toggle"><button class="on">קרקע בלבד</button><button>כולל טיסה בינלאומית</button></span>
+    <span class="cc-chip">צירים: משתתפים × תפוסה × סוג חדר × רכב × אופציות</span>
+  </div>
+  <table class="pr-tbl" style="max-width:640px">
+    <tr><th>סוג חדר</th><th>DBL לנוסע</th><th>SGL (+תוספת)</th><th>מיטה נוספת · ילד 3-11</th></tr>
+    <tr><td>סטנדרט</td><td class="num">USD 2,100</td><td class="num">USD 2,400</td><td class="num">USD 1,470</td></tr>
+    <tr><td>סופיריור</td><td class="num">USD 2,310</td><td class="num">USD 2,650</td><td class="num">USD 1,610</td></tr>
+    <tr><td>סוויטה</td><td class="num">USD 2,890</td><td class="num">USD 3,320</td><td class="num">USD 2,020</td></tr>
+  </table>
+  <div class="mk-note">חלון החישוב (המוקאפ הקודם) נפתח מכאן ומציג את השרשרת המלאה. "שמירה כגרסת הצעה" מקפיאה הרכב, שערים, רשת ו-trace.</div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>שלב 6ב - קבוצות מתומחרות, גרסאות, תקציב וייצוא</h2>
+  <div class="mk-why">הרכב שמשתנה באמצע מכירה (D-33/D-35): קבוצה שנייה עם הרכב ומחיר משלה; כל שליחה = גרסה קפואה; התקציב מוצג בדשבורד ומיוצא לתיקיית המסמך (D-20).</div>
+
+  <div class="cc-label">קבוצות מתומחרות</div>
+  <table class="pr-tbl" style="max-width:760px;margin-bottom:6px">
+    <tr><th>קבוצה</th><th>הרכב</th><th>מחיר לנוסע</th><th>סטטוס</th></tr>
+    <tr><td>קבוצה א - שני הזוגות</td><td>4 מבוגרים</td><td class="num">USD 2,100</td><td><span class="cc-chip nh-ok">נעולה - מגרסה 1</span></td></tr>
+    <tr><td>קבוצה ב - המצטרפים</td><td>2 מבוגרים + ילדה 3-6</td><td class="num">USD 1,980 · ילדה 1,390</td><td><span class="cc-chip">טיוטה - שיקול דעת המוכר</span></td></tr>
+  </table>
+  <button class="cc-btn cc-btn--sm" style="margin-bottom:14px">+ קבוצה מתומחרת</button>
+
+  <div class="cc-label">טאב גרסאות ההצעה</div>
+  <table class="pr-tbl" style="max-width:760px;margin-bottom:6px">
+    <tr><th>גרסה</th><th>הרכב</th><th>נשלחה</th><th>שערים</th><th>פעולות</th></tr>
+    <tr><td>v1</td><td>4 נוסעים</td><td>20.07.2026</td><td class="num">EUR 1.08</td><td><button class="cc-btn cc-btn--sm">חלון החישוב</button> <button class="cc-btn cc-btn--sm">השוואה מול v2</button></td></tr>
+    <tr><td><b>v2 · טיוטה</b></td><td>7 נוסעים (6+1)</td><td>-</td><td class="num">EUR 1.08</td><td><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></td></tr>
+  </table>
+  <div class="cc-help" style="margin-bottom:14px">גרסה שנשלחה קפואה לתמיד - הרכב, מחירים, שערים וה-trace. תמחור מחדש יוצר גרסה חדשה כטיוטה.</div>
+
+  <div class="cc-label">הקשר התקציב - הפרדת B2B / B2C (הכרעת דב, 27.07)</div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+    <span class="pr-toggle"><button class="on">B2B · DMC ↔ שותף</button><button>B2C · מכירה ללקוח סופי</button></span>
+    <span class="cc-chip nh-ok">אחסון: תיקיית השותף (Silk Road)</span>
+  </div>
+  <div class="cc-help" style="margin-bottom:14px">היוזר יכול לשמש בו-זמנית DMC, שותף ומוכר טיולים - לכן כל תקציב נושא <b>הקשר-יחסים מפורש</b> שקובע את יעד האחסון: תקציב <b>B2B</b> (DMC↔שותף) נשמר <b>בתיקיית השותף</b>; תקציב <b>B2C</b> (מוכר↔מטייל, כולל הצעת המחיר ללקוח הסופי ולוח התשלומים) נשמר <b>בתיקיית מוכר הטיול</b>. ההקשרים אינם מתערבבים: מסמך בהקשר שותף לעולם אינו מכיל את תמחור הלקוח הסופי. בהקשר B2C, כרטיס ההצעה מציג את מחיר ה-B2B כקלט העלות (D-24 - המנוע רץ פעמיים בשרשור); הניסוח המדויק של התצוגה - לאימות מול דב בפתיחת S34.</div>
+
+  <div class="cc-label">תקציב וייצוא + חיווי מועד התשלום</div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <button class="cc-btn cc-btn--sm">הצגת התקציב המלא (CIT/IT/BK)</button>
+    <button class="cc-btn cc-btn--sm">ייצוא גיליון לתיקיית המסמך</button>
+    <span class="cc-chip">ייצוא לעלה שותף - מתוחם למקטע שלו בלבד · לפי הקשר B2B/B2C</span>
+    <span class="cc-chip nh-diff">התשלום האחרון מול המטייל: 40 ימים לפני יציאה (שדה דינמי) ← 02.09.2026 · במייל סוכם 06.09 - חריגה של 4 ימים</span>
+  </div>
+  <div class="cc-help">מספר הימים הוא <b>שדה דינמי</b> - ברירת מחדל 40, והמוכר רשאי לקבוע 30, 14 או כל ערך (D-31 "ניתן לשינוי"). החיווי שייך ללוח התשלומים שבין מוכר הטיול למטייל (D-30/31) ומשרת את <b>כתיבת הצעת המחיר ללקוח הסופי</b>: המקדמה במעמד ההזמנה - <b>% מהמחיר או סכום נקוב, שדה דינמי</b> - היתרה עד המועד שנקבע, וסעיף ההמרה (D-27) - המנוע מציע, והמוכר רשאי לסכם אחרת (כמו 06.09 בפועל). אינו קשור ליחסי ה-B2B - התשלומים לשותפים הם "יתרה לשותף" במקטע, לוח נפרד לגמרי. הערך מוצג ונגזר, לעולם לא נשמר כמחייב.</div>
+</div>
+
+<div class="mk-sec">
+  <h2>ניהול הקטלוג (הגדרות ← קטלוג השירותים)</h2>
+  <div class="mk-why">הזנת נתוני הבסיס - עשרת הקטלוגים, כל אחד שורת כניסה בדפוס הקיים של מסך ההגדרות. כניסה כפולה = רכיב אחד: נגיש גם מכפתור "+ מהקטלוג" בתקציב.</div>
+  <div class="set-picker">
+    <button class="set-pk">🏨 מלונות · סוגי חדר, תפוסה, הסעדה, עונות, תעריף צוות<span class="set-pk__meta">12 ספקים · עודכן 25.07</span></button>
+    <button class="set-pk">🚌 תחבורה · חמשת מודלי האפיון + פר טרנספר + שעות המתנה + מטריצת רכב<span class="set-pk__meta">4 ספקים</span></button>
+    <button class="set-pk">✈️ טיסות ורכבות · לפי מחלקות<span class="set-pk__meta">ברירות מחדל</span></button>
+    <button class="set-pk">🍽 ארוחות · רגיל / פרימיום / גורמה<span class="set-pk__meta">ברירות מחדל</span></button>
+    <button class="set-pk">🎟 דמי כניסה · מבוגר / ילד / גמלאי / קבוצה · כניסת מדריך חינם/בתשלום פר אתר<span class="set-pk__meta">38 אתרים</span></button>
+    <button class="set-pk">👑 שירותי VIP ונמל תעופה<span class="set-pk__meta">6 שירותים</span></button>
+    <button class="set-pk">🥾 פעילויות · קבוצתי או פר נוסע<span class="set-pk__meta">14 פעילויות</span></button>
+    <button class="set-pk">💧 מים בתחבורה · בקבוקים לנוסע ליום<span class="set-pk__meta">נוסחה</span></button>
+    <button class="set-pk">🧭 מדריכים מקומיים (LG) · פר יום / חצי יום / שעה · תוספת שפה<span class="set-pk__meta">מקושר למרשם המדריכים</span></button>
+    <button class="set-pk">➕ פריטים מותאמים<span class="set-pk__meta">חופשי</span></button>
+  </div>
+  <div class="mk-gap"></div>
+  <div class="cc-label">דוגמה - עורך קטלוג המדריכים המקומיים (LG)</div>
+  <table class="pr-tbl" style="max-width:960px;margin-bottom:14px">
+    <tr><th>מדריך</th><th>סוג</th><th>שפות</th><th>אופן תמחור</th><th>תעריף</th><th>שעות נוספות</th><th>תוספת שפה ייחודית</th><th>מטבע</th><th>מע"מ במחירון</th></tr>
+    <tr><td>Nino K.</td><td>מלווה - מקטע / ימים</td><td>אנגלית · עברית</td><td>יום · ללא הגדרת שעות</td><td class="num">150.00</td><td class="num">-</td><td class="num">-</td><td>USD</td><td><span class="pr-vat">ללא</span></td></tr>
+    <tr><td>Giorgi M.</td><td>מלווה - מקטע / ימים</td><td>יפנית</td><td>יום · עד 9 שעות</td><td class="num">240.00</td><td class="num">+30.00/שעה</td><td class="num">כלולה בתעריף</td><td>USD</td><td><span class="pr-vat">ללא</span></td></tr>
+    <tr><td>Giorgi M.</td><td>מלווה - מקטע / ימים</td><td>יפנית</td><td>חצי יום · עד 5 שעות</td><td class="num">140.00</td><td class="num">+30.00/שעה</td><td class="num">כלולה בתעריף</td><td>USD</td><td><span class="pr-vat">ללא</span></td></tr>
+    <tr><td>לפי שעה (כללי)</td><td>מלווה - מקטע / ימים</td><td>אנגלית</td><td>שעה</td><td class="num">25.00</td><td class="num">-</td><td class="num">+40%</td><td>USD</td><td><span class="pr-vat">ללא</span></td></tr>
+    <tr><td>Levan B. · מומחה יין</td><td><b>מצטרף נקודתי</b></td><td>אנגלית</td><td>יום · ללא הגדרת שעות</td><td class="num">180.00</td><td class="num">-</td><td class="num">-</td><td>USD</td><td><span class="pr-vat">ללא</span></td></tr>
+  </table>
+  <div class="mk-note" style="margin-bottom:16px">
+    <b>שני סוגי מדריך מקומי</b> (דב, 27.07): מלווה - עובד לאורך הטיול, מקטע, או חלק מימי מקטע · מצטרף נקודתי -
+    מומחה/מוסמך שמצטרף לנקודות במסלול בנוסף לקבועים (מוזיאונים, אתרים מחייבי הסמכה, נישה). <b>אופני התמחור</b>:
+    יום ללא הגדרת שעות · יום/חצי יום עם מסגרת שעות מוגדרת + תעריף שעות נוספות · שעה. אין תוספות סופ"ש/חגים ואין
+    הוזלה רב-יומית. הקטלוג <b>מקושר למרשם המדריכים</b> (ישות המדריך נושאת מדינות ושפות) - כניסה כפולה, רכיב אחד.
+    מספר הלינות של המדריך והנהג מחוץ לעיר מגוריהם - <b>הזנה ידנית של היוזר במקטע הצוות</b> (שלב 3ב), לא כאן.
+    מדיניות ביטולים - עניין של כל שותף, מחוץ למנוע התמחור. כניסת מדריך לאתר - דגל גמיש פר אתר בקטלוג דמי הכניסה.
+  </div>
+  <div class="cc-label">דוגמה - עורך קטלוג המלונות (שורת תעריף אחת)</div>
+  <table class="pr-tbl" style="max-width:880px">
+    <tr><th>מלון</th><th>סוג חדר</th><th>תפוסה</th><th>הסעדה</th><th>עונה</th><th>נטו ללילה</th><th>מטבע</th><th>מע"מ במחירון</th><th>תעריף צוות</th></tr>
+    <tr><td>Boutique Old Town</td><td>סופיריור</td><td>DBL</td><td>BB</td><td>גבוהה + סופ"ש</td><td class="num">250.00</td><td>USD</td><td><span class="pr-vat">כלול</span></td><td class="num">80.00</td></tr>
+    <tr><td>Boutique Old Town</td><td>סופיריור</td><td>SGL</td><td>BB</td><td>גבוהה</td><td class="num">210.00</td><td>USD</td><td><span class="pr-vat">כלול</span></td><td class="num">-</td></tr>
+    <tr><td>Boutique Old Town</td><td>סופיריור</td><td>מיטה נוספת · ילד 3-11</td><td>BB</td><td>גבוהה</td><td class="num">70.00</td><td>USD</td><td><span class="pr-vat">כלול</span></td><td class="num">-</td></tr>
+  </table>
+  <div class="mk-note">תוספת היחיד נגזרת אוטומטית מהשורות (SGL - DBL/2) - אין שדה הקלדה לתוספת. שינוי בקטלוג אינו משנה טיול קיים - הדריסה פר טיול שומרת על ההצעות שנשלחו.</div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>הדיאלוג המולטימודלי - טקסט · אודיו · קובץ</h2>
+  <div class="mk-why">התוספת מהמוקאפ הקודם: צירוף קובץ. מחירון ספק שנגרר לשיחה הופך להצעת שורות עלות - לאישור, לא אוטומטית.</div>
+  <div class="dlg">
+    <div class="dlg__head">
+      <span class="dlg__title">שיחה עם המודל</span>
+      <span class="cc-chip">IT-1067 · מקטע 1 · תקציב</span>
+    </div>
+    <div class="dlg__body">
+      <div class="dlg-msg dlg-msg--user">
+        מצרף את המחירון החדש של המלון - תעדכן את שורות הלינה בתקציב.
+        <div class="dlg-file"><i>📄</i><bdi>BoutiqueOldTown_Rates_2026.pdf</bdi><span class="cc-chip">1.2MB</span></div>
+      </div>
+      <div class="dlg-msg dlg-msg--ai">
+        חילצתי מהמחירון 3 תעריפים רלוונטיים למקטע הזה. שתי שורות שונות ממה שבתקציב:
+        <div class="dlg-act">
+          <div class="dlg-act__t">הצעת עדכון - שורות לינה (המנוע יחשב מחדש אחרי האישור)</div>
+          <div style="font-size:12.5px">
+            DBL · BB · עונה גבוהה: <bdi>USD 250.00 ← 265.00</bdi><br>
+            SGL · BB: <bdi>USD 210.00 ← 220.00</bdi> (תוספת היחיד הנגזרת תתעדכן)<br>
+            מיטה נוספת ילד: ללא שינוי
+          </div>
+          <div class="dlg-act__btns">
+            <button class="cc-btn cc-btn--sm cc-btn--primary">אישור ועדכון התקציב</button>
+            <button class="cc-btn cc-btn--sm">עדכון גם בקטלוג</button>
+            <button class="cc-btn cc-btn--sm">ביטול</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dlg__bar">
+      <button class="dlg-ico" title="הקלטה קולית">🎙</button>
+      <button class="dlg-ico" title="צירוף קובץ">📎</button>
+      <input class="dlg__input" placeholder="הקלדה, דיבור, או גרירת קובץ לכאן...">
+      <button class="cc-btn cc-btn--sm">שליחה</button>
+    </div>
+  </div>
+  <div class="mk-note">
+    "עדכון גם בקטלוג" מפריד בין שתי רמות: תיקון בתקציב הטיול (דריסה) מול עדכון נתוני הבסיס בקטלוג - החלטה של
+    המשתמש, לעולם לא של המודל. כל המספרים בבלוק ההצעה מגיעים מהמנוע/מהקובץ - המודל מסביר ומבצע רק אחרי אישור.
+  </div>
+</div>
+
+<div class="mk-note">
+  מוקאפ בלבד - אין קוד חי. S32f · 2026-07-27 · הנספח הקבוע לסבב ה-CD: mockups/00-DESIGN-LIBRARY.html ·
+  משלים את cd-s32f-calc-window-dialog.html (חלון החישוב + הדיאלוג הבסיסי).
+</div>
+
+</body>
+</html>

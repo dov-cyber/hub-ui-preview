@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S37-ASSIST - מוקאפ עוזר ה-AI על הדשבורד האמיתי (גרסה 5)</title>
+<style>
+
+/* ============================================================================
+   ספריית העיצוב החיה - קובץ ליבה (הכרעת דב, 2026-07-27: חובה, מצורף לכל סבב CD).
+   הטוקנים והמחלקות הועתקו 1:1 מ-spa/src/global.css ומרכיבים חיים.
+   כל מה שמתחיל ב-lib- הוא פיגום הקטלוג בלבד ואינו חלק משפת העיצוב.
+   עדכון: בסיום כל סשן שאישר אלמנט חדש - האלמנט נוסף לכאן + שורה באינדקס.
+   ============================================================================ */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-active:#7a0000;
+  --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-bg:#fdf7ea; --cc-warning-fg:#92400e; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --cc-progress-bg:#f3f4f6; --cc-progress-fg:#374151; --cc-progress-bar:#aa0000;
+  --status-pending-dot:#eab308; --status-impl-dot:#22c55e; --status-suspended-dot:#ef4444;
+  --status-not-impl-dot:#3b82f6; --status-core-dot:#06b6d4; --status-cornerstone-dot:#f59e0b;
+  --status-not-impl-bg:#dbeafe; --status-not-impl-fg:#1e40af; --status-impl-bg:#dcfce7; --status-impl-fg:#15803d;
+  --status-pending-bg:#fef9c3; --status-pending-fg:#a16207; --status-suspended-bg:#fee2e2; --status-suspended-fg:#991b1b;
+  --approval-draft-bg:#f3f4f6; --approval-draft-fg:#6b7280; --approval-draft-dot:#9ca3af;
+  --approval-approved-bg:#d3f0ec; --approval-approved-fg:#0f766e;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.12);
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  --auth-red:#aa0000;
+  /* השלמות גרסה 3 (S36) - טוקנים נוספים מ-global.css, כלשונם */
+  --cc-ease:140ms cubic-bezier(.2,0,0,1); --cc-icon-deco:#888888;
+  --auth-white:#ffffff; --auth-bg:#fafafa; --auth-border:#e5e5e5;
+  --auth-text:#2a2a2a; --auth-text-muted:#6b6b6b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:28px;line-height:1.5}
+
+/* --- global.css: המחלקות המשותפות, כלשונן --- */
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-family:var(--cc-font);font-size:15px;
+  color:var(--cc-text);background:var(--cc-surface);border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm)}
+.cc-input--ltr{direction:ltr;text-align:left}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5;margin-bottom:8px}
+.cc-msg--success{background:var(--cc-success-bg);color:var(--cc-success-fg);border-color:var(--cc-success-bar)}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.cc-msg--danger{background:var(--cc-danger-bg);color:var(--cc-danger-fg);border-color:var(--cc-danger-bar)}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 14px;
+  font-family:var(--cc-font);font-size:14px;background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn:hover{border-color:var(--cc-action)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--primary{background:var(--cc-action);border-color:var(--cc-action);color:#fff;font-weight:600}
+.cc-btn--primary:hover{background:var(--cc-action-hover)}
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider)}
+.tab{border:0;background:transparent;font:inherit;font-size:13.5px;color:var(--cc-text-2);padding:8px 13px;cursor:pointer;
+  border-bottom:2px solid transparent}
+.tab:hover{color:var(--auth-red)}
+.tab.active{color:var(--auth-red);border-bottom-color:var(--auth-red);font-weight:700}
+
+/* --- SegmentsSection.svelte: שדות בחירה עם צ'יפים --- */
+.seg-pickfield{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:var(--cc-row-h);
+  width:100%;max-width:340px;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);
+  background:var(--cc-surface);padding:6px 12px;cursor:pointer;text-align:start;font:15px var(--cc-font);color:var(--cc-text)}
+.seg-pickfield:hover{border-color:var(--cc-action)}
+.seg-pick-ph{color:var(--cc-text-3)}
+.seg-pick-chev{margin-inline-start:auto;color:var(--cc-text-3);font-size:12px}
+.seg-pill{display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;
+  border-radius:var(--cc-radius-pill);padding:3px 10px;font-size:13px;font-weight:600;color:var(--cc-text-2)}
+.seg-pill-x{color:var(--cc-text-3);cursor:pointer;padding:0 2px}
+.seg-pill-x:hover{color:var(--cc-action)}
+.nhtag{display:inline-flex;align-items:center;font-size:10px;font-weight:700;letter-spacing:.2px;
+  padding:0 6px;height:15px;border-radius:4px;margin-inline-start:6px;background:#eef3fb;color:#1d4ed8;border:1px solid #1d4ed833}
+
+/* --- OrderDrawer: תיבת סה"כ --- */
+.totalbox{background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:12px 14px;max-width:560px}
+.totrow{display:flex;gap:22px;flex-wrap:wrap}
+.tot{flex:1;min-width:110px}
+.tot .tl{font-size:11.5px;color:var(--cc-text-2);margin-bottom:3px}
+.tot .tv{font-size:17px;font-weight:700}
+.tot .tv small{font-size:11px;color:var(--cc-text-3);font-weight:600;margin-inline-end:4px}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}
+.nh-diff{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}
+
+/* --- PartnersScreen / SettingsScreen: נקודות מצב --- */
+.acc-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;display:inline-block}
+.acc-dot--green{background:var(--status-impl-dot)}
+.acc-dot--yellow{background:var(--status-pending-dot)}
+.acc-dot--red{background:var(--status-suspended-dot)}
+.acc-dot--none{background:#cbd5e1}
+.acc-dot--ring{background:transparent;box-shadow:inset 0 0 0 2px var(--status-impl-dot)}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:56px;padding:2px 8px;
+  border-radius:var(--cc-radius-pill);font-size:12px;font-weight:600}
+.badge.impl{background:#dcfce7;color:#15803d}
+.badge.pending{background:#fef9c3;color:#a16207}
+.badge.suspended{background:#fee2e2;color:#991b1b}
+.badge.approval-draft{background:var(--approval-draft-bg);color:var(--approval-draft-fg)}
+.badge.approval-approved{background:var(--approval-approved-bg);color:var(--approval-approved-fg)}
+
+/* --- global.css: מעטפת הקונסולה - rail + header + drawer + banners --- */
+.rail{flex:0 0 auto;width:196px;border-inline-start:1px solid var(--cc-border);background:var(--cc-surface);
+  padding:8px 6px;display:flex;flex-direction:column;gap:2px}
+.rail-group{font-size:11px;color:var(--cc-text-3);padding:10px 10px 4px}
+.rail-item{position:relative;display:flex;align-items:center;gap:10px;min-height:44px;padding:0 9px;
+  border-radius:var(--cc-radius-sm);color:var(--cc-text);cursor:pointer;font-size:14px;text-decoration:none;border:0;background:transparent;font-family:var(--cc-font);width:100%;text-align:start}
+.rail-item:hover{background:var(--cc-sunken)}
+.rail-item.active{background:var(--cc-action-weak);color:var(--cc-action)}
+.rail-item.active::before{content:"";position:absolute;inset-inline-start:0;top:8px;bottom:8px;width:3px;
+  background:var(--cc-action);border-radius:2px}
+.rail-item.disabled{color:var(--cc-text-disabled);cursor:default}
+.rail-sep{border-top:.5px solid var(--cc-divider);margin:6px 4px}
+.full-name{font-size:17px;font-weight:600;color:var(--auth-red);line-height:1.2}
+.full-name sup{font-size:12px;vertical-align:super;color:var(--cc-text-3)}
+.studio-tagline{font-size:13px;color:var(--cc-text-2);direction:ltr;unicode-bidi:embed}
+.sync-indicator{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:4px 11px}
+.sync-indicator.syncing{background:var(--cc-action-weak);color:var(--cc-action)}
+.gen-progress-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--cc-radius-sm);
+  background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:13.5px;border-inline-start:4px solid var(--cc-info-bar)}
+.lib-spinner{width:15px;height:15px;border:2px solid var(--cc-border-strong);border-top-color:var(--cc-action);
+  border-radius:50%;animation:libspin 1s linear infinite;flex:0 0 auto}
+@keyframes libspin{to{transform:rotate(360deg)}}
+.cc-empty{text-align:center;padding:28px 24px;color:var(--cc-text-3);border:1px dashed var(--cc-border-strong);border-radius:var(--cc-radius)}
+.cc-empty h4{font-size:15px;font-weight:600;color:var(--cc-text-2);margin-bottom:4px}
+.entity-item{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border-bottom:.5px solid var(--cc-divider);max-width:340px}
+.entity-item.active{background:#fff5f5;border-inline-end:3px solid var(--auth-red)}
+.entity-name{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entity-id{font-size:11px;color:var(--cc-text-3);direction:ltr}
+.badge.not-impl{background:#dbeafe;color:#1e40af}
+.badge.core{background:#cffafe;color:#0e7490}
+.badge.cornerstone{background:#fef3c7;color:#b45309}
+.score-chip{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:2px 8px;
+  border-radius:var(--cc-radius-pill);font-size:12px;font-weight:700}
+.score-chip--green{background:#dcfce7;color:#15803d}
+.score-chip--orange{background:#fef3c7;color:#92400e}
+.score-chip--red{background:#fee2e2;color:#991b1b}
+.score-chip--gray{background:#f3f4f6;color:#6b7280}
+.lib-drawer{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);
+  box-shadow:var(--cc-shadow);max-width:420px;overflow:hidden}
+.lib-drawer__head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--cc-border);font-weight:700;font-size:14.5px}
+
+/* ============================================================================
+   גרסה 3 (S36) - סעיפים 2ג-2ה + 7. גרסה 4 (S35) - סעיף 7 אושר והפך ל-2ו קבוע; el-expand נוסף. המקור מצוין בהערת כל משפחה.
+   ============================================================================ */
+
+/* --- global.css: טבלת נתונים (2ג) --- */
+.cc-table-wrap{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);overflow:visible}
+.cc-table{width:100%;border-collapse:collapse;font-size:14px}
+.cc-table th{text-align:start;font-weight:600;color:var(--cc-text-3);font-size:11.5px;letter-spacing:.2px;
+  border-bottom:1px solid var(--cc-border-strong);padding:10px 12px;white-space:nowrap;background:var(--cc-surface)}
+.cc-table td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);color:var(--cc-text);vertical-align:middle}
+.cc-table tr:last-child td{border-bottom:0}
+.cc-table tbody tr{transition:background var(--cc-ease)}
+.cc-table tbody tr.is-click{cursor:pointer}
+.cc-table tbody tr:hover{background:var(--cc-bg)}
+.cc-table .ltr{direction:ltr;text-align:right;font-size:13px;color:var(--cc-text-2)}
+.cc-table .primary{font-weight:500;color:var(--cc-text)}
+.cc-table .sub{font-size:12px;color:var(--cc-text-3)}
+.cell-actions{display:flex;gap:4px;justify-content:flex-start;align-items:center}
+/* --- OrdersScreen/FoldersScreen (CSS ברכיב, מועמד לעלייה ל-global): מיון + בחירה --- */
+.sorth{cursor:pointer;user-select:none;white-space:nowrap}
+.sorth:hover{color:var(--cc-action)}
+.sarrow{color:var(--cc-action);font-size:10px;margin-inline-start:4px}
+.selbox{width:16px;height:16px;accent-color:var(--cc-action);cursor:pointer}
+
+/* --- global.css: גלולת סוג הזמנה + נקודת שלב (2ג) --- */
+.cc-pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;
+  padding:3px 9px;border-radius:var(--cc-radius-pill);direction:ltr}
+.cc-pill--it{background:var(--status-not-impl-bg);color:var(--status-not-impl-fg)}
+.cc-pill--bk{background:var(--status-impl-bg);color:var(--status-impl-fg)}
+.cc-pill--arch{background:var(--approval-draft-bg);color:var(--approval-draft-fg)}
+.cc-pill--cit{background:#cffafe;color:#0e7490} /* אושר S35 (27.07.2026) - נכנס לקוד עם כרטיס ה-CIT; צבעי משפחת core */
+.stagedot{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--cc-text-2)}
+.stagedot::before{content:'';width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0}
+.stagedot.offer::before{background:var(--status-not-impl-dot)}
+.stagedot.booking::before{background:var(--status-impl-dot)}
+.stagedot.arch::before{background:var(--approval-draft-dot)}
+
+/* --- global.css: רשת כרטיסים + כרטיס תיקייה (2ג) --- */
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.cc-card{position:relative;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);
+  padding:14px 16px;cursor:pointer;min-height:104px;display:flex;flex-direction:column;gap:10px;
+  transition:border-color var(--cc-ease),box-shadow var(--cc-ease)}
+.cc-card:hover{border-color:var(--cc-border-strong);box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.cc-card-head{display:flex;align-items:flex-start;gap:8px}
+.cc-card-name{font-size:15px;font-weight:600;color:var(--cc-text);flex:1 1 auto;word-break:break-word;line-height:1.4}
+.cc-card-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cc-card-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:auto}
+.cc-card-count{font-size:13px;color:var(--cc-text-3)}
+.cc-card--folder{min-height:96px}
+.cc-card--folder.has-strip{padding-top:46px}  /* רק בכרטיס שיש בו פקדים */
+.cc-card--folder .ficon{width:34px;height:34px;color:var(--cc-icon-deco)}
+/* S41-EXPLORER 11.08 (B-1110) - רצועת הפקדים בראש כרטיס התיקייה */
+.cc-card-sel{position:absolute;top:7px;inset-inline-start:6px;z-index:2;width:34px;height:34px;
+  display:inline-flex;align-items:center;justify-content:center;line-height:0;cursor:pointer;
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);background:var(--cc-surface);
+  transition:border-color var(--cc-ease),background var(--cc-ease)}
+.cc-card-sel:hover,.cc-card-sel.is-on{border-color:var(--cc-action);background:var(--cc-action-weak)}
+/* D-347 12.08 - הווריאנט בשורה, לכרטיס שיש לו שורת כותרת */
+.cc-card-sel--inline{position:static;flex:0 0 auto;margin-top:-4px}
+.cc-card-menu{position:absolute;top:7px;inset-inline-end:6px}
+.cc-card.is-picked{border-color:var(--cc-action)}
+.selbox{width:16px;height:16px;accent-color:var(--cc-action);cursor:pointer}
+/* S41-EXPLORER 11.08 - שורת הנתיב בתוצאת חיפוש ובסל המיחזור */
+.cc-respath{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:12px;color:var(--cc-text-3);margin-top:2px}
+.cc-respath .sep{color:var(--cc-text-3);font-size:11px}
+.cc-respath a{color:var(--cc-text-3);text-decoration:none;border-radius:4px;padding:1px 3px;cursor:pointer}
+.cc-respath a:hover{color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-card--new{align-items:center;justify-content:center;text-align:center;border-style:dashed;border-color:var(--cc-action);color:var(--cc-action);font-weight:600;gap:6px}
+/* --- FoldersScreen (CSS ברכיב): יעד גרירה + פס בחירה מקומי --- */
+.droptarget{outline:2px solid var(--cc-action);outline-offset:-2px;background:var(--cc-action-weak)}
+.bulkbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-sm);background:var(--cc-surface);padding:8px 12px;margin-bottom:12px;font-size:13px}
+
+/* --- global.css: פס נתיב הסייר (2ג) --- */
+.cc-explorer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--cc-divider)}
+.cc-explorer-bar .cc-spacer{margin-inline-start:auto}
+.cc-crumbs{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--cc-text-2);flex-wrap:wrap;min-height:var(--cc-row-h)}
+.cc-crumbs a{color:var(--cc-text-2);cursor:pointer;text-decoration:none;padding:2px 4px;border-radius:4px}
+.cc-crumbs a:hover{color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-crumbs b{color:var(--cc-text);font-weight:600}
+.cc-crumbs .sep{color:var(--cc-text-3);font-size:12px}
+
+/* --- global.css: תפריט שלוש נקודות + כפתור אייקון (2ג) --- */
+.cc-menu-wrap{position:relative}
+.cc-menu{position:absolute;inset-inline-end:0;top:calc(var(--cc-row-h) + 2px);min-width:160px;background:var(--cc-surface);
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);box-shadow:var(--cc-shadow);z-index:20;overflow:hidden}
+.cc-menu button{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:0 14px;border:0;
+  background:transparent;font-family:var(--cc-font);font-size:14px;color:var(--cc-text);cursor:pointer;text-align:start}
+.cc-menu button:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-menu button.cc-menu--danger{color:var(--cc-danger-fg)}
+.cc-menu button.cc-menu--danger:hover{background:var(--cc-danger-bg)}
+.cc-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--cc-row-h);height:var(--cc-row-h);
+  padding:0;border:1px solid transparent;border-radius:var(--cc-radius-sm);background:transparent;color:var(--cc-text-2);cursor:pointer;
+  transition:background var(--cc-ease)}
+.cc-icon-btn:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-icon-btn--sm{width:34px;height:34px}
+
+/* --- global.css (משפחת auth-* הוותיקה - מועמדת לאיחוד עם cc-btn): פס פעולות מרוכזות --- */
+.bulk-action-bar{display:flex;flex-direction:column;align-items:stretch;gap:10px;flex-wrap:wrap;padding:12px 14px;
+  margin:8px 10px;background:var(--auth-white);border:1px solid var(--auth-border);border-radius:10px;font-size:14px}
+.bulk-bar-head{display:flex;align-items:center;gap:8px}
+.bulk-actions-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.bulk-count{font-weight:600;color:var(--auth-text);font-size:14px;margin-left:4px;padding:4px 10px;background:var(--auth-bg);border-radius:12px}
+.bulk-clear-btn{font:inherit;font-size:16px;line-height:1;padding:4px 10px;margin-left:4px;background:transparent;
+  color:var(--auth-text-muted);border:1px solid transparent;border-radius:6px;cursor:pointer}
+.bulk-clear-btn:hover{background:var(--cc-action-weak);color:var(--auth-red)}
+.bulk-action-btn{font:inherit;font-size:13px;padding:9px 14px;min-height:38px;border-radius:8px;border:1px solid var(--auth-border);
+  background:var(--auth-bg);color:var(--auth-text);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;
+  transition:background .12s,border-color .12s,color .12s}
+.bulk-action-btn:hover{background:var(--cc-action-weak);border-color:var(--auth-red);color:var(--auth-red)}
+.bulk-action-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* --- global.css: באנר התקדמות מרוכזת (שים לב: border-right פיזי, RTL בלבד - כלשונו) --- */
+.bulk-progress-banner{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:8px 10px 4px 10px;
+  background:var(--cc-info-bg);border:.5px solid var(--cc-border);border-right:4px solid var(--cc-info-bar);
+  border-radius:8px;color:var(--cc-info-fg);font-size:14px;line-height:1.5;animation:gen-banner-in 180ms ease-out}
+.bulk-progress-banner__spinner{display:inline-block;width:18px;height:18px;border:2px solid #9ca3af;border-top-color:transparent;
+  border-radius:50%;animation:gen-spin .8s linear infinite;flex-shrink:0}
+.bulk-progress-banner__text{flex:1}
+.bulk-progress-banner__text strong{color:var(--cc-text);font-weight:600}
+.bulk-progress-banner__current{color:var(--auth-text);font-size:13px;opacity:.85}
+.bulk-progress-banner__stats{display:flex;gap:14px;font-size:13px;margin-top:4px;flex-wrap:wrap}
+.bulk-progress-banner__stat-ok{color:#15803d;font-weight:600}
+.bulk-progress-banner__stat-fail{color:#991b1b;font-weight:600}
+.bulk-progress-banner__stat-skip{color:var(--auth-text-muted)}
+.bulk-progress-banner--error{background:var(--cc-danger-bg);border:.5px solid var(--cc-danger-bar);border-right:4px solid var(--cc-danger-bar);color:var(--cc-danger-fg)}
+.bulk-progress-banner--error .bulk-progress-banner__text strong{color:var(--cc-danger-fg)}
+.bulk-progress-banner--success{background:var(--cc-success-bg);border-color:var(--cc-success-bar);border-right-color:var(--cc-success-bar);color:var(--cc-success-fg)}
+.bulk-progress-banner__close{background:transparent;border:1px solid currentColor;color:inherit;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600}
+.bulk-progress-banner__fail-list{margin:6px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.6;max-height:180px;overflow-y:auto}
+.bulk-progress-banner__fail-list li{padding:3px 0;border-bottom:1px dashed rgba(0,0,0,.12)}
+.bulk-progress-banner__fail-list li:last-child{border-bottom:none}
+.bulk-progress-banner__fail-id{font-family:monospace;font-weight:600;margin-left:6px}
+@keyframes gen-spin{to{transform:rotate(360deg)}}
+@keyframes gen-banner-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* --- global.css: מעטפת הדיאלוג + הודעת שדה + הודעת התקדמות (2ד) --- */
+.app-dialog-ov{position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center}
+.app-dialog{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:14px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);padding:18px 20px;width:330px;max-width:92%;font-family:var(--cc-font)}
+.app-dialog__title{font-size:16px;font-weight:600;color:var(--cc-text);margin-bottom:6px}
+.app-dialog__body{font-size:13px;color:var(--cc-text-2);line-height:1.5;margin-bottom:12px}
+.app-dialog__input{width:100%;box-sizing:border-box;height:40px;border:.5px solid var(--cc-border-strong);
+  border-radius:8px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--cc-text)}
+.app-dialog__input:focus{outline:none;border-color:var(--cc-action);box-shadow:0 0 0 3px var(--cc-action-weak)}
+.app-dialog__actions{display:flex;gap:10px;margin-top:16px}
+.cc-field-msg{font-size:12px;margin-top:5px;display:flex;align-items:center;gap:5px}
+.cc-field-msg--error{color:var(--cc-danger-fg)}
+.cc-field-msg--success{color:var(--cc-success-fg)}
+.cc-field-msg--warning{color:var(--cc-warning-fg)}
+.cc-msg--progress{background:var(--cc-progress-bg);color:var(--cc-progress-fg);border-color:var(--cc-progress-bar)}
+/* --- FolderPickerDialog + DocPickerDialog (CSS ברכיב, משוכפל מילולית - מועמד לעלייה ל-global): רשימת בוחר --- */
+.flist{max-height:300px;overflow-y:auto;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm)}
+.frow{display:flex;align-items:center;gap:8px;border-bottom:.5px solid var(--cc-divider);padding-inline-end:8px}
+.frow:last-child{border-bottom:none}
+.fnav{display:flex;align-items:center;gap:8px;flex:1 1 auto;min-height:42px;padding:0 12px;border:0;background:transparent;
+  font:14px var(--cc-font);color:var(--cc-text);cursor:pointer;text-align:start;min-width:0}
+.fnav:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.fchev{margin-inline-start:auto;color:var(--cc-text-3)}
+/* --- NhLinkDialog (CSS ברכיב): שורת תוצאת חיפוש CRM --- */
+.vrow{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-sm);background:var(--cc-surface);margin-bottom:7px}
+.vrow:hover{border-color:var(--cc-action);background:var(--cc-action-weak)}
+
+/* --- StepBar.svelte (CSS ברכיב): סרגל שלבי האשף (2ה) --- */
+.cc-steps{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--cc-divider);margin-bottom:16px}
+.cc-step{display:inline-flex;align-items:center;min-height:var(--cc-row-h);padding:0 14px;gap:8px;
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-pill);background:var(--cc-surface);
+  color:var(--cc-text-3);font:500 13px var(--cc-font);white-space:nowrap;cursor:pointer;
+  transition:background var(--cc-ease),border-color var(--cc-ease)}
+.cc-step__n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;
+  border-radius:50%;background:var(--cc-sunken);font-weight:700;font-size:11px;color:var(--cc-text-2);flex:0 0 auto}
+.cc-step.is-done{color:var(--cc-success-fg);border-color:var(--cc-success-bar)}
+.cc-step__n--done{background:var(--cc-success-bg);color:var(--cc-success-fg);box-shadow:inset 0 0 0 1px var(--cc-success-bar)}
+.donecheck{color:var(--cc-success-fg)}
+.cc-step.is-active{background:var(--cc-action-weak);border-color:var(--cc-action-border);color:var(--cc-action);font-weight:600}
+.cc-step.is-active .cc-step__n{background:var(--cc-surface);color:var(--cc-action)}
+.cc-step.is-dim{opacity:.45;border-style:dashed;cursor:default}
+
+/* --- global.css: פס שמירה + מתג cc-switch (2ה) --- */
+.cc-savebar{position:sticky;bottom:0;margin:16px -24px -22px -24px;padding:12px 24px;background:var(--cc-surface);
+  border-top:1px solid var(--cc-border-strong);display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  z-index:20;box-shadow:0 -2px 8px rgba(0,0,0,.05)}
+.cc-savebar__dot{width:8px;height:8px;border-radius:50%;background:var(--cc-action);flex-shrink:0}
+.cc-savebar__text{font-size:13px;color:var(--cc-text);flex:1}
+.cc-savebar__rationale{display:flex;align-items:center;gap:10px;width:100%;padding-top:10px;border-top:1px solid var(--cc-border)}
+.cc-savebar__rule{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--cc-text-2);white-space:nowrap;cursor:pointer;min-height:44px}
+.cc-savebar__hint{width:100%;font-size:12px;color:var(--cc-text-3)}
+.cc-switch{position:relative;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:none;padding:0;cursor:pointer;flex-shrink:0}
+.cc-switch__track{position:relative;width:40px;height:22px;border-radius:var(--cc-radius-pill);
+  background:var(--cc-sunken);border:1px solid var(--cc-border-strong);transition:background var(--cc-ease),border-color var(--cc-ease)}
+.cc-switch__knob{position:absolute;top:2px;inset-inline-start:2px;width:16px;height:16px;border-radius:50%;
+  background:#fff;border:1px solid var(--cc-border-strong);transition:inset-inline-start var(--cc-ease);
+  display:flex;align-items:center;justify-content:center}
+.cc-switch.is-on .cc-switch__track{background:var(--cc-action);border-color:var(--cc-action)}
+.cc-switch.is-on .cc-switch__knob{inset-inline-start:20px;border-color:transparent}
+
+/* --- global.css: רשת עריכת SEO (ie-*) (2ה) --- */
+.ie-grid{padding:2px 0}
+.ie-row{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:start;padding:9px 0;border-bottom:1px dashed var(--cc-divider)}
+.ie-row:last-of-type{border-bottom:0}
+.ie-row__label{font-size:13px;color:var(--cc-text-2);padding-top:9px}
+.ie-row__site{font-size:12px;color:var(--cc-text-3);margin-bottom:5px;line-height:1.4}
+.ie-input,.ie-textarea{width:100%;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);
+  padding:8px 10px;font-size:14px;color:var(--cc-text);font-family:inherit;background:var(--cc-surface)}
+.ie-input{height:38px}
+.ie-count{font-size:11px;color:var(--cc-text-3);text-align:left;margin-top:3px}
+.ie-count.rec-form__charcount--warn{color:#92400e}
+.ie-count.rec-form__charcount--err{color:var(--cc-action)}
+.ie-related{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ie-sublabel{font-size:12px;color:var(--cc-text-3);margin-bottom:3px}
+
+/* --- global.css: ציר אירועים (2ה) --- */
+.timeline{margin:12px 0;padding:12px 14px;background:var(--cc-sunken);border-inline-start:3px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm)}
+.timeline-header{display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px;margin-bottom:10px;color:var(--cc-text-2)}
+.timeline-event{max-width:620px;padding:11px 0;font-size:13px;border-bottom:1px solid var(--cc-divider)}
+.timeline-event:last-of-type{border-bottom:none}
+.timeline-main{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.timeline-name{display:flex;align-items:center;gap:8px;min-width:0}
+.timeline-icon{color:var(--cc-text-3);min-width:18px;display:inline-flex}
+.timeline-label{font-weight:400;color:var(--cc-text)}
+.timeline-time{color:var(--cc-text-3);font-family:'Courier New',monospace;font-size:12px;direction:ltr;white-space:nowrap;flex-shrink:0}
+.timeline-details{color:var(--cc-text-3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  unicode-bidi:plaintext;text-align:right;margin-inline-start:26px;margin-top:3px}
+.timeline-expand{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:6px 8px;min-height:var(--cc-row-h);
+  background:transparent;border:none;border-radius:var(--cc-radius-sm);cursor:pointer;font-size:13px;font-weight:400;color:var(--cc-text-2);font-family:var(--cc-font)}
+.timeline-expand:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+
+/* --- global.css (משפחת c11, PublishGate): שער פרסום - השוואת עמודות (2ה) --- */
+.c11-diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:auto;flex:1;min-height:120px}
+.c11-diff-col{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:10px 12px;
+  background:var(--cc-surface);overflow:auto;font-size:13px;line-height:1.6}
+.c11-diff-title{font-size:13.5px;font-weight:600;color:var(--cc-text-2);margin-bottom:8px}
+.c11-seg{font-size:13px;line-height:1.6;color:var(--cc-text)}
+.c11-seg--h2{font-size:15px;font-weight:600;margin:8px 0 2px}
+.c11-seg--h3{font-size:14px;font-weight:600;margin:8px 0 2px}
+.c11-seg--li{display:flex;gap:7px;padding:1px 0}
+.c11-seg-dot{color:var(--cc-text-3)}
+.c11-del{background:var(--cc-danger-bg);color:var(--cc-danger-fg);text-decoration:line-through;border-radius:4px;padding:2px 6px;margin:3px 0}
+.c11-add{background:var(--cc-success-bg);border-radius:4px;padding:2px 6px;margin:3px 0}
+
+/* --- SettingsScreen.svelte (CSS ברכיב): שורות הגדרות + שורת בוחר + נקודות pdot (2ה) --- */
+.set-rows{border:1px solid var(--cc-border);border-radius:12px;overflow:hidden;margin-top:14px;background:var(--cc-surface)}
+.set-row{display:flex;align-items:center;gap:12px;width:100%;padding:0 14px;min-height:54px;border:0;
+  border-bottom:1px solid var(--cc-divider);background:transparent;cursor:pointer;font:inherit;color:var(--cc-text);text-align:start}
+.set-row:last-child{border-bottom:0}
+.set-row:hover{background:var(--cc-bg)}
+.set-row--dis{color:var(--cc-text-disabled);cursor:default}
+.set-row--dis:hover{background:transparent}
+.set-row__t{flex:1;font-weight:600;font-size:14px}
+.set-row__d{font-weight:400;color:var(--cc-text-3);font-size:12.5px}
+.set-row--dis .set-row__d{color:var(--cc-text-disabled)}
+.set-row__chev{color:var(--cc-text-3)}
+.set-pill{font-size:11px;padding:1px 9px;border-radius:var(--cc-radius-pill);border:1px dashed var(--cc-border-strong);color:var(--cc-text-3)}
+.set-picker{border:1px solid var(--cc-border);border-radius:10px;overflow:hidden}
+.set-pk{display:flex;align-items:center;gap:10px;width:100%;padding:10px 13px;border:0;
+  border-bottom:1px solid var(--cc-divider);background:transparent;cursor:pointer;font:inherit;color:var(--cc-text);text-align:start}
+.set-pk:last-child{border-bottom:0}
+.set-pk:hover{background:var(--cc-bg)}
+.set-pk__meta{font-size:11.5px;color:var(--cc-text-3);display:inline-flex;align-items:center;gap:5px}
+.set-pk__sep{color:var(--cc-text-disabled)}
+.set-pk__dots{margin-inline-start:auto;display:inline-flex;align-items:center;gap:10px;font-size:12.5px;flex:0 0 auto}
+.pdot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-inline-end:4px;vertical-align:middle}
+.pdot--g{background:#16a34a}
+.pdot--prev{background:transparent;box-shadow:inset 0 0 0 2px #16a34a}
+.pdot--y{background:#eab308}
+.pdot--r{background:#dc2626}
+.pdot--n{background:#b8b8b8}
+.set-pk__warn{font-size:11px;padding:1px 9px;border-radius:var(--cc-radius-pill);background:#fef9e7;color:#a16207;border:1px solid #eab30855}
+
+/* --- global.css: מסך כלי + מתג מפולח חי (cc-seg) (2ה) --- */
+.tool-view{padding:18px 20px}
+.tool-view__col{max-width:720px}
+.tool-view__col--wide{max-width:1280px}
+.tool-view__title{font-size:18px;font-weight:500;color:var(--cc-text)}
+.tool-view__desc{font-size:13px;color:var(--cc-text-2);margin-top:3px;max-width:440px;line-height:1.5}
+.tool-result{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:10px;padding:14px 16px}
+.tool-result__title{font-size:13px;font-weight:500;color:var(--cc-text-3);margin-bottom:10px}
+.tool-result__row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:.5px solid var(--cc-divider);font-size:13px}
+.tool-result__row:last-child{border-bottom:0}
+.tool-result__row .k{color:var(--cc-text-2)}
+.tool-result__row .v{color:var(--cc-text)}
+.tool-pill{font-size:11px;border-radius:999px;padding:2px 9px}
+/* --- IntentScreen.svelte (CSS ברכיב, IntentScreen - מועמד לעלייה ל-global): גלולת שגיאה בטבלת התוצאה --- */
+.tool-pill-danger{font-size:11px;border-radius:999px;padding:2px 9px;background:var(--cc-danger-bg);color:var(--cc-danger-fg)}
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden}
+.cc-seg button{min-height:var(--cc-row-h);padding:0 18px;border:0;background:var(--cc-surface);font-family:var(--cc-font);
+  font-size:14px;font-weight:600;color:var(--cc-text-2);cursor:pointer;transition:background var(--cc-ease)}
+.cc-seg button + button{border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--sm button{min-height:36px;padding:0 12px;font-size:13px}
+/* --- GscSyncScreen + IntentScreen (CSS ברכיב, משוכפל בשניהם - מועמד לאיחוד): שדה כלי + ספינר --- */
+.tool-field{margin-top:16px}
+.tool-field__label{font-size:13px;font-weight:600;color:var(--cc-text-2);margin-bottom:7px;display:block}
+.tool-field__hint{font-size:12px;color:var(--cc-text-3);margin-top:6px}
+.tool-spin{width:15px;height:15px;border:2px solid #9ca3af;border-top-color:transparent;border-radius:50%;
+  animation:tsp .8s linear infinite;flex-shrink:0;display:inline-block;margin-inline-end:8px;vertical-align:-2px}
+@keyframes tsp{to{transform:rotate(360deg)}}
+
+/* --- global.css: מעטפת מסך מוטמע + סרגל סינון וחיפוש (2ה) --- */
+.cc-console{position:fixed;inset:20px;background:var(--cc-surface);border-radius:var(--cc-radius-lg,16px);box-shadow:var(--cc-shadow);
+  display:flex;flex-direction:column;overflow:hidden;font-family:var(--cc-font);color:var(--cc-text)}
+.cc-console--embedded{position:static;inset:auto;box-shadow:none;border:1px solid var(--cc-border);overflow:visible;min-height:320px}
+.cc-console--embedded .cc-body{overflow:visible}
+.cc-topbar{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--cc-divider);flex:0 0 auto}
+.cc-topbar h2{font-size:18px;font-weight:600;margin:0;display:flex;align-items:center;gap:10px}
+.cc-topbar .cc-count{font-size:13px;font-weight:500;color:var(--cc-text-3);background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:2px 10px}
+.cc-topbar .cc-spacer{margin-inline-start:auto}
+.cc-body{flex:1 1 auto;overflow-y:auto;padding:20px;background:var(--cc-bg)}
+.cc-filterbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.cc-searchwrap{position:relative;flex:1 1 220px;min-width:180px}
+.cc-searchwrap .cc-input{padding-inline-start:36px;padding-inline-end:34px}
+.cc-searchclear{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);width:22px;height:22px;
+  border:0;border-radius:50%;background:var(--cc-sunken);color:var(--cc-text-3);font-size:13px;line-height:1;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.cc-searchclear:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+/* --- OrdersScreen (CSS ברכיב): כפתור פילטר --- */
+.fbtn{min-height:36px;padding:0 12px;font-size:13px}
+.fbtn.on{background:var(--cc-action-weak);border-color:var(--cc-action);color:var(--cc-action)}
+
+/* --- global.css: מקטע מתקפל + טבלת Search Console (2ה) --- */
+.cc-sec{margin-top:10px;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);overflow:hidden}
+.cc-sec__head{display:flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px}
+.cc-sec__title{font-size:14px;font-weight:600;color:var(--cc-text-2)}
+.cc-sec__sub{font-size:12px;font-weight:400;color:var(--cc-text-3)}
+.cc-sec__spacer{margin-inline-start:auto}
+.cc-sec__body{display:none;padding:12px 16px;border-top:1px solid var(--cc-divider)}
+.cc-sec--open .cc-sec__body{display:block}
+.cc-gsc-table{width:100%;border-collapse:collapse;font-size:13px;color:var(--cc-text)}
+.cc-gsc-table th{padding:6px 8px;font-size:12px;font-weight:600;color:var(--cc-text-3);border-bottom:1px solid var(--cc-divider);cursor:pointer;user-select:none;text-align:right}
+.cc-gsc-table td{padding:7px 8px;border-bottom:1px solid var(--cc-divider)}
+.cc-gsc-table tr:last-child td{border-bottom:0}
+
+/* --- global.css: יומן פעולות (2ה) --- */
+.journal-filters{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.journal-pill{min-height:40px;display:inline-flex;align-items:center;padding:0 14px;font-size:13px;border-radius:999px;
+  background:var(--cc-surface);border:1px solid var(--cc-border-strong);color:var(--cc-text-2);cursor:pointer;
+  font-family:var(--cc-font);white-space:nowrap;flex-shrink:0;transition:border-color var(--cc-ease)}
+.journal-pill:hover{border-color:var(--cc-action)}
+.journal-pill.is-active{background:var(--cc-action-weak);border-color:var(--cc-action-border);color:var(--cc-action);font-weight:600}
+.journal-pill--muted:not(.is-active){border-style:dashed;color:var(--cc-text-3)}
+.journal-datelabel{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--cc-text-2);white-space:nowrap}
+.journal-dateinput{height:40px;font-size:13px;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);
+  padding:0 8px;color:var(--cc-text);background:var(--cc-surface);font-family:var(--cc-font)}
+.journal-card{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:6px 16px 14px}
+.journal-day{font-size:13px;font-weight:500;color:var(--cc-text-3);padding:12px 0 6px}
+.journal-row{display:flex;align-items:center;gap:10px;min-height:var(--cc-row-h);border-bottom:1px solid var(--cc-divider);padding:2px 4px}
+.journal-row:last-of-type{border-bottom:0}
+.journal-row--fail{background:var(--cc-danger-bg);border-right:3px solid var(--cc-danger-bar);border-radius:var(--cc-radius-sm)}
+.journal-row--fail .journal-label{color:var(--cc-danger-fg)}
+.journal-time{font-family:monospace;font-size:12px;color:var(--cc-text-3);direction:ltr;width:38px;flex-shrink:0}
+.journal-label{font-size:13px;color:var(--cc-text);width:150px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.journal-chip{cursor:pointer;max-width:480px;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;flex-shrink:0}
+.journal-details{font-family:monospace;font-size:12px;color:var(--cc-text-3);overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;direction:ltr;text-align:left;flex:1;min-width:0}
+/* JournalScreen (CSS ברכיב): צ'יפ היומן - טקסט חשוף, לא גלולה */
+.journal-row .cc-chip{background:transparent;border:0;padding:0;border-radius:0;font-size:13px;font-family:inherit;color:var(--cc-text-2)}
+.journal-row .cc-chip.journal-chip{color:var(--cc-action);cursor:pointer}
+
+/* --- מוקאפ S32f (מוצע - ממתין לאישור סופי S35; טרם ב-global.css): pr-* + dlg-* --- */
+.pr-steps{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.pr-step{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--cc-text-2);
+  background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius-pill);padding:5px 13px}
+.pr-step b{width:17px;height:17px;border-radius:50%;background:var(--cc-sunken);display:inline-flex;
+  align-items:center;justify-content:center;font-size:11px;color:var(--cc-text-2)}
+.pr-step.active{border-color:var(--cc-action);color:var(--cc-action);font-weight:700}
+.pr-step.active b{background:var(--cc-action);color:#fff}
+.pr-arrow{color:var(--cc-text-3);font-size:12px}
+.pr-tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--cc-surface)}
+.pr-tbl th{text-align:start;font-weight:600;font-size:12px;color:var(--cc-text-2);padding:8px 10px;
+  border-bottom:2px solid var(--cc-border-strong);background:var(--cc-sunken)}
+.pr-tbl td{padding:7px 10px;border-bottom:1px solid var(--cc-divider);vertical-align:middle}
+.pr-tbl .num{direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.pr-src{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:4px}
+.pr-src--cat{background:#eef3fb;color:#1d4ed8;border:1px solid #1d4ed833}
+.pr-src--man{background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-src--ovr{background:#fef9c3;color:#a16207;border:1px solid #eab30855}
+.pr-vat{font-size:10.5px;padding:1px 7px;border-radius:var(--cc-radius-pill);background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-toggle{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-pill);overflow:hidden}
+.pr-toggle button{border:0;background:transparent;font:inherit;font-size:12px;padding:4px 12px;cursor:pointer;color:var(--cc-text-2)}
+.pr-toggle button.on{background:var(--cc-action);color:#fff;font-weight:700}
+.dlg{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);
+  display:flex;flex-direction:column;max-width:500px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.dlg__head{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken)}
+.dlg__title{font-size:13.5px;font-weight:700}
+.dlg__body{padding:14px;display:flex;flex-direction:column;gap:10px}
+.dlg-msg{max-width:90%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.55}
+.dlg-msg--user{align-self:flex-start;background:var(--cc-sunken);border-start-start-radius:4px}
+.dlg-msg--ai{align-self:flex-end;background:var(--cc-info-bg);border:1px solid var(--cc-border);border-start-end-radius:4px}
+.dlg-file{display:inline-flex;align-items:center;gap:8px;background:var(--cc-surface);border:1px solid var(--cc-border-strong);
+  border-radius:var(--cc-radius-sm);padding:7px 11px;font-size:12.5px;margin-top:6px}
+.dlg-file i{font-style:normal;font-size:16px}
+.dlg-act{border:1px solid var(--cc-action-border);background:var(--cc-action-weak);border-radius:var(--cc-radius-sm);
+  padding:10px 12px;font-size:13px;margin-top:8px}
+.dlg-act__t{font-weight:700;color:var(--cc-action);margin-bottom:5px;font-size:12.5px}
+.dlg-act__btns{display:flex;gap:8px;margin-top:9px}
+.dlg__bar{display:flex;align-items:center;gap:7px;padding:10px 12px;border-top:1px solid var(--cc-border)}
+.dlg__input{flex:1;min-height:38px;padding:0 12px;font:inherit;font-size:13.5px;border:1px solid var(--cc-border-strong);
+  border-radius:var(--cc-radius-pill);background:var(--cc-surface)}
+.dlg-ico{width:38px;height:38px;border-radius:50%;border:1px solid var(--cc-border-strong);background:var(--cc-surface);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;font-size:15px}
+
+.lib-idx{display:flex;flex-wrap:wrap;gap:6px 8px}
+.lib-idx a{font-size:12.5px;color:var(--cc-text-2);text-decoration:none;background:var(--cc-surface);
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-pill);padding:4px 12px}
+.lib-idx a:hover{border-color:var(--cc-action);color:var(--cc-action)}
+.lib-idx b{font-size:11.5px;color:var(--cc-text-3);font-weight:700;width:100%;margin-top:4px}
+/* --- פיגום קטלוג בלבד (lib-) --- */
+html{scroll-behavior:smooth}
+/* פיגום: כל דוגמה גמישה בשורת-קטלוג מקבלת בסיס-רוחב, כך שלצד כיתוב ארוך היא יורדת
+   לשורה מלאה משלה במקום להידחס לטור צר (תוקן אחרי בדיקת דב, 27.07) */
+.lib-row>[style*="flex:1"]{flex-basis:480px!important;min-width:0}
+
+.lib-up{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:0 0 auto;
+  border-radius:50%;background:var(--cc-sunken);color:var(--cc-text-3);text-decoration:none;font-size:12px;
+  border:1px solid var(--cc-border);vertical-align:middle;margin-inline-start:8px}
+.lib-up:hover{background:var(--cc-action-weak);color:var(--cc-action);border-color:var(--cc-action-border)}
+
+.lib-h1{font-size:21px;font-weight:700;margin-bottom:4px}
+.lib-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:8px;max-width:900px}
+.lib-rule{font-size:13px;background:var(--cc-action-weak);border:1px solid var(--cc-action-border);
+  border-radius:var(--cc-radius-sm);padding:10px 14px;margin:14px 0 22px;max-width:900px}
+.lib-sec{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);
+  padding:18px;margin-bottom:20px;max-width:980px}
+.lib-sec>h2{font-size:16px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--cc-divider)}
+.lib-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.lib-cap{font-size:12px;color:var(--cc-text-3);min-width:210px}
+.lib-sw{display:inline-flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--cc-text-3)}
+.lib-sw i{width:44px;height:28px;border-radius:6px;border:1px solid var(--cc-border);display:block}
+.lib-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.lib-tbl th{text-align:start;font-weight:700;color:var(--cc-text-2);padding:7px 10px;border-bottom:2px solid var(--cc-border-strong)}
+.lib-tbl td{padding:7px 10px;border-bottom:1px solid var(--cc-divider);vertical-align:top}
+.lib-code{font-family:Consolas,monospace;font-size:11.5px;background:var(--cc-sunken);border-radius:4px;padding:1px 6px;direction:ltr;display:inline-block}
+</style>
+<style>
+/* ===== אלמנטים חדשים מוצעים (S37-ASSIST, 19.08.2026 · עודכן 20.08.2026, גרסה 5) - Claude Design על בסיס הספרייה ===== */
+body{background:#e9ecef; font-family:var(--cc-font); color:var(--cc-text); margin:0; padding:26px; font-size:14px;}
+.mk-h1{font-size:24px; font-weight:700; margin:0 0 4px;}
+.mk-sub{color:var(--cc-text-2); font-size:13.5px; margin-bottom:20px; max-width:1100px;}
+.mk-sec{margin-bottom:26px;}
+.mk-sec > h2{font-size:17px; margin:0 0 4px;}
+.mk-note{font-size:13.5px; color:var(--cc-text-2); margin:0 0 10px; max-width:1100px;}
+.mk-new{display:inline-flex; font:700 11px var(--cc-font); background:var(--status-not-impl-bg); color:var(--status-not-impl-fg); border-radius:var(--cc-radius-pill); padding:2px 10px; margin-inline-start:8px; vertical-align:2px;}
+/* ==== הדשבורד - שחזור נאמן כרקע ==== */
+.dash{position:relative; width:100%; max-width:1280px; height:560px; background:var(--cc-bg); border:1px solid var(--cc-border-strong); border-radius:10px; overflow:hidden; box-shadow:var(--cc-shadow);}
+.d-top{position:absolute; top:0; right:0; left:0; height:58px; background:var(--cc-surface); border-bottom:1px solid var(--cc-border); display:flex; align-items:center; padding:0 16px; gap:12px;}
+.d-brand{display:flex; align-items:center; gap:10px; flex-direction:row-reverse;}
+.d-brand .t1{font-weight:700; font-size:15px;}
+.d-brand .t2{font-size:11px; color:var(--cc-text-3);}
+.d-rail{position:absolute; top:58px; bottom:0; right:0; width:196px; background:var(--cc-surface); border-inline-end:1px solid var(--cc-border); padding:10px 0; font-size:13px; overflow:hidden;}
+.d-rail .grp{padding:6px 16px 2px; font-size:11px; color:var(--cc-text-3);}
+.d-rail .it{padding:7px 16px; color:var(--cc-text-2); white-space:nowrap;}
+.d-rail .it.on{background:var(--cc-action-weak); color:var(--cc-action); font-weight:600; border-inline-start:3px solid var(--cc-action);}
+.d-main{position:absolute; top:58px; right:196px; left:0; bottom:0; padding:14px 18px; overflow:hidden; transition:left 140ms;}
+.d-main h3{margin:0 0 10px; font-size:16px;}
+.d-tools{display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;}
+.d-table{width:100%; border-collapse:collapse; background:var(--cc-surface); border:1px solid var(--cc-border); border-radius:10px; overflow:hidden; font-size:12.5px;}
+.d-table th{text-align:start; font-size:11.5px; color:var(--cc-text-2); padding:8px 10px; border-bottom:1px solid var(--cc-border); background:var(--cc-bg);}
+.d-table td{padding:8px 10px; border-bottom:1px solid var(--cc-divider); white-space:nowrap;}
+/* אזור המשתמש - למעלה משמאל */
+.usr{display:flex; align-items:center; position:relative; margin-inline-start:auto;} /* אזור המשתמש בקצה השמאלי, כמו במוצר החי */
+.usr-av{width:32px; height:32px; border-radius:50%; background:var(--auth-red); color:#fff; font:700 12px var(--cc-font); display:flex; align-items:center; justify-content:center; cursor:pointer; border:0;}
+.usr-menu{position:absolute; top:40px; left:0; background:var(--cc-surface); border:1px solid var(--cc-border); border-radius:var(--cc-radius-sm); box-shadow:var(--cc-shadow); min-width:160px; font-size:13px; overflow:hidden; z-index:5;}
+.usr-menu div{padding:8px 14px; cursor:pointer;}
+.usr-menu div:hover{background:var(--cc-action-weak);}
+/* הטריגר - הלוגו האמיתי */
+/* 🔴 המאפיינים הפיזיים בקטע הזה מכוונים ונאמרים במפורש: הניווט של המוצר יושב
+   בימין, ולכן העוזר נעוץ בקצה הפיזי השמאלי בכל מצב. זו החלטת פריסה ולא היסט
+   RTL, והיא נכונה כל עוד הניווט בימין. */
+.as-fab{position:absolute; bottom:16px; left:16px; width:54px; height:54px; border-radius:50%; background:#fff; border:1px solid var(--cc-border-strong); box-shadow:var(--cc-shadow); display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; z-index:6;}
+/* ===== החיווי המרחף - מחלקת המוצר עצמה, הועתקה 1:1 מ-spa/src/global.css.
+   🔴 לא הוגדרה כאן מחדש בכוונה: שם מקומי הוא עותק שני שיסטה, וזו בדיוק המחלקה
+   שהולידה שתי צורות לידית הגרירה. מה שנוסף הוא **מיקום בלבד**, במחלקה נפרדת
+   ומוצהרת - mk-tip-fab - כי המוקאפ מציג את החיווי במצב פתוח ליד הטריגר. ===== */
+.cc-tip { position: fixed; z-index: 5100; background: var(--cc-surface); color: var(--cc-text); font-family: var(--cc-font); font-size: 13px; line-height: 1.5; padding: 8px 12px; max-width: 240px; border: 0.5px solid var(--cc-border); border-right: 3px solid var(--cc-action); border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.10); pointer-events: none; opacity: 0; transition: opacity var(--cc-ease); }
+.cc-tip--show { opacity: 1; }
+/* המיקום, וזו ההחלטה שדב אישר: מימין לטריגר, ממורכז לגובהו. הטריגר יושב בפינה
+   השמאלית התחתונה, וימין הוא הכיוון היחיד שאינו קצה מסך ואינו הטריגר עצמו.
+   המרחק 12 מקצה הטריגר - אותו מרחק בכל פקד. */
+.mk-tip-fab{position:absolute; bottom:29px; left:82px; z-index:6;} /* 16 (מרחק הטריגר מהקצה) + 54 (רוחבו) + 12 (המרחק שבכלל) = 82 */
+/* סמל בממשק - אותם ערכים של cc-icon בספרייה */
+.mk-ico{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+/* הפאנל */
+.asp{position:absolute; background:var(--cc-surface); border:1px solid var(--cc-border); box-shadow:var(--cc-shadow); display:flex; flex-direction:column; overflow:hidden; z-index:6;}
+.asp--float{left:0; top:58px; bottom:0; width:330px; border-radius:0;} /* הפתיחה: פאנל צד צמוד, כמו בקונסולות Google - אין מצב צף */
+.asp--dock{left:0; top:58px; bottom:0; width:420px; border-radius:0; border-inline-start:0;}
+.asp--full{left:10px; right:210px; top:70px; bottom:12px; border-radius:12px;}
+/* 🔴 מצב ההגדלה (הכרעת דב, 20.08): רוחב מלא עד הגבול עם סרגל הצד, בכל מצב שבו
+   הסרגל נמצא - מורחב או מכווץ. הגבול נמדד מהסרגל ואינו מספר קבוע; כאן הסרגל
+   מורחב, ולכן הערך שבשחזור הוא רוחבו במצב הזה - נלקח מהמוצר החי ולא נבחר כאן. */
+.asp--wide{left:0; right:196px; top:58px; bottom:0; width:auto; border-radius:0;}
+/* 🔴 הסרגל המכווץ קיים במוצר החי (56), והמצב הזה נמדד ממנו - שני המסכים למטה
+   מראים את אותו כלל בשני מצבי סרגל, כדי שמספר קבוע ייראה כטעות ולא כאפשרות. */
+.d-rail--min{width:56px;}
+.d-rail--min .grp{display:none;}
+.d-rail--min .it{padding:7px 0; text-align:center; font-size:11px; overflow:hidden;}
+.asp--wide-min{left:0; right:56px; top:58px; bottom:0; width:auto; border-radius:0;}
+.asp-head{display:flex; align-items:center; gap:5px; padding:8px 12px; border-bottom:1px solid var(--cc-divider);}
+.asp-title{font-weight:700; font-size:13.5px; flex:1; display:flex; align-items:center; gap:8px;}
+.asp-ctx{padding:6px 12px; background:var(--cc-info-bg); color:var(--cc-info-fg); font-size:12px; border-bottom:1px solid var(--cc-divider);}
+.asp-sub{padding:5px 12px; background:var(--cc-surface); color:var(--cc-text-3); font-size:11.5px; border-bottom:1px solid var(--cc-divider); display:flex; gap:6px; align-items:center;}
+.asp-body{flex:1; display:flex; flex-direction:column; gap:8px; padding:10px 12px; overflow:auto;}
+.asp-input{display:flex; gap:6px; padding:8px 12px; border-top:1px solid var(--cc-divider); background:var(--cc-bg); align-items:center;}
+/* ===== ידית גרירת רוחב - אלמנט אחד לכל המגירות (S37-ASSIST-B, 20.08.2026) =====
+   🔴 **נבנה באותו יום**: ההגדרה זהה תו בתו לזו שב-spa/src/global.css, וחמישה
+   צרכנים חיים משתמשים בה - ארבע המגירות ופאנל העוזר.
+   🔴 עד היום היו שתי צורות לאותה פעולה: רצועה שנצבעת בריחוף ביתר המסכים, ואלמנט
+   קטן עם שלוש נקודות בעוזר. דב מדד זאת חי וביקש סימביוזה, וזו הצורה שאושרה:
+   הנקודות נראות תמיד, והרצועה נצבעת כשמצביעים על הגבול.
+   🔴 המרכוז הפיזי (left) מכוון: הרצועה סימטרית ורוחבה 10, ולכן מרכוז פיזי ולוגי
+   זהים בה - זו אינה הפרה של כלל ה-RTL אלא המקרה היחיד שבו הוא אינו חל. */
+.cc-drawer-resize{position:absolute;top:0;bottom:0;inset-inline-end:0;width:10px;cursor:col-resize;z-index:32;
+  background:transparent;transition:background var(--cc-ease)}
+.cc-drawer-resize::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:3px;height:3px;border-radius:50%;background:var(--cc-text-3);
+  box-shadow:0 -6px 0 var(--cc-text-3),0 6px 0 var(--cc-text-3);transition:background var(--cc-ease),box-shadow var(--cc-ease)}
+.cc-drawer-resize:hover,.cc-drawer-resize.is-dragging{background:var(--cc-action-weak)}
+.cc-drawer-resize:hover::before,.cc-drawer-resize.is-dragging::before{background:var(--cc-action);
+  box-shadow:0 -6px 0 var(--cc-action),0 6px 0 var(--cc-action)}
+/* הווריאנט לפאנל שנעוץ בקצה הנגדי - העוזר. inset-inline-start בעברית = הקצה הפיזי הימני */
+.cc-drawer-resize--start{inset-inline-end:auto;inset-inline-start:0}
+/* 🔴 הפאנל נעוץ בקצה הפיזי השמאלי (הניווט בימין), ולכן קצה הגרירה שלו הוא
+   הקצה הפנימי - וזה בדיוק הווריאנט --start: בעברית inset-inline-start הוא
+   הקצה הפיזי הימני. אין כאן ערך פיזי חדש. */
+.as-chip{cursor:pointer; border:0; background:none; padding:0;}
+.as-toolbar{display:flex; align-items:center; gap:6px; padding:5px 10px; border-bottom:1px solid var(--cc-divider); background:var(--cc-bg); font-size:12px; color:var(--cc-text-2);}
+.as-toolbar .sep{flex:1;}
+.day-card{display:flex; gap:12px; border:1px solid var(--cc-divider); border-radius:var(--cc-radius-sm); padding:10px; background:var(--cc-surface);}
+.day-img{width:120px; height:80px; border-radius:var(--cc-radius-sm); background:var(--cc-sunken); display:flex; align-items:center; justify-content:center; color:var(--cc-text-3); font-size:11px; flex-shrink:0;}
+.day-tx h5{margin:0 0 4px; font-size:13.5px;}
+.day-tx p{margin:0 0 6px; font-size:12.5px; color:var(--cc-text-2);}
+.plates-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:14px; max-width:1280px;}
+.plate{border:1px solid var(--cc-border); border-radius:var(--cc-radius); background:var(--cc-surface); overflow:hidden;}
+.plate-head{padding:8px 12px; background:var(--cc-bg); border-bottom:1px solid var(--cc-divider); font-weight:700; font-size:13px;}
+.plate-body{padding:12px;}
+.inrow{display:flex; gap:8px; align-items:center; border:1px solid var(--cc-border); border-radius:999px; padding:6px 10px; background:var(--cc-surface); width:100%; max-width:560px;}
+.inrow .cc-input{border:0; min-height:34px;}
+.rec-dot{width:9px; height:9px; border-radius:50%; background:var(--auth-red); display:inline-block; margin-inline-start:6px;}
+.rec-time{font-variant-numeric:tabular-nums; direction:ltr; color:var(--cc-text-2); font-size:13px;}
+.as-transcript{font-size:13px; color:var(--cc-text-2);}
+</style>
+</head>
+<body>
+
+<!-- SPRITE:SUBSET - תת-קבוצה מהספרייט של האפליקציה, מועתקת תו בתו.
+     🔴 אין לערוך אותה כאן: node tools/icons-catalog.js מפיל כשסמל בקובץ הזה
+     אינו זהה לסמל שבספרייט של האפליקציה. -->
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol><symbol id="i-maximize" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></symbol><symbol id="i-minimize" viewBox="0 0 24 24"><path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M3 21l7-7"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></symbol><symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol><symbol id="i-zoom-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></symbol><symbol id="i-zoom-out" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="8" x2="14" y1="11" y2="11"/></symbol></defs></svg>
+
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="auth-logo" viewBox="0 0 32.4 32.4"><path fill="#aa0000" d="M16.3,0C7.4-0.1,0.1,7.2,0,16.1s7.2,16.2,16.1,16.3c8.9,0.1,16.2-7.2,16.3-16.1v-0.2C32.3,7.2,25.2,0.1,16.3,0z M25.1,21.3c-0.8,0.2-1.6,0.1-2.4-0.1l-2.1-0.3c-0.8-0.1-1.6-0.4-2.2-0.4s-1.2-0.1-1.5,0.3s-0.1,0.9-0.1,1.2s0.3,2.2-0.3,2.2s-0.7-0.4-0.8-1.3s0.1-2-0.8-2.4c-0.9-0.3-1.8-0.5-2.7-0.6l-1.6-0.2l-3.2-0.2c-0.7-0.1-1.5-0.1-1.5-1s1.3-1.2,2.2-1.9c0.5-0.4,1.1-0.8,1.8-1c0.7-0.4,3.5-1.8,3.8-2.4c0.3-0.5,0.3-1,0.1-1.5c-0.1-0.3-1-2.6-0.8-3c0.3-0.4,0.7-0.4,1.1-0.2l0.3,0.4c0.3,0.5,0.8,2.6,1.1,2.8s0.2,0.5,1.2-0.1l2-1.2l1.3-1c0.4-0.3,1.3-0.7,1.6-1.2s1.5-0.9,1.5-0.5c0,0.5-0.2,0.9-0.6,1.2c-0.5,0.4-2.8,1.7-3.5,2.4L16.7,13c-0.5,0.4-0.9,1.1-0.9,1.8c0,1.3,0.3,2.7,0.8,3.9c0.4,0.5,1.1,0.8,1.8,0.8l3.1,0.6l3,0.8C25.1,20.9,25.3,21.2,25.1,21.3z M14.7,16c0.1,0.5,0.6,3-0.2,3l-2.8-0.3c-0.6,0-3-0.1-2.7-0.7c0.6-0.6,1.2-1,1.9-1.4c0.4-0.3,2.5-2.1,2.9-1.8C14.3,15,14.6,15.5,14.7,16z"/></symbol></defs></svg>
+
+<div class="mk-h1">עוזר ה-AI על הדשבורד - מוקאפ · גרסה 5</div>
+<div class="mk-sub">S37-ASSIST-B · <b>גרסה 5, 20.08.2026</b> · Claude Design על בסיס ספריית העיצוב (ה-CSS מוטמע כלשונו) · הלוגו - נתיב הסמל שהועתק מהקוד החי, <b>והוא מחוץ לשער הסמלים</b>: השער משווה סמלי ממשק בלבד, ולנתיב המותג אין קובץ סמכות אחד להשוות אליו · הדשבורד ברקע - שחזור להקשר; הנתונים להדגמה.<br>
+🔴 <b>מה השתנה מגרסה 4, והכל מבחינה חיה של דב ב-20.08</b>: <b>אין עוד אף מציין "אין אייקון"</b> - כל הסמלים מצוירים מהספרייט האמיתי, שתת-קבוצה ממנו מוטמעת כאן תו בתו ונשמרת בשער (<span dir="ltr">node tools/icons-catalog.js</span>) · <b>כפתור ההגדלה</b> נכנס לראש הפאנל, ונוסף מצב הרוחב המלא עד גבול הסרגל (סעיף ג2) · <b>שורת ההקלטה נבנתה מחדש על ארבעה מצבים</b> - הקלטה אמיתית שאפשר לעצור ולהמשיך, במקום האזנה שנקטעת בשתיקה · <b>הצירוף מקבל שני מקורות</b> · <b>החיווי המרחף</b> הוחלף בקנוני · <b>ידית הגרירה אוחדה</b> לצורה אחת עם יתר המסכים · <b>ושורת המנוע</b> מציגה את מה שנבחר לאזור הזה ולא את ברירת המחדל הכללית.</div>
+
+<div class="mk-sec">
+  <h2>א · המסך במנוחה - הטריגר והאזור האישי <span class="mk-new">שני אלמנטים חדשים</span></h2>
+  <p class="mk-note">למעלה משמאל - אווטאר המשתמש בלבד (המייל וכפתור הסגירה ירדו); בריחוף נפתח תפריט: הגדרות המשתמש · יציאה. למטה משמאל - טריגר העוזר עם סמל אותנטיקו האמיתי. הניווט נשאר בימין - אין התנגשות.<br>🔴 <b>החיווי המרחף (20.08)</b>: הצורה היא <b>החיווי הקנוני של הספרייה</b> - משטח בהיר עם פס אדום בקצה - <b>ולא החיווי המובנה של הדפדפן</b>, שאת מיקומו קובעת מערכת ההפעלה לפי הסמן ולכן הוא נופל על הטריגר. <b>המיקום: מימין לטריגר, ממורכז לגובהו</b> - הטריגר בפינה, וימין הוא הכיוון היחיד שאינו קצה מסך ואינו הטריגר עצמו.</p>
+  <div class="dash">
+    <div class="d-top">
+      <div class="usr"><button class="usr-av" aria-label="החשבון שלי">דפ</button>
+        <div class="usr-menu"><div>הגדרות המשתמש</div><div>יציאה</div></div>
+      </div>
+      <div class="d-brand"><svg width="34" height="34"><use href="#auth-logo"/></svg><div><div class="t1">Authentico Hub</div><div class="t2">ניהול, יצירה ותמחור</div></div></div>
+    </div>
+    <div class="d-rail">
+      <div class="grp">ניהול</div>
+      <div class="it">יצירה</div><div class="it">GEO &amp; SEO</div><div class="it">אשכולות</div><div class="it">סוגי תוכן</div><div class="it">שותפים</div><div class="it on">הזמנות והצעות</div><div class="it">סייר תיקיות</div>
+      <div class="grp">כלים</div>
+      <div class="it">רענון מהאתר</div><div class="it">Search Console</div><div class="it">בריאות הפלטפורמה</div>
+    </div>
+    <div class="d-main">
+      <h3>הזמנות והצעות</h3>
+      <div class="d-tools"><span class="cc-chip">הכל</span><span class="cc-chip">הצעות</span><span class="cc-chip">הזמנות</span><span class="cc-chip">קטלוג Core</span></div>
+      <table class="d-table">
+        <tr><th>מזהה</th><th>שם הטיול</th><th>יעדים</th><th>שותף</th><th>תאריכי הטיול</th><th>סטטוס</th></tr>
+        <tr><td><span class="cc-pill cc-pill--bk">BK</span> 1062</td><td>משפחת לוי 01-12.10.2026</td><td>איטליה</td><td>מרקו טורס</td><td class="ltr">01.10.2026 - 12.10.2026</td><td>תיקייה פעילה</td></tr>
+        <tr><td><span class="cc-pill cc-pill--bk">BK</span> 1055</td><td>משפחת כהן 12-19.10.2026</td><td>גאורגיה</td><td>גיאו טרוול</td><td class="ltr">12.10.2026 - 19.10.2026</td><td>תיקייה פעילה</td></tr>
+        <tr><td><span class="cc-pill cc-pill--it">IT</span> 1030</td><td>קבוצת אביב 14-21.08.2026</td><td>ארמניה</td><td>דרך המשי</td><td class="ltr">14.08.2026 - 21.08.2026</td><td>הצעה</td></tr>
+      </table>
+    </div>
+    <button class="as-fab" aria-label="עוזר ה-AI"><svg width="36" height="36"><use href="#auth-logo"/></svg></button>
+    <div class="mk-tip-fab"><span class="cc-tip cc-tip--show">עוזר ה-AI</span></div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>ב · הפתיחה - פאנל צד צמוד משמאל, כמו אצל Google <span class="mk-new">מעטפת חדשה</span></h2>
+  <p class="mk-note">לחיצה על הסמל פותחת פאנל צד צמוד לקצה השמאלי, בגובה מלא וברוחב צר - <b>אין חלון צף</b>: בדיוק כמו בקונסולות של Google, אזור העבודה נדחס ימינה וממשיך לעבוד. בכותרת, מימין לשמאל: שיחה חדשה · שיחות קודמות · הגדלה · סגירה - <b>ארבעה פקדים, כולם בסמלי הספרייט</b>. מתחת לכותרת: ההקשר, והמודל הפעיל - בלי בורר מצבים, מצב עבודה אחד (D-384).<br>
+  🔴 <b>שורת המנוע (20.08)</b>: <b>לפני שהתקבלה תשובה</b> מוצג <b>מה שנבחר לאזור הזה בהגדרות</b>, ורק בהיעדרו נפילה לברירת המחדל הכללית ואז לברירת המחדל של המערכת - <b>באותו סדר שהשרת פותר בו, ולא בסדר משלנו</b>. <b>אחרי שהתקבלה תשובה</b> מוצג <b>מי שענה בפועל</b>, מתוך התשובה עצמה, והתווית משתנה בהתאם. 🔴 <b>לפני התשובה יש תצורה; אחריה יש עובדה, והעובדה גוברת</b> - זה מכסה גם שינוי מודל באמצע שיחה. שם המודל נמשך מהנתונים ולכן הוא מבודד דו-כיוונית: שם שמסתיים בסוגר או בספרה היה הופך את סדר השורה העברית.</p>
+  <div class="dash">
+    <div class="d-top"><div class="usr"><button class="usr-av" aria-label="החשבון שלי">דפ</button></div>
+      <div class="d-brand"><svg width="34" height="34"><use href="#auth-logo"/></svg><div><div class="t1">Authentico Hub</div><div class="t2">ניהול, יצירה ותמחור</div></div></div></div>
+    <div class="d-rail"><div class="grp">ניהול</div><div class="it">יצירה</div><div class="it">GEO &amp; SEO</div><div class="it">אשכולות</div><div class="it">סוגי תוכן</div><div class="it">שותפים</div><div class="it on">הזמנות והצעות</div><div class="it">סייר תיקיות</div><div class="grp">כלים</div><div class="it">רענון מהאתר</div><div class="it">Search Console</div><div class="it">בריאות הפלטפורמה</div></div>
+    <div class="d-main" style="left:330px;"><h3>הזמנות והצעות</h3>
+      <table class="d-table">
+        <tr><th>מזהה</th><th>שם הטיול</th><th>יעדים</th><th>שותף</th><th>סטטוס</th></tr>
+        <tr><td><span class="cc-pill cc-pill--bk">BK</span> 1062</td><td>משפחת לוי 01-12.10.2026</td><td>איטליה</td><td>מרקו טורס</td><td>תיקייה פעילה</td></tr>
+        <tr><td><span class="cc-pill cc-pill--bk">BK</span> 1055</td><td>משפחת כהן 12-19.10.2026</td><td>גאורגיה</td><td>גיאו טרוול</td><td>תיקייה פעילה</td></tr>
+        <tr><td><span class="cc-pill cc-pill--it">IT</span> 1030</td><td>קבוצת אביב 14-21.08.2026</td><td>ארמניה</td><td>דרך המשי</td><td>הצעה</td></tr>
+      </table>
+    </div>
+    <div class="asp asp--float">
+      <div class="asp-head"><span class="asp-title"><svg width="20" height="20"><use href="#auth-logo"/></svg>עוזר ה-AI</span>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחה חדשה"><svg class="mk-ico" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחות קודמות"><svg class="mk-ico" aria-hidden="true"><use href="#i-history"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="רוחב מלא"><svg class="mk-ico" aria-hidden="true"><use href="#i-maximize"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="סגירה"><svg class="mk-ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="asp-ctx">ההקשר: ההזמנה הפתוחה <span class="cc-pill cc-pill--bk">BK</span> 1062 · משפחת לוי</div>
+      <div class="asp-sub">מונע על ידי <bdi>Gemini 3.6 Flash</bdi> <span class="cc-chip">מההגדרות</span></div>
+      <div class="asp-body">
+        <div class="dlg-msg dlg-msg--user">מה מצב ההזמנה?</div>
+        <div class="dlg-msg dlg-msg--ai">בהכנה: שלושה מקטעים, שניים משויכים. מועד הטיסה - לא ידוע: שדה התאריכים ריק.</div>
+      </div>
+      <div class="asp-input"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="הקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-mic"/></svg></button><input class="cc-input" type="text" placeholder="שאלה או בקשה לעוזר ה-AI" aria-label="שאלה או בקשה" style="min-height:34px;"><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div>
+      <div class="cc-drawer-resize cc-drawer-resize--start" role="separator" aria-orientation="vertical" aria-label="גרירה לשינוי רוחב"></div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>ג · גרירה לרוחב - פאנל צד, ואזור העבודה נדחס ואינו מכוסה</h2>
+  <p class="mk-note">🔴 <b>ידית הגרירה אוחדה (20.08)</b>: <b>אלמנט אחד לכל המגירות ובכללן הפאנל הזה</b> - רצועה במלוא גובה הקצה ועליה שלוש נקודות ממורכזות. <b>הנקודות נראות תמיד; הרצועה נצבעת כשמצביעים על הגבול ובזמן הגרירה.</b> עד היום היו שתי צורות שונות לאותה פעולה, <b>מפני שהאלמנט מעולם לא צויר בספרייה</b> - עכשיו הוא שם. הגרירה מרחיבה את הפאנל מרוחב הפתיחה הצר לרוחב עבודה. <b>מה קורה למסך: אזור העבודה נדחס לימין וממשיך לעבוד - הפאנל דוחף, לא מכסה.</b> הטבלה, הכפתורים והשמירה נשארים חיים.</p>
+  <div class="dash">
+    <div class="d-top"><div class="usr"><button class="usr-av" aria-label="החשבון שלי">דפ</button></div>
+      <div class="d-brand"><svg width="34" height="34"><use href="#auth-logo"/></svg><div><div class="t1">Authentico Hub</div><div class="t2">ניהול, יצירה ותמחור</div></div></div></div>
+    <div class="d-rail"><div class="grp">ניהול</div><div class="it">יצירה</div><div class="it">GEO &amp; SEO</div><div class="it">אשכולות</div><div class="it">סוגי תוכן</div><div class="it">שותפים</div><div class="it on">הזמנות והצעות</div><div class="it">סייר תיקיות</div><div class="grp">כלים</div><div class="it">רענון מהאתר</div><div class="it">Search Console</div><div class="it">בריאות הפלטפורמה</div></div>
+    <div class="d-main" style="left:420px;"><h3>הזמנות והצעות</h3>
+      <table class="d-table">
+        <tr><th>מזהה</th><th>שם הטיול</th><th>סטטוס</th></tr>
+        <tr><td><span class="cc-pill cc-pill--bk">BK</span> 1062</td><td>משפחת לוי 01-12.10.2026</td><td>תיקייה פעילה</td></tr>
+        <tr><td><span class="cc-pill cc-pill--bk">BK</span> 1055</td><td>משפחת כהן 12-19.10.2026</td><td>תיקייה פעילה</td></tr>
+        <tr><td><span class="cc-pill cc-pill--it">IT</span> 1030</td><td>קבוצת אביב 14-21.08.2026</td><td>הצעה</td></tr>
+      </table>
+    </div>
+    <div class="asp asp--dock">
+      <div class="asp-head"><span class="asp-title"><svg width="20" height="20"><use href="#auth-logo"/></svg>עוזר ה-AI</span>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחה חדשה"><svg class="mk-ico" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחות קודמות"><svg class="mk-ico" aria-hidden="true"><use href="#i-history"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="רוחב מלא"><svg class="mk-ico" aria-hidden="true"><use href="#i-maximize"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="סגירה"><svg class="mk-ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="asp-ctx">ההקשר: ההזמנה הפתוחה <span class="cc-pill cc-pill--bk">BK</span> 1062 · משפחת לוי · מקטע 2</div>
+      <div class="asp-sub">מונע על ידי <bdi>Gemini 3.6 Flash</bdi> <span class="cc-chip">ענה בפועל</span></div>
+      <div class="asp-body">
+        <div class="dlg-act">
+          <div class="dlg-act__t">הצעת שינוי - מרווח ההזמנה</div>
+          <table class="pr-tbl">
+            <tr><th></th><th>לפני</th><th>אחרי</th></tr>
+            <tr><td>מרווח</td><td class="num">15%</td><td class="num">12%</td></tr>
+            <tr><td>מחיר לנוסע</td><td class="num">USD 4,535</td><td class="num">USD 4,381</td></tr>
+            <tr><td>רווח לקבוצה</td><td class="num">USD 13,600</td><td class="num">USD 10,510</td></tr>
+          </table>
+          <div class="dlg-act__btns"><button class="cc-btn cc-btn--primary cc-btn--sm">העברת הטיוטה לכרטיס</button><button class="cc-btn cc-btn--sm">ביטול</button></div>
+        </div>
+        <div class="cc-msg cc-msg--progress">סנכרון מול ה-CRM רץ - אפשר להמשיך לשאול; תגיע הודעה עם הדוח בסיום.</div>
+      </div>
+      <div class="asp-input"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="הקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-mic"/></svg></button><input class="cc-input" type="text" placeholder="שאלה או בקשה לעוזר ה-AI" aria-label="שאלה או בקשה" style="min-height:34px;"><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div>
+      <div class="cc-drawer-resize cc-drawer-resize--start" role="separator" aria-orientation="vertical" aria-label="גרירה לשינוי רוחב"></div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>ג2 · רוחב מלא - עד הגבול עם הסרגל <span class="mk-new">הכרעת דב 20.08</span></h2>
+  <p class="mk-note">🔴 <b>כפתור הרוחב המלא שבראש הפאנל הוא <u>נוסף</u> על הגרירה ואינו מחליף אותה.</b> לחיצה עליו פותחת את אזור העוזר <b>לרוחב מלא של המסך, עד הגבול עם סרגל הצד</b>. 🔴 <b>והגבול נמדד מהסרגל בכל מצב שבו הוא נמצא</b> - מורחב או מכווץ; <b>אינו מספר קבוע.</b> 🔴 <b>הוכרע (דב, 20.08)</b>: <b>הלחיצה החוזרת מחזירה לרוחב ברירת המחדל</b> - רוחב הפתיחה - ולא לרוחב שהמשתמש גרר אליו קודם. <b>הסמל</b>: חצים כלפי חוץ להרחבה, חצים כלפי פנים לחזרה - זוג קנוני, וההרחבה עצמה נראית על המסך. <b>ה-X סוגר את הפאנל</b>, ואינו מחליף את החזרה.</p>
+  <div class="dash">
+    <div class="d-top">
+      <div class="usr"><button class="usr-av" aria-label="החשבון שלי">דפ</button></div>
+      <div class="d-brand"><svg width="34" height="34"><use href="#auth-logo"/></svg><div><div class="t1">Authentico Hub</div><div class="t2">ניהול, יצירה ותמחור</div></div></div>
+    </div>
+    <div class="d-rail">
+      <div class="grp">ניהול</div>
+      <div class="it">יצירה</div><div class="it">GEO &amp; SEO</div><div class="it">אשכולות</div><div class="it">סוגי תוכן</div><div class="it">שותפים</div><div class="it on">הזמנות והצעות</div><div class="it">סייר תיקיות</div>
+      <div class="grp">כלים</div>
+      <div class="it">רענון מהאתר</div><div class="it">Search Console</div><div class="it">בריאות הפלטפורמה</div>
+    </div>
+    <div class="asp asp--wide">
+      <div class="asp-head"><span class="asp-title"><svg width="20" height="20"><use href="#auth-logo"/></svg>עוזר ה-AI</span>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחה חדשה"><svg class="mk-ico" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחות קודמות"><svg class="mk-ico" aria-hidden="true"><use href="#i-history"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="חזרה לרוחב ברירת המחדל"><svg class="mk-ico" aria-hidden="true"><use href="#i-minimize"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="סגירה"><svg class="mk-ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="asp-ctx">ההקשר: ההזמנה הפתוחה <span class="cc-pill cc-pill--bk">BK</span> 1062 · משפחת לוי</div>
+      <div class="asp-sub">מונע על ידי <bdi>Gemini 3.6 Flash</bdi> <span class="cc-chip">מההגדרות</span></div>
+      <div class="asp-body">
+        <div class="dlg-msg dlg-msg--user">תראה לי את פירוק המחיר של מקטע 2</div>
+        <div class="dlg-msg dlg-msg--ai">הפירוק המלא - שרשרת התחנות כפי שהמנוע חישב אותה. ההסבר תמיד מהחישוב עצמו, לעולם לא מחישוב של המודל.</div>
+      </div>
+      <div class="asp-input"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="הקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-mic"/></svg></button><input class="cc-input" type="text" placeholder="שאלה או בקשה לעוזר ה-AI" aria-label="שאלה או בקשה" style="min-height:34px;"><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div>
+      <div class="cc-drawer-resize cc-drawer-resize--start" role="separator" aria-orientation="vertical" aria-label="גרירה לשינוי רוחב"></div>
+    </div>
+  </div>
+  <p class="mk-note" style="margin-top:12px">🔴 <b>ואותו כלל בדיוק, כשהסרגל מכווץ</b> - הפאנל נעצר בגבול החדש. <b>אין כאן שני מצבים אלא מדידה אחת</b>: הרוחב נגזר מהסרגל ברגע הלחיצה, ומספר קבוע היה מייצר פער או כיסוי באחד משני המצבים.</p>
+  <div class="dash">
+    <div class="d-top">
+      <div class="usr"><button class="usr-av" aria-label="החשבון שלי">דפ</button></div>
+      <div class="d-brand"><svg width="34" height="34"><use href="#auth-logo"/></svg><div><div class="t1">Authentico Hub</div><div class="t2">ניהול, יצירה ותמחור</div></div></div>
+    </div>
+    <div class="d-rail d-rail--min">
+      <div class="it">יצירה</div><div class="it">GEO</div><div class="it">אשכולות</div><div class="it">תוכן</div><div class="it">שותפים</div><div class="it on">הזמנות</div><div class="it">תיקיות</div>
+    </div>
+    <div class="asp asp--wide-min">
+      <div class="asp-head"><span class="asp-title"><svg width="20" height="20"><use href="#auth-logo"/></svg>עוזר ה-AI</span>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחה חדשה"><svg class="mk-ico" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="שיחות קודמות"><svg class="mk-ico" aria-hidden="true"><use href="#i-history"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="חזרה לרוחב ברירת המחדל"><svg class="mk-ico" aria-hidden="true"><use href="#i-minimize"/></svg></button>
+        <button class="cc-icon-btn cc-icon-btn--sm" aria-label="סגירה"><svg class="mk-ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="asp-ctx">ההקשר: ההזמנה הפתוחה <span class="cc-pill cc-pill--bk">BK</span> 1062 · משפחת לוי</div>
+      <div class="asp-sub">מונע על ידי <bdi>Gemini 3.6 Flash</bdi> <span class="cc-chip">ענה בפועל</span></div>
+      <div class="asp-body">
+        <div class="dlg-msg dlg-msg--user">תראה לי את פירוק המחיר של מקטע 2</div>
+        <div class="dlg-msg dlg-msg--ai">הפירוק המלא - שרשרת התחנות כפי שהמנוע חישב אותה.</div>
+      </div>
+      <div class="asp-input"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="הקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-mic"/></svg></button><input class="cc-input" type="text" placeholder="שאלה או בקשה לעוזר ה-AI" aria-label="שאלה או בקשה" style="min-height:34px;"><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div>
+      <div class="cc-drawer-resize cc-drawer-resize--start" role="separator" aria-orientation="vertical" aria-label="גרירה לשינוי רוחב"></div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>ד · זום למסך - הקנבס לתוכניות ולמסמכים</h2>
+  <p class="mk-note">מהפאנל אפשר להגדיל את התצוגה לקנבס גדול: הגדלה, הקטנה, התאמה לרוחב וגרירת תוכן חופשית. הניווט נשאר נגיש בימין; החזרה לפאנל היא כפתור ההקטנה שבראש התצוגה.</p>
+  <div class="dash">
+    <div class="d-top"><div class="usr"><button class="usr-av" aria-label="החשבון שלי">דפ</button></div>
+      <div class="d-brand"><svg width="34" height="34"><use href="#auth-logo"/></svg><div><div class="t1">Authentico Hub</div><div class="t2">ניהול, יצירה ותמחור</div></div></div></div>
+    <div class="d-rail"><div class="grp">ניהול</div><div class="it">יצירה</div><div class="it">GEO &amp; SEO</div><div class="it">אשכולות</div><div class="it">סוגי תוכן</div><div class="it">שותפים</div><div class="it on">הזמנות והצעות</div><div class="it">סייר תיקיות</div></div>
+    <div class="asp asp--full">
+      <div class="asp-head"><span class="asp-title"><svg width="20" height="20"><use href="#auth-logo"/></svg>עוזר ה-AI - תצוגת תוכנית הטיול</span><button class="cc-icon-btn cc-icon-btn--sm" aria-label="חזרה לפאנל"><svg class="mk-ico" aria-hidden="true"><use href="#i-minimize"/></svg></button></div>
+      <div class="as-toolbar">
+        <button class="cc-btn cc-btn--sm"><svg class="mk-ico" aria-hidden="true"><use href="#i-zoom-out"/></svg> הקטנה</button>
+        <button class="cc-btn cc-btn--sm"><svg class="mk-ico" aria-hidden="true"><use href="#i-zoom-in"/></svg> הגדלה</button>
+        <button class="cc-btn cc-btn--sm">התאמה לרוחב</button>
+        <span>גרירה חופשית של התוכן</span><span class="sep"></span><span>תצוגה מקדימה - טרם אושר</span>
+      </div>
+      <div class="asp-body" style="background:var(--cc-sunken);">
+        <div class="day-card"><div class="day-img">תמונה מהבנק</div><div class="day-tx"><h5>יום 1 - נחיתה והתארגנות</h5><p>נחיתה, קבלת פנים והעברה למלון. ערב היכרות עם המדריך המקומי.</p><button class="as-chip"><span class="cc-chip">החלפת תמונה</span></button> <button class="as-chip"><span class="cc-chip">החלפת תוכן</span></button></div></div>
+        <div class="day-card"><div class="day-img">תמונה מהבנק</div><div class="day-tx"><h5>יום 2 - אגמי הצפון</h5><p>שיט בוקר, ביקור בכפר היסטורי וארוחת צהריים מקומית.</p><button class="as-chip"><span class="cc-chip">החלפת תמונה</span></button> <button class="as-chip"><span class="cc-chip">החלפת תוכן</span></button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>ה · שורת הקלט - הקלדה, הקלטה אמיתית, וצירוף <span class="mk-new">נבנתה מחדש 20.08</span></h2>
+  <p class="mk-note">🔴 <b>מה שנמדד חי (דב, 20.08) ומדוע הצורה הוחלפה</b>: הצורה הקודמת נשענה על <b>ההאזנה המובנית של הדפדפן</b>, והיא <b>מסיימת את ההקלטה מעצמה בשתיקה קצרה</b> - פאוזה באמצע משפט קטעה את המשפט. <b>הסף הזה שייך לדפדפן ואינו ניתן להארכה מהקוד</b>, ולכן "להאריך אותו" אינו קיים כאפשרות - הצורה חייבת להשתנות.<br>
+  <b>הצורה שאושרה</b>, על בסיס התקדים שדב מסר ממודול סוכן ה-AI, <b>ובשפה שלנו</b>: מקליטים · אפשר <b>לעצור ולהמשיך</b> כמה פעמים · <b>למחוק</b>. 🔴 <b>האודיו אינו נשמר</b> - התמלול בלבד, כברירת המחדל שבתוקף.<br>
+  🔴 <b>ומה שנבנה בפועל שונה בנקודה אחת, והיא נאמרת כאן ולא בהערת קוד</b>: הכיוון שאושר היה <b>"התמלול נעשה בשליחה"</b> - כלומר מקליטים אודיו ושולחים אותו לתמלול. <b>אין לנו יכולת תמלול בשרת</b> - נמדד: אין פעולה כזאת במרשם, וגם ערוץ ההעלאה שהצירוף ממתין לו טרם נבנה. בניית שרת תמלול היא משטח בפני עצמו - מכסה, יומן ופעולה שמורה - ולא חלק מהמעטפת.<br>
+  <b>מה שנבנה במקום, והוא נותן למפעיל בדיוק את מה שדב ביקש</b>: הכתבה <b>שמפעילה את עצמה מחדש</b> בכל פעם שהדפדפן מפסיק להאזין, כך ש<b>שתיקה אינה מסיימת דבר</b>, וההשהיה היא של המשתמש בלבד. <b>ההבדל היחיד שנראה על המסך</b>: המילים מופיעות בתיבה תוך כדי הדיבור ולא בסופו, ולכן <b>שלושה מצבים ולא ארבעה</b> - מנוחה · מקליט · מושהה. <b>מצב "תומלל" אינו מצב נפרד</b>, מפני שהטקסט כבר בתיבה וניתן לעריכה כל הזמן. 🔴 <b>וכשערוץ התמלול ייבנה - הפקדים והמצבים אינם משתנים</b>, רק מקור הטקסט.<br>
+  <b>הצירוף - שני מקורות בכפתור אחד</b>: <b>מהמחשב</b> - הבורר של מערכת ההפעלה, זה שהמשתמש כבר מכיר. 🔴 <b>הוא אכן נראה אחרת ב-Windows וב-Mac, וזו בדיוק הסיבה להעדיף אותו על חלון משלנו</b>: הוא מציג לכל משתמש את הסביבה שלו - הכוננים, המועדפים והחיפוש שהוא רגיל אליהם. חלון משלנו היה נראה זהה בכל מערכת, ובכך זר בכולן, <b>או מתיקיית ההזמנה</b> שכבר קיימת במערכת; רוב מה שיצורף כבר יושב שם. <b>הפקד מוצג מושבת עד שערוץ ההעלאה ייפתח</b> - כלל פקד העתיד, ולכן הוא מרונדר מושבת בכל חמשת המצבים ובכל המסכים שלמעלה.<br>
+  🔴 <b>ומה שנדרש מהמשטח הזה עם האישור</b>: שורת ההקלטה על ארבעת מצביה היא <b>משטח חדש שאין לו עדיין אלמנט בספריית העיצוב</b>. <b>עם אישור המוקאפ היא נכנסת לספרייה כאלמנט עם שם</b> - בדיוק כפי שידית הגרירה נכנסה היום, וכדי שלא יחזור הדפוס שהוליד שתי צורות לאותה פעולה: מי שבנה מחדש עשה זאת מפני שלא היה ממה להעתיק.</p>
+  <div style="display:flex; flex-direction:column; gap:14px; align-items:flex-start; background:var(--cc-surface); border:1px solid var(--cc-border); border-radius:10px; padding:16px;">
+    <div><div class="mk-note" style="margin-bottom:6px">1 · מנוחה - הקלדה, צירוף, הקלטה</div>
+      <div class="inrow"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="הקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-mic"/></svg></button><input class="cc-input" type="text" placeholder="שאלה או בקשה לעוזר ה-AI" aria-label="שאלה או בקשה"><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div></div>
+    <div><div class="mk-note" style="margin-bottom:6px">2 · מקליט - שעון רץ; פאוזה אינה מסיימת</div>
+      <div class="inrow"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><span class="rec-time">00:02</span><span class="rec-dot"></span><span style="flex:1;"></span><button class="cc-icon-btn cc-icon-btn--sm" aria-label="השהיה"><svg class="mk-ico" aria-hidden="true"><use href="#i-pause"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="מחיקת ההקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-trash-2"/></svg></button><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div></div>
+    <div><div class="mk-note" style="margin-bottom:6px">3 · מושהה - אפשר להמשיך מאותה נקודה</div>
+      <div class="inrow"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><span class="rec-time">00:07</span><span style="flex:1;"></span><button class="cc-icon-btn cc-icon-btn--sm" aria-label="המשך הקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-play"/></svg></button><button class="cc-icon-btn cc-icon-btn--sm" aria-label="מחיקת ההקלטה"><svg class="mk-ico" aria-hidden="true"><use href="#i-trash-2"/></svg></button><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div></div>
+    <div><div class="mk-note" style="margin-bottom:6px">4 · הטקסט בתיבה, ניתן לעריכה בכל רגע - <b>אינו מצב נפרד בקוד</b>; מוצג כאן כדי להראות את התוצאה</div>
+      <div class="inrow"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><input class="cc-input as-transcript" style="flex:1;" value='"מה מצב התשלומים של ההזמנה"' aria-label="תמלול - ניתן לעריכה לפני שליחה"><button class="cc-icon-btn cc-icon-btn--sm" aria-label="מחיקה"><svg class="mk-ico" aria-hidden="true"><use href="#i-trash-2"/></svg></button><button class="cc-btn cc-btn--sm cc-btn--primary">שליחה</button></div></div>
+    <div><div class="mk-note" style="margin-bottom:6px">5 · הצירוף - שני מקורות, ומושבת עד שערוץ ההעלאה ייפתח</div>
+      <div class="inrow"><button class="cc-icon-btn cc-icon-btn--sm" disabled aria-label="צירוף קובץ - מושבת עד שערוץ ההעלאה ייפתח"><svg class="mk-ico" aria-hidden="true"><use href="#i-paperclip"/></svg></button><span style="font-size:12.5px; color:var(--cc-text-2); flex:1;">מהמחשב · מתיקיית ההזמנה</span></div></div>
+  </div>
+</div>
+
+<div class="mk-sec">
+  <h2>ו · הפלטות - תבניות התצוגה של העוזר</h2>
+  <p class="mk-note">הצורות שהעוזר מציג בפאנל ובזום; התוכן תמיד מהנתונים.</p>
+  <div class="plates-grid">
+    <div class="plate"><div class="plate-head">פלטת מסמך - טיוטה לאישור</div><div class="plate-body">
+      <div style="border:1px solid var(--cc-divider); border-radius:var(--cc-radius-sm); padding:10px; background:var(--cc-bg); font-size:12.5px;">שלום, מצורפת תוכנית הטיול המעודכנת לחודש מאי. נשמח לשמוע אם הכל תואם את הציפיות.</div>
+      <div class="dlg-act__btns"><button class="cc-btn cc-btn--sm">עריכה במסך המיילים</button><button class="cc-btn cc-btn--primary cc-btn--sm">המשך לשליחה</button></div>
+    </div></div>
+    <div class="plate"><div class="plate-head">פלטה חוצת מסכים - תשובה במקום, פעולה עם מעבר</div><div class="plate-body">
+      <div class="dlg-msg dlg-msg--user" style="margin-bottom:8px;">כמה שותפים ממתינים לאישור? (נשאל מכרטיס הזמנה)</div>
+      <div class="dlg-msg dlg-msg--ai">שני שותפים ממתינים. התשובה כאן - בלי לעזוב את המסך; הפעולה עצמה במסך השותפים, שם משטח האימות.
+        <div style="margin-top:8px;"><button class="as-chip"><span class="cc-chip">מעבר למסך השותפים</span></button></div>
+      </div>
+    </div></div>
+    <div class="plate"><div class="plate-head">פלטת פעולה שמורה - דיאלוג כפוי</div><div class="plate-body">
+      <div class="app-dialog" style="max-width:100%; padding:14px; box-shadow:none;">
+        <div class="app-dialog__title">שליחת מייל ללקוח</div>
+        <div class="app-dialog__body">המייל "עדכון ללקוח" יישלח לשני נמענים. הפעולה תירשם ביומן.</div>
+        <div class="app-dialog__actions"><button class="cc-btn cc-btn--sm">ביטול</button><button class="cc-btn cc-btn--primary cc-btn--sm">שליחה</button></div>
+      </div>
+    </div></div>
+    <div class="plate"><div class="plate-head">פלטת תוצאה וכשל - אחרי ביצוע</div><div class="plate-body">
+      <div class="cc-msg cc-msg--success" style="margin-bottom:8px;">המקטע עודכן: הלינה בוורונה הוחלפה לשלושה לילות. הכרטיס שעל המסך מציג את הגרסה החדשה.</div>
+      <div class="cc-msg cc-msg--danger">נשמרו 2 מתוך 3 מקטעים. הטיוטה נשמרה, ואפשר להריץ שוב את השמירה.</div>
+    </div></div>
+  </div>
+</div>
+
+</body>
+</html>

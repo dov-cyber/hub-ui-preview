@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S41-EXPLORER - סייר התיקיות: חיפוש על העץ · מחיקה · השבתת ההעלאה · תיבת הסימון</title>
+<style>
+/* 1:1 מול spa/src/global.css + FoldersScreen.svelte החי (הערכים אומתו מול הדיסק ב-11.08). mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-icon-deco:#888888;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --status-not-impl-bg:#dbeafe; --status-not-impl-fg:#1e40af;
+  --status-impl-bg:#dcfce7; --status-impl-fg:#15803d;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+  --cc-ease:140ms cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+bdi{unicode-bidi:isolate}
+
+/* ---- יסודות הספרייה (1:1 global.css) ---- */
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--danger{background:var(--cc-action);border-color:var(--cc-action);color:#fff}
+.cc-btn--danger:hover{background:var(--cc-action-hover);border-color:var(--cc-action-hover);color:#fff}
+.cc-btn--danger:disabled{background:var(--cc-action);border-color:var(--cc-action);color:#fff;opacity:.5}
+.cc-icon{width:20px;height:20px;flex:0 0 auto;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cc-icon--sm{width:16px;height:16px}
+.cc-icon--lg{width:24px;height:24px}
+.cc-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:var(--cc-row-h);height:var(--cc-row-h);padding:0;
+  border:1px solid transparent;border-radius:var(--cc-radius-sm);background:transparent;color:var(--cc-text-2);cursor:pointer;transition:background var(--cc-ease)}
+.cc-icon-btn:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-icon-btn--sm{width:34px;height:34px}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px}
+.cc-pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;padding:3px 9px;border-radius:var(--cc-radius-pill);direction:ltr}
+.cc-pill--it{background:var(--status-not-impl-bg);color:var(--status-not-impl-fg)}
+.cc-pill--bk{background:var(--status-impl-bg);color:var(--status-impl-fg)}
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-family:var(--cc-font);font-size:15px;color:var(--cc-text);
+  background:var(--cc-surface);border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm)}
+.cc-searchwrap{position:relative;flex:1 1 220px;min-width:180px}
+.cc-searchwrap > .cc-icon{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);color:var(--cc-text-3);pointer-events:none}
+.cc-searchwrap .cc-input{padding-inline-start:36px;padding-inline-end:34px}
+.cc-searchclear{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:0;border-radius:50%;
+  background:var(--cc-sunken);color:var(--cc-text-3);font-size:13px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.cc-msg--danger{background:var(--cc-danger-bg);color:var(--cc-danger-fg);border-color:var(--cc-danger-bar)}
+.cc-msg--success{background:var(--cc-success-bg);color:var(--cc-success-fg);border-color:var(--cc-success-bar)}
+.cc-empty{text-align:center;padding:48px 24px;color:var(--cc-text-3)}
+.cc-empty .cc-icon{width:40px;height:40px;color:var(--cc-icon-deco);margin-bottom:12px}
+.cc-empty h4{font-size:16px;font-weight:600;color:var(--cc-text-2);margin:0 0 6px}
+.cc-empty p{font-size:14px;margin:0 0 16px}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-spacer{margin-inline-start:auto}
+
+/* סייר: פירורי דרך + פס הכותרת (1:1 global.css) */
+.cc-crumbs{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--cc-text-2);flex-wrap:wrap;min-height:var(--cc-row-h)}
+.cc-crumbs a{color:var(--cc-text-2);cursor:pointer;text-decoration:none;padding:2px 4px;border-radius:4px}
+.cc-crumbs b{color:var(--cc-text);font-weight:600}
+.cc-crumbs .sep{color:var(--cc-text-3);font-size:12px}
+.cc-explorer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--cc-divider)}
+
+/* כרטיס תיקייה (1:1 global.css) */
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:16px}
+.cc-card{position:relative;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);
+  padding:14px 16px;cursor:pointer;min-height:104px;display:flex;flex-direction:column;gap:10px;
+  transition:border-color var(--cc-ease),box-shadow var(--cc-ease)}
+.cc-card:hover{border-color:var(--cc-border-strong);box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.cc-card--folder{min-height:96px}
+.cc-card--folder .ficon{width:34px;height:34px;color:var(--cc-icon-deco)}
+.cc-card-name{font-size:15px;font-weight:600;color:var(--cc-text);flex:1 1 auto;word-break:break-word;line-height:1.4}
+
+/* טבלת הנתונים (1:1 global.css) */
+.cc-table-wrap{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);overflow:visible}
+.cc-table{width:100%;border-collapse:collapse;font-size:14px}
+.cc-table th{text-align:start;font-weight:600;color:var(--cc-text-3);font-size:11.5px;letter-spacing:.2px;
+  border-bottom:1px solid var(--cc-border-strong);padding:10px 12px;white-space:nowrap;background:var(--cc-surface)}
+.cc-table td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);color:var(--cc-text);vertical-align:middle}
+.cc-table tr:last-child td{border-bottom:0}
+.cc-table .ltr{direction:ltr;text-align:right;font-size:13px;color:var(--cc-text-2)}
+.cc-table .primary{font-weight:500;color:var(--cc-text)}
+.cc-table .sub{font-size:12px;color:var(--cc-text-3)}
+.cell-actions{display:flex;align-items:center;gap:6px}
+
+/* תפריט השורה (1:1 global.css) */
+.cc-menu-wrap{position:relative}
+/* 🔴 מוגדר אחרי cc-menu-wrap במכוון, כמו סדר הטעינה החי (סגנון רכיב אחרי global).
+   בגרסה 2 הכלל ישב לפניו, position:relative דרס אותו, וה-⋮ נפל לתחתית הכרטיס. */
+.cc-card-menu{position:absolute;top:7px;inset-inline-end:6px}
+.cc-menu{position:absolute;inset-inline-end:0;top:calc(var(--cc-row-h) + 2px);min-width:170px;background:var(--cc-surface);
+  border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);box-shadow:var(--cc-shadow);z-index:20;overflow:hidden}
+.cc-menu button{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:0 14px;border:0;background:transparent;
+  font-family:var(--cc-font);font-size:14px;color:var(--cc-text);cursor:pointer;text-align:start}
+.cc-menu button:hover{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-menu button.cc-menu--danger{color:var(--cc-danger-fg)}
+.cc-menu button.cc-menu--danger:hover{background:var(--cc-danger-bg)}
+.cc-menu .cc-menu-sep{height:1px;background:var(--cc-divider);margin:4px 0}
+
+/* פרימיטיבי הבחירה (1:1 FoldersScreen, B-428ב) */
+.selbox{width:16px;height:16px;accent-color:var(--cc-action);cursor:pointer}
+.bulkbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);
+  background:var(--cc-surface);padding:8px 12px;margin-bottom:12px;font-size:13px}
+
+/* דיאלוג (1:1 global.css) */
+.app-dialog-ov{position:relative;background:rgba(0,0,0,.32);border-radius:var(--cc-radius);padding:26px;display:flex;justify-content:center}
+.app-dialog{background:var(--cc-surface);border:.5px solid var(--cc-border);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.12);
+  padding:18px 20px;width:330px;max-width:92%;font-family:var(--cc-font)}
+.app-dialog__title{font-size:16px;font-weight:600;color:var(--cc-text);margin-bottom:6px}
+.app-dialog__actions{display:flex;gap:10px;margin-top:16px}
+
+/* טולטיפ הספרייה (1:1 global.css; במוקאפ מוצג פתוח, ולכן position ו-opacity שונים במכוון) */
+.cc-tip{position:absolute;z-index:30;background:var(--cc-surface);color:var(--cc-text);font-family:var(--cc-font);font-size:13px;
+  line-height:1.5;padding:8px 12px;max-width:240px;border:.5px solid var(--cc-border);border-right:3px solid var(--cc-action);
+  border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.10)}
+
+/* ================= שתי התוספות למלאי (מסומנות, ולא יותר) ================= */
+/* תוספת 1 - שורת הנתיב בתוצאת חיפוש (הערה 1) */
+.cc-respath{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:12px;color:var(--cc-text-3);margin-top:2px}
+.cc-respath .sep{color:var(--cc-text-3);font-size:11px}
+.cc-respath a{color:var(--cc-text-3);text-decoration:none;border-radius:4px;padding:1px 3px;cursor:pointer}
+.cc-respath a:hover{color:var(--cc-action);background:var(--cc-action-weak)}
+/* תוספת 2 - רצועת הפקדים בראש כרטיס התיקייה (B-1110, הערה 9).
+   🔴 השינוי המהותי: הכרטיס שומר רצועה בראשו לשני הפקדים, והאייקון והשם מתחילים מתחתיה.
+   כך אף פקד אינו עולה על האייקון. אין שינוי במבנה ה-HTML - רק ריפוד עליון וגובה אחיד. */
+.cc-card--folder.has-strip{padding-top:46px}   /* רק בכרטיס שיש בו פקדים */
+.cc-card-sel{position:absolute;top:7px;inset-inline-start:6px;z-index:2;width:34px;height:34px;display:inline-flex;
+  align-items:center;justify-content:center;line-height:0;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);
+  background:var(--cc-surface);cursor:pointer;transition:border-color var(--cc-ease),background var(--cc-ease)}
+.cc-card-sel:hover{border-color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-card-sel.is-on{border-color:var(--cc-action);background:var(--cc-action-weak)}
+/* הצורה הישנה, לתצוגת ההשוואה בלבד - לא לבנייה */
+.mk-before.cc-card--folder{padding-top:14px}
+.mk-old-sel{position:absolute;top:8px;inset-inline-start:8px}
+
+/* ---- פיגום המוקאפ ---- */
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:14px;max-width:1040px}
+.mk-sec{max-width:1040px;margin-top:30px}
+.mk-sec > h2{font-size:15.5px;margin-bottom:4px}
+.mk-sec > .mk-lead{font-size:13px;color:var(--cc-text-2);margin-bottom:12px}
+.mk-note-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--cc-surface);color:var(--cc-action);border:1.5px solid var(--cc-action);font-size:11px;font-weight:700;flex:0 0 auto;vertical-align:middle;cursor:default}
+.mk-notes{max-width:1040px;margin-top:30px;font-size:13px;line-height:1.7}
+.mk-notes h2{font-size:15.5px;margin-bottom:8px}
+.mk-notes li{margin-bottom:9px;list-style:none}
+.mk-decide{max-width:1040px;margin-top:22px;background:var(--cc-warning-bg);border:1px solid var(--cc-warning-fg);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-decide h2{font-size:15px;color:var(--cc-warning-fg);margin-bottom:6px}
+.mk-block{max-width:1040px;margin-top:22px;background:var(--cc-danger-bg);border:1px solid var(--cc-danger-bar);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-block h2{font-size:15px;color:var(--cc-danger-fg);margin-bottom:6px}
+.mk-open{max-width:1040px;margin-top:22px;background:var(--cc-info-bg);border:1px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-open h2{font-size:15px;color:var(--cc-info-fg);margin-bottom:6px}
+.mk-frame{border:1px dashed var(--cc-border-strong);border-radius:var(--cc-radius);padding:16px;background:var(--cc-surface)}
+.mk-ab{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mk-ab h3{font-size:13px;font-weight:600;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">S41-EXPLORER - סייר התיקיות: מה שהמפעיל נתקל בו בפועל</div>
+<div class="mk-sub">
+  <b>איפה זה חי</b>: סרגל הצד ← סייר תיקיות. הכל מצויר 1:1 מ-<b>FoldersScreen.svelte</b> ומ-<b>global.css</b>, וערכי ה-CSS אומתו מול הדיסק.
+  <b>מה נוסף</b>: חיפוש על פני העץ עם נתיב לכל תוצאה · מחיקה בתפריט השורה ובפס הבולק · השבתת כפתור ההעלאה ברמות שאינן קולטות · עיצוב מחדש לתיבת הסימון בכרטיס.
+  <b>שתי תוספות בלבד למלאי המחלקות</b>: <code>cc-respath</code> (הערה 1) ו-<code>cc-card-sel</code> המעוצבת מחדש (הערה 9). כל השאר דפוסים מאושרים.
+  <b style="color:var(--cc-danger-fg)">גרסה 2 (11.08)</b> - אחרי סבב ביקורת אדוורסרית ואחרי הערות דב על המסך החי.
+</div>
+
+<!-- ============ א · חיפוש על פני העץ (B-699) ============ -->
+<div class="mk-sec">
+  <h2>א · חיפוש על פני העץ המנוהל <span class="cc-chip">B-699</span></h2>
+  <div class="mk-lead">היום התיבה מסננת את הרמה שנטענה בלבד, ולכן שם שיושב עמוק יותר מחזיר כלום. כאן היא מחפשת בעץ, וכל תוצאה נושאת את הנתיב שלה כדי שתהיה ניתנת לזיהוי.</div>
+  <div class="mk-frame">
+
+    <div class="cc-explorer-bar">
+      <nav class="cc-crumbs" aria-label="נתיב"><b><bdi>Partner Workspaces</bdi></b></nav>
+      <div class="cc-searchwrap" style="flex:0 0 240px">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="cc-input" style="min-height:36px" value="קטלוג" aria-label="חיפוש">
+        <button class="cc-searchclear" aria-label="ניקוי החיפוש" title="ניקוי החיפוש">✕</button>
+      </div>
+    </div>
+
+    <div class="cc-msg" style="margin-bottom:12px">
+      <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span>תוצאות מכל העץ <bdi>Partner Workspaces</bdi>, כולל מחסן ההזמנות ללא שיוך. ניקוי החיפוש יחזיר לתיקייה הנוכחית.</span>
+      <span class="mk-note-dot" style="margin-inline-start:auto">2</span>
+    </div>
+
+    <div class="cc-table-wrap">
+      <table class="cc-table">
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" class="selbox" aria-label="בחירת כל המוצגים"></th>
+          <th style="width:26px"></th>
+          <th>שם</th><th>סוג</th><th>עודכן</th>
+          <th style="width:230px">פעולות</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="selbox" aria-label="בחירת Albania Tourism Catalog.pdf"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v6h6"/></svg></td>
+            <td class="primary">
+              <span dir="auto"><bdi>Albania Tourism Catalog.pdf</bdi></span>
+              <div class="cc-respath" aria-label="נתיב התוצאה">
+                <a><bdi>Albania</bdi></a><span class="sep">›</span><a><bdi>Adriatic DMC</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a>
+                <span class="mk-note-dot" style="margin-inline-start:6px">1</span>
+              </div>
+            </td>
+            <td class="sub">PDF</td>
+            <td class="ltr">04.08.26</td>
+            <td><div class="cell-actions">
+              <button class="cc-btn cc-btn--sm">צפייה</button>
+              <button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+              <span class="cc-menu-wrap"><button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></span>
+            </div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="selbox" aria-label="בחירת קטלוג שירותים 2026"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></td>
+            <td class="primary">
+              <span dir="auto">קטלוג שירותים 2026</span>
+              <div class="cc-respath" aria-label="נתיב התוצאה">
+                <a><bdi>Georgia</bdi></a><span class="sep">›</span><a><bdi>Fine Travel</bdi></a>
+              </div>
+            </td>
+            <td class="sub">תיקייה</td>
+            <td class="ltr">28.07.26</td>
+            <td><div class="cell-actions">
+              <button class="cc-btn cc-btn--sm">פתיחה</button>
+              <span class="cc-menu-wrap"><button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></span>
+            </div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="selbox" aria-label="בחירת קטלוג מלונות - טיוטה.docx"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v6h6"/></svg></td>
+            <td class="primary">
+              <span dir="auto">קטלוג מלונות - טיוטה.docx</span>
+              <div class="cc-respath" aria-label="נתיב התוצאה">
+                <a><bdi>Uzbekistan</bdi></a><span class="sep">›</span><a><bdi>Silk Road Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a><span class="sep">›</span><a><bdi>BK-1062</bdi></a>
+              </div>
+            </td>
+            <td class="sub">Google Doc</td>
+            <td class="ltr">10.08.26</td>
+            <td><div class="cell-actions">
+              <button class="cc-btn cc-btn--sm">צפייה</button>
+              <button class="cc-btn cc-btn--sm">פתיחת התיקייה</button>
+              <span class="cc-menu-wrap"><button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></span>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cc-help">בתצוגת חיפוש אין גרירה. הגרירה מעבירה בין תיקיות, ותוצאות מרמות שונות אינן רמה אחת. <span class="mk-note-dot">3</span></p>
+
+    <div class="cc-msg cc-msg--warning" style="margin-top:14px">
+      <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+      <span>הסריקה נעצרה לפני שסיימה את העץ. מוצגות התוצאות שנמצאו עד כה - חידוד החיפוש יחזיר רשימה מלאה.</span>
+      <span class="mk-note-dot" style="margin-inline-start:auto">4</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ב · מצב ריק ============ -->
+<div class="mk-sec">
+  <h2>ב · המצב הריק אומר מה בדיוק נסרק <span class="cc-chip">B-699</span></h2>
+  <div class="mk-lead">הנוסח החי אומר "אין תוצאות לחיפוש" ולא אומר איפה חיפשנו. מסנן שנראה כמו חיפוש הוא שקר גלוי למפעיל גם כשהוא עובד כמתוכנן.</div>
+  <div class="mk-frame">
+    <div class="cc-empty" style="border:1px dashed var(--cc-border);border-radius:var(--cc-radius)">
+      <svg class="cc-icon cc-icon--lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <h4>אין תוצאות בעץ <bdi>Partner Workspaces</bdi></h4>
+      <p>נסרקו כל התיקיות והקבצים בעץ <bdi>Partner Workspaces</bdi> ובמחסן ההזמנות ללא שיוך, לפי שם. <br>
+         העץ <bdi>Customer Orders &amp; Offers</bdi> אינו נסרק. יש לעבור אליו בלשונית שלמעלה.</p>
+      <span class="mk-note-dot">2</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ג · העלאה ============ -->
+<div class="mk-sec">
+  <h2>ג · העלאה - רמת המדינה נפתחת, והכפתור מושבת ולא מוסתר <span class="cc-chip">B-702</span> <span class="cc-chip">B-704</span></h2>
+  <div class="mk-lead">היום הכפתור פעיל בכל תיקייה, והסירוב מגיע רק אחרי שהקובץ נבחר ונשלח. שלושת המצבים למטה הם אותו פקד, בשלוש רמות.</div>
+
+  <div class="mk-frame" style="margin-bottom:14px">
+    <div style="font-size:12px;color:var(--cc-text-3);margin-bottom:6px">רמת המדינה - <b style="color:var(--cc-success-fg)">משתנה: נפתחת (D-315)</b></div>
+    <div class="cc-explorer-bar" style="margin-bottom:0;border-bottom:0;padding-bottom:0">
+      <nav class="cc-crumbs" aria-label="נתיב"><a><bdi>Partner Workspaces</bdi></a><span class="sep">›</span><b><bdi>Albania</bdi></b></nav>
+      <button class="cc-btn cc-btn--sm cc-spacer" style="flex:0 0 auto" title="העלאת קבצים לתיקייה הנוכחית">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>העלאת קבצים</button>
+      <button class="cc-btn cc-btn--sm" style="flex:0 0 auto" title="תיקייה חדשה כאן">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6M9 13h6"/></svg>תיקייה חדשה</button>
+      <span class="mk-note-dot">5</span>
+    </div>
+  </div>
+
+  <div class="mk-frame" style="margin-bottom:14px;padding-bottom:80px">
+    <div style="font-size:12px;color:var(--cc-text-3);margin-bottom:6px">שורש תיקיית שותף - <b style="color:var(--cc-danger-fg)">אינו משתנה: נשאר חסום (D-254 סעיף 4)</b></div>
+    <div class="cc-explorer-bar" style="margin-bottom:0;border-bottom:0;padding-bottom:0;position:relative">
+      <nav class="cc-crumbs" aria-label="נתיב"><a><bdi>Partner Workspaces</bdi></a><span class="sep">›</span><a><bdi>Albania</bdi></a><span class="sep">›</span><b><bdi>Adriatic DMC</bdi></b></nav>
+      <button class="cc-btn cc-btn--sm cc-spacer" style="flex:0 0 auto" disabled aria-describedby="tip-partner">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>העלאת קבצים</button>
+      <button class="cc-btn cc-btn--sm" style="flex:0 0 auto" title="תיקייה חדשה כאן">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6M9 13h6"/></svg>תיקייה חדשה</button>
+      <div class="cc-tip" id="tip-partner" role="tooltip" style="top:52px;inset-inline-start:34%">
+        תיקיית השורש של שותף אינה קולטת קבצים ישירות (כלל קבוע) - יש לבחור תיקיית שנה או הזמנה בתוכה
+      </div>
+      <span class="mk-note-dot">6</span>
+    </div>
+  </div>
+
+  <div class="mk-frame" style="padding-bottom:80px">
+    <div style="font-size:12px;color:var(--cc-text-3);margin-bottom:6px">שורש העץ - <b style="color:var(--cc-text-2)">אינו משתנה: חסום היום, וממשיך להיות חסום</b></div>
+    <div class="cc-explorer-bar" style="margin-bottom:0;border-bottom:0;padding-bottom:0;position:relative">
+      <nav class="cc-crumbs" aria-label="נתיב"><b><bdi>Partner Workspaces</bdi></b></nav>
+      <button class="cc-btn cc-btn--sm cc-spacer" style="flex:0 0 auto" disabled aria-describedby="tip-root">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>העלאת קבצים</button>
+      <button class="cc-btn cc-btn--sm" style="flex:0 0 auto" disabled aria-describedby="tip-root2">
+        <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6M9 13h6"/></svg>תיקייה חדשה</button>
+      <div class="cc-tip" id="tip-root" role="tooltip" style="top:52px;inset-inline-start:52%">
+        לא ניתן להעלות קבצים לשורש - יש לפתוח תיקיית יעד
+      </div>
+      <div class="cc-tip" id="tip-root2" role="tooltip" style="top:52px;inset-inline-start:6%">
+        אזורים נוצרים אוטומטית לפי מדינת השותף
+      </div>
+      <span class="mk-note-dot">7</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ד · מחיקה ============ -->
+<div class="mk-sec">
+  <h2>ד · מחיקה - בתפריט השורה ובפס הבולק <span class="cc-chip">B-703</span></h2>
+  <div class="mk-lead">אין היום מחיקה בסייר, לא בלקוח ולא בשרת. המחיקה היא לסל המיחזור שבסייר (D-334 · D-335), ולכן היא הפיכה - והשחזור נעשה בדשבורד ולא מחוצה לו.</div>
+  <div class="mk-frame">
+
+    <div class="bulkbar">
+      <span>2 פריטים נבחרו</span>
+      <button class="cc-btn cc-btn--sm">בחירת כל המוצגים</button>
+      <button class="cc-btn cc-btn--sm"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>העברה...</button>
+      <button class="cc-btn cc-btn--sm" style="color:var(--cc-danger-fg)"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>מחיקה...</button>
+      <button class="cc-btn cc-btn--sm">ניקוי בחירה</button>
+      <span class="mk-note-dot" style="margin-inline-start:auto">8</span>
+    </div>
+
+    <div class="cc-table-wrap" style="margin-bottom:18px">
+      <table class="cc-table">
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" class="selbox" aria-label="בחירת כל המוצגים"></th>
+          <th style="width:26px"></th><th>שם</th><th>סוג</th><th>עודכן</th><th style="width:210px">פעולות</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="selbox" checked aria-label="בחירת BK-1009"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></td>
+            <td class="primary"><span dir="auto"><bdi>BK-1009 | Porecki &amp; Shoam 05-13.10.2026</bdi></span><span class="cc-pill cc-pill--bk" style="margin-inline-start:8px">הזמנה</span></td>
+            <td class="sub">תיקייה</td><td class="ltr">19.07.26</td>
+            <td><div class="cell-actions">
+              <button class="cc-btn cc-btn--sm">פתיחה</button>
+              <span class="cc-menu-wrap">
+                <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות" style="background:var(--cc-action-weak);color:var(--cc-action)"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+                <div class="cc-menu">
+                  <button><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>שינוי שם</button>
+                  <button><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>העברה...</button>
+                  <button><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>פתיחה ב-Drive <span class="mk-note-dot" style="margin-inline-start:auto">13</span></button>
+                  <div class="cc-menu-sep"></div>
+                  <button class="cc-menu--danger"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>מחיקה...</button>
+                </div>
+              </span>
+            </div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="selbox" checked aria-label="בחירת Albania Tourism Catalog.pdf"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v6h6"/></svg></td>
+            <td class="primary"><span dir="auto"><bdi>Albania Tourism Catalog.pdf</bdi></span></td>
+            <td class="sub">PDF</td><td class="ltr">04.08.26</td>
+            <td><div class="cell-actions"><button class="cc-btn cc-btn--sm">צפייה</button>
+              <span class="cc-menu-wrap"><button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></span>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+      <div class="app-dialog-ov">
+        <div class="app-dialog" role="dialog" aria-modal="true" aria-label="מחיקה לסל המיחזור">
+          <div class="app-dialog__title">מחיקה לסל המיחזור</div>
+          <div style="font-size:13px;color:var(--cc-text-2);line-height:1.6">
+            <bdi>Albania Tourism Catalog.pdf</bdi> יעבור לסל המיחזור.
+          </div>
+          <div class="cc-help">ניתן לשחזר מסל המיחזור שבסייר. הפריט ייעלם מהרשימה מיד.</div>
+          <div class="app-dialog__actions">
+            <button class="cc-btn">ביטול</button>
+            <button class="cc-btn cc-btn--danger cc-spacer" style="flex:0 0 auto">מחיקה</button>
+          </div>
+          <span class="mk-note-dot" style="position:absolute;top:34px;inset-inline-end:34px">10</span>
+        </div>
+      </div>
+
+      <div class="app-dialog-ov">
+        <div class="app-dialog" role="dialog" aria-modal="true" aria-label="בולק מעורב">
+          <div class="app-dialog__title">מחיקה לסל המיחזור</div>
+          <div class="cc-msg cc-msg--warning" style="margin:8px 0 10px">
+            <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+            <span>2 פריטים נבחרו: קובץ אחד, ותיקייה אחת שיש בה 12 פריטים. הכל יעבור לסל המיחזור.</span>
+          </div>
+          <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--cc-text-2);cursor:pointer">
+            <input type="checkbox" class="selbox" style="margin-top:3px">
+            <span>הבנתי, למחוק גם את התיקיות כולל התוכן שלהן</span>
+          </label>
+          <div class="app-dialog__actions">
+            <button class="cc-btn">ביטול</button>
+            <button class="cc-btn cc-btn--danger cc-spacer" style="flex:0 0 auto" disabled>מחיקה</button>
+          </div>
+          <span class="mk-note-dot" style="position:absolute;top:34px;inset-inline-end:34px">11</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cc-msg cc-msg--danger" style="margin-top:16px">
+      <svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+      <span>פריט אחד נמחק. נכשלו: <bdi>BK-1009 | Porecki &amp; Shoam 05-13.10.2026</bdi> - התיקייה מקושרת להזמנה במרשם.</span>
+      <span class="mk-note-dot" style="margin-inline-start:auto">12</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ה · תיבת הסימון בכרטיס ============ -->
+<div class="mk-sec">
+  <h2>ה · תיבת הסימון בכרטיס התיקייה - עיצוב מחדש <span class="cc-chip">B-1110</span></h2>
+  <div class="mk-lead">נוסח דב, 11.08, על המסך החי: "תיבת סימון שהיא מכוערת, היא לא מתאימה, היא נלקחה מתיקיות השותפים". צודק - התיבה הועתקה משפת הטבלה בלי להתאים אותה לכרטיס.</div>
+  <div class="mk-ab">
+    <div>
+      <h3 style="color:var(--cc-danger-fg)">היום - התיבה צפה על המשטח</h3>
+      <div class="cc-grid" style="grid-template-columns:1fr">
+        <div class="cc-card cc-card--folder mk-before" role="button" tabindex="0">
+          <span class="mk-old-sel"><input type="checkbox" class="selbox" aria-label="בחירת Fine Travel"></span>
+          <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <div class="cc-card-name" style="font-size:14px"><bdi>Fine Travel</bdi></div>
+          <span class="cc-menu-wrap cc-card-menu">
+            <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+          </span>
+        </div>
+      </div>
+      <p class="cc-help">16 פיקסלים, בלי מסגרת, בלי רקע, בלי יעד לחיצה. היא ו-⋮ צפות שתיהן על גבי אייקון התיקייה.</p>
+    </div>
+    <div>
+      <h3 style="color:var(--cc-success-fg)">המוצע - פקד עם משטח משלו</h3>
+      <div class="cc-grid" style="grid-template-columns:1fr 1fr">
+        <div class="cc-card cc-card--folder has-strip" role="button" tabindex="0">
+          <label class="cc-card-sel"><input type="checkbox" class="selbox" aria-label="בחירת פריט"></label>
+          <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <div class="cc-card-name" style="font-size:14px"><bdi>Fine Travel</bdi></div>
+          <span class="cc-menu-wrap cc-card-menu">
+            <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+          </span>
+        </div>
+        <div class="cc-card cc-card--folder has-strip" role="button" tabindex="0" style="border-color:var(--cc-action)">
+          <label class="cc-card-sel is-on"><input type="checkbox" class="selbox" checked aria-label="בחירת פריט"></label>
+          <svg class="cc-icon ficon" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <div class="cc-card-name" style="font-size:14px"><bdi>Adriatic DMC</bdi></div>
+          <span class="cc-menu-wrap cc-card-menu">
+            <button class="cc-icon-btn cc-icon-btn--sm" aria-label="פעולות"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+          </span>
+        </div>
+      </div>
+      <p class="cc-help">רצועה שמורה בראש הכרטיס: תיבת הסימון בקצה ההתחלה, ⋮ בקצה הסיום, שניהם 34 פיקסלים. האייקון והשם מתחילים מתחתיה, ואף פקד אינו עולה עליהם. <b>הפקד הוא label שעוטף את התיבה</b>, ולכן כל המשטח מסמן - ולא רק ה-16 פיקסלים שבמרכזו. <b>הרצועה נשמרת רק בכרטיס שיש בו פקדים</b>: כרטיס "הזמנות ללא שיוך" אינו מקבל אותה. <span class="mk-note-dot">9</span></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ ו · סל המיחזור בסייר ============ -->
+<div class="mk-sec">
+  <h2>ו · סל המיחזור בסייר <span class="cc-chip">D-335</span></h2>
+  <div class="mk-lead">מחיקה שמבטיחה שחזור חייבת שיהיה משטח לשחזר בו. כל עוד ההבטחה מפנה החוצה, היא מפנה למקום שאמור להיות שקוף - ולכן המחיקה והשחזור נבנים יחד.</div>
+  <div class="mk-frame">
+    <div class="cc-explorer-bar">
+      <nav class="cc-crumbs" aria-label="נתיב"><a><bdi>Partner Workspaces</bdi></a><span class="sep">›</span><b>סל המיחזור</b></nav>
+      <span class="cc-chip cc-spacer" style="flex:0 0 auto">פריט נשמר 30 יום ואז נמחק לצמיתות</span>
+    </div>
+    <div class="cc-table-wrap">
+      <table class="cc-table">
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" class="selbox" aria-label="בחירת כל המוצגים"></th>
+          <th style="width:26px"></th><th>שם</th><th>המקום שממנו נמחק</th><th>נמחק</th><th style="width:170px">פעולות</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="selbox" aria-label="בחירת Old catalog 2025.pdf"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v6h6"/></svg></td>
+            <td class="primary"><span dir="auto"><bdi>Old catalog 2025.pdf</bdi></span></td>
+            <td><div class="cc-respath"><a><bdi>Albania</bdi></a><span class="sep">›</span><a><bdi>Adriatic DMC</bdi></a><span class="sep">›</span><a><bdi>2025</bdi></a></div></td>
+            <td class="ltr">10.08.26</td>
+            <td><div class="cell-actions"><button class="cc-btn cc-btn--sm"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>שחזור</button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="selbox" aria-label="בחירת טיוטות"></td>
+            <td><svg class="cc-icon cc-icon--sm" style="color:var(--cc-icon-deco)" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></td>
+            <td class="primary"><span dir="auto">טיוטות</span></td>
+            <td><div class="cc-respath"><a><bdi>Georgia</bdi></a><span class="sep">›</span><a><bdi>Fine Travel</bdi></a><span class="sep">›</span><a><bdi>2026</bdi></a></div></td>
+            <td class="ltr">09.08.26</td>
+            <td><div class="cell-actions"><button class="cc-btn cc-btn--sm"><svg class="cc-icon cc-icon--sm" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>שחזור</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cc-help">השחזור מחזיר את הפריט למקום שממנו נמחק. אם המקום ההוא כבר אינו קיים - הפעולה אומרת זאת ומבקשת יעד. <span class="mk-note-dot">14</span></p>
+  </div>
+</div>
+
+<div class="mk-notes">
+  <h2>ז · שלושת מצבי החיפוש שסעיף ב אינו מצייר <span class="cc-chip">S41-SEARCH · 11.08</span></h2>
+  <p>סעיף ב מצייר מצב ריק אחד - "אין תוצאות". <b>סבב הביקורת האדוורסרית של 11.08 מדד שהוא מוצג גם כשהסריקה נכשלה וגם כשהיא נקטעה</b>, כלומר הצהרה על כיסוי מלא במקרים שבהם לא היה כיסוי. שלושת המצבים כאן הם ההפרדה, והם ממתינים לאישור דב.</p>
+
+  <div class="cc-msg" style="margin-bottom:12px" role="status">
+    <svg class="cc-icon cc-icon--sm cc-spin" aria-hidden="true"><use href="#i-loader"></use></svg>
+    <span>1 · בזמן הסריקה - הכותרת <b>"חיפוש בעץ"</b> עם חיווי מסתובב, ובגוף: "הסריקה רצה על התיקיות והקבצים שבעץ." <b>אין שם עץ ואין הבטחת כיסוי</b>, מפני שהשרת עוד לא ענה. הצורה נומינלית ולא מגדרית ("חיפוש", לא "מחפש").</span>
+  </div>
+
+  <div class="cc-msg cc-msg--danger" style="margin-bottom:12px" role="status">
+    <svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-circle-alert"></use></svg>
+    <span>2 · כשהסריקה נכשלה כולה - <b>"החיפוש בעץ נכשל, ולכן אין תוצאות להציג"</b> ואחריו סיבת השרת. <b>המצב הריק אינו מוצג כלל</b> במקרה הזה, ולא באנר התוצאות - כדי שלא תיאמר לצידו שום טענת כיסוי. <b>כשל אינו קיטוע</b>: לקיטוע ההמלצה "חידוד החיפוש יחזיר רשימה מלאה" נכונה, ולכשל היא עצה שלא יכולה לעבוד.</span>
+  </div>
+
+  <div class="cc-msg cc-msg--warning" role="status">
+    <svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-triangle-alert"></use></svg>
+    <span>3 · כשהסריקה נקטעה ולא נמצא דבר - הכותרת <b>"אין תוצאות במה שנסרק"</b>, ובגוף: "הסריקה נעצרה לפני שסיימה את העץ, ולכן אין לדעת אם הפריט קיים במה שלא נסרק. חידוד החיפוש יקצר את הסריקה ויאפשר לה להסתיים." <b>נוסח סעיף ב אינו מוצג כאן</b>, מפני שהוא מצהיר "נסרקו כל התיקיות והקבצים".</span>
+  </div>
+
+  <p style="margin-top:12px">🔴 <b>שלוש הסטיות שהביקורת מדדה מול סעיף א - הטיפול בהן, 11.08</b>: רוחב עמודת הפעולות והאייקון על כפתור "פתיחת התיקייה" <b>יושרו במסך למוקאפ</b>. <b>מיקום תיבת החיפוש הוא סטייה של המוקאפ ולא של המסך</b>: התיבה יושבת בסרגל העליון מאז S9, סעיף א צייר אותה בסרגל הנתיב בלי שאיש הכריע להזיז אותה, והזזתה נוגעת גם בתצוגה שאינה חיפוש. <b>הציור כאן הוא הנכון, והוא התיבה במקומה הקיים.</b></p>
+
+  <h2>הערות</h2>
+  <li><span class="mk-note-dot">1</span> <b>תוספת ראשונה למלאי</b>: שורת הנתיב מתחת לשם התוצאה. אינה פירור דרך חדש - גופן 12 בצבע הטקסט השלישוני, אותה שפה של תא <code>.sub</code> בטבלה, עם מפריד <span dir="ltr">›</span> של <code>cc-crumbs</code>. כל מקטע לחיץ ומנווט לרמה שלו, וכל מקטע עטוף ב-<code>bdi</code> כי הוא ערך לועזי בתוך מסך עברי. הנתיב מוצג <b>רק בתצוגת חיפוש</b>.</li>
+  <li><span class="mk-note-dot">2</span> <b>הטקסט אומר מה נסרק</b>, גם כשיש תוצאות וגם כשאין, ובכלל זה מחסן ההזמנות ללא שיוך (שהוא שורש נפרד ולא ילד של העץ) והעץ השני שאינו נסרק.</li>
+  <li><span class="mk-note-dot">3</span> <b>מה שיוצא מהמסך בתצוגת חיפוש</b>: הגרירה (מעבירה בין תיקיות, ותוצאות מרמות שונות אינן רמה אחת) ותצוגת הכרטיסים (תוצאה בלי נתיב אינה ניתנת לזיהוי). תוצאות תמיד בטבלה.</li>
+  <li><span class="mk-note-dot">4</span> 🔴 <b>קיטוע נאמר, ולא מוסתר.</b> הפרימיטיב שקורא תיקייה בשרת הוא עמוד יחיד בגודל 200 ואינו קורא את סמן העמוד הבא, ולסריקה יש חלון זמן קשיח. חיפוש שמדלג על פריטים בלי לומר זאת גרוע מחיפוש שלא קיים.</li>
+  <li><span class="mk-note-dot">5</span> <b>רמת המדינה נפתחת</b> - הכפתור פעיל, כמו בתיקיית שנה או הזמנה. זו הרמה שדב ביקש: מסמך שהיקפו מדינה, שאינו שייך לשותף ולא להזמנה.</li>
+  <li><span class="mk-note-dot">6</span> <b>מושבת ולא מוסתר</b>, וזהו כלל הספרייה: פקד מרונדר מושבת במקומו, לא נעלם. <b>הנוסח בטולטיפ זהה מילה במילה לנוסח שהשרת מחזיר היום</b> - אומת מול הקוד.</li>
+  <li><span class="mk-note-dot">7</span> <b>שורש העץ אינו חלק מהשינוי.</b> הוא חסום היום וממשיך להיות חסום, וכך גם תיקיית ספק ו-Archive. ההכרעה נגעה ברמת המדינה בלבד. גם כאן הנוסח הוא זה שהשרת מחזיר בפועל, ולכל אחד משני הכפתורים המושבתים יש סיבה מרונדרת משלו.</li>
+  <li><span class="mk-note-dot">8</span> <b>פס הבולק אינו חדש</b> - "מחיקה..." נכנס כפעולה שלישית, לפני "ניקוי בחירה", באותה שפה ובצבע הסכנה. <b>ובזמן שפעולה אחרת רצה</b> - העלאה או העברה - כפתורי המחיקה מושבתים ומופיע נוסח הסירוב הקיים במסך, בדיוק כפי שכל פעולה אחרת שם כבר מתנהגת.</li>
+  <li><span class="mk-note-dot">9</span> <b>תוספת שנייה למלאי - רצועת פקדים בראש הכרטיס.</b> 🔴 <b>תיקון אחרי הערת דב, 11.08</b>: בגרסה הקודמת התיבה גדלה ל-30 פיקסלים ו<b>עלתה על אייקון התיקייה</b>. התיקון אינו הזזת התיבה אלא <b>רצועה שמורה בראש הכרטיס</b> - תיבת הסימון בקצה ההתחלה, ⋮ בקצה הסיום, שניהם בגובה 34 פיקסלים כמו כפתור האייקון בספרייה - והאייקון והשם מתחילים מתחתיה. אף פקד אינו צף על תוכן. <b>מבנה ה-HTML אינו משתנה</b>, רק ריפוד עליון ומידות. תיבת הסימון מקבלת מסגרת, רדיוס ורקע של הספרייה, יעד לחיצה אמיתי ומצב hover; בחירה צובעת גם את גבול הכרטיס כדי שתיקרא ממרחק. <b>עולה לספריית העיצוב</b> כדי שלא תומצא מחדש בכל מסך.</li>
+  <li><span class="mk-note-dot">10</span> <b>הדיאלוג נוקב ביעד</b> - "מחיקה לסל המיחזור", ולא "מחיקה" סתם - כי זה מה שקורה בפועל, וזו ההבחנה שמאפשרת למפעיל לפעול בלי חשש. השורה השנייה אומרת מפורשות שאפשר לשחזר.</li>
+  <li><span class="mk-note-dot">11</span> <b>בולק מעורב - דיאלוג אחד.</b> הוא מסכם כמה קבצים וכמה תיקיות, ואומר כמה פריטים יש בתוך התיקיות. האישור השני נדרש ברגע שיש בבחירה תיקייה שאינה ריקה. המספרים נספרים בשרת לפני שהדיאלוג נפתח.</li>
+  <li><span class="mk-note-dot">12</span> <b>כשל חלקי מדווח בשמות</b> - במנגנון הדיווח פר פריט שכבר קיים במסך ומשמש את ההעברה ואת ההעלאה. פעולה שנכשלה חלקית אינה מדווחת כהצלחה ואינה מדווחת ככישלון.</li>
+  <li><span class="mk-note-dot">13</span> 🔴 <b>הפעולה הזאת מופיעה רק כשמודול הגישה הישירה פתוח</b> (D-335 סעיף 2). כשהמודול כבוי <b>הפעולה עצמה נעלמת, לא רק שמה</b> - כפתור שנשאר בלי שמו מלמד שהיכולת קיימת ואינה זמינה, וזה ההפך משקיפות. <b>זה החריג היחיד</b> למילה בכל המסך.</li>
+  <li><span class="mk-note-dot">14</span> <b>סל המיחזור אינו תוספת למחיקה - הוא חצי ממנה.</b> עמודת "המקום שממנו נמחק" משתמשת באותה שורת נתיב של תוצאות החיפוש (הערה 1) - רכיב אחד, שני שימושים. זמן השימור נאמר במפורש, כי הבטחת שחזור בלי גבול זמן היא הבטחה שתישבר.</li>
+</div>
+
+<div class="mk-decide">
+  <h2>הוכרע (דב, 11.08.2026 - B-1111)</h2>
+  <b>תיקייה שרשומה חיה מצביעה אליה אינה נמחקת.</b> רשומת הזמנה ורשומת שותף מחזיקות מזהה תיקייה, ומחיקה הייתה מותירה את הרשומה מצביעה לתיקייה שבסל המיחזור. <b>המחיקה מסורבת</b>, והדיאלוג אומר איזו רשומה מחזיקה בתיקייה ומה לעשות כדי לנתק.
+  <br>
+  <b>הנימוק</b>: סירוב שמסביר עדיף על מחיקה שמשאירה מצביע מת, והוא הפיך - תמיד אפשר להתיר יותר אחר כך, ואי אפשר לשחזר קישור שנשבר בשקט. <b>מה שזה עולה</b>: קריאת מרשם אחת לפני שהדיאלוג נפתח, ומקרה שבו יש לנתק קודם.
+</div>
+
+<div class="mk-decide">
+  <h2>הוכרע (דב, 11.08.2026 - D-334)</h2>
+  <b>מחיקה לסל המיחזור</b>, ולא מחיקה קשיחה - הסייר הוא המשטח שדב עובד בו בפועל, ומחיקה קשיחה בלחיצה אחת היא הפעולה היחידה בשורה הזאת שאין ממנה חזרה. <b>ותיקייה שאינה ריקה</b>: סירוב עם ספירת מה שבפנים, ואישור שני מפורש.
+  <br><br>
+  <b>נשאר סגור ואינו נפתח כאן</b>: שורש תיקיית שותף (D-254 סעיף 4) - קובץ שאינו תחת עלה שנה או הזמנה אין למה לקשר אותו, ולכן אי אפשר למצוא אותו דרך הרשומה. <b>ותג "הזמנה" / "הצעה"</b> שנגזר משם התיקייה נשאר בדיוק כפי שהוא.<br><br><b>והמילה Drive אינה מופיעה בטקסט מסך</b> (D-335) - לא בדיאלוג המחיקה, לא בהבטחת השחזור ולא בנוסח אחר שנכתב בשורה הזאת. החריג היחיד הוא פעולת הגישה הישירה עצמה, והיא נעלמת כלולה כשהמודול כבוי.
+</div>
+
+<div class="mk-decide">
+  <h2>הוכרע (דב, 11.08.2026 - תיקיית ספק ריקה)</h2>
+  <b>תיקיית ספק ריקה ברמה העליונה תיקרא "מדינה", וזה נשאר כך.</b> השרת מבחין בין מדינה לספק לפי התוכן: תיקייה שכל תת-התיקיות שלה הן שנים היא ספק, וכל השאר מדינה. תיקיית ספק שאין בה עדיין ולו תיקיית שנה אחת תיקרא מדינה, ומרגע שרמת המדינה נפתחת היא תקלוט קבצים.
+  <br>
+  <b>הנימוק</b>: ספק בלי אף תיקיית שנה הוא תיקייה שאין בה עדיין עבודה, וקובץ שיונח בה אינו מאבד את הקשרו. החלופה - לסמן ספקים ברשומת המרשם - מכניסה תלות בין הסייר למרשם בדיוק במקום שבו הכלל שמר עליהם נפרדים. <b>מה שזה עולה</b>: במקרה הזה בלבד ההשבתה סלחנית מדי, <b>והגבול נכתב בהערת הכלל בקוד</b>.
+</div>
+
+</body>
+</html>

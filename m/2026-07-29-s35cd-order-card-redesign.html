@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S35-CD - רדיזיין כרטיס ההזמנה (גרסה 4 - טאבים, הכרעת דב)</title>
+<style>
+/* 1:1 מול spa/src/global.css + ספריית העיצוב 00-DESIGN-LIBRARY.html. mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --status-impl-bg:#dcfce7; --status-impl-fg:#15803d; --status-impl-dot:#22c55e;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+
+/* ---- יסודות הספרייה ---- */
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent;white-space:nowrap}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}  /* השם הקנוני */
+.nh-diff{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}  /* השם הקנוני */
+.cc-chip--attn{border-color:var(--cc-action);color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--danger{background:var(--cc-action);border-color:var(--cc-action);color:#fff}  /* הקנוני לכפתור הפעולה האדום (בחי הכפתור האדום המלא הוא cc-btn--danger; cc-btn--primary החי ניטרלי) */
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}  /* הווריאנט הקנוני הקטן */
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-size:15px;font-family:var(--cc-font);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-surface);color:var(--cc-text)}
+.cc-input:focus{outline:none;border-color:var(--cc-action);box-shadow:0 0 0 3px var(--cc-action-weak)}
+.cc-input--ltr{direction:ltr;text-align:left}
+.cc-input--ltr:placeholder-shown{direction:rtl;text-align:right}  /* placeholder עברי ("לא ידוע") מוצג כעברית; ערך מוקלד (מספר) חוזר ל-LTR */
+
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden;background:var(--cc-surface)}
+.cc-seg>button{border:0;background:var(--cc-surface);font:inherit;font-size:14px;font-weight:600;color:var(--cc-text-2);min-height:var(--cc-row-h);padding:0 18px;cursor:pointer;border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg--sm>button{min-height:36px;padding:0 12px;font-size:13px}  /* cc-seg--sm הקנוני */
+.cc-seg>button:first-child{border-inline-start:0}
+.cc-seg>button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--unset{border-color:var(--cc-action);box-shadow:0 0 0 2px var(--cc-action-weak)}
+.cc-msg{font-size:14px;border-radius:var(--cc-radius-sm);padding:10px 14px;line-height:1.55}  /* בחי גם display:flex+gap לאייקון; כאן הודעות פרוזה */
+.cc-msg--info{background:var(--cc-info-bg);color:var(--cc-info-fg);border-inline-start:4px solid var(--cc-info-bar)}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-inline-start:4px solid var(--cc-warning-bar)}
+.cc-pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;padding:3px 9px;border-radius:var(--cc-radius-pill);direction:ltr}
+.cc-pill--bk{background:var(--status-impl-bg);color:var(--status-impl-fg)}
+.cc-pill--cit{background:#cffafe;color:#0e7490}
+.ph-q{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;
+  border:1px solid var(--cc-border-strong);background:var(--cc-surface);color:var(--cc-text-3);font-size:11px;cursor:help;flex:0 0 auto}
+.nhtag{display:inline-flex;align-items:center;height:15px;font-size:10px;font-weight:700;color:#1d4ed8;background:#eef3fb;
+  border:1px solid #1d4ed833;border-radius:4px;padding:0 6px;margin-inline-start:6px}  /* קנוני: תג ראי-CRM בלבד */
+.pr-src{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:4px}
+.pr-src--cat{background:#eef3fb;color:#1d4ed8;border:1px solid #1d4ed833}
+.pr-src--man{background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-src--ovr{background:#fef9c3;color:#a16207;border:1px solid #eab30855}
+
+/* ---- פיגום המוקאפ ---- */
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:14px;max-width:980px}
+.mk-controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px;font-size:13px}
+.mk-note-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--cc-surface);color:var(--cc-action);border:1.5px solid var(--cc-action);font-size:11px;font-weight:700;flex:0 0 auto;vertical-align:middle;cursor:default}
+.mk-notes{max-width:980px;margin-top:26px;font-size:13px;line-height:1.7}
+.mk-notes h2{font-size:15.5px;margin-bottom:8px}
+.mk-notes li{margin-bottom:8px;list-style:none}
+.mk-decide{max-width:980px;margin-top:22px;background:var(--cc-warning-bg);border:1px solid var(--cc-warning-fg);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-decide h2{font-size:15px;color:var(--cc-warning-fg);margin-bottom:6px}
+
+
+.drawer{display:flex;flex-direction:column;max-height:82vh}
+.dr-body{overflow-y:auto;flex:1;padding:14px 16px;scroll-behavior:smooth}
+.dr-sticky{background:var(--cc-sunken);border-bottom:1px solid var(--cc-border)}
+.grip:hover{background:var(--cc-action-weak)}
+.fhint{font-size:12px;color:var(--cc-text-3);margin-top:4px;line-height:1.5}  /* = cc-help */
+.dr-foot{flex-wrap:wrap}
+.popov{position:absolute;bottom:104px;inset-inline-start:14px;z-index:5;box-shadow:var(--cc-shadow);border-radius:var(--cc-radius-sm);background:var(--cc-surface)}
+
+/* ---- המגירה (drawer) ---- */
+.drawer{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius);background:var(--cc-surface);
+  box-shadow:var(--cc-shadow);overflow:hidden;transition:max-width .25s;position:relative;margin-inline-start:22px}
+.drawer.w1040{max-width:1040px}.drawer.w780{max-width:780px}.drawer.w540{max-width:540px}
+.grip{position:absolute;inset-inline-start:0;top:0;bottom:0;width:10px;cursor:ew-resize;  /* = cc-drawer-resize החי */
+  background:linear-gradient(90deg,var(--cc-border) 2px,transparent 2px);opacity:.85}
+.grip::after{content:'⋮';position:absolute;top:50%;inset-inline-start:-2px;color:var(--cc-text-3);font-size:14px}
+
+.dr-head{padding:12px 16px 0;background:var(--cc-sunken);border-bottom:1px solid var(--cc-border)}
+.dr-head__r1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dr-title{font-size:15.5px;font-weight:700}
+.dr-close{margin-inline-start:auto;border:1px solid transparent;background:transparent;font-size:17px;color:var(--cc-text-3);cursor:pointer;width:var(--cc-row-h);height:var(--cc-row-h);display:inline-flex;align-items:center;justify-content:center;border-radius:var(--cc-radius-sm)}  /* = cc-icon-btn 44px */
+.dr-head__r2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--cc-text-2)}
+.dr-sum{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-bottom:10px}
+.sum-chip{display:inline-flex;flex-direction:column;gap:1px;background:var(--cc-surface);border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-sm);padding:5px 11px;min-width:104px}
+.sum-chip b{font-size:14px}
+.sum-chip span{font-size:10.5px;color:var(--cc-text-3)}
+.steps{display:flex;gap:2px;background:var(--cc-sunken);padding:0 10px;overflow-x:auto}
+.steps{padding:10px 12px;gap:7px;align-items:center;min-height:64px;overflow-y:visible}
+.step{border:1px solid var(--cc-border-strong);background:var(--cc-surface);font:inherit;font-size:14px;font-weight:600;color:var(--cc-text);
+  padding:0 18px;min-height:42px;cursor:pointer;border-radius:var(--cc-radius-sm);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.step:hover{border-color:var(--cc-action)}
+.step.active{background:var(--cc-action-weak);color:var(--cc-action);border-color:var(--cc-action);font-weight:700}
+.steps::after{content:'';flex:0 0 6px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--cc-border-strong);flex:0 0 auto}
+.sdot--done{background:var(--status-impl-dot)}
+.sdot--dirty{background:#eab308}
+.dr-body{padding:16px;min-height:340px}
+.dr-foot{display:flex;align-items:center;gap:8px;padding:11px 16px;border-top:1px solid var(--cc-border);background:var(--cc-sunken)}
+.dr-foot .spacer{flex:1}
+
+.zone{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:12px;margin-bottom:12px;position:relative;background:var(--cc-surface)}
+.zone>h4{font-size:13px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 14px}
+.w780 .grid3{grid-template-columns:repeat(2,1fr)}
+.w540 .grid3,.w540 .grid2{grid-template-columns:1fr}
+.w540 .dr-sum{gap:6px}.w540 .sum-chip{min-width:88px}
+.fld input,.fld select{width:100%}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}  /* = cc-table הקנונית */
+.tbl th{font-size:11.5px;font-weight:600;color:var(--cc-text-3);letter-spacing:.2px;text-align:start;padding:10px 12px;border-bottom:1px solid var(--cc-border-strong);white-space:nowrap;background:var(--cc-surface)}
+.tbl td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);vertical-align:middle}
+.pr-tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--cc-surface)}  /* 1:1 global.css */
+.pr-tbl th{text-align:start;font-weight:600;font-size:12px;color:var(--cc-text-2);padding:8px 10px;border-bottom:2px solid var(--cc-border-strong);background:var(--cc-sunken)}
+.pr-tbl td{padding:7px 10px;border-bottom:1px solid var(--cc-divider);vertical-align:middle}
+.selbox{accent-color:var(--cc-action);width:16px;height:16px}
+.tbl input{width:100%;min-height:34px;padding:0 8px;font-size:13px}  /* קלט-טבלה קומפקטי 34px (רצפת הווריאנט המוקטן, כמו cc-btn--sm) - מוצהר ב-2ז */
+.unit-tag{display:inline-block;font-size:10px;color:var(--cc-info-fg);background:var(--cc-info-bg);border:1px solid var(--cc-info-bar);border-radius:4px;padding:0 5px;white-space:nowrap}
+.seg-tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider);margin-bottom:12px;flex-wrap:wrap}
+.seg-tab{border:0;background:transparent;font:inherit;font-size:13.5px;color:var(--cc-text-2);padding:9px 13px;cursor:pointer;border-bottom:2px solid transparent}  /* = הטאב הקווי הקנוני (.tabs/.tab) - דפוס טאב-תמיד */
+.seg-tab.active{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:700}
+.calcw{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-sunken);padding:10px 12px;font-size:12.5px}
+.calcw .lvl{font-weight:700;font-size:12px;color:var(--cc-text-2);margin:6px 0 3px}
+.calcw .st{display:flex;justify-content:space-between;gap:10px;padding:2.5px 0;border-bottom:1px dashed var(--cc-divider)}
+.calcw .st span:last-child{direction:ltr;font-variant-numeric:tabular-nums}
+.tot{display:inline-flex;flex-direction:column;gap:2px;background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:8px 13px;min-width:130px}  /* = totalbox של הכרטיס החי */
+.tot .tl{font-size:11.5px;color:var(--cc-text-3)}
+.tot b{font-size:17px;font-weight:700}
+.fab{position:absolute;bottom:64px;inset-inline-start:14px;display:inline-flex;align-items:center;gap:7px;min-height:var(--cc-row-h);
+  background:var(--cc-surface);border:1.5px solid var(--cc-action);color:var(--cc-action);font-weight:700;font-size:12.5px;
+  border-radius:var(--cc-radius-pill);padding:7px 14px;box-shadow:var(--cc-shadow);cursor:pointer}
+.approval{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);max-width:360px;background:var(--cc-surface)}
+.approval>h5{font-size:12.5px;font-weight:700;padding:8px 11px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken);display:flex;gap:8px;align-items:center}
+.approval .rows{padding:7px 11px;font-size:12.5px}
+.approval .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed var(--cc-divider)}
+.approval .row span:first-child{color:var(--cc-text-3)}
+.approval .foot{display:flex;gap:8px;padding:9px 11px;border-top:1px solid var(--cc-border)}
+.hide{display:none !important}
+bdi{unicode-bidi:isolate}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">S35-CD - רדיזיין כרטיס ההזמנה - גרסה 4 - טאבים (הכרעת דב)</div>
+<div class="mk-sub">
+  הקו המנחה שקבעת: UX נוח, ידידותי, <b>תומך תהליך</b>, רספונסיבי, והכרטיס ניתן להרחבה בגרירת הגבול.
+  <b>הכרעת דב (29.07, גוברת על המלצת ההתייעצות)</b>: מבנה הטאבים - "הגרסה הקודמת יותר טובה, ובלבד ששום אלמנט שהיה לא ייעלם". התנאי הזה הוא עיקרון מחייב בגרסה הזו: כל אלמנט קיים באחד מחמשת הטאבים, הטאבים מעוצבים ככפתורים מובהקים, ריחוף על טאב מציג את רשימת מה שבתוכו, וצ'יפ "שינויים שלא נשמרו" לחיץ וקופץ לטאב הנכון. נשמרו מהסבב הקודם השיפורים שאינם מבניים: צ'יפ מצב החישוב בפס הקבוע (עדכון אוטומטי, בלי כפתור), מצב "טעון חישוב מחדש", הרמזים הגלויים לכללי הכסף, וכרטיס האישור שנפתח צמוד לכפתור עוזר ה-AI.
+  הכרטיס הוא משטח סקירה ואימות (D-270), לא טופס. העיגולים הכחולים = הערות עיצוב מוסברות מתחת. כל המונחים מערוץ המילון, בנוסחים שהוכרעו היום.
+</div>
+
+<div class="mk-notes" style="margin-top:0;margin-bottom:18px">
+  <h2>מפת הכיסוי - כל הסקופ של סבב העיצוב, ומה מכוסה איפה</h2>
+  <table class="tbl" style="max-width:980px">
+    <tr><th>פריט</th><th>האזור</th><th>איפה</th></tr>
+    <tr><td><b>B-476</b> רדיזיין הכרטיס</td><td>כל הכרטיס - חמשת השלבים</td><td><b>המוקאפ הזה</b></td></tr>
+    <tr><td><b>B-477</b> רספונסיביות</td><td>גרירת הגבול; רשת 3 ← 2 ← 1</td><td>המוקאפ הזה - בורר הרוחב למעלה</td></tr>
+    <tr><td><b>B-492</b> הקשר היחסים</td><td>ראש הכרטיס</td><td>המוקאפ הזה - הערה 2</td></tr>
+    <tr><td><b>B-520</b> "טרם נבחר" למתגי הכסף</td><td>עמלת סוכן, אופן הטיפול</td><td>המוקאפ הזה - הערה 7</td></tr>
+    <tr><td><b>B-484</b> רכיב יום · תאריך</td><td>זהות המקטע</td><td>המוקאפ הזה - הערה 9</td></tr>
+    <tr><td><b>B-490 + B-515</b> מטבע ויחידה בשורות</td><td>טבלת התקציב</td><td>המוקאפ הזה - הערה 11; תפריט השורה = כפתור ⋮ בסוף כל שורה</td></tr>
+    <tr><td><b>B-104</b> חיווי חי עד ה-callback</td><td>כפתור החישוב (דפוס לשלושת האזורים)</td><td>המוקאפ הזה - צ'יפ המצב בפס הקבוע (עדכון אוטומטי) + בורר המצבים למעלה</td></tr>
+    <tr><td><b>B-519</b> צ'יפ ההשוואה ל-CRM</td><td>סעיף "המחיר וחלון החישוב"</td><td>המוקאפ הזה - הצ'יפ הכתום</td></tr>
+    <tr><td><b>B-501 + B-503</b> עוזר ה-AI: כפתור צף + כרטיס אישור</td><td>גלולת "עוזר ה-AI" בפינת הכרטיס</td><td>המוקאפ הזה - הערה 13 (לחיצה על הגלולה פותחת את ההדגמה)</td></tr>
+    <tr><td>מודל 4 - עורך המדרגות</td><td>תמחור ברמת ההזמנה</td><td>המוקאפ הזה - הערה 6 (בחירת "רווח מדורג")</td></tr>
+    <tr><td>מחיקה וארכוב</td><td>פוטר - "⋮ פעולות נוספות"</td><td>המוקאפ הזה - נקודת הכרעה 5</td></tr>
+    <tr><td><b>B-481</b> כרטיס ה-CIT</td><td>וריאנט ה-CIT של הכרטיס</td><td><b>מוקאפ נפרד, הבא בתור</b> - אחרי הכרעות המונחים שלו</td></tr>
+    <tr><td><b>חזות אזור ההגדרות + B-475 (אייקונים) + B-483 (בורר השותף) + B-480 (מסך המילון)</b></td><td>אזור ההגדרות</td><td><b>מוקאפ נפרד</b></td></tr>
+    <tr><td><b>B-465</b> פעולות בולק ברמת השורש</td><td>Partner Workspaces</td><td><b>מוקאפ נפרד</b> (מה נראה ואיפה; הבנייה ב-BUILD)</td></tr>
+    <tr><td>כרטיס השותף</td><td>משפחת הכרטיסים</td><td><b>מוקאפ נפרד</b> - מיד אחרי כרטיס ההזמנה, לפי הקו שלך</td></tr>
+    <tr><td><b>B-522</b> שכבת B2C נגזרת</td><td>ראש הכרטיס + סעיף המחיר</td><td>המוקאפ הזה - הערה 17 (השרת ב-BUILD-A, החיווט ב-BUILD-B)</td></tr>
+    <tr><td><b>B-482 - B-494 - B-500</b> שאלות עיצוב</td><td>ברירות מחדל מהקטלוג - ירושת מטבע השותף - חיווי אי התאמה</td><td>נענות בגרסה הבאה של המוקאפ הזה ושל מוקאפ ההגדרות</td></tr>
+  </table>
+</div>
+
+<div class="mk-notes" style="margin-top:0;margin-bottom:18px">
+  <h2>"לא לשכוח כלום" - מיפוי מלא של כל רכיב קיים (152 מחרוזות משבעת קובצי הכרטיס, 29.07)</h2>
+  <table class="tbl" style="max-width:980px">
+    <tr><th>האזור הקיים ורכיביו</th><th>הבית בכרטיס החדש</th></tr>
+    <tr><td><b>פעולות הכותרת</b>: שליחת מייל - שיוך שותף - שיוך מסמך - סנכרון מ-CRM - קישור לעסקה ב-CRM - המרה להזמנה - ארכוב - מחיקה - שחזור מארכיון</td><td>שליחת מייל ושיוך מסמך - טאב 5 גלויים - שיוך שותף - טאב 1 - סנכרון וקישור CRM - טאב 1 (אזור ה-CRM) - המרה/ארכוב/מחיקה/שחזור - ⋮ בפוטר</td></tr>
+    <tr><td><b>פרטי העסקה</b>: שם קבוצה - שם לקוח - שם הטיול - תאריך הזמנה - תחילה - סיום - משך (ימים) - נוסעים - מטבע - יעדים (נגזר מהמקטעים)</td><td>טאב 1 - כולם; "נוסעים" הבודד מוחלף בהרכב המלא; מטבע ההצעה עובר לטאב 2 (ליד השערים); היעדים הנגזרים בראש הכרטיס</td></tr>
+    <tr><td><b>עלויות - סה"כ הטיול</b>: סה"כ עלות (COGS) - שולם לשותפים - יתרה לשותפים - תואם CRM - קריאה בלבד</td><td>טאב 4 - תיבת העלויות המלאה (נוספה בגרסה הזו) + צ'יפי ההשוואה בנוסח B-519</td></tr>
+    <tr><td><b>הרכב הנוסעים</b> (PricingHead): מבוגרים - ילדים לפי טווח גיל (+) - משלמים - מול CRM <bdi>Pax total</bdi></td><td>טאב 1 - כולל שורות טווחי הגיל הדינמיות וחיווי ההשוואה (נוסף)</td></tr>
+    <tr><td><b>מטבע ההצעה ושערים</b>: בחירת מטבע - נעילת השערים עכשיו - + שער המרה</td><td>טאב 2 - אזור השערים (נוסף: שדה המטבע וכפתור הנעילה)</td></tr>
+    <tr><td><b>לוח תשלומים</b>: מקדמה % - מקדמה בסכום - תשלום אחרון - ימים לפני יציאה</td><td>טאב 2 - בשדות האמיתיים (תוקן מהגרסה הקודמת)</td></tr>
+    <tr><td><b>תמחור ההזמנה</b>: מודלים - עמלת סוכן - עמלות (סכום/אחוז) - דיוק מלא / עיגול בתצוגה</td><td>טאב 2 + מתג העיגול (נוסף) - חלון החישוב בטאב 4</td></tr>
+    <tr><td><b>מקטעים</b>: יעד - שותף - פתיחת כרטיס השותף - מדריך - תאריכי מקטע + אזהרת חריגה - תיקיית השותף - הסרת מקטע</td><td>טאב 3 - זהות המקטע (נוספו: מדריך, פתיחת כרטיס השותף, תיקיית השותף, הסרה ב-⋮ המקטע; אזהרת התאריכים כצ'יפ)</td></tr>
+    <tr><td><b>תקציב המקטע</b>: מסלולים - עמודות (מקור - שירות - סיווג - נוסע - כמות - מחיר יח' - מע"מ - סה"כ) - תגי קטלוג/ידני/דריסה - בורר הקטלוגים - חיץ מטבע</td><td>טאב 3 - הטבלה (+ עמודת מטבע חדשה); תג "דריסה" נוסף; בורר הקטלוגים נפתח מ"+ שורה מהקטלוג"</td></tr>
+    <tr><td><b>תיקייה ושמות</b>: פתיחה בסייר - פתיחה ב-Drive - עדכון שמות - כתיבת שם ל-Drive - בחירת תיקייה מהסייר - קישור תיקייה מהקלט - התיקייה שלי - חיבור לתיקייה שלי</td><td>טאב 5 - כל הפעולות (נוספו החסרות); <b>מנגנוני התיוק עצמם = B-486 (12.10) על בסיס המוקאפ הזה</b></td></tr>
+    <tr><td><b>מסמכים - תוצרים - גרסאות</b>: קהלים תוכנית / שותף / לקוח - "כל שותף מקבל רק את המקטע שלו, בשפה שלו"</td><td>טאב 5 - תגי הקהל נוספו לשורות המסמכים</td></tr>
+    <tr><td><b>מיילים</b>: שליחה - יומן (תאריך - סוג - נמען - נושא - סטטוס - מזהה)</td><td>טאב 5</td></tr>
+    <tr><td><b>עוזר ה-AI</b> (DialogPanel): שיחה - בורר מודל "ברירת המחדל (מההגדרות)" - כרטיס אישור</td><td>הגלולה הצפה + הפאנל הצמוד; בורר המודל בתוך הפאנל</td></tr>
+    <tr><td><b>מגן עזיבה</b>: המשך עריכה - המשך בלי שמירה - שמירה והמשך</td><td>נשאר כדיאלוג הקיים (B-433, דפוס ספרייה) - בכל מסלולי העזיבה</td></tr>
+  </table>
+</div>
+
+<div class="mk-controls">
+  <span>הדגמת רוחב (גרירת הגבול):</span>
+  <span class="cc-seg">
+    <button class="is-active" onclick="setW('w1040',this)">1040 - ברירת מחדל</button>
+    <button onclick="setW('w780',this)">780 - הוצר</button>
+    <button onclick="setW('w540',this)">540 - צר</button>
+  </span>
+  <span>מצב חיווי חישוב (B-104):</span>
+  <span class="cc-seg">
+    <button class="is-active" onclick="setCalc(0,this)">ממתין</button>
+    <button onclick="setCalc(1,this)">מחשב...</button>
+    <button onclick="setCalc(2,this)">הושלם</button>
+    <button onclick="setCalc(3,this)">שגיאה</button>
+  </span>
+</div>
+
+<div class="drawer w1040" id="drawer">
+  <div class="grip" title="גרירת הגבול משנה את רוחב הכרטיס; התוכן מסתדר מחדש (רשת 3 ← 2 ← 1)"></div>
+
+  <!-- ראש הכרטיס -->
+  <div class="dr-head">
+    <div class="dr-head__r1">
+      <span class="cc-pill cc-pill--bk">BK-1055</span> <span class="dr-title"><bdi>Davidovich</bdi></span>
+      <span class="cc-chip">הזמנה פעילה</span>
+      <span class="cc-chip"><bdi>Jordan</bdi> - <bdi>Arminas Travel</bdi></span>
+      <span class="mk-note-dot">1</span>
+      <button class="dr-close" aria-label="סגירה">✕</button>
+    </div>
+    <div class="dr-head__r2">
+      <span>הקשר היחסים:</span>
+      <span class="cc-seg" id="relSeg">
+        <button class="is-active" onclick="setRel('b2b',this)">B2B</button>
+        <button onclick="setRel('b2c',this)">B2C</button>
+      </span>
+      <span class="cc-chip" id="relStore">יעד האחסון: תיקיית השותף</span>
+      <span class="cc-chip nh-ok" id="b2cLayer" title="B-522: שכבת מחיר ללקוח קצה, נגזרת מהנטו B2B; נשמרת בבית המפעיל ואינה נראית לשותף">+ שכבת B2C פעילה</span>
+      <span class="mk-note-dot">17</span>
+      <span class="ph-q" title="הבחירה קובעת לאן נשמרים התקציב וההצעה, ואם לוח התשלומים מול המטייל מוצג. יש לבחור לפני השמירה הראשונה של התקציב.">?</span>
+      <span class="mk-note-dot">2</span>
+    </div>
+    <div class="dr-sum">
+      <span class="sum-chip"><b><bdi>USD 830</bdi></b><span>מחיר סופי לנוסע</span></span>
+      <span class="sum-chip"><b><bdi>USD 4,150</bdi></b><span>סה"כ לקבוצה (5 משלמים)</span></span>
+      <span class="sum-chip"><b><bdi>USD 3,100</bdi></b><span>סה"כ עלות (COGS) <span class="nhtag">CRM</span></span></span>
+      <span class="sum-chip"><b>20%</b><span>שיעור רווח <bdi>(%)</bdi></span></span>
+      <span class="sum-chip" id="calcChip"><b id="calcChipB">לא ידוע</b><span>חישוב אחרון</span></span>
+      <span class="cc-chip hide" id="calcBusy" style="align-self:center">מחשב...</span>
+      <span class="cc-chip nh-ok hide" id="calcOk" style="align-self:center">עודכן 14:22</span>
+      <span class="cc-chip nh-diff" id="calcStale" style="align-self:center">קלט השתנה - מחשב מחדש...</span>
+      <button class="cc-btn" id="calcBtn" onclick="cycleCalc()" title="רענון החישוב" style="align-self:center;min-height:34px;padding:0 10px">↻</button>
+      <span class="mk-note-dot">3</span>
+    </div>
+  </div>
+
+  <!-- פס הטאבים (הכרעת דב 29.07: הגרסה הקודמת עדיפה) - כפתורים מובהקים, ורמז תוכן בריחוף -->
+  <div class="steps" id="jumpbar">
+    <button class="step active" onclick="setStep(0,this)" title="פרטי העסקה - הרכב הנוסעים"><span class="sdot sdot--done" title="הוזן"></span>פרטי הטיול</button>
+    <button class="step" onclick="setStep(1,this)" title="שערים נעולים - מודל הרווח - עמלת סוכן - עמלות - לוח תשלומים"><span class="sdot sdot--done" title="הוזן"></span>תמחור ברמת ההזמנה</button>
+    <button class="step" onclick="setStep(2,this)" title="טאבי המקטעים - זהות המקטע - שורות התקציב"><span class="sdot sdot--dirty" title="שינויים שלא נשמרו"></span>מקטעים ותקציב</button>
+    <button class="step" onclick="setStep(3,this)" title="חלון החישוב - סיכומים - השוואת CRM"><span class="sdot" title="טרם הוזן"></span>המחיר וחלון החישוב</button>
+    <button class="step" onclick="setStep(4,this)" title="תיקייה ושמות - מסמכים - מיילים"><span class="sdot" title="טרם הוזן"></span>מסמכים ומיילים</button>
+    <span class="fhint" style="align-self:center;white-space:nowrap">ירוקה - הוזן; כתומה - טרם נשמר</span>
+    <span class="mk-note-dot" style="align-self:center">4</span>
+  </div>
+
+  <div class="dr-body" id="drbody">
+
+    <!-- טאב 1: פרטי הטיול -->
+    <div class="tabpane" id="tp0">
+      <div class="zone">
+        <h4>פרטי העסקה</h4>
+        <div class="grid3">
+          <div class="fld"><label class="cc-label">שם קבוצה</label><input class="cc-input" value="Davidovich Family"></div>
+          <div class="fld"><label class="cc-label">מדינות</label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);padding:5px 8px;min-height:32px">
+              <span class="cc-chip"><bdi>Jordan</bdi> <span style="cursor:pointer">✕</span></span>
+              <span class="cc-chip"><bdi>Saudi Arabia</bdi> <span style="cursor:pointer">✕</span></span>
+              <button class="cc-btn cc-btn--sm">+ מדינה</button>
+            </div></div>
+          <div class="fld"><label class="cc-label">שותף</label><input class="cc-input cc-input--ltr" value="Arminas Travel"></div>
+          <div class="fld"><label class="cc-label">תאריך יציאה</label><input class="cc-input cc-input--ltr" value="20.02.2026"></div>
+          <div class="fld"><label class="cc-label">תאריך סיום</label><input class="cc-input cc-input--ltr" value="25.02.2026" title="נגזר: יום 6"></div>
+          <div class="fld"><label class="cc-label">שם לקוח</label><input class="cc-input" value="" placeholder="לא ידוע"></div>
+          <div class="fld"><label class="cc-label">שם הטיול</label><input class="cc-input cc-input--ltr" value="Jordan Highlights"></div>
+          <div class="fld"><label class="cc-label">תאריך הזמנת הטיול</label><input class="cc-input cc-input--ltr" value="02.06.2026"></div>
+          <div class="fld"><label class="cc-label">משך (ימים)</label><input class="cc-input cc-input--ltr" value="6" title="נגזר מהתאריכים"></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap">
+          <button class="cc-btn">שיוך שותף</button>
+          <button class="cc-btn">סנכרון מ-CRM</button>
+          <button class="cc-btn">קישור לעסקה ב-CRM</button>
+        </div>
+        <div class="cc-msg cc-msg--info" style="margin-top:10px">רשומה מקושרת CRM - ערכים מסונכרנים עשויים להתעדכן בייבוא הבא. פער מול CRM מוצג בצ'יפ אזהרה, לעולם לא מיושב אוטומטית.</div>
+      </div>
+      <div class="zone">
+        <h4>הרכב הנוסעים <span class="mk-note-dot">16</span></h4>
+        <div class="grid3">
+          <div class="fld"><label class="cc-label">מבוגרים</label><input class="cc-input cc-input--ltr" value="4"></div>
+          <div class="fld"><label class="cc-label">ילדים (7-11)</label><input class="cc-input cc-input--ltr" value="1"></div>
+          <div class="fld"><label class="cc-label">מקום ללא עלות (FOC)</label><input class="cc-input cc-input--ltr" value="1"></div>
+          <div class="fld"><label class="cc-label">ילדים - טווח גיל</label>
+            <div style="display:flex;gap:6px;align-items:center"><input class="cc-input cc-input--ltr" value="7-11" style="max-width:70px"><input class="cc-input cc-input--ltr" value="1" style="max-width:56px"><button class="cc-btn cc-btn--sm">+ ילדים לפי טווח גיל</button></div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <span class="cc-chip nh-ok">משלמים: 5 - סה"כ: 6</span>
+          <span class="cc-chip">מול <bdi>CRM</bdi>: <bdi>Pax total</bdi> 6 - תואם</span>
+        </div>
+        <div class="fhint">ההרכב ברמת ההזמנה; מקטע יכול לדרוס אותו, עם חיווי.</div>
+      </div>
+    </div>
+
+    <!-- טאב 2: תמחור ברמת ההזמנה -->
+    <div class="tabpane hide" id="tp1">
+      <div class="zone">
+        <h4>מטבע ההצעה ושערים נעולים <span class="ph-q" title="שער התמחור הוא שער פנימי לריכוז עלויות רב-מטבעיות - אינו שער התשלום">?</span></h4>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+          <span class="fld" style="max-width:140px"><label class="cc-label">מטבע ההצעה</label><input class="cc-input cc-input--ltr" value="USD"></span>
+          <button class="cc-btn">נעילת השערים עכשיו</button>
+          <button class="cc-btn">+ שער המרה</button>
+        </div>
+        <table class="tbl" style="max-width:420px">
+          <tr><th>שער</th><th>מטבע מקור</th><th>ערך</th><th></th></tr>
+          <tr><td>1</td><td><bdi>JOD</bdi></td><td><input class="cc-input cc-input--ltr" value="1.41"></td><td></td></tr>
+          <tr><td>2</td><td><bdi>EUR</bdi></td><td><input class="cc-input cc-input--ltr" value="1.08"></td><td><span class="cc-chip nh-diff">מופיע פעמיים; לכל מטבע מקור שער אחד</span></td></tr>
+        </table>
+      </div>
+      <div class="zone">
+        <h4>מודל הרווח <span class="mk-note-dot">5</span></h4>
+        <span class="cc-seg" id="marginSeg">
+          <button class="is-active" onclick="marginPick(this,false)">שיעור רווח <bdi>(%)</bdi></button>
+          <button onclick="marginPick(this,false)">רווח לקבוצה</button>
+          <button onclick="marginPick(this,false)">רווח לנוסע</button>
+          <button onclick="marginPick(this,true)">רווח מדורג (לקבוצה / לנוסע)</button>
+        </span>
+        <div style="margin-top:8px;display:flex;gap:10px;align-items:center">
+          <span class="fld" style="max-width:130px"><label class="cc-label">ערך (%)</label><input class="cc-input cc-input--ltr" value="20"></span>
+          <span class="cc-chip">הרווח נגזר מהמחיר, לא תוספת לעלות</span>
+        </div>
+        <div id="tiersZone" class="hide" style="margin-top:10px">
+          <table class="tbl" style="max-width:520px">
+            <tr><th>עד כמה נוסעים משלמים</th><th>סוג המדרגה</th><th>ערך</th><th></th></tr>
+            <tr><td><input class="cc-input cc-input--ltr" value="6"></td><td>רווח לקבוצה</td><td><input class="cc-input cc-input--ltr" value="900"> <bdi>USD</bdi></td><td><button class="cc-btn">הסרה</button></td></tr>
+            <tr><td><input class="cc-input cc-input--ltr" value="12"></td><td>רווח לנוסע</td><td><input class="cc-input cc-input--ltr" value="160"> <bdi>USD</bdi></td><td><button class="cc-btn">הסרה</button></td></tr>
+            <tr><td>פתוח (ללא תקרה)</td><td>רווח לנוסע</td><td><input class="cc-input cc-input--ltr" value="140"> <bdi>USD</bdi></td><td></td></tr>
+          </table>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+            <button class="cc-btn">+ מדרגה</button>
+            <span class="cc-chip">שחזור המדרגות מגרסה קודמת - מההיסטוריה</span>
+            <span class="mk-note-dot">6</span>
+          </div>
+        </div>
+      </div>
+      <div class="zone">
+        <h4>עמלת סוכן (B2B) <span class="mk-note-dot">7</span></h4>
+        <span class="cc-seg cc-seg--unset" id="subSeg">
+          <button onclick="pick(this)">ללא (<bdi>0%</bdi>)</button>
+          <button onclick="pick(this)">עמלה גלומה <bdi>%</bdi></button>
+          <button onclick="pick(this)">תוספת לנטו <bdi>$</bdi></button>
+        </span>
+        <span class="cc-chip cc-chip--attn" id="subUnset">טרם נבחר</span>
+      </div>
+      <div class="zone">
+        <h4>עמלות פיננסיות</h4>
+        <div class="grid2" style="max-width:640px">
+          <div class="fld"><label class="cc-label">עמלת סגירת תיק בנקאית (לכל התיק)</label><input class="cc-input cc-input--ltr" value="120"> <bdi>USD</bdi></div>
+          <div class="fld"><label class="cc-label">עמלת סליקה <bdi>(%)</bdi> מכל העסקה</label><input class="cc-input cc-input--ltr" value="3"></div>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span>אופן טיפול בעמלות:</span>
+          <span class="cc-seg">
+            <button class="is-active">מגולם במחיר</button>
+            <button>שורה נפרדת</button>
+          </span>
+          <span class="ph-q" title='בשני המצבים העמלה בצד המטייל והרווח מוגן - ההבדל בהצגה: "מגולם במחיר" מטמיע את העמלה במחיר לנוסע; "שורה נפרדת" מציג אותה כשורה גלויה בהצעה. בשניהם אותו מחלק.'>?</span>
+        </div>
+      </div>
+      <div class="zone">
+        <h4>עיגול</h4>
+        <span class="cc-seg"><button class="is-active">דיוק מלא</button><button>עיגול בתצוגה בלבד</button></span>
+      </div>
+      <div class="zone" id="payZone">
+        <h4>לוח תשלומים מול המטייל <span class="cc-chip" id="payChip">מוצג ב-B2C בלבד</span> <span class="mk-note-dot">8</span></h4>
+        <div class="cc-msg cc-msg--info" id="payMsg">ההזמנה בהקשר B2B - לוח התשלומים מול המטייל לא רלוונטי, ומוצג מושבת במקומו (כלל העתיד).</div>
+        <div class="grid3" style="margin-top:9px;max-width:640px">
+          <div class="fld"><label class="cc-label">מקדמה <bdi>%</bdi></label><input class="cc-input cc-input--ltr pay-f" value="" placeholder="לא ידוע" disabled></div>
+          <div class="fld"><label class="cc-label">מקדמה בסכום</label><input class="cc-input cc-input--ltr pay-f" value="" placeholder="לא ידוע" disabled></div>
+          <div class="fld"><label class="cc-label">תשלום אחרון - ימים לפני יציאה</label><input class="cc-input cc-input--ltr pay-f" value="" placeholder="לא ידוע" disabled></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- טאב 3: מקטעים ותקציב -->
+    <div class="tabpane hide" id="tp2">
+      <div class="seg-tabs">
+        <button class="seg-tab active">מקטע 1 - <bdi>Jordan</bdi> - <bdi>JOD 1,095.60</bdi></button>
+        <button class="seg-tab">מקטע 2 - <bdi>Saudi Arabia</bdi> - <bdi>SAR 2,140</bdi></button>
+        <button class="seg-tab">+ מקטע</button>
+      </div>
+      <div class="zone">
+        <h4>זהות המקטע</h4>
+        <div class="grid3">
+          <div class="fld"><label class="cc-label">יעדים <span class="mk-note-dot">14</span></label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);padding:5px 8px;min-height:32px">
+              <span class="cc-chip"><bdi>Jordan</bdi> <span style="cursor:pointer">✕</span></span>
+              <span class="cc-chip"><bdi>Petra</bdi> <span style="cursor:pointer">✕</span></span>
+              <button class="cc-btn cc-btn--sm">+ יעד</button>
+            </div></div>
+          <div class="fld"><label class="cc-label">שותף</label><div style="display:flex;gap:6px"><input class="cc-input cc-input--ltr" value="Arminas Travel" style="flex:1"><button class="cc-btn" title="פתיחת כרטיס השותף">↗</button></div></div>
+          <div class="fld"><label class="cc-label">מדריך</label><input class="cc-input" value="" placeholder="לא ידוע"></div>
+          <div class="fld"><label class="cc-label">מטבע המקטע</label><input class="cc-input cc-input--ltr" value="JOD"></div>
+          <div class="fld"><label class="cc-label">יום · תאריך <span class="mk-note-dot">9</span></label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <input class="cc-input cc-input--ltr" value="ימים 1-3" style="max-width:90px">
+              <span class="cc-chip"><bdi>20-22.02.2026</bdi> - נגזר מתאריך היציאה</span>
+            </div></div>
+          <div class="fld"><label class="cc-label">חיץ מטבע <bdi>(%)</bdi></label><input class="cc-input cc-input--ltr" value="2.5" style="max-width:90px"> <span class="ph-q" title="תוספת אחוזית על עלות המקטע, המגנה מפני תנודות בשער החליפין עד למועד התשלום בפועל לספק. מופעלת רק על מקטע שמטבעו שונה ממטבע ההצעה.">?</span></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center">
+          <span class="cc-chip">תיקיית השותף: <bdi>Arminas / BK-1055</bdi></span>
+          <span class="cc-chip nh-diff">תאריכי המקטע שונים מתאריכי הטיול</span>
+          <button class="cc-btn" title="הסרת מקטע - פעולות המקטע">⋮</button>
+        </div>
+      </div>
+      <div class="zone">
+        <h4>תקציב המקטע
+          <span class="cc-seg" style="margin-inline-start:8px">
+            <button class="is-active">פירוט פריטים</button>
+            <button>סכום כולל (נטו)</button>
+          </span>
+          <span class="cc-chip nh-ok">COGS נגזר מהפירוט</span>
+          <span class="mk-note-dot">10</span>
+        </h4>
+        <table class="pr-tbl">
+          <tr>
+            <th>פריט</th><th>סוג עלות</th><th>כמות</th>
+            <th>מחיר ליחידה</th><th>מטבע</th><th>מע"מ</th><th>סה"כ</th><th></th>
+          </tr>
+          <tr>
+            <td><bdi>Movenpick Petra</bdi> <span class="pr-src pr-src--cat">קטלוג</span></td>
+            <td>לנוסע <span class="unit-tag">VAR</span></td>
+            <td><input class="cc-input cc-input--ltr" value="2" style="max-width:56px"> <span class="unit-tag">לילות × לנוסע</span></td>
+            <td><input class="cc-input cc-input--ltr" value="95" style="max-width:76px"></td>
+            <td><bdi>JOD</bdi> <span class="mk-note-dot">11</span></td>
+            <td>כלול במחיר</td>
+            <td><bdi>JOD 190</bdi></td>
+            <td><button class="cc-btn cc-btn--sm" title="פעולות לשורה זו" aria-label="פעולות לשורה זו">⋮</button></td>
+          </tr>
+          <tr>
+            <td>אוטובוס - יומי כולל הכל <span class="pr-src pr-src--ovr" title="המחיר תוקן בתוך הטיול - שונה מהקטלוג">דריסה</span></td>
+            <td>לקבוצה <span class="unit-tag">FIX</span></td>
+            <td><input class="cc-input cc-input--ltr" value="3" style="max-width:56px"> <span class="unit-tag">ימים</span></td>
+            <td><input class="cc-input cc-input--ltr" value="220" style="max-width:76px"></td>
+            <td><bdi>JOD</bdi></td>
+            <td>+ 16%</td>
+            <td><bdi>JOD 765.60</bdi></td>
+            <td><button class="cc-btn cc-btn--sm" title="פעולות לשורה זו" aria-label="פעולות לשורה זו">⋮</button></td>
+          </tr>
+          <tr>
+            <td>מדריך מקומי - מצטרף נקודתית <span class="pr-src pr-src--man">ידני</span></td>
+            <td>לקבוצה <span class="unit-tag">FIX</span></td>
+            <td><input class="cc-input cc-input--ltr" value="1" style="max-width:56px"> <span class="unit-tag">ימים</span></td>
+            <td><input class="cc-input cc-input--ltr" value="140" style="max-width:76px"></td>
+            <td><bdi>JOD</bdi></td>
+            <td>ללא</td>
+            <td><bdi>JOD 140</bdi></td>
+            <td><button class="cc-btn cc-btn--sm" title="פעולות לשורה זו" aria-label="פעולות לשורה זו">⋮</button></td>
+          </tr>
+        </table>
+        <div class="fhint">הכמות היא יחידות לנוסע אחד (לילות, כניסות) או לקבוצה (ימים) - לא מספר הנוסעים; המנוע מכפיל בהרכב.</div>
+        <div style="display:flex;gap:8px;margin-top:9px;align-items:center;flex-wrap:wrap">
+          <button class="cc-btn">+ שורה מהקטלוג</button>
+          <button class="cc-btn">+ שורה ידנית</button>
+          <span class="cc-chip">סכום הפירוט: <bdi>JOD 1,095.60</bdi></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- טאב 4: המחיר וחלון החישוב -->
+    <div class="tabpane hide" id="tp3">
+      <div class="zone">
+        <h4>חלון החישוב <span class="ph-q" title="הנוסחה החיה תחנה-תחנה, בשתי הרמות (מקטע והזמנה). נשמר עם כל גרסת הצעה - שחזור מלא של כל מחיר.">?</span>
+          <span class="cc-chip cc-chip--attn hide" id="calcErr">שגיאה: עמלת סליקה מופעלת ללא אחוז - יש להזין או לכבות</span>
+          <span class="mk-note-dot">12</span>
+        </h4>
+        <div class="grid2">
+          <div class="calcw">
+            <div class="lvl">רמת המקטע - עלות, חיץ מטבע והמרה, פר מקטע</div>
+            <div class="st"><span>עלות המקטע</span><span><bdi>JOD 1,095.60</bdi></span></div>
+            <div class="st"><span>חיץ מטבע (2.5%)</span><span><bdi>JOD 1,122.99</bdi></span></div>
+            <div class="st"><span>המרה למטבע ההצעה (1.41)</span><span><bdi>USD 1,583.42</bdi></span></div>
+            <div class="lvl">רמת ההזמנה - פר נוסע משלם</div>
+            <div class="st"><span>עלות בסיס</span><span><bdi>USD 620.00</bdi></span></div>
+            <div class="st"><span>עמלת סגירת תיק בנקאית</span><span><bdi>USD 644.00</bdi></span></div>
+            <div class="st"><span>שיעור רווח (20%)</span><span><bdi>USD 805.00</bdi></span></div>
+            <div class="st"><span>עמלת סוכן (B2B)</span><span>לא רלוונטי</span></div>
+            <div class="st"><span>עמלת סליקה (3%)</span><span><bdi>USD 830.00</bdi></span></div>
+          </div>
+          <div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span class="tot"><span class="tl">מחיר סופי לנוסע</span><b><bdi>USD 830</bdi></b></span>
+              <span class="tot"><span class="tl">סה"כ לקבוצה (5 משלמים)</span><b><bdi>USD 4,150</bdi></b></span>
+              <span class="tot"><span class="tl">תוספת ליחיד בחדר</span><b><bdi>USD 195</bdi></b></span>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <span class="tot"><span class="tl">סה"כ עלות (COGS) <span class="nhtag">CRM</span></span><b><bdi>USD 3,100</bdi></b></span>
+              <span class="tot"><span class="tl">שולם לשותפים</span><b><bdi>USD 2,000</bdi></b></span>
+              <span class="tot"><span class="tl">יתרה לשותפים</span><b><bdi>USD 1,100</bdi></b></span>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+              <span class="cc-chip nh-ok">עלות תואמת <bdi>CRM</bdi></span>
+              <span class="cc-chip nh-diff">שולם - אינו ניתן להשוואה מול <bdi>CRM</bdi></span>
+            </div>
+            <div class="fhint">לקריאה בלבד - עריכת עלויות נעשית בתוך המקטע. היתרה נגזרת (עלות פחות שולם); הזנה ידנית גוברת עם חיווי.</div>
+            <div class="cc-msg cc-msg--info" style="margin-top:10px">כל מספר במטבע שלו. מקטעים במטבעות שונים - הסכום פר מקטע מופיע בתוך המקטע.</div>
+          </div>
+        </div>
+      </div>
+      <div class="zone">
+        <h4>מחיר ללקוח קצה - שכבת B2C נגזרת <span class="cc-chip nh-ok">B-522</span> <span class="mk-note-dot">17</span></h4>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:9px">
+          <span class="cc-chip">בסיס: מחיר B2B לנוסע <b><bdi>USD 830.00</bdi></b> - קריאה בלבד (5 משלמים - סה"כ <bdi>USD 4,150</bdi>)</span>
+        </div>
+        <div style="margin-bottom:9px">
+          <label class="cc-label">איך התקבל המחיר מהספק? (דוקטרינת העמלות, 29.07)</label>
+          <span class="cc-seg">
+            <button class="is-active">נטו - מוסיף את הרווח שלי</button>
+            <button>ברוטו מובנה - נמכר כפי שהתקבל, עמלתי בפנים</button>
+          </span>
+        </div>
+        <div style="margin-bottom:9px">
+          <label class="cc-label">מודל הרווח - צד הלקוח (פעיל במצב "נטו" בלבד; ב"ברוטו מובנה" מוצג מושבת)</label>
+          <span class="cc-seg">
+            <button class="is-active">שיעור רווח <bdi>(%)</bdi></button>
+            <button>רווח לקבוצה</button>
+            <button>רווח לנוסע</button>
+            <button>רווח מדורג (לקבוצה / לנוסע)</button>
+          </span>
+          <span class="fld" style="max-width:110px;display:inline-block;margin-inline-start:8px"><input class="cc-input cc-input--ltr" value="15" placeholder="ערך"></span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:9px">
+          <span class="fld" style="max-width:170px"><label class="cc-label">עמלת סליקה <bdi>(%)</bdi> מכל העסקה</label><input class="cc-input cc-input--ltr" value="3"></span>
+          <span>אופן טיפול בעמלות:</span>
+          <span class="cc-seg"><button class="is-active">מגולם במחיר</button><button>שורה נפרדת</button></span>
+          <span class="ph-q" title="מגולם במחיר: רכיב הסליקה בתוך המחיר לכולם - משלם בהעברה בנקאית משאיר אותו כרווח נוסף. שורה נפרדת: תשלום באשראי מוסיף את אחוזי הסליקה; בהעברה בנקאית משלמים בלי השורה.">?</span>
+        </div>
+        <table class="tbl" style="max-width:600px">
+          <tr><td>שיעור רווח (15%)</td><td><bdi>USD 976.47</bdi></td><td>הרווח נגזר מהמחיר</td></tr>
+          <tr><td>עמלת סליקה (3%)</td><td><bdi>USD 1,006.67</bdi></td><td>מגולם במחיר</td></tr>
+          <tr><td><b>מחיר למטייל - לנוסע</b></td><td><b><bdi>USD 1,006.67</bdi></b></td><td><b>סה"כ לקבוצה: <bdi>USD 5,033.35</bdi></b></td></tr>
+        </table>
+        <div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">
+          <span class="cc-chip">לוח התשלומים מול המטייל פעיל בשכבה הזו</span>
+          <span class="cc-chip nh-diff">נשמר בבית המפעיל - אינו נראה לשותף</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- טאב 5: מסמכים ומיילים -->
+    <div class="tabpane hide" id="tp4">
+      <div class="zone"><h4>תיקייה ושמות <span class="cc-chip nh-diff" title="B-486: העיצוב מחדש של מנגנוני התיוק - בסשן 12.10, על בסיס המוקאפ המאושר הזה">מנגנוני התיוק - B-486 (12.10)</span></h4>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="cc-chip"><bdi>BK-1055 | Davidovich 20-25.02.2026</bdi></span>
+          <button class="cc-btn">פתיחה בסייר</button>
+          <button class="cc-btn">פתיחה ב-Drive</button>
+          <button class="cc-btn">עדכון שמות מ-Drive</button>
+          <button class="cc-btn">כתיבת שם ל-Drive</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+          <button class="cc-btn">בחירת תיקייה מהסייר</button>
+          <button class="cc-btn">קישור תיקייה מהקלט</button>
+          <button class="cc-btn">חיבור לתיקייה שלי</button>
+          <span class="cc-chip">התיקייה שלי (לא משותפת) - לקוח + תקציב מלא</span>
+        </div>
+        <div style="margin-top:8px"><span class="cc-chip">קישור לדף הטיול - פתיחה בכרטיסייה חדשה ↗</span></div>
+      </div>
+      <div class="zone"><h4>מסמכים ותוצרים <span class="mk-note-dot">15</span></h4>
+        <table class="tbl" style="max-width:700px">
+          <tr><td><bdi>Davidovich 20-25.02.2026 | Jordan</bdi> <span class="cc-chip">לקוח</span></td><td><bdi>Google Doc</bdi> - 19.07</td><td><button class="cc-btn">פתיחה</button></td><td><button class="cc-btn cc-btn--sm" title="פעולות למסמך זה" aria-label="פעולות למסמך זה">⋮</button></td></tr>
+          <tr><td><bdi>Offer v2</bdi> <span class="cc-chip" title="כל שותף מקבל רק את המקטע שלו, בשפה שלו">שותף</span></td><td><bdi>PDF</bdi> - 12.07</td><td><button class="cc-btn">פתיחה</button></td><td><button class="cc-btn cc-btn--sm" title="פעולות למסמך זה" aria-label="פעולות למסמך זה">⋮</button></td></tr>
+          <tr><td><bdi>Program v3</bdi> <span class="cc-chip">תוכנית</span></td><td><bdi>Google Doc</bdi> - 18.07</td><td><button class="cc-btn">פתיחה</button></td><td><button class="cc-btn cc-btn--sm" title="פעולות למסמך זה" aria-label="פעולות למסמך זה">⋮</button></td></tr>
+        </table>
+        <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap">
+          <button class="cc-btn">שיוך מסמך מהתיקייה</button>
+          <button class="cc-btn">העלאת קובץ</button>
+        </div>
+        <div class="cc-msg cc-msg--info" style="margin-top:9px">מסמכי ההצעה והגרסאות ממנוע היצירה מוצגים כאן; הצעה חדשה נולדת מהחישוב האחרון.</div>
+      </div>
+      <div class="zone"><h4>מיילים <span class="mk-note-dot">15</span></h4>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px">
+          <button class="cc-btn cc-btn--danger">שליחת מייל לשותף</button>
+          <button class="cc-btn">שליחת מייל למטייל</button>
+        </div>
+        <table class="tbl" style="max-width:700px">
+          <tr><td>הצעה v2 לשותף</td><td><bdi>Arminas Travel</bdi></td><td>19.07 - 14:02</td><td><span class="cc-chip nh-ok">נמסר</span></td></tr>
+          <tr><td>עדכון תאריכים</td><td><bdi>Arminas Travel</bdi></td><td>12.07 - 09:41</td><td><span class="cc-chip nh-ok">נמסר</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- כפתור הדיאלוג הצף + כרטיס האישור כפאנל צמוד -->
+  <button class="fab" onclick="document.getElementById('dlgPop').classList.toggle('hide')">✦ עוזר ה-AI</button>
+  <div class="popov hide" id="dlgPop">
+      <div class="approval">
+        <h5>לאישורך: שמירת פריט בקטלוג <span class="cc-chip">פעולת כתיבה</span></h5>
+        <div class="rows">
+          <div class="row"><span>שם הפריט</span><span><bdi>Movenpick Petra - HB</bdi></span></div>
+          <div class="row"><span>קטלוג</span><span>מלונות</span></div>
+          <div class="row"><span>מחיר</span><span><bdi>JOD 95</bdi></span></div>
+          <div class="row"><span>יחידה</span><span>לנוסע - ללילה</span></div>
+          <div class="row"><span>מע"מ</span><span>כלול במחיר</span></div>
+          <div class="row"><span>שותף</span><span><bdi>Arminas Travel</bdi></span></div>
+        </div>
+        <div class="foot">
+          <button class="cc-btn cc-btn--danger">אישור והחלה</button>
+          <button class="cc-btn">דחייה</button>
+          <button class="cc-btn" style="margin-inline-start:auto">JSON מלא</button>
+        </div>
+      </div>
+  </div>
+
+  <div class="dr-foot">
+    <button class="cc-btn cc-btn--danger">שמירה</button>
+    <button class="cc-btn">ביטול שינויים</button>
+    <span class="cc-chip nh-diff" style="cursor:pointer" onclick="setStep(2,document.querySelectorAll('#jumpbar .step')[2])" title="קפיצה לסעיף עם השינויים">שינויים שלא נשמרו: מקטעים ותקציב</span>
+    <span class="spacer"></span>
+    <button class="cc-btn" title="ארכוב - מחיקה - המרה">⋮ פעולות נוספות</button>
+  </div>
+</div>
+
+<div class="mk-notes">
+  <h2>הערות העיצוב</h2>
+  <li><span class="mk-note-dot">1</span> <b>ראש דחוס וקבוע</b>: מזהה + קבוצה + סטטוס + יעד/שותף בשורה אחת. המדינה באנגלית (נגזר), בבידוד דו-כיווני.</li>
+  <li><span class="mk-note-dot">2</span> <b>הקשר היחסים = הצעד הראשון</b> (הכרעתך 28.07): בורר B2B/B2C בראש הכרטיס, ולצדו יעד האחסון שהוא קובע. מצב "טרם נבחר" - מסגרת אדומה + צ'יפ, והשמירה נעצרת (חלופה ב של B-492). <b>במוקאפ מוצג מצב שאחרי בחירה</b> (BK-1055 כבר הוכרעה B2B); הזמנה חדשה נפתחת ב"טרם נבחר" עם המסגרת המודגשת - כמו מתג עמלת הסוכן בהערה 7.</li>
+  <li><span class="mk-note-dot">3</span> <b>פס סיכום קבוע, והמחיר מתעדכן אוטומטית</b> (הכרעת דב: בלי כפתור צועק): שינוי קלט תמחורי מפעיל חישוב מחדש מעצמו - הצ'יפים מסומנים "מחשב מחדש..." לרגע וחוזרים עדכניים עם חותמת. חץ ↻ קטן לרענון ידני, וחלון החישוב המלא בטאב "המחיר וחלון החישוב".</li>
+  <li><span class="mk-note-dot">4</span> <b>חמישה טאבים בסדר העבודה (הכרעת דב)</b>: פרטי הטיול ← תמחור ברמת ההזמנה ← מקטעים ותקציב ← המחיר וחלון החישוב ← מסמכים ומיילים. הטאבים כפתורים מובהקים; ריחוף מציג את תוכן הטאב; נקודה ירוקה = הוזן, כתומה = שינויים שלא נשמרו; צ'יפ השינויים בפוטר קופץ לטאב. שמירה אחת לכל הכרטיס (S29). <b>העיקרון המחייב: שום אלמנט אינו נעלם</b> - כל מה שקיים בכרטיס נמצא באחד החמישה.</li>
+  <li><span class="mk-note-dot">5</span> <b>מודלי הרווח בלי מספור</b> (הכרעת היום): שיעור רווח (%) - רווח לקבוצה - רווח לנוסע - רווח מדורג (לקבוצה / לנוסע). הרמז האלגברי הוחלף בנוסח אנושי.</li>
+  <li><span class="mk-note-dot">6</span> <b>עורך המדרגות של הרווח המדורג</b> (מודל 4, מושבת עד המוקאפ הזה): מדרגות לפי תקרת מספר המשלמים, מדרגה פתוחה חובה בסוף, ושחזור מההיסטוריה - התשובה לתרחיש המחיקה שאינו ניתן לשחזור.</li>
+  <li><span class="mk-note-dot">7</span> <b>מצב "טרם נבחר" למתגי הכסף</b> (B-520): מתג שערכו לא נבחר אינו מציג ברירת מחדל כבחירה - מסגרת הדגשה + צ'יפ "טרם נבחר".</li>
+  <li><span class="mk-note-dot">8</span> <b>לוח התשלומים יושב במסגרת התמחור</b>, לצד הבורר שקובע אותו - סוגר את כשל הזרימה שתפסת (המתג למטה והבלוק למעלה). ב-B2B הוא מושבת במקומו, לא מוסתר.</li>
+  <li><span class="mk-note-dot">9</span> <b>רכיב יום · תאריך</b> (B-484): מזינים ימים ("ימים 1-3"), התאריך נגזר מתאריך היציאה ומוצג לצדו (IT/BK); ב-CIT מוצג יום בלבד.</li>
+  <li><span class="mk-note-dot">10</span> <b>מסלולי התקציב בנוסח שהוכרע</b>: "פירוט פריטים" / "סכום כולל (נטו)". צ'יפ "COGS נגזר מהפירוט" ירוק כשהמסלול פעיל.</li>
+  <li><span class="mk-note-dot">11</span> <b>עמודת מטבע לכל שורה</b> (B-490): פריט קטלוג מגיע עם המטבע שלו; מטבע שונה ממטבע המקטע - התרעה, לא המרה שקטה. עמודת הכמות נושאת תג יחידה ("לילות × לנוסע") - התשובה ל-B-515; נוסח ה-"?" שלה הוא מונח מוצע לזריעה וטעון אישור.</li>
+  <li><span class="mk-note-dot">12</span> <b>חיווי חי עד ה-callback</b> (B-104): לצ'יפ מצב החישוב שלושה מצבים חיים - מחשב... / הושלם עם חותמת / שגיאה בעברית - והחיווי אינו נעלם באמצע פעולה. אותו דפוס ישמש בשני האזורים הנוספים.</li>
+  <li><span class="mk-note-dot">17</span> <b>שכבת B2C נגזרת על אותה הזמנה</b> (B-522, בקשת דב): לא נפתחות שתי הזמנות - תקציב ה-B2B נשאר המקור, ומעליו שכבת מחיר ללקוח קצה: הבסיס הוא מחיר ה-B2B (קריאה בלבד), עליו רווח צד-לקוח ועמלות, ולוח התשלומים מול המטייל פעיל בשכבה הזו בלבד. נשמרת בבית המפעיל; ההפניה חד-כיוונית (b2c ← b2b) והשותף לעולם אינו רואה אותה.</li>
+  <li><span class="mk-note-dot">16</span> <b>הרכב הנוסעים עלה ל"פרטי הטיול"</b>: "מי נוסע" הוא חלק מהגדרת הטיול, לא ממדיניות המחיר - ומקטין את העומס בסעיף התמחור (ממצא ההתייעצות).</li>
+  <li><span class="mk-note-dot">15</span> <b>התפעול גלוי, לא קבור בתפריט</b>: מיילים, שיוך מסמכים, העלאה, תיקייה ועדכון שמות - כולם כפתורים גלויים בשלב "מסמכים ומיילים", כל אחד באזור שלו. "⋮ פעולות נוספות" שבפוטר מחזיק רק את הנדירות וההרסניות: ארכוב, מחיקה, המרה. ⋮ בשורת מסמך = פעולות על אותו מסמך בלבד.</li>
+  <li><span class="mk-note-dot">14</span> <b>יעדים = שדה תגים מרובה</b>: מודל הנתונים כבר מחזיק מערך יעדים פר מקטע (destination_ids); העורך הנוכחי חושף אחד בלבד, והרדיזיין פותח את הריבוי - כמו שורת היעדים הנגזרת בראש הכרטיס.</li>
+  <li><span class="mk-note-dot">13</span> <b>כרטיס האישור קריא</b> (B-503): שדות בתוויות מילון במקום JSON; "JSON מלא" בלחיצה. כפתור עוזר ה-AI הצף מקבל כלל חזותי (B-501): גלולה עם מסגרת אדומה, צל, פינה קבועה.</li>
+</div>
+
+<div class="mk-decide">
+  <h2>נקודות להכרעתך</h2>
+  1. <b>המבנה: טאבים - הכרעתך מ-29.07.</b> נשאר לאשר: סדר החמישה ושמותיהם (פרטי הטיול - תמחור ברמת ההזמנה - מקטעים ותקציב - המחיר וחלון החישוב - מסמכים ומיילים)?<br>
+  2. <b>בורר ההקשר בראש הכרטיס</b> - או כבר במסך יצירת ההזמנה (ואז בכרטיס הוא צ'יפ קריא בלבד)?<br>
+  2ב. <b>המחיר מתעדכן אוטומטית</b> (במקום כפתור חישוב) - שינוי קלט מפעיל חישוב מעצמו, בלי לחיצה. מקובל?<br>
+  3. <b>פס הסיכום הקבוע</b> - אילו ארבעה מספרים הכי חשובים לך שם?<br>
+  4. <b>עורך המדרגות</b> (הערה 6) - מספיק כדי להדליק את מודל 4?<br>
+  5. <b>"⋮ פעולות נוספות" בפוטר מחזיק רק ארכוב - מחיקה - המרה</b> - כל התפעול השוטף (מיילים, מסמכים, תיקייה) גלוי בשלב 5. מקובל?<br>
+  <span style="font-size:12px">שאלות העמלה נסגרו (B-521): "שורה נפרדת" = מחלק, ובסיס הסליקה אינו כולל את ה-markup של הסוכן.</span>
+</div>
+
+<script>
+function setW(cls,btn){var d=document.getElementById('drawer');d.classList.remove('w1040','w780','w540');d.classList.add(cls);sib(btn)}
+function setStep(i,btn){for(var k=0;k<5;k++){document.getElementById('tp'+k).classList.add('hide')}
+  document.getElementById('tp'+i).classList.remove('hide');
+  document.getElementById('drbody').scrollTop=0;
+  document.querySelectorAll('#jumpbar .step').forEach(function(s){s.classList.remove('active')});
+  if(btn)btn.classList.add('active')}
+function sib(btn){btn.parentElement.querySelectorAll('button').forEach(function(b){b.classList.remove('is-active')});btn.classList.add('is-active')}
+function setRel(v,btn){sib(btn);document.getElementById('relStore').textContent = v==='b2b' ? 'יעד האחסון: תיקיית השותף' : 'יעד האחסון: בית המפעיל';
+  document.getElementById('payMsg').textContent = v==='b2b' ? 'ההזמנה בהקשר B2B - לוח התשלומים מול המטייל לא רלוונטי, ומוצג מושבת במקומו (כלל העתיד).' : 'הקשר B2C - לוח התשלומים פעיל, מול המטייל בלבד.';document.querySelectorAll('.pay-f').forEach(function(x){x.disabled=(v==='b2b')})}
+function pick(btn){sib(btn);document.getElementById('subSeg').classList.remove('cc-seg--unset');document.getElementById('subUnset').classList.add('hide')}
+function marginPick(btn,tiered){sib(btn);var z=document.getElementById('tiersZone');if(tiered){z.classList.remove('hide')}else{z.classList.add('hide')}}
+var calcStates=['לא ידוע','מחשב...','<bdi>USD 830</bdi>','שגיאה'];
+function setCalc(i,btn){if(btn)sib(btn);
+  ['calcBusy','calcOk','calcErr'].forEach(function(id){document.getElementById(id).classList.add('hide')});
+  var stale=document.getElementById('calcStale');
+  if(i===0){stale.classList.remove('hide')}else{stale.classList.add('hide')}
+  if(i===1)document.getElementById('calcBusy').classList.remove('hide');
+  if(i===2)document.getElementById('calcOk').classList.remove('hide');
+  if(i===3)document.getElementById('calcErr').classList.remove('hide');
+  // מצב "טעון חישוב מחדש": צ'יפי המחיר מסומנים כלא-עדכניים
+  document.querySelectorAll('.dr-sum .sum-chip').forEach(function(c,idx){
+    if(idx<3){ if(i===0){c.classList.add('stale')} else {c.classList.remove('stale')} }});
+  document.getElementById('calcChipB').innerHTML=calcStates[i];}
+var _c=0;function cycleCalc(){_c=(_c+1)%4;setCalc(_c,document.querySelectorAll('.mk-controls .cc-seg')[1].querySelectorAll('button')[_c])}
+setCalc(0,null);
+</script>
+</body>
+</html>

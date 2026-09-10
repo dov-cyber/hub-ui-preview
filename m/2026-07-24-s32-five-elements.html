@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S32 - חמישה אלמנטים</title>
+<style>
+/* ============================================================================
+   1:1 מול spa/src/global.css - הטוקנים והמחלקות הועתקו כלשונם.
+   כל מה שמתחיל ב-mk- הוא פיגום המוקאפ בלבד ואינו חלק מהעיצוב המוצע.
+   ============================================================================ */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-bg:#fdf7ea; --cc-warning-fg:#92400e; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --status-impl-dot:#22c55e; --status-pending-dot:#eab308; --status-suspended-dot:#ef4444;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:28px;line-height:1.5}
+
+/* --- global.css --- */
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-family:var(--cc-font);font-size:15px;
+  color:var(--cc-text);background:var(--cc-surface);border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm)}
+.cc-input--ltr{direction:ltr;text-align:left}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-color:var(--cc-warning-bar)}
+.cc-msg--info{background:var(--cc-info-bg);color:var(--cc-info-fg);border-color:var(--cc-info-bar)}
+.cc-field-msg{font-size:12px;margin-top:5px;display:flex;align-items:center;gap:5px}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 14px;
+  font-family:var(--cc-font);font-size:14px;background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+
+/* --- OrderDrawer.svelte (מקומי) --- */
+.totalbox{background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:12px 14px}
+.totrow{display:flex;gap:22px;flex-wrap:wrap}
+.tot{flex:1;min-width:110px}
+.tot .tl{font-size:11.5px;color:var(--cc-text-2);margin-bottom:3px}
+.tot .tv{font-size:17px;font-weight:700}
+.tot .tv small{font-size:11px;color:var(--cc-text-3);font-weight:600;margin-inline-end:4px}
+.totfoot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:11.5px;color:var(--cc-text-3);flex-wrap:wrap}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}
+.nh-diff{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}
+
+/* --- PartnersScreen.svelte (מקומי) --- */
+.acc-cell{display:inline-flex;align-items:center;gap:7px}
+.acc-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;display:inline-block}
+.acc-dot--green{background:var(--status-impl-dot)}
+.acc-dot--yellow{background:var(--status-pending-dot)}
+.acc-dot--red{background:var(--status-suspended-dot)}
+.acc-dot--none{background:#cbd5e1}
+.acc-sync-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 4px;
+  padding:7px 10px;border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);background:var(--cc-surface);font-size:13px}
+.acc-sync-status{display:inline-flex;align-items:center;gap:7px;color:var(--cc-text-2)}
+
+/* ============================================================================
+   מוצע חדש - שלוש התוספות בלבד. כל השאר למעלה קיים.
+   ============================================================================ */
+
+/* 1ב: צ'יפ הפרש-שותפים - אותה משפחה ויזואלית כמו nh-diff */
+.nh-diff--partners{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}
+
+/* 2א: נקודה חלולה = נרשם בתצוגה מקדימה; נקודה מלאה = הוחל בפועל */
+.acc-dot--ring{background:transparent;box-shadow:inset 0 0 0 2px var(--status-impl-dot)}
+/* SettingsScreen - תמונת המצב הרוחבית */
+.set-picker{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);overflow:hidden}
+.set-pk{display:flex;align-items:center;gap:10px;width:100%;padding:10px 13px;border:0;
+  border-bottom:1px solid var(--cc-divider);background:transparent;font:inherit;color:var(--cc-text);text-align:start}
+.set-pk:last-child{border-bottom:0}
+.set-pk__meta{font-size:11.5px;color:var(--cc-text-3)}
+.set-pk__dots{margin-inline-start:auto;display:inline-flex;align-items:center;gap:10px;font-size:12.5px;flex:0 0 auto}
+.set-pk__none{font-size:11.5px;color:var(--cc-text-3)}
+.set-pk__warn{font-size:11px;padding:1px 9px;border-radius:var(--cc-radius-pill);background:#fef9e7;color:#a16207;border:1px solid #eab30855}
+.pdot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-inline-end:5px}
+.pdot--g{background:var(--status-impl-dot)} .pdot--y{background:var(--status-pending-dot)}
+.pdot--r{background:var(--status-suspended-dot)} .pdot--n{background:#cbd5e1}
+.pdot--ring{background:transparent;box-shadow:inset 0 0 0 2px var(--status-impl-dot)}
+
+/* פיגום מוקאפ בלבד */
+.mk-h1{font-size:20px;font-weight:700;margin:0 0 6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:22px}
+.mk-sec{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:18px;margin-bottom:22px}
+.mk-sec>h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.mk-sec>.mk-why{font-size:13px;color:var(--cc-text-2);margin-bottom:16px}
+.mk-var{border:1px dashed var(--cc-border-strong);border-radius:var(--cc-radius-sm);padding:14px;margin-bottom:12px}
+.mk-var>.mk-vt{font-size:12px;font-weight:700;color:var(--cc-action);margin-bottom:10px;letter-spacing:.02em}
+.mk-note{font-size:12px;color:var(--cc-text-3);margin-top:10px}
+.mk-frame{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:14px;max-width:640px}
+.mk-tabs{display:flex;gap:0;border-bottom:1px solid var(--cc-border);margin-bottom:14px}
+.mk-tab{padding:9px 14px;font-size:14px;color:var(--cc-text-2);border-bottom:2px solid transparent;cursor:default}
+.mk-tab.on{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:600}
+.mk-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mk-secthead{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--cc-text-2);margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">מוקאפ S32 - חמישה אלמנטים</div>
+<div class="mk-sub">2026-07-24 · 1:1 מול <code>global.css</code> · כל אלמנט מוצג בחלופות; ההכרעה שלך.
+מה שמסומן <b style="color:var(--cc-action)">חדש</b> הוא התוספת בלבד - שאר הרכיבים קיימים ולא משתנים.</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>1 · חיווי ההפרש מול ה-CRM <span style="font-weight:400;color:var(--cc-text-3);font-size:13px">(B-450)</span></h2>
+  <div class="mk-why">היום מוצג הפרש <b>כספי</b> בלבד. מה שחסר הוא הפרש <b>בקבוצת השותפים</b>: ב-CRM רשומים שלושה ספקים בעסקה, בכרטיס שניים.
+  לפי הכרעתך המערכת <b>מציגה ולא מרפאה</b> - אין כפתור "עדכן", אין פעולה. רק אמירה.</div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חלופה א - צ'יפ שני לצד הצ'יפ הכספי, בתוך קופסת העלויות</div>
+    <div class="mk-frame">
+      <div class="totalbox">
+        <div class="totrow">
+          <div class="tot"><div class="tl">סה"כ עלות (COGS)</div><div class="tv cc-input--ltr"><small>USD</small>11,310</div></div>
+          <div class="tot"><div class="tl">שולם לשותפים</div><div class="tv cc-input--ltr"><small>USD</small>11,310</div></div>
+          <div class="tot"><div class="tl">יתרה לשותפים</div><div class="tv cc-input--ltr"><small>USD</small>0</div></div>
+        </div>
+        <div class="totfoot">
+          <span class="cc-chip nh-diff" title="מקור ההפרש - שני האגפים">מול CRM: העלות נמוכה <bdi>ב-USD 5,130</bdi></span>
+          <span class="cc-chip nh-diff nh-diff--partners" title="ב-CRM: Geo Travel · Geo Tour · Silk Road | בכרטיס: Geo Travel · Geo Tour">שותף שאינו בכרטיס: <bdi>Silk Road</bdi></span>
+          <span>מקור: סכום המקטעים</span>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">קומפקטי, יושב בדיוק היכן שהעין כבר מחפשת הפרשים. החיסרון: שמות השותפים החסרים רק ב-tooltip.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חלופה ב - רצועה מעל המקטעים, עם השמות בגלוי</div>
+    <div class="mk-frame">
+      <div class="totalbox" style="margin-bottom:14px">
+        <div class="totrow">
+          <div class="tot"><div class="tl">סה"כ עלות (COGS)</div><div class="tv cc-input--ltr"><small>USD</small>11,310</div></div>
+          <div class="tot"><div class="tl">שולם לשותפים</div><div class="tv cc-input--ltr"><small>USD</small>11,310</div></div>
+          <div class="tot"><div class="tl">יתרה לשותפים</div><div class="tv cc-input--ltr"><small>USD</small>0</div></div>
+        </div>
+        <div class="totfoot">
+          <span class="cc-chip nh-diff">מול CRM: העלות נמוכה <bdi>ב-USD 5,130</bdi></span>
+          <span>מקור: סכום המקטעים</span>
+        </div>
+      </div>
+      <div class="mk-secthead">מקטעים</div>
+      <div class="cc-msg cc-msg--warning" style="margin-bottom:12px">
+        <div><b>שותף שרשום ב-CRM ואינו בכרטיס: <bdi>Silk Road</bdi>.</b><br>
+        הכרטיס לא מתעדכן אוטומטית - אם הפיצול נכון, אין מה לעשות.</div>
+      </div>
+      <div class="mk-tabs">
+        <div class="mk-tab on">מקטע 1 · אזרבייג'ן</div>
+        <div class="mk-tab">מקטע 2 · גאורגיה</div>
+        <div class="mk-tab">+ מקטע</div>
+      </div>
+    </div>
+    <div class="mk-note">קריא ומפורש, ואומר בפירוש שאין פעולה נדרשת. החיסרון: רצועה צהובה קבועה בכל הזמנה שבה הפיצול שונה מה-CRM במכוון.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">מצב תקין - שתי החלופות מתלכדות</div>
+    <div class="mk-frame">
+      <div class="totalbox">
+        <div class="totrow">
+          <div class="tot"><div class="tl">סה"כ עלות (COGS)</div><div class="tv cc-input--ltr"><small>USD</small>16,440</div></div>
+          <div class="tot"><div class="tl">שולם לשותפים</div><div class="tv cc-input--ltr"><small>USD</small>16,440</div></div>
+          <div class="tot"><div class="tl">יתרה לשותפים</div><div class="tv cc-input--ltr"><small>USD</small>0</div></div>
+        </div>
+        <div class="totfoot">
+          <span class="cc-chip nh-ok">תואם CRM</span>
+          <span>מקור: סכום המקטעים</span>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">הצ'יפ הירוק הקיים יכסה מעכשיו <b>גם</b> את קבוצת השותפים - "תואם" יאמר שהכול תואם, לא רק הכסף.</div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>2 · מקור הסנכרון בהרשאות <span style="font-weight:400;color:var(--cc-text-3);font-size:13px">(B-444)</span></h2>
+  <div class="mk-why">היום נקודה ירוקה שנקבעה ב<b>תצוגה מקדימה</b> נראית זהה לאחת שנקבעה ב<b>החלה</b> בפועל.
+  ההבדל מהותי: הראשונה אומרת "נצפה שהמצב תואם", השנייה אומרת "אנחנו הענקנו את ההרשאה". צריך להבחין ביניהן בלי להוסיף רעש.</div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חלופה א - נקודה מלאה מול נקודה חלולה</div>
+    <div class="mk-frame">
+      <div class="acc-sync-row">
+        <span class="acc-sync-status"><span class="acc-dot acc-dot--green"></span>הרשאות מסונכרנות</span>
+        <button class="cc-btn cc-btn--sm">תצוגה מקדימה</button>
+      </div>
+      <div style="margin-top:14px">
+        <div class="mk-secthead">אנשי קשר</div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:14px">
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--green" title="ההרשאה הוחלה על ידינו"></span>Nino Beridze · עורך</span></div>
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--ring" title="נצפה כתואם בתצוגה מקדימה - טרם הוחל על ידינו"></span>Lasha Kiknadze · מציג</span></div>
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--yellow"></span>Tamar Gogia · ממתין להחלה</span></div>
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--none"></span>Giorgi Abashidze · ללא גישה</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">מלאה = הוחל על ידינו · חלולה = נצפה כתואם בתצוגה מקדימה. שתיהן ירוקות, כי שתיהן מצב תקין - ההבחנה היא במקור, לא בחומרה. אפס טקסט נוסף.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חלופה ב - מילה מפורשת בשורת הסטטוס, נקודות ללא שינוי</div>
+    <div class="mk-frame">
+      <div class="acc-sync-row">
+        <span class="acc-sync-status"><span class="acc-dot acc-dot--green"></span>הרשאות מסונכרנות · <span style="color:var(--cc-text-3)">3 הוחלו · 1 נצפה כתואם</span></span>
+        <button class="cc-btn cc-btn--sm">תצוגה מקדימה</button>
+      </div>
+      <div style="margin-top:14px">
+        <div class="mk-secthead">אנשי קשר</div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:14px">
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--green"></span>Nino Beridze · עורך</span></div>
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--green"></span>Lasha Kiknadze · מציג <span class="cc-chip">נצפה כתואם</span></span></div>
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--yellow"></span>Tamar Gogia · ממתין להחלה</span></div>
+          <div><span class="acc-cell"><span class="acc-dot acc-dot--none"></span>Giorgi Abashidze · ללא גישה</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">מפורש ולא דורש לזכור קוד ויזואלי. החיסרון: צ'יפ נוסף בשורה שכבר צפופה.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">אותה הבחנה בהגדרות ← ניהול הרשאות (כלל הרכיב-האחד)</div>
+    <div class="mk-frame" style="max-width:780px">
+      <div class="set-picker">
+        <div class="set-pk">
+          <span style="font-weight:600">Arminas Travel</span>
+          <span class="set-pk__meta"><bdi>Mexico</bdi> · <bdi>P-010</bdi> · <bdi>2 אנשי קשר</bdi></span>
+          <span class="set-pk__dots">
+            <span title="הוחל ותואם"><span class="pdot pdot--g"></span>2</span>
+          </span>
+        </div>
+        <div class="set-pk">
+          <span style="font-weight:600">Ayabex</span>
+          <span class="set-pk__meta"><bdi>Japan</bdi> · <bdi>P-064</bdi> · <bdi>1 אנשי קשר</bdi></span>
+          <span class="set-pk__dots">
+            <span title="נצפה כתואם בתצוגה מקדימה - טרם הוחל על ידינו"><span class="pdot pdot--ring"></span>1</span>
+          </span>
+        </div>
+        <div class="set-pk">
+          <span style="font-weight:600">Geo Tour</span>
+          <span class="set-pk__meta"><bdi>Georgia</bdi> · <bdi>P-001</bdi> · <bdi>1 אנשי קשר</bdi></span>
+          <span class="set-pk__dots">
+            <span title="ממתין להחלה"><span class="pdot pdot--y"></span>1</span>
+            <span class="set-pk__warn">שינויים שטרם הוחלו</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">הנקודה החלולה חוזרת כאן בדיוק כמו בכרטיס השותף - אותו רכיב, אותה משמעות. בחלופה ב' תבוא במקומה מילה ("נצפה") באותו מקום.</div>
+  </div>
+
+  <div class="mk-note" style="margin-top:4px"><b>בשתי החלופות</b>: אפור "ללא גישה" נשאר נחלת ההחלה בלבד - תצוגה מקדימה לעולם לא צובעת איש קשר באפור.</div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>4 · ריבוי מטבעות פר מקטע <span style="font-weight:400;color:var(--cc-text-3);font-size:13px">(יכולת חדשה)</span></h2>
+  <div class="mk-why"><b>מצב היום</b>: לכל מקטע יש שדה מטבע במודל הנתונים, אבל ה-UI כופה עליו את מטבע ההזמנה - אין בורר.
+  כלומר טיול שבו הספק הגאורגי מתומחר ב-USD והארמני ב-EUR אינו ניתן לרישום נאמן.
+  <b>אם פותחים את היכולת</b>, נופלת ההנחה שיש "סה"כ" אחד - וצריך להחליט מה הראש מציג.</div>
+
+  <div class="mk-var">
+    <div class="mk-vt">בורר מטבע במקטע <b style="color:var(--cc-action)">חדש</b></div>
+    <div class="mk-frame">
+      <div class="mk-grid2">
+        <div>
+          <label class="cc-label">COGS</label>
+          <input class="cc-input cc-input--ltr" value="5925" readonly>
+        </div>
+        <div>
+          <label class="cc-label">מטבע המקטע</label>
+          <select class="cc-input"><option>USD</option><option>EUR</option><option>NIS</option></select>
+        </div>
+      </div>
+      <div class="cc-help">ברירת המחדל היא מטבע ההזמנה. שינוי כאן משפיע על המקטע הזה בלבד.</div>
+    </div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חלופה א - סכומים פר מטבע בשורה אחת</div>
+    <div class="mk-frame">
+      <div class="totalbox">
+        <div class="totrow">
+          <div class="tot"><div class="tl">סה"כ עלות (COGS)</div>
+            <div class="tv cc-input--ltr"><small>USD</small>11,310 <span style="color:var(--cc-text-3);font-weight:400">·</span> <small>EUR</small>2,000</div></div>
+          <div class="tot"><div class="tl">שולם לשותפים</div>
+            <div class="tv cc-input--ltr"><small>USD</small>11,310 <span style="color:var(--cc-text-3);font-weight:400">·</span> <small>EUR</small>0</div></div>
+          <div class="tot"><div class="tl">יתרה לשותפים</div>
+            <div class="tv cc-input--ltr"><small>USD</small>0 <span style="color:var(--cc-text-3);font-weight:400">·</span> <small>EUR</small>2,000</div></div>
+        </div>
+        <div class="totfoot">
+          <span class="cc-chip nh-diff" title="ל-CRM מטבע אחד לעסקה; ההשוואה נעשית באגף אותו מטבע בלבד">מול CRM: השוואה <bdi>ב-USD</bdi> בלבד</span>
+          <span>מקור: סכום המקטעים · 2 מטבעות</span>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">שומר על שלוש העמודות הקיימות. מתחיל להצטופף בשלושה מטבעות ומעלה.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חלופה ב - שורה לכל מטבע</div>
+    <div class="mk-frame">
+      <div class="totalbox">
+        <div style="font-size:11.5px;color:var(--cc-text-2);margin-bottom:6px">סה"כ הטיול · פר מטבע</div>
+        <div class="totrow" style="align-items:baseline">
+          <div class="tot" style="max-width:70px"><div class="tv cc-input--ltr" style="font-size:13px;color:var(--cc-text-2)">USD</div></div>
+          <div class="tot"><div class="tl">עלות</div><div class="tv cc-input--ltr">11,310</div></div>
+          <div class="tot"><div class="tl">שולם</div><div class="tv cc-input--ltr">11,310</div></div>
+          <div class="tot"><div class="tl">יתרה</div><div class="tv cc-input--ltr">0</div></div>
+        </div>
+        <div class="totrow" style="align-items:baseline;margin-top:10px;padding-top:10px;border-top:1px solid var(--cc-border)">
+          <div class="tot" style="max-width:70px"><div class="tv cc-input--ltr" style="font-size:13px;color:var(--cc-text-2)">EUR</div></div>
+          <div class="tot"><div class="tl">עלות</div><div class="tv cc-input--ltr">2,000</div></div>
+          <div class="tot"><div class="tl">שולם</div><div class="tv cc-input--ltr">0</div></div>
+          <div class="tot"><div class="tl">יתרה</div><div class="tv cc-input--ltr">2,000</div></div>
+        </div>
+        <div class="totfoot">
+          <span class="cc-chip nh-diff" title="ל-CRM מטבע אחד לעסקה">מול CRM: השוואה <bdi>ב-USD</bdi> בלבד</span>
+          <span>מקור: סכום המקטעים</span>
+        </div>
+      </div>
+    </div>
+    <div class="mk-note">נושא כל מספר מטבעות בלי להצטופף, וכל שורה נקראת כמו הקופסה שאתה מכיר. תופסת יותר גובה בראש הכרטיס.</div>
+  </div>
+
+  <div class="mk-note"><b>שתי נגזרות שצריך להכריע איתן</b>: (1) ההשוואה מול ה-CRM אפשרית רק באגף המטבע של העסקה - בשאר המטבעות אין למה להשוות.
+  (2) מה שבניתי היום מנקה את סכום הראש כשהמטבעות סותרים; ברגע שריבוי מטבעות הוא מצב לגיטימי, הניקוי הזה מוחלף בתצוגה שנבחרת כאן.</div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>5 · בידוד דו-כיווני בשורות מעורבות עברית/אנגלית</h2>
+  <div class="mk-why">שורת המטא בהגדרות נבנית כמחרוזת אחת - <code>מדינה · מזהה · אנשי קשר</code> - בלי בידוד.
+  אלגוריתם ה-bidi מזיז את הרצף הלטיני כיחידה אחת, ולכן <b>הסדר הנקרא אינו סדר המקור</b>. ההדגמה למטה חיה - הדפדפן מסדר אותה בעצמו.</div>
+
+  <div class="mk-var">
+    <div class="mk-vt">היום - ללא בידוד</div>
+    <div class="mk-frame" style="max-width:780px">
+      <div class="set-pk">
+        <span style="font-weight:600">Ak-Sai Travel</span>
+        <span class="set-pk__meta">Kyrgyzstan · P-035 · ללא אנשי קשר</span>
+        <span class="set-pk__dots"><span class="set-pk__none">אין למי להעניק גישה</span></span>
+      </div>
+      <div class="set-pk">
+        <span style="font-weight:600">Arminas Travel</span>
+        <span class="set-pk__meta">Mexico · P-010 · 2 אנשי קשר</span>
+        <span class="set-pk__dots"><span><span class="pdot pdot--g"></span>2</span></span>
+      </div>
+    </div>
+    <div class="mk-note">שים לב איפה נוחת המזהה ואיפה נוחתת המדינה ביחס למה שכתוב בקוד.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">מוצע - כל אסימון בתוך <code>&lt;bdi&gt;</code> <b style="color:var(--cc-action)">חדש</b></div>
+    <div class="mk-frame" style="max-width:780px">
+      <div class="set-pk">
+        <span style="font-weight:600"><bdi>Ak-Sai Travel</bdi></span>
+        <span class="set-pk__meta"><bdi>Kyrgyzstan</bdi> · <bdi>P-035</bdi> · <bdi>ללא אנשי קשר</bdi></span>
+        <span class="set-pk__dots"><span class="set-pk__none">אין למי להעניק גישה</span></span>
+      </div>
+      <div class="set-pk">
+        <span style="font-weight:600"><bdi>Arminas Travel</bdi></span>
+        <span class="set-pk__meta"><bdi>Mexico</bdi> · <bdi>P-010</bdi> · <bdi>2 אנשי קשר</bdi></span>
+        <span class="set-pk__dots"><span><span class="pdot pdot--g"></span>2</span></span>
+      </div>
+    </div>
+    <div class="mk-note">כל אסימון שומר על כיוון הפנימי שלו, והרצף נשאר כפי שנכתב. אפס שינוי ויזואלי מעבר לסדר הנכון.
+    <b>אותו טיפול נדרש בכל מקום שמרכיב מחרוזת מעורבת</b> - שורות הסייר, שורת היעדים בכרטיס, תוויות המקטע, וכל צ'יפ הודעה.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">חמישה כללי-קבע שנולדו כאן <b style="color:var(--cc-action)">חדש</b></div>
+    <div style="font-size:13.5px;line-height:1.7">
+      <div><b>א. כל ערך כספי בהודעה נושא את סוג המטבע.</b> "העלות נמוכה ב-5,130" הוא מספר חסר משמעות ברגע שיש יותר ממטבע אחד במערכת. <b>המקף צמוד לערך</b>, והתחילית נכנסת לתוך אותו אסימון מבודד - אחרת נפער רווח.
+      הנוסח הנכון: <span class="cc-chip nh-diff">העלות נמוכה <bdi>ב-USD 5,130</bdi></span></div>
+      <div style="margin-top:10px"><b>ב. כל אסימון מעורב יושב ב-<code>&lt;bdi&gt;</code>, והמספר צמוד לתווית העברית שלו.</b>
+      לא "3 ב-CRM, 2 בכרטיס" (מתפרק), אלא <span class="cc-chip nh-diff">שותף שאינו בכרטיס: <bdi>Silk Road</bdi></span></div>
+      <div style="margin-top:10px"><b>ג. מציגים שם, לא ספרה</b> (הכרעת דב) - "שותף שאינו בכרטיס: <bdi>Silk Road</bdi>" במקום "3 ב-CRM, 2 בכרטיס".
+      השם אומר למפעיל מה בדיוק חסר, ובדרך גם מסלק את הספרות החשופות שנצמדות לרצף הלטיני ומתפרקות.
+      כשההפרש גדול מכדי למנות - נופלים לספירה, אבל זו החלופה ולא ברירת המחדל.</div>
+      <div style="margin-top:10px"><b>ד. שם לועזי בתוך משפט עברי נכנס דרך תחילית עם מקף קצר צמוד</b> (הכרעת דב) -
+      <bdi>ב-Silk Road</bdi> · <bdi>ל-Geo Tour</bdi> · <bdi>מ-CRM</bdi>. התחילית מעגנת את השם בתוך הזרימה העברית
+      במקום להשאיר אותו כאי לטיני שה-bidi חופשי להזיז, וזו גם הצורה היחידה שבה מקף מותר לפי כלל המותג.</div>
+      <div style="margin-top:10px"><b>ה. במסך אומרים "CRM", לא "NetHunt"</b> (הכרעת דב) - שם הספק אינו עניינו של המפעיל,
+      והמונח הגנרי שורד את המעבר ל-Authentico™ Hub. <b>המזהים בקוד ובנתונים לא משתנים</b>
+      (<code>nethunt_deal_id</code> · <code>crm_mirror</code> · שמות הפעולות) - זו החלפת <b>תצוגה</b> בלבד.</div>
+      <div class="mk-note" style="margin-top:12px">חמשת הכללים נולדו מהמוקאפ הזה: הגרסה הראשונה שלו נכשלה בכולם.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>3 · הודעת תאימות בתאריכי המקטע</h2>
+  <div class="mk-why">הכרעתך: בריבוי יעדים <b>אין זריעה</b> - שדות התאריך במקטע נשארים ריקים עד שתמלא.
+  ביעד יחיד המקטע והראש אמורים לשאת אותם תאריכים, ואם הם מתפצלים - הודעה.</div>
+
+  <div class="mk-var">
+    <div class="mk-vt">יעד יחיד · פער בין המקטע לראש <b style="color:var(--cc-action)">חדש</b></div>
+    <div class="mk-frame">
+      <div class="mk-grid2">
+        <div>
+          <label class="cc-label">תחילת המקטע</label>
+          <input class="cc-input cc-input--ltr" value="14/05/2026" readonly>
+        </div>
+        <div>
+          <label class="cc-label">סיום המקטע</label>
+          <input class="cc-input cc-input--ltr" value="27/05/2026" readonly>
+        </div>
+      </div>
+      <div class="cc-field-msg" style="color:var(--cc-warning-fg)">
+        תאריכי המקטע שונים מתאריכי הטיול (<bdi>11.05.2026 - 27.05.2026</bdi>)
+      </div>
+    </div>
+    <div class="mk-note">הערת שדה, לא רצועה - זו אינה שגיאה. ביעד יחיד פער כזה כמעט תמיד מסמן הקלדה חסרה, אבל הוא עשוי להיות מכוון, ולכן מיידעים ולא חוסמים.
+    ההודעה מופיעה בכל פער, בלי קשר לצד שהשתנה.</div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">ריבוי יעדים · אין זריעה, אין הודעה</div>
+    <div class="mk-frame">
+      <div class="mk-tabs">
+        <div class="mk-tab on">מקטע 1 · אזרבייג'ן</div>
+        <div class="mk-tab">מקטע 2 · גאורגיה</div>
+        <div class="mk-tab">מקטע 3 · ארמניה</div>
+      </div>
+      <div class="mk-grid2">
+        <div>
+          <label class="cc-label">תחילת המקטע</label>
+          <input class="cc-input cc-input--ltr" value="" placeholder="dd/mm/yyyy" readonly>
+        </div>
+        <div>
+          <label class="cc-label">סיום המקטע</label>
+          <input class="cc-input cc-input--ltr" value="" placeholder="dd/mm/yyyy" readonly>
+        </div>
+      </div>
+      <div class="cc-help">תאריכי המקטע ריקים עד שתמלא אותם - טווח הטיול אינו מייצג מקטע יחיד.</div>
+    </div>
+    <div class="mk-note">היום מקטע 1 ב-BK-1052 מציג 11.05-27.05, כלומר 17 יום למקטע אזרבייג'ן. זה מה שנפסק. שורת ההסבר מופיעה רק כששני השדות ריקים.</div>
+  </div>
+</div>
+
+<div class="mk-sub" style="margin-top:26px">
+<b>מה נדרש ממך</b>: חלופה לאלמנט 1 (א או ב) · חלופה לאלמנט 2 (א או ב) · אישור לנוסח באלמנט 3 ·
+האם פותחים את ריבוי המטבעות (אלמנט 4) ובאיזו חלופה · אישור לבידוד באלמנט 5.
+</div>
+
+</body>
+</html>

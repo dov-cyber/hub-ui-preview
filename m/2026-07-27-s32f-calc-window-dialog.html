@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S32f - חלון החישוב + הדיאלוג המולטימודלי</title>
+<style>
+/* ============================================================================
+   1:1 מול spa/src/global.css - הטוקנים והמחלקות הועתקו כלשונם.
+   כל מה שמתחיל ב-mk- הוא פיגום המוקאפ בלבד ואינו חלק מהעיצוב המוצע.
+   ============================================================================ */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-hover:#8e0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d; --cc-success-bar:#9bc7ac;
+  --cc-warning-bg:#fdf7ea; --cc-warning-fg:#92400e; --cc-warning-bar:#ebd29a;
+  --cc-danger-bg:#fcf1f1; --cc-danger-fg:#991b1b; --cc-danger-bar:#e0a9a9;
+  --status-impl-dot:#22c55e; --status-pending-dot:#eab308;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:28px;line-height:1.5}
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-help{font-size:12px;color:var(--cc-text-3);margin-top:6px;line-height:1.5}
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent}
+.cc-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-inline-start:4px solid var(--cc-info-bar);
+  border-radius:var(--cc-radius-sm);background:var(--cc-info-bg);color:var(--cc-info-fg);font-size:14px;line-height:1.5}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 14px;
+  font-family:var(--cc-font);font-size:14px;background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}
+.cc-btn--primary{background:var(--cc-action);border-color:var(--cc-action);color:#fff;font-weight:600}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider)}
+.tab{border:0;background:transparent;font:inherit;font-size:13.5px;color:var(--cc-text-2);padding:8px 13px;cursor:pointer;
+  border-bottom:2px solid transparent}
+.tab.active{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:700}
+
+/* ============================================================================
+   מוצע חדש 1 - חלון החישוב (calc-*)
+   ============================================================================ */
+.calc{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);overflow:hidden}
+.calc__head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--cc-sunken);
+  border-bottom:1px solid var(--cc-border);flex-wrap:wrap}
+.calc__title{font-size:14px;font-weight:700}
+.calc__vchip{margin-inline-start:auto;display:inline-flex;gap:8px;align-items:center}
+.calc-lvl{padding:6px 14px;font-size:11.5px;font-weight:700;color:var(--cc-text-3);letter-spacing:.2px;
+  background:var(--cc-bg);border-bottom:1px solid var(--cc-divider)}
+.calc-row{display:grid;grid-template-columns:150px 1fr 1fr 1fr;gap:10px;align-items:center;
+  padding:9px 14px;border-bottom:1px solid var(--cc-divider);font-size:13.5px}
+.calc-row:last-child{border-bottom:0}
+.calc-row--off{color:var(--cc-text-disabled)}
+.calc-st{font-weight:600;display:flex;align-items:center;gap:7px}
+.calc-q{width:15px;height:15px;border-radius:50%;border:1px solid var(--cc-border-strong);color:var(--cc-text-3);
+  font-size:10.5px;display:inline-flex;align-items:center;justify-content:center;cursor:help;flex:0 0 auto}
+.calc-num{direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.calc-op{color:var(--cc-text-2);direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.calc-na{font-size:11.5px;color:var(--cc-text-3);background:var(--cc-sunken);border-radius:var(--cc-radius-pill);
+  padding:2px 9px;justify-self:start}
+.calc__foot{display:flex;align-items:center;gap:14px;padding:11px 14px;background:var(--cc-sunken);
+  border-top:1px solid var(--cc-border);flex-wrap:wrap}
+.calc__final{font-size:17px;font-weight:700}
+.calc__final small{font-size:11px;color:var(--cc-text-3);font-weight:600;margin-inline-end:4px}
+.calc-paxtabs{display:inline-flex;gap:4px;background:var(--cc-bg);border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-pill);padding:3px}
+.calc-paxtab{border:0;background:transparent;font:inherit;font-size:12px;padding:3px 11px;border-radius:var(--cc-radius-pill);
+  color:var(--cc-text-2);cursor:pointer}
+.calc-paxtab.active{background:var(--cc-surface);color:var(--cc-action);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.07)}
+
+/* ============================================================================
+   מוצע חדש 2 - הדיאלוג המולטימודלי (dlg-*)
+   ============================================================================ */
+.dlg{border:1px solid var(--cc-border);border-radius:var(--cc-radius);background:var(--cc-surface);
+  display:flex;flex-direction:column;max-width:480px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.dlg__head{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken)}
+.dlg__title{font-size:13.5px;font-weight:700}
+.dlg__ctx{font-size:11.5px;color:var(--cc-text-3)}
+.dlg__body{padding:14px;display:flex;flex-direction:column;gap:10px;max-height:430px;overflow:auto}
+.dlg-msg{max-width:88%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.55}
+.dlg-msg--user{align-self:flex-start;background:var(--cc-sunken);border-start-start-radius:4px}
+.dlg-msg--ai{align-self:flex-end;background:var(--cc-info-bg);border:1px solid var(--cc-border);border-start-end-radius:4px}
+.dlg-act{border:1px solid var(--cc-action-border);background:var(--cc-action-weak);border-radius:var(--cc-radius-sm);
+  padding:10px 12px;font-size:13px;margin-top:8px}
+.dlg-act__t{font-weight:700;color:var(--cc-action);margin-bottom:5px;font-size:12.5px}
+.dlg-act__row{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.dlg-act__row b{direction:ltr;font-variant-numeric:tabular-nums}
+.dlg-act__btns{display:flex;gap:8px;margin-top:9px}
+.dlg__bar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--cc-border)}
+.dlg__input{flex:1;min-height:38px;padding:0 12px;font:inherit;font-size:13.5px;border:1px solid var(--cc-border-strong);
+  border-radius:var(--cc-radius-pill);background:var(--cc-surface)}
+.dlg-mic{width:38px;height:38px;border-radius:50%;border:1px solid var(--cc-border-strong);background:var(--cc-surface);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;font-size:16px}
+.dlg-mic--live{background:var(--cc-action);border-color:var(--cc-action);color:#fff;animation:mkpulse 1.4s infinite}
+@keyframes mkpulse{0%{box-shadow:0 0 0 0 rgba(170,0,0,.35)}70%{box-shadow:0 0 0 9px rgba(170,0,0,0)}100%{box-shadow:0 0 0 0 rgba(170,0,0,0)}}
+.dlg-voice{display:inline-flex;align-items:center;gap:3px;height:16px;margin-inline-start:6px}
+.dlg-voice i{width:3px;background:var(--cc-action);border-radius:2px;animation:mkbar 1s infinite ease-in-out}
+.dlg-voice i:nth-child(1){height:6px}.dlg-voice i:nth-child(2){height:13px;animation-delay:.15s}
+.dlg-voice i:nth-child(3){height:9px;animation-delay:.3s}.dlg-voice i:nth-child(4){height:14px;animation-delay:.45s}
+@keyframes mkbar{0%,100%{transform:scaleY(.6)}50%{transform:scaleY(1)}}
+.dlg-fab{position:relative;display:inline-flex;align-items:center;gap:9px;background:var(--cc-surface);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-pill);padding:9px 16px;font-size:13.5px;
+  font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.09)}
+.dlg-fab__dot{width:9px;height:9px;border-radius:50%;background:var(--status-impl-dot)}
+
+/* פיגום מוקאפ בלבד */
+.mk-h1{font-size:20px;font-weight:700;margin:0 0 6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:22px;max-width:860px}
+.mk-sec{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);padding:18px;margin-bottom:22px;max-width:980px}
+.mk-sec>h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.mk-sec>.mk-why{font-size:13px;color:var(--cc-text-2);margin-bottom:16px}
+.mk-var{border:1px dashed var(--cc-border-strong);border-radius:var(--cc-radius-sm);padding:14px;margin-bottom:12px}
+.mk-var>.mk-vt{font-size:12px;font-weight:700;color:var(--cc-action);margin-bottom:10px}
+.mk-note{font-size:12px;color:var(--cc-text-3);margin-top:10px;line-height:1.6}
+.mk-cols{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">מוקאפ S32f - חלון החישוב + הדיאלוג המולטימודלי</div>
+<div class="mk-sub">
+  שני האלמנטים החדשים של מנוע התמחור, בשפת העיצוב החיה של הכרטיס. הנתונים לדוגמה הם דוגמה 8.1 מהעיצוב
+  (גאורגיה - 7 נוסעים, מלווה FOC אחד, 6 משלמים) בתוספת מקטע במטבע שונה, כדי להראות את שתי הרמות.
+  כל ערך כספי נושא מטבע; תחנה כבויה מוצגת "לא רלוונטי" - לעולם לא 0.
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>1. חלון החישוב</h2>
+  <div class="mk-why">נפתח מתוך אזור התמחור במקטע (כפתור "הצגת החישוב"). מציג את הנוסחה החיה תחנה-תחנה, בשתי הרמות, ונשמר עם כל גרסת הצעה.</div>
+
+  <div class="mk-var">
+    <div class="mk-vt">וריאנט א (מומלץ) - פאנל נפתח מתחת לאזור התמחור, ברוחב מלא</div>
+
+    <div class="calc">
+      <div class="calc__head">
+        <span class="calc__title">חלון החישוב</span>
+        <span class="calc-paxtabs">
+          <button class="calc-paxtab active">מבוגר · 6</button>
+          <button class="calc-paxtab">ילד 3-6 · 1</button>
+        </span>
+        <span class="calc__vchip">
+          <span class="cc-chip" title="החישוב נשמר עם הגרסה - שחזור מלא של כל מחיר">נשמר עם גרסה v2</span>
+          <span class="cc-chip">דיוק מלא · עיגול בתצוגה בלבד</span>
+        </span>
+      </div>
+
+      <div class="calc-lvl">רמת המקטע - עלות, חיץ מטבע והמרה, פר מקטע</div>
+      <div class="calc-row">
+        <span class="calc-st">מקטע 1 · עלות <span class="calc-q" title="הסבר מהמילון: סכום שורות העלות של המקטע במטבע הספק">?</span></span>
+        <span class="calc-op">קבועות 7,000 + משתנות 1,800 לנוסע</span>
+        <span class="calc-op">במטבע ההצעה</span>
+        <span class="calc-num">USD 7,000 · 1,800</span>
+      </div>
+      <div class="calc-row calc-row--off">
+        <span class="calc-st">מקטע 1 · חיץ מטבע</span>
+        <span class="calc-num">-</span>
+        <span class="calc-na">לא רלוונטי - מטבע המקטע זהה למטבע ההצעה</span>
+        <span class="calc-num">-</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-st">מקטע 2 · חיץ מטבע <span class="calc-q" title="תוספת x(1+b) - מגן על העלות מתנודת שער עד התשלום לספק">?</span></span>
+        <span class="calc-num">EUR 5,000</span>
+        <span class="calc-op">x 1.025</span>
+        <span class="calc-num">EUR 5,125</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-st">מקטע 2 · המרה</span>
+        <span class="calc-num">EUR 5,125</span>
+        <span class="calc-op">x 1.08 (שער ההצעה, נעול)</span>
+        <span class="calc-num">USD 5,535</span>
+      </div>
+
+      <div class="calc-lvl">רמת ההזמנה - פעם אחת על המצרף · 6 משלמים (FOC מחוץ למכנה, עלויותיו בפנים)</div>
+      <div class="calc-row">
+        <span class="calc-st">עלות בסיס <span class="calc-q" title="קבועות/משלמים + משתנות לנוסע + עלויות FOC/משלמים">?</span></span>
+        <span class="calc-op">12,535 / 6 + 1,800 + 0</span>
+        <span class="calc-op">גזירה</span>
+        <span class="calc-num">USD 3,889.17</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-st">עמלת סגירה בנקאית</span>
+        <span class="calc-num">USD 3,889.17</span>
+        <span class="calc-op">+ 100 / 6</span>
+        <span class="calc-num">USD 3,905.83</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-st">מרווח · מודל 1 <span class="calc-q" title="מרווח = מחלק /(1-m), לעולם לא תוספת - כך 20% נשארים 20% מההכנסה">?</span></span>
+        <span class="calc-num">USD 3,905.83</span>
+        <span class="calc-op">/ (1 - 20%)</span>
+        <span class="calc-num">USD 4,882.29</span>
+      </div>
+      <div class="calc-row calc-row--off">
+        <span class="calc-st">עמלת סוכן משנה</span>
+        <span class="calc-num">-</span>
+        <span class="calc-na">לא רלוונטי - מסירת נטו, אין עמלה גלומה</span>
+        <span class="calc-num">-</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-st">עמלת סליקה · מגולם במחיר</span>
+        <span class="calc-num">USD 4,882.29</span>
+        <span class="calc-op">/ (1 - 3%)</span>
+        <span class="calc-num">USD 5,033.29</span>
+      </div>
+
+      <div class="calc__foot">
+        <span class="calc__final"><small>USD</small>5,033.29 לנוסע מבוגר</span>
+        <span class="cc-chip">סה"כ 6 משלמים · <bdi>USD 30,199.72</bdi></span>
+        <button class="cc-btn cc-btn--sm">העתקת פירוט</button>
+        <button class="cc-btn cc-btn--sm">רשת מחירים</button>
+      </div>
+    </div>
+
+    <div class="mk-note">
+      סימן ה-"?" בכל תחנה פותח את הסבר המונח מהמילון (הכרעת דב - המילון נגיש בדשבורד).
+      בורר סוג הנוסע מציג את אותה שרשרת לכל טווח גיל - המספרים מתחלפים, המבנה קבוע.
+    </div>
+  </div>
+
+  <div class="mk-var">
+    <div class="mk-vt">וריאנט ב - פאנל צד צמוד (לעבודה במקביל להזנת עלויות)</div>
+    <div class="cc-msg cc-msg--info">אותו תוכן בדיוק, מוצמד לצד הכרטיס ברוחב 380px ומתעדכן חי עם כל שינוי שורה. יתרון: רואים את החישוב תוך כדי הקלדה. חיסרון: צפוף בעמודות הקלט/פלט.</div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<div class="mk-sec">
+  <h2>2. הדיאלוג המולטימודלי</h2>
+  <div class="mk-why">
+    שיח עם המודל בהקשר המסך הנוכחי, בטקסט ובקול. המודל מסביר ומפעיל פעולות - המנוע מחשב - האדם מאשר.
+    נפתח מכפתור צף שזמין בכל מסך פעולה (תמחור, יצירה, המלצות).
+  </div>
+
+  <div class="mk-cols">
+    <div>
+      <div class="cc-label">מצב סגור - הכפתור הצף (פינת המסך)</div>
+      <button class="dlg-fab"><span class="dlg-fab__dot"></span>שיחה עם המודל</button>
+      <div class="mk-note" style="max-width:220px">לחיצה פותחת את הפאנל; לחיצה ארוכה / מיקרופון - פותחת ישר בהקלטה קולית.</div>
+    </div>
+
+    <div class="dlg">
+      <div class="dlg__head">
+        <span class="dlg__title">שיחה עם המודל</span>
+        <span class="cc-chip">BK-1061 · מקטע 2 · תמחור</span>
+        <span class="dlg__ctx" style="margin-inline-start:auto">ההקשר: המסך הנוכחי</span>
+      </div>
+      <div class="dlg__body">
+        <div class="dlg-msg dlg-msg--user">
+          מה יקרה למחיר אם נעבור למודל 3 עם 300 דולר לנוסע במקום מרווח 20%?
+          <span class="dlg-voice" title="הודעה קולית"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="dlg-msg dlg-msg--ai">
+          במודל 3 הרווח הוא תוספת קבועה לנוסע במקום מחלק, ולכן המחיר יירד. הרצתי במנוע להשוואה:
+          <div class="dlg-act">
+            <div class="dlg-act__t">הצעת פעולה - החלפת מודל המרווח (המנוע חישב; אני רק מסביר)</div>
+            <div class="dlg-act__row"><span>היום · מודל 1, מרווח 20%</span><b>USD 5,033.29</b></div>
+            <div class="dlg-act__row"><span>מוצע · מודל 3, 300 USD לנוסע</span><b>USD 4,335.91</b></div>
+            <div class="dlg-act__row"><span>רווח לקבוצה</span><b>USD 5,858.75 ← USD 1,800.00</b></div>
+            <div class="dlg-act__btns">
+              <button class="cc-btn cc-btn--sm cc-btn--primary">אישור והחלה</button>
+              <button class="cc-btn cc-btn--sm">הצגה בחלון החישוב</button>
+              <button class="cc-btn cc-btn--sm">ביטול</button>
+            </div>
+          </div>
+        </div>
+        <div class="dlg-msg dlg-msg--user">למה עמלת הסליקה היא חלוקה ולא תוספת של 3%?</div>
+        <div class="dlg-msg dlg-msg--ai">
+          כי הסולק גובה 3% מהסכום הסופי - כולל התוספת עצמה. תוספת של 3% משאירה חסר של
+          <bdi>USD 34.74</bdi> על כל <bdi>USD 38,600</bdi>. החלוקה ב-(1-3%) מבטיחה שאחרי העמלה נשאר בדיוק הנטו.
+          ההסבר המלא - בתחנת הסליקה בחלון החישוב.
+        </div>
+      </div>
+      <div class="dlg__bar">
+        <button class="dlg-mic dlg-mic--live" title="הקלטה פעילה">🎙</button>
+        <input class="dlg__input" placeholder="הקלדה, או דיבור במיקרופון...">
+        <button class="cc-btn cc-btn--sm">שליחה</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mk-note" style="max-width:900px">
+    כללי היסוד המוצגים כאן: (1) המודל לעולם אינו מחשב מחיר - כל מספר בבלוק ההצעה הגיע מהרצת המנוע, והכפתור
+    "הצגה בחלון החישוב" פותח את ה-trace המלא. (2) כל פעולה משנה-נתונים דורשת "אישור והחלה" מפורש. (3) צ'יפ ההקשר
+    בכותרת מציג בכל רגע על איזה מסך ושלב השיחה פועלת. (4) המיקרופון האדום הפועם = הקלטה פעילה; גלי הקול על הודעת
+    משתמש מסמנים שמקורה קולי. (5) אותו רכיב ישרת את מנוע היצירה ומנוע ההמלצות - רק הסקילים והפעולות מתחלפים.
+  </div>
+</div>
+
+<div class="mk-note">מוקאפ בלבד - אין קוד חי מאחורי המסכים. S32f · 2026-07-27.</div>
+
+</body>
+</html>

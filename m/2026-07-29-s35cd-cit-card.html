@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>מוקאפ S35-CD - כרטיס ה-CIT (B-481, טיוטה 1)</title>
+<style>
+/* 1:1 מול spa/src/global.css + ספריית העיצוב 00-DESIGN-LIBRARY.html. mk- = פיגום מוקאפ בלבד. */
+:root{
+  --cc-surface:#ffffff; --cc-bg:#fafafa; --cc-sunken:#f3f4f6;
+  --cc-border:#e5e5e5; --cc-border-strong:#d4d4d4; --cc-divider:#ededed;
+  --cc-text:#333333; --cc-text-2:#5e5e5e; --cc-text-3:#6e6e6e; --cc-text-disabled:#b8b8b8;
+  --cc-action:#aa0000; --cc-action-weak:#fbe9e9; --cc-action-border:#f0cccc;
+  --cc-info-bg:#f6f7f8; --cc-info-fg:#4b5563; --cc-info-bar:#c2c6cc;
+  --cc-success-bg:#f2f8f4; --cc-success-fg:#15803d;
+  --cc-warning-fg:#92400e; --cc-warning-bg:#fdf7ea; --cc-warning-bar:#ebd29a;
+  --cc-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.12);
+  --status-impl-bg:#dcfce7; --status-impl-fg:#15803d; --status-impl-dot:#22c55e;
+  --cc-row-h:44px; --cc-radius:10px; --cc-radius-sm:6px; --cc-radius-pill:999px;
+  --cc-font:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+
+/* ---- יסודות הספרייה ---- */
+.cc-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--cc-text-2);
+  background:var(--cc-sunken);border-radius:var(--cc-radius-pill);padding:3px 9px;border:1px solid transparent;white-space:nowrap}
+.nh-ok{border-color:var(--cc-success-fg);color:var(--cc-success-fg);background:var(--cc-success-bg)}  /* השם הקנוני */
+.nh-diff{border-color:var(--cc-warning-fg);color:var(--cc-warning-fg);background:transparent}  /* השם הקנוני */
+.cc-chip--attn{border-color:var(--cc-action);color:var(--cc-action);background:var(--cc-action-weak)}
+.cc-btn{display:inline-flex;align-items:center;gap:8px;min-height:var(--cc-row-h);padding:0 16px;font-size:15px;font-weight:600;
+  font-family:var(--cc-font);background:var(--cc-surface);color:var(--cc-text);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);cursor:pointer;white-space:nowrap}
+.cc-btn--danger{background:var(--cc-action);border-color:var(--cc-action);color:#fff}  /* הקנוני לכפתור הפעולה האדום (בחי הכפתור האדום המלא הוא cc-btn--danger; cc-btn--primary החי ניטרלי) */
+.cc-btn:disabled{color:var(--cc-text-disabled);border-color:var(--cc-border);cursor:default;background:var(--cc-surface)}
+.cc-btn--sm{min-height:34px;padding:0 11px;font-size:13px}  /* הווריאנט הקנוני הקטן */
+.cc-input{width:100%;min-height:var(--cc-row-h);padding:0 12px;font-size:15px;font-family:var(--cc-font);
+  border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-surface);color:var(--cc-text)}
+.cc-input:focus{outline:none;border-color:var(--cc-action);box-shadow:0 0 0 3px var(--cc-action-weak)}
+.cc-input--ltr{direction:ltr;text-align:left}
+.cc-input--ltr:placeholder-shown{direction:rtl;text-align:right}  /* placeholder עברי ("לא ידוע") מוצג כעברית; ערך מוקלד (מספר) חוזר ל-LTR */
+
+.cc-label{display:block;font-size:13px;font-weight:500;color:var(--cc-text-2);margin-bottom:6px}
+.cc-seg{display:inline-flex;border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);overflow:hidden;background:var(--cc-surface)}
+.cc-seg>button{border:0;background:var(--cc-surface);font:inherit;font-size:14px;font-weight:600;color:var(--cc-text-2);min-height:var(--cc-row-h);padding:0 18px;cursor:pointer;border-inline-start:1px solid var(--cc-border-strong)}
+.cc-seg--sm>button{min-height:36px;padding:0 12px;font-size:13px}  /* cc-seg--sm הקנוני */
+.cc-seg>button:first-child{border-inline-start:0}
+.cc-seg>button.is-active{background:var(--cc-action-weak);color:var(--cc-action)}
+.cc-seg--unset{border-color:var(--cc-action);box-shadow:0 0 0 2px var(--cc-action-weak)}
+.cc-msg{font-size:14px;border-radius:var(--cc-radius-sm);padding:10px 14px;line-height:1.55}  /* בחי גם display:flex+gap לאייקון; כאן הודעות פרוזה */
+.cc-msg--info{background:var(--cc-info-bg);color:var(--cc-info-fg);border-inline-start:4px solid var(--cc-info-bar)}
+.cc-msg--warning{background:var(--cc-warning-bg);color:var(--cc-warning-fg);border-inline-start:4px solid var(--cc-warning-bar)}
+.cc-pill{display:inline-flex;align-items:center;font:700 11px var(--cc-font);letter-spacing:.2px;padding:3px 9px;border-radius:var(--cc-radius-pill);direction:ltr}
+.cc-pill--bk{background:var(--status-impl-bg);color:var(--status-impl-fg)}
+.cc-pill--cit{background:#cffafe;color:#0e7490}
+.ph-q{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;
+  border:1px solid var(--cc-border-strong);background:var(--cc-surface);color:var(--cc-text-3);font-size:11px;cursor:help;flex:0 0 auto}
+.nhtag{display:inline-flex;align-items:center;height:15px;font-size:10px;font-weight:700;color:#1d4ed8;background:#eef3fb;
+  border:1px solid #1d4ed833;border-radius:4px;padding:0 6px;margin-inline-start:6px}  /* קנוני: תג ראי-CRM בלבד */
+.pr-src{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:4px}
+.pr-src--cat{background:#eef3fb;color:#1d4ed8;border:1px solid #1d4ed833}
+.pr-src--man{background:var(--cc-sunken);color:var(--cc-text-2)}
+.pr-src--ovr{background:#fef9c3;color:#a16207;border:1px solid #eab30855}
+
+/* ---- פיגום המוקאפ ---- */
+.mk-h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:14px;max-width:980px}
+.mk-controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px;font-size:13px}
+.mk-note-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+  background:var(--cc-surface);color:var(--cc-action);border:1.5px solid var(--cc-action);font-size:11px;font-weight:700;flex:0 0 auto;vertical-align:middle;cursor:default}
+.mk-notes{max-width:980px;margin-top:26px;font-size:13px;line-height:1.7}
+.mk-notes h2{font-size:15.5px;margin-bottom:8px}
+.mk-notes li{margin-bottom:8px;list-style:none}
+.mk-decide{max-width:980px;margin-top:22px;background:var(--cc-warning-bg);border:1px solid var(--cc-warning-fg);
+  border-radius:var(--cc-radius);padding:14px 16px;font-size:13px;line-height:1.7}
+.mk-decide h2{font-size:15px;color:var(--cc-warning-fg);margin-bottom:6px}
+
+
+.drawer{display:flex;flex-direction:column;max-height:82vh}
+.dr-body{overflow-y:auto;flex:1;padding:14px 16px;scroll-behavior:smooth}
+.dr-sticky{background:var(--cc-sunken);border-bottom:1px solid var(--cc-border)}
+.grip:hover{background:var(--cc-action-weak)}
+.fhint{font-size:12px;color:var(--cc-text-3);margin-top:4px;line-height:1.5}  /* = cc-help */
+.dr-foot{flex-wrap:wrap}
+.popov{position:absolute;bottom:104px;inset-inline-start:14px;z-index:5;box-shadow:var(--cc-shadow);border-radius:var(--cc-radius-sm);background:var(--cc-surface)}
+
+/* ---- המגירה (drawer) ---- */
+.drawer{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius);background:var(--cc-surface);
+  box-shadow:var(--cc-shadow);overflow:hidden;transition:max-width .25s;position:relative;margin-inline-start:22px}
+.drawer.w1040{max-width:1040px}.drawer.w780{max-width:780px}.drawer.w540{max-width:540px}
+.grip{position:absolute;inset-inline-start:0;top:0;bottom:0;width:10px;cursor:ew-resize;  /* = cc-drawer-resize החי */
+  background:linear-gradient(90deg,var(--cc-border) 2px,transparent 2px);opacity:.85}
+.grip::after{content:'⋮';position:absolute;top:50%;inset-inline-start:-2px;color:var(--cc-text-3);font-size:14px}
+
+.dr-head{padding:12px 16px 0;background:var(--cc-sunken);border-bottom:1px solid var(--cc-border)}
+.dr-head__r1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dr-title{font-size:15.5px;font-weight:700}
+.dr-close{margin-inline-start:auto;border:1px solid transparent;background:transparent;font-size:17px;color:var(--cc-text-3);cursor:pointer;width:var(--cc-row-h);height:var(--cc-row-h);display:inline-flex;align-items:center;justify-content:center;border-radius:var(--cc-radius-sm)}  /* = cc-icon-btn 44px */
+.dr-head__r2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--cc-text-2)}
+.dr-sum{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-bottom:10px}
+.sum-chip{display:inline-flex;flex-direction:column;gap:1px;background:var(--cc-surface);border:1px solid var(--cc-border);
+  border-radius:var(--cc-radius-sm);padding:5px 11px;min-width:104px}
+.sum-chip b{font-size:14px}
+.sum-chip span{font-size:10.5px;color:var(--cc-text-3)}
+.steps{display:flex;gap:2px;background:var(--cc-sunken);padding:0 10px;overflow-x:auto}
+.steps{padding:10px 12px;gap:7px;align-items:center;min-height:64px;overflow-y:visible}
+.step{border:1px solid var(--cc-border-strong);background:var(--cc-surface);font:inherit;font-size:14px;font-weight:600;color:var(--cc-text);
+  padding:0 18px;min-height:42px;cursor:pointer;border-radius:var(--cc-radius-sm);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.step:hover{border-color:var(--cc-action)}
+.step.active{background:var(--cc-action-weak);color:var(--cc-action);border-color:var(--cc-action);font-weight:700}
+.steps::after{content:'';flex:0 0 6px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--cc-border-strong);flex:0 0 auto}
+.sdot--done{background:var(--status-impl-dot)}
+.sdot--dirty{background:#eab308}
+.dr-body{padding:16px;min-height:340px}
+.dr-foot{display:flex;align-items:center;gap:8px;padding:11px 16px;border-top:1px solid var(--cc-border);background:var(--cc-sunken)}
+.dr-foot .spacer{flex:1}
+
+.zone{border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:12px;margin-bottom:12px;position:relative;background:var(--cc-surface)}
+.zone>h4{font-size:13px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 14px}
+.w780 .grid3{grid-template-columns:repeat(2,1fr)}
+.w540 .grid3,.w540 .grid2{grid-template-columns:1fr}
+.w540 .dr-sum{gap:6px}.w540 .sum-chip{min-width:88px}
+.fld input,.fld select{width:100%}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}  /* = cc-table הקנונית */
+.tbl th{font-size:11.5px;font-weight:600;color:var(--cc-text-3);letter-spacing:.2px;text-align:start;padding:10px 12px;border-bottom:1px solid var(--cc-border-strong);white-space:nowrap;background:var(--cc-surface)}
+.tbl td{padding:9px 12px;border-bottom:.5px solid var(--cc-divider);vertical-align:middle}
+.pr-tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--cc-surface)}  /* 1:1 global.css */
+.pr-tbl th{text-align:start;font-weight:600;font-size:12px;color:var(--cc-text-2);padding:8px 10px;border-bottom:2px solid var(--cc-border-strong);background:var(--cc-sunken)}
+.pr-tbl td{padding:7px 10px;border-bottom:1px solid var(--cc-divider);vertical-align:middle}
+.selbox{accent-color:var(--cc-action);width:16px;height:16px}
+.tbl input{width:100%;min-height:34px;padding:0 8px;font-size:13px}  /* קלט-טבלה קומפקטי 34px (רצפת הווריאנט המוקטן, כמו cc-btn--sm) - מוצהר ב-2ז */
+.unit-tag{display:inline-block;font-size:10px;color:var(--cc-info-fg);background:var(--cc-info-bg);border:1px solid var(--cc-info-bar);border-radius:4px;padding:0 5px;white-space:nowrap}
+.seg-tabs{display:flex;gap:4px;border-bottom:1px solid var(--cc-divider);margin-bottom:12px;flex-wrap:wrap}
+.seg-tab{border:0;background:transparent;font:inherit;font-size:13.5px;color:var(--cc-text-2);padding:9px 13px;cursor:pointer;border-bottom:2px solid transparent}  /* = הטאב הקווי הקנוני (.tabs/.tab) - דפוס טאב-תמיד */
+.seg-tab.active{color:var(--cc-action);border-bottom-color:var(--cc-action);font-weight:700}
+.calcw{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);background:var(--cc-sunken);padding:10px 12px;font-size:12.5px}
+.calcw .lvl{font-weight:700;font-size:12px;color:var(--cc-text-2);margin:6px 0 3px}
+.calcw .st{display:flex;justify-content:space-between;gap:10px;padding:2.5px 0;border-bottom:1px dashed var(--cc-divider)}
+.calcw .st span:last-child{direction:ltr;font-variant-numeric:tabular-nums}
+.tot{display:inline-flex;flex-direction:column;gap:2px;background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:8px 13px;min-width:130px}  /* = totalbox של הכרטיס החי */
+.tot .tl{font-size:11.5px;color:var(--cc-text-3)}
+.tot b{font-size:17px;font-weight:700}
+.fab{position:absolute;bottom:64px;inset-inline-start:14px;display:inline-flex;align-items:center;gap:7px;
+  background:var(--cc-surface);border:1.5px solid var(--cc-action);color:var(--cc-action);font-weight:700;font-size:12.5px;
+  border-radius:var(--cc-radius-pill);padding:7px 14px;box-shadow:var(--cc-shadow);cursor:pointer}
+.approval{border:1px solid var(--cc-border-strong);border-radius:var(--cc-radius-sm);max-width:360px;background:var(--cc-surface)}
+.approval>h5{font-size:12.5px;font-weight:700;padding:8px 11px;border-bottom:1px solid var(--cc-border);background:var(--cc-sunken);display:flex;gap:8px;align-items:center}
+.approval .rows{padding:7px 11px;font-size:12.5px}
+.approval .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed var(--cc-divider)}
+.approval .row span:first-child{color:var(--cc-text-3)}
+.approval .foot{display:flex;gap:8px;padding:9px 11px;border-top:1px solid var(--cc-border)}
+.hide{display:none !important}
+bdi{unicode-bidi:isolate}
+</style>
+</head>
+<body>
+
+<div class="mk-h1">S35-CD - כרטיס ה-CIT - טיוטה 1</div>
+<div class="mk-sub">
+  יורש את שפת כרטיס ההזמנה (טאבים ככפתורים - פס סיכום קבוע - גרירת גבול - "שום אלמנט לא נעלם") - <b>רק האלמנטים שונים</b>.
+  הבסיס: סקירת B-481 מ-S35-QA (מה שייך לקבוצה/הזמנה ואינו שייך לתוכנית) + הכלל הנעול <b>CIT = יום בלבד</b>.
+  CIT הוא <b>תוכנית</b>, לא עסקה: אין לקוח, אין קבוצה, אין תאריכים, אין תשלומים בפועל - יש ימים, תקציב בסיס שנתי, הרכבי ייחוס ויצירת IT.
+</div>
+
+<div class="mk-notes" style="margin-top:0;margin-bottom:18px">
+  <h2>"לא לשכוח כלום" - גורל כל אלמנט מכרטיס ההזמנה</h2>
+  <table class="tbl" style="max-width:980px">
+    <tr><th>האלמנט בכרטיס ההזמנה</th><th>גורלו ב-CIT</th><th>הנימוק</th></tr>
+    <tr><td>"עסקה" - שם קבוצה - שם לקוח - תאריך הזמנה</td><td><b>הוסרו</b></td><td>סקירת B-481: CIT הוא תוכנית/תבנית - אין עסקה, קבוצה או לקוח</td></tr>
+    <tr><td>תאריכי תחילה/סיום</td><td><b>הוסרו</b> - "ימי התוכנית" בלבד</td><td>הכלל הנעול: CIT = יום בלבד</td></tr>
+    <tr><td>שדה "נוסעים" בודד</td><td><b>הוחלף</b> ב"הרכבי ייחוס (משלמים)"</td><td>2 - 4 - 6 - 8 - רשת מחירים, לא קבוצה אחת</td></tr>
+    <tr><td>שולם/יתרה לשותף - "עלויות - סה"כ הטיול"</td><td><b>הוסרו</b></td><td>אין תשלומים בפועל ואין סה"כ בפועל בתבנית</td></tr>
+    <tr><td>הקשר היחסים B2B/B2C - לוח תשלומים - שכבת B2C - "המרה להזמנה"</td><td><b>אינם</b> (כבר נכון בקוד)</td><td>אומת חיובית בסקירה</td></tr>
+    <tr><td>"תמחור ההזמנה"</td><td><b>שונה שם</b>: "תמחור התוכנית"</td><td>סקירת B-481</td></tr>
+    <tr><td>מקטעים ותקציב - שערים - מודלי רווח - קטלוג - חלון חישוב - עוזר ה-AI</td><td><b>נשארים</b> - זהים לכרטיס ההזמנה</td><td>ליבת התמחור משותפת</td></tr>
+    <tr><td>תיקייה - מסמכים - מיילים - יומן שליחות - קישור לדף הטיול - עדכון שמות</td><td><b>נקודת הכרעה 1 שלך</b> - פר רכיב</td><td>נבנו לזרימת הזמנה; הסקירה דורשת הכרעת נחיצות</td></tr>
+  </table>
+</div>
+
+<div class="drawer w1040" id="drawer">
+  <div class="grip" title="גרירת הגבול - כמו בכרטיס ההזמנה"></div>
+  <div class="dr-head">
+    <div class="dr-head__r1">
+      <span class="cc-pill cc-pill--cit">CIT-204</span> <span class="dr-title"><bdi>Jordan Classic</bdi></span>
+      <span class="cc-chip">תוכנית CIT 2026</span>
+      <span class="cc-chip nh-ok">פעילה</span>
+      <span class="mk-note-dot">1</span>
+      <button class="dr-close" aria-label="סגירה">✕</button>
+    </div>
+    <div class="dr-sum">
+      <span class="sum-chip"><b>8 ימים</b><span>ימי התוכנית</span></span>
+      <span class="sum-chip"><b><bdi>USD 1,240</bdi></b><span>מחיר לנוסע (הרכב 4)</span></span>
+      <span class="sum-chip"><b>20%</b><span>שיעור רווח <bdi>(%)</bdi></span></span>
+      <span class="sum-chip"><b>עודכן - 11:40</b><span>חישוב הרשת</span></span>
+      <span class="mk-note-dot">2</span>
+    </div>
+  </div>
+  <div class="steps">
+    <button class="step active" onclick="setStep(0,this)" title="שם - שנה - שותף - ימי התוכנית"><span class="sdot sdot--done" title="הוזן"></span>פרטי התוכנית</button>
+    <button class="step" onclick="setStep(1,this)" title="שערים - מודל רווח - עמלות"><span class="sdot sdot--done" title="הוזן"></span>תמחור התוכנית</button>
+    <button class="step" onclick="setStep(2,this)" title="ימים ומקטעים - שורות תקציב"><span class="sdot sdot--done" title="הוזן"></span>מקטעים ותקציב</button>
+    <button class="step" onclick="setStep(3,this)" title="רשת הבסיס לפי הרכבי ייחוס"><span class="sdot sdot--done" title="הוזן"></span>מחיר ורשת הבסיס</button>
+    <button class="step" onclick="setStep(4,this)" title="יצירת IT - גלגול שנה"><span class="sdot" title="טרם הוזן"></span>פעולות התוכנית</button>
+    <span class="fhint" style="align-self:center;white-space:nowrap">ירוקה - הוזן; כתומה - טרם נשמר</span>
+  </div>
+  <div class="dr-body">
+    <div class="tabpane" id="tp0">
+    <div class="zone">
+      <h4>פרטי התוכנית</h4>
+      <div class="grid3">
+        <div class="fld"><label class="cc-label">שם התוכנית</label><input class="cc-input cc-input--ltr" value="Jordan Classic"></div>
+        <div class="fld"><label class="cc-label">שנה</label><input class="cc-input cc-input--ltr" value="2026"></div>
+        <div class="fld"><label class="cc-label">שותף</label><input class="cc-input cc-input--ltr" value="Arminas Travel"></div>
+        <div class="fld"><label class="cc-label">ימי התוכנית</label><input class="cc-input cc-input--ltr" value="8" style="max-width:80px"> <span class="cc-chip">יום בלבד - אין תאריכים ב-CIT</span></div>
+      </div>
+    </div>
+    </div>
+    <div class="tabpane hide" id="tp1">
+      <div class="zone"><h4>תמחור התוכנית</h4>
+        <div class="cc-msg cc-msg--info">זהה במבנהו לטאב "תמחור ברמת ההזמנה" בכרטיס ההזמנה: שערים נעולים, מודל הרווח (ארבעת המודלים), עמלות. בלי הקשר יחסים ובלי לוח תשלומים - אינם קיימים בתוכנית.</div>
+      </div>
+    </div>
+    <div class="tabpane hide" id="tp2">
+      <div class="zone"><h4>מקטעים ותקציב</h4>
+        <div class="cc-msg cc-msg--info">זהה לכרטיס ההזמנה, בהבדל אחד: עמודת <b>יום</b> בלבד ("ימים 1-3") - אין תאריכים ב-CIT. אותן שורות תקציב, קטלוג, חיץ מטבע ותגי יחידה.</div>
+      </div>
+    </div>
+    <div class="tabpane hide" id="tp3">
+    <div class="zone">
+      <h4>הרכבי ייחוס (משלמים) <span class="mk-note-dot">3</span></h4>
+      <table class="tbl" style="max-width:560px">
+        <tr><th>משלמים</th><th>מחיר לנוסע</th><th>סה"כ לקבוצה</th></tr>
+        <tr><td>2</td><td><bdi>USD 1,690</bdi></td><td><bdi>USD 3,380</bdi></td></tr>
+        <tr><td>4</td><td><bdi>USD 1,240</bdi></td><td><bdi>USD 4,960</bdi></td></tr>
+        <tr><td>6</td><td><bdi>USD 1,105</bdi></td><td><bdi>USD 6,630</bdi></td></tr>
+        <tr><td>8</td><td><bdi>USD 1,020</bdi></td><td><bdi>USD 8,160</bdi></td></tr>
+      </table>
+      <div class="fhint">תקציב הבסיס השנתי מחושב לכל הרכב ייחוס - זו רשת הבסיס של התוכנית, לא מחיר של קבוצה מסוימת.</div>
+    </div>
+    </div>
+    <div class="tabpane hide" id="tp4">
+    <div class="zone">
+      <h4>פעולות התוכנית <span class="mk-note-dot">4</span></h4>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="cc-btn cc-btn--danger">יצירת IT מהתוכנית</button>
+        <button class="cc-btn">גלגול לשנה הבאה</button>
+      </div>
+      <div class="cc-msg cc-msg--info" style="margin-top:9px">CIT לעולם אינו הופך להזמנה - IT נולד ממנו כעותק. יום 1 של ה-IT מקבל תאריך יציאה, וכל התאריכים נגזרים.</div>
+    </div>
+  </div>
+    </div>
+  <div class="dr-foot">
+    <button class="cc-btn cc-btn--danger">שמירה</button>
+    <button class="cc-btn">ביטול שינויים</button>
+    <span class="spacer"></span>
+    <button class="cc-btn" title="ארכוב - מחיקה">⋮ פעולות נוספות</button>
+  </div>
+</div>
+
+<div class="mk-notes">
+  <h2>הערות העיצוב</h2>
+  <li><span class="mk-note-dot">1</span> <b>ראש של תוכנית</b>: מזהה CIT + שם + שנה + סטטוס. אין לקוח, אין קבוצה, אין הקשר יחסים.</li>
+  <li><span class="mk-note-dot">2</span> <b>פס הסיכום</b>: ימי התוכנית, מחיר ההרכב המייצג (4), הרווח ומצב חישוב הרשת - מתעדכן אוטומטית כמו בכרטיס ההזמנה.</li>
+  <li><span class="mk-note-dot">3</span> <b>רשת הבסיס</b> מחליפה את "מחיר לנוסע" הבודד: ארבעה הרכבי ייחוס, כל שורה מחושבת במנוע המלא. הטאבים "תמחור התוכנית" ו"מקטעים ותקציב" זהים לכרטיס ההזמנה (יום במקום תאריך) ולכן אינם מצוירים כאן שוב.</li>
+  <li><span class="mk-note-dot">4</span> <b>פעולות התוכנית</b> - האזור הייחודי ל-CIT: יצירת IT וגלגול שנה, עם הכלל הקיים.</li>
+</div>
+
+<div class="mk-decide">
+  <h2>נקודות להכרעתך</h2>
+  1. <b>נחיצות פר רכיב</b> (מהסקירה): תיקייה ב-Drive לתוכנית? מסמכים מצורפים? שליחת מייל + יומן שליחות? קישור לדף הטיול? עדכון שמות? - ההמלצה: תיקייה ומסמכים כן (התוכנית נושאת חומרים), מיילים ויומן לא (אין נמען טבעי לתבנית); קישור לדף הטיול כן (התוכנית היא מקור הדף). כל הכרעה שלך גוברת.<br>
+  2. <b>מונחי ה-CIT</b> (סעיף 10 של מנת הנוסח): "תוכנית CIT" - "פרטי התוכנית" - "תמחור התוכנית" - "ימי התוכנית" - "הרכבי ייחוס (משלמים)" - "יצירת IT מהתוכנית" - מאשר?<br>
+  3. <b>הרכבי הייחוס</b> - 2/4/6/8 קבועים, או ניתנים לעריכה פר תוכנית?
+</div>
+<script>
+function setStep(i,btn){for(var k=0;k<5;k++){document.getElementById('tp'+k).classList.add('hide')}
+  document.getElementById('tp'+i).classList.remove('hide');
+  document.querySelectorAll('.steps .step').forEach(function(s){s.classList.remove('active')});
+  if(btn)btn.classList.add('active')}
+</script>
+</body>
+</html>
