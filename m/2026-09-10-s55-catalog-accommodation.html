@@ -3000,8 +3000,9 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
 .s55-dirtychip { }
 .s55-sub { margin-top:2px; white-space:nowrap; }
 .s55-rates .cc-chip { white-space:nowrap; }
-.s55-rates td:nth-child(3), .s55-rates td:nth-child(4), .s55-rates td:nth-child(6), .s55-rates td:nth-child(7), .s55-rates td:nth-child(10) { white-space:nowrap; }
-.s55-rates td:nth-child(2) { min-width:150px; }
+.s55-rates td:nth-child(6), .s55-rates td:nth-child(10) { white-space:nowrap; }
+.s55-rates th, .s55-rates td { padding-inline:8px; }
+.s55-rates td:nth-child(1) { min-width:9rem; }
 .s55-list .cc-filterbar > select.cc-input { max-width:240px; }
 .s55-list .cc-empty, .s55-rec .cc-empty { margin-top:var(--spacing-md); }
 @media(max-width:760px){ .s55-two,.s55-three{ grid-template-columns:minmax(0,1fr);} .s55-row{ grid-template-columns:minmax(0,1fr) minmax(0,1fr);} .s55-rechead{ position:static; } }
@@ -3018,10 +3019,11 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
 .s55-ovhead { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-sm); margin-bottom:var(--spacing-sm); }
 .s55-ovhead h3 { margin:0; font-size:1rem; }
 .s55-ovlist { margin:0; }
-.s55-ovrow { display:grid; grid-template-columns:minmax(0,10rem) minmax(0,1fr); gap:var(--spacing-sm); padding:6px 0; border-top:1px solid var(--cc-border); }
+.s55-ovrow { display:grid; grid-template-columns:minmax(0,8.5rem) minmax(0,1fr); align-items:baseline; gap:var(--spacing-sm); padding:6px 0; border-top:1px solid var(--cc-border); }
 .s55-ovrow:first-child { border-top:0; }
-.s55-ovrow dt { color:var(--cc-text-2); margin:0; }
-.s55-ovrow dd { margin:0; }
+.s55-ovrow dt { margin:0; font-size:.8125rem; font-weight:400; color:var(--cc-text-3); line-height:1.5; }
+.s55-ovrow dd { margin:0; font-weight:600; color:var(--cc-text); }
+.s55-ovrow dd .cc-chip { font-weight:400; }
 .s55-qttl { margin:0 0 var(--spacing-sm); font-size:1rem; }
 .s55-qgrid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--spacing-md); align-items:start; }
 .s55-qlist { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--spacing-sm); }
@@ -3071,9 +3073,27 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
 }
 .s55-crumbname { display:inline-block; max-width:22ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:bottom; }
 @media(max-width:760px){ .s55-rec { padding-block-end:72px; } .s55-crumbname { max-width:14ch; } }
+
+/* רשימת התעריפים נכנסת בלי גלילה אופקית ברוחבי מסך רגילים */
+.s55-rates td:nth-child(1), .s55-rates th:nth-child(1) { max-width:11rem; }
+.s55-rates td:nth-child(6), .s55-rates th:nth-child(6) { max-width:7.5rem; white-space:normal; }
+.s55-rates td:nth-child(1) .cc-chip, .s55-rates td:nth-child(6) { white-space:normal; }
 </style>
 </head>
 <body>
+<style id="akp-style">
+#akp{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:8px 16px;border-block-end:1px solid #dcdcd8;background:#fff;direction:rtl;font:13.5px/1.4 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#1a1a1a}
+#akp a{color:#a8112a;text-decoration:none}
+#akp a:hover{text-decoration:underline}
+#akp .akp-sep{color:#9a9a9a}
+#akp b{font-weight:600}
+#akp .akp-meta{color:#6b6b6b}
+#akp select{margin-inline-start:auto;font:inherit;padding:5px 8px;border:1px solid #dcdcd8;border-radius:8px;background:#fff;max-width:min(46vw,300px)}
+@media print{#akp{display:none}}
+</style>
+<nav id="akp" aria-label="נתיב"><a href="../index.html">לוח המוקאפים</a><span class="akp-sep" aria-hidden="true">›</span><b>קטלוג השירותים - לינה</b><span class="akp-meta">גרסה 3.1 - לאישור</span><select id="akp-go" aria-label="מעבר למסך אחר"><optgroup label="ספריית העיצוב"><option value="00-DESIGN-LIBRARY.html">ספריית העיצוב - גרסה 4</option></optgroup><optgroup label="פעיל"><option value="2026-09-10-s55-catalog-accommodation.html" selected>קטלוג השירותים - לינה - גרסה 3.1</option><option value="2026-09-08-s53-settings-integrations-v1.3.html">הגדרות וחיבורים - v1.3 - גרסה 1.3.6</option><option value="2026-09-08-s53-settings-integrations.html">הגדרות וחיבורים - v1.2 - גרסה 1.2</option></optgroup><optgroup label="ארכיון"><option value="2026-07-29-s35cd-order-card-redesign.html">רדיזיין כרטיס ההזמנה - גרסה 4</option><option value="2026-07-29-s35cd-cit-card.html">כרטיס ה-CIT כתוכנית - גרסה 1</option><option value="2026-07-29-s35cd-partner-card.html">כרטיס השותף - גרסה 1</option><option value="2026-07-29-s35cd-settings-area.html">אזור ההגדרות - טיוטה ראשונה - גרסה 1</option><option value="2026-07-29-s35cd-folders-root-bulk.html">בולק בשורש הסייר</option><option value="2026-07-27-s32f-pricing-flow-e2e.html">תהליך התמחור המלא</option><option value="2026-07-27-s32f-calc-window-dialog.html">חלון החישוב והדיאלוג</option><option value="2026-07-27-s32f-card-anatomy.html">אנטומיית הכרטיס</option><option value="2026-07-27-s35-dialog-and-dictionary.html">הדיאלוג ומסך המילון</option><option value="2026-07-24-s32-five-elements.html">חמישה אלמנטים</option><option value="2026-08-21-s38-libfill-shells.html">מעטפת ספריית העיצוב</option><option value="2026-08-29-s8-split-rail.html">סרגל הצד</option><option value="2026-08-19-s37-assist.html">עוזר ה-AI על הדשבורד - גרסה 5</option><option value="2026-08-13-s41-tagon-backfill.html">מסך המילוי לאחור בתיוג</option><option value="2026-08-12-s41-search.html">חיפוש אחד על הכל</option><option value="2026-08-12-s41-screen-filerow.html">שורת התוצאה בחיפוש</option><option value="2026-08-11-s41-explorer.html">סייר התיקיות</option><option value="2026-07-31-s39-widget-mockup.html">לוח ניהול הפרויקט</option></optgroup></select></nav>
+<script id="akp-script">document.getElementById("akp-go").addEventListener("change",function(e){if(e.target.value)location.href=e.target.value;});</script>
+
 <!-- S53:SNAPSHOT SPRITE -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="i-boxes" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
@@ -3201,10 +3221,13 @@ const copy={
  'err.range_dates':'תאריך הסיום מוקדם מתאריך ההתחלה.','err.range_blackout':'בתאריכים החסומים יש טווח הפוך.','err.range_age':'בכללי הילדים יש גיל עליון נמוך מהתחתון.',
  'acc.mark_ready_confirm':'הסימון נשמר מיד ומעיד שאדם בדק את הנתונים שהתקבלו.','acc.marked':'הרשומה סומנה כמוכנה ונשמרה בהדגמה.',
  'f.blackout_one':'תאריך חסום אחד','f.fees_one':'חיוב חובה אחד','f.child_rules_one':'כלל ילדים אחד','f.addons_one':'תוספת אחת בתשלום',
- 'sec.identity':'זהות התעריף','sec.identity.sub':'סוג, נכס, יעד, חדר ושם הפריט',
- 'sec.stay':'שהות ותוקף','sec.stay.sub':'תפוסה, הסעדה, עונה ותאריכי תוקף',
+ 'sec.identity':'זהות התעריף','sec.identity.sub':'סוג התעריף, נכס, יעד ושם החדר',
+  'f.occupancy_help':'בסיס התפוסה שהתעריף מתומחר לפיו. תעריף ליחיד נרשם כאן - בחירת יחיד - או כתוספת יחיד על תעריף בחדר משותף, במקטע התוספות.',
+ 'f.category_help':'קטגוריה פנימית לצורך השוואה. שם החדר הרשמי של הספק נשמר כפי שהוא.',
+ 'acc.col_room_occ':'חדר ותפוסה','sec.room':'חדר ותפוסה','sec.room.sub':'קטגוריית חדר, תפוסה, מספר אורחים והסעדה',
+ 'sec.valid':'תוקף ועונה','sec.valid.sub':'עונה, תאריכי תוקף, מינימום לילות ותאריכים חסומים',
  'sec.pricing':'תמחיר','sec.pricing.sub':'בסיס, סכום, סוג עלות ומע\u05b4מ',
- 'rec.edit_identity':'עריכת זהות התעריף','rec.edit_stay':'עריכת שהות ותוקף','rec.edit_pricing':'עריכת תמחיר',
+ 'rec.edit_identity':'עריכת זהות התעריף','rec.edit_room':'עריכת חדר ותפוסה','rec.edit_valid':'עריכת תוקף ועונה','rec.edit_stay':'עריכת שהות ותוקף','rec.edit_pricing':'עריכת תמחיר',
  'rec.edit_terms':'עריכת תנאים','rec.edit_extras':'עריכת תוספות','rec.edit_source':'עריכת מקור מסחרי',
  'f.readiness_short':'דרישות למופע','acc.except':'למעט',
  'rec.blockers':'מה חסר כדי לסמן כמוכן','rec.blockers_none':'לא חסר דבר כדי לסמן כמוכן.',
@@ -3347,7 +3370,7 @@ const SUPB=['per_pax','per_room','per_room_night','per_pax_night','per_stay'];
 const FEEKIND=['city_tax','resort_fee','service_charge','other'];
 const CTREAT=['free','paid','quote'];
 const RTABS=['overview','terms','review'];
-const SECGROUPS=[['identity','stay','pricing','terms','extras'],['commercial','status'],['basics','place','contact','notes','rates']];
+const SECGROUPS=[['identity','room','pricing','valid','terms','extras'],['commercial','status'],['basics','place','contact','notes','rates']];
 const CURR=['USD','EUR','GEL','UZS','ILS'];
 const demo={
  destinations:[{id:'d-uz',name:'Uzbekistan'},{id:'d-ge',name:'Georgia'},{id:'d-am',name:'Armenia'}],
@@ -3443,9 +3466,11 @@ const inReview=r=>r.status==='active'&&!isReady(r)&&r.moderation!=='rejected';
 function rateRow(r){
  const p=propOf(r.property);
  const where=isBudget(r)?`${r.destination?bdi(destName(r.destination)):unknownChip()} ${chip(t('sub.staff_lodging_budget'))}`:p?`${bdi(p.name)}${p.status==='archived'?' '+chip(t('acc.prop_archived'),'cc-chip--muted'):p.status==='suspended'?' '+chip(t('acc.prop_suspended'),'cc-chip--muted'):''}${r.subtype==='staff_room_rate'?' '+chip(t('sub.staff_room_rate')):''}`:`${chip(t('acc.no_property'),'cc-chip--warn-soft')}${r.source_name?`<div class="cc-help s55-sub">${esc(t('rec.source_name'))}: ${bdi(r.source_name)}</div>`:r.name_manual?`<div class="cc-help s55-sub">${bdi(r.name)}</div>`:''}`;
+ const roomLine=isBudget(r)?chip(t('acc.per_person'),'cc-chip--muted'):(r.room?bdi(r.room):unknownChip());
+ const roomSub=isBudget(r)?'':[r.rc?lab('rc',r.rc):'',r.occ?lab('occ',r.occ):t('unset'),r.board?lab('board',r.board):t('acc.unknown')].filter(Boolean).map(esc).join(' - ');
  const season=r.season||r.from||r.until?`${esc(r.season)}${r.from||r.until?`<div class="cc-help s55-sub">${dateRange(r.from,r.until)}</div>`:''}`:unknownChip();
  const rate=amountText(r);
- return `<tr class="is-click" data-open="rate:${r.id}"><td class="primary">${where}</td><td>${isBudget(r)?chip(t('acc.no_room'),'cc-chip--muted'):r.room?bdi(r.room)+(r.rc?`<div class="cc-help s55-sub">${lbl('rc',r.rc)}</div>`:''):unknownChip()}</td><td>${isBudget(r)?chip(t('acc.per_person'),'cc-chip--muted'):lbl('occ',r.occ)}</td><td>${lbl('board',r.board)}</td><td>${season}</td><td>${rate}</td><td>${basisLabel(r.basis)}${r.basis?`<div class="cc-help s55-sub">${lbl('ct',r.cost_type)}</div>`:''}</td><td>${r.supplier?bdi(supName(r.supplier)):chip(t('acc.shared'),'cc-chip--muted')}</td><td>${statusChip(r)}</td><td class="cell-actions">${iconAction(t('acc.edit'),'open','#i-pencil',`data-open="rate:${r.id}"`)}${iconAction(t('acc.duplicate'),'dup-rate','#i-copy',`data-id="${r.id}"`)}${r.status==='archived'?iconAction(t('acc.restore'),'restore-rate','#i-refresh-cw',`data-id="${r.id}"`):iconAction(t('acc.archive'),'archive-rate','#i-archive',`data-id="${r.id}"`)}</td></tr>`;
+ return `<tr class="is-click" data-open="rate:${r.id}"><td class="primary">${where}</td><td>${roomLine}${roomSub?`<div class="cc-help s55-sub">${roomSub}</div>`:''}</td><td>${season}</td><td>${rate}</td><td>${basisLabel(r.basis)}${r.basis?`<div class="cc-help s55-sub">${lbl('ct',r.cost_type)}</div>`:''}</td><td>${r.supplier?bdi(supName(r.supplier)):chip(t('acc.shared'),'cc-chip--muted')}</td><td>${statusChip(r)}</td><td class="cell-actions">${iconAction(t('acc.duplicate'),'dup-rate','#i-copy',`data-id="${r.id}"`)}${r.status==='archived'?iconAction(t('acc.restore'),'restore-rate','#i-refresh-cw',`data-id="${r.id}"`):iconAction(t('acc.archive'),'archive-rate','#i-archive',`data-id="${r.id}"`)}</td></tr>`;
 }
 function ratesView(){
  const q=model.q.trim().toLowerCase();
@@ -3453,7 +3478,7 @@ function ratesView(){
  const reviewCount=all.filter(inReview).length;
  const list=all.filter(r=>(!model.review||inReview(r))&&(!model.filterProp||r.property===model.filterProp)&&(!q||[propName(r.property),destName(r.destination),r.room,r.season,supName(r.supplier),displayName(r),r.legacy&&r.legacy.name].some(v=>String(v||'').toLowerCase().includes(q))));
  const bar=`<div class="cc-filterbar">${search(t('acc.search_rates'))}${select('filterProp',model.filterProp,[['',t('acc.filter_property')+': '+t('acc.filter_all')],...demo.properties.filter(p=>p.status!=='archived').map(p=>[p.id,p.name])],'data-filter-prop')}<div class="cc-seg cc-seg--sm" role="group"><button type="button" class="${!model.review?'is-active':''}" data-flt-review="0">${esc(t('acc.filter_all'))}</button><button type="button" class="${model.review?'is-active':''}" data-flt-review="1">${esc(t('acc.filter_review'))} <span class="tab-count">${reviewCount}</span></button></div><div class="cc-seg cc-seg--sm" role="group"><button type="button" class="${!model.showArchived?'is-active':''}" data-flt-arch="0">${esc(t('acc.filter_active'))}</button><button type="button" class="${model.showArchived?'is-active':''}" data-flt-arch="1">${esc(t('acc.filter_archived'))}</button></div><span class="cc-spacer"></span><button type="button" class="cc-btn cc-btn-bare" disabled title="${esc(t('acc.import_soon'))}">${icon('#i-upload','cc-icon--sm')}${esc(t('acc.import'))}</button>${button(t('acc.new_rate'),'new-rate')}</div>`;
- return bar+note(model.review?t('acc.review_help'):t('acc.legacy_note'))+(list.length?table([t('acc.col_property'),t('acc.col_room'),t('acc.col_occupancy'),t('acc.col_board'),t('acc.col_season'),t('acc.col_rate'),t('acc.col_basis'),t('acc.col_supplier'),t('acc.col_status'),t('acc.col_actions')],list.map(rateRow),'s55-rates'):`<div class="cc-empty s53-empty">${esc(t('acc.empty_rates'))}</div>`);
+ return bar+note(model.review?t('acc.review_help'):t('acc.legacy_note'))+(list.length?table([t('acc.col_property'),t('acc.col_room_occ'),t('acc.col_season'),t('acc.col_rate'),t('acc.col_basis'),t('acc.col_supplier'),t('acc.col_status'),t('acc.col_actions')],list.map(rateRow),'s55-rates'):`<div class="cc-empty s53-empty">${esc(t('acc.empty_rates'))}</div>`);
 }
 function propsView(){
  const q=model.q.trim().toLowerCase();
@@ -3480,14 +3505,18 @@ function recIdentity(r){
   +(budget?field(t('f.destination'),pick('destination',r.destination,destName,demo.destinations.map(d=>[d.id,d.name]),chip(t('unset'),'cc-chip--warn-soft'),t('f.destination_pick'),'clear-dest',false),t('f.destination_help'))
    :field(t('f.property'),pick('property',r.property,id=>propName(id),demo.properties.filter(p=>p.status!=='archived').map(p=>[p.id,p.name+(p.status==='suspended'?' - '+t('acc.prop_suspended'):'')]),chip(t('acc.no_property'),'cc-chip--warn-soft'),t('f.property_pick'),'clear-prop',false,r.property&&propOf(r.property).status!=='active'?chip(t(propOf(r.property).status==='archived'?'acc.prop_archived':'acc.prop_suspended'),'cc-chip--muted'):''),t('f.property_help')))
   +(budget?'':field(t('f.destination'),pick('destination',r.destination,destName,demo.destinations.map(d=>[d.id,d.name]),unknownChip(),t('f.destination_pick'),'clear-dest',destDerived(r)),destDerived(r)?t('f.destination_help_derived'):t('f.destination_help_plain')))
-  +(budget?'':field(t('f.room'),input('room',r.room,{dir:'auto'}),t('f.room_help'))+field(t('f.category'),select('rc',r.rc||'',[['',t('unset')],...(r.rc&&!RC.includes(r.rc)?[r.rc]:[]).concat(RC).map(v=>[v,lab('rc',v)])])))
+  +(budget?'':field(t('f.room'),input('room',r.room,{dir:'auto'}),t('f.room_help')))
   +field(t('f.name'),`<div class="s55-derived">${input('name',r.name_manual?(r.name||''):'',{dir:'rtl',placeholder:rateName(r)||t('f.name')})}${r.name_manual||!rateName(r).trim()?'':chip(t('derived'),'cc-chip--bare')}</div>`,r.name_manual?t('f.name_help_manual'):t('f.name_help'),true);
 }
-function recStay(r){
- const budget=isBudget(r);
- return (budget?'':field(t('f.occupancy'),seg('occ',r.occ,OCC,v=>lab('occ',v)),'',true)+`<div class="s55-three">${field(t('f.max_occ'),input('max_occ',r.max_occ==null?'':r.max_occ,{ltr:true,inputmode:'numeric'}))}${field(t('f.adults'),input('adults',r.adults==null?'':r.adults,{ltr:true,inputmode:'numeric'}))}${field(t('f.children'),input('children',r.children==null?'':r.children,{ltr:true,inputmode:'numeric'}))}</div>`)
-  +field(t('f.board'),seg('board',r.board,BOARD,v=>lab('board',v)),'',true)
-  +field(t('f.season'),input('season',r.season,{placeholder:t('f.season_ph')}))
+function recRoom(r){
+ if(isBudget(r))return field(t('f.board'),seg('board',r.board,BOARD,v=>lab('board',v)),'',true);
+ return field(t('f.category'),select('rc',r.rc||'',[['',t('unset')],...(r.rc&&!RC.includes(r.rc)?[r.rc]:[]).concat(RC).map(v=>[v,lab('rc',v)])]),t('f.category_help'))
+  +field(t('f.occupancy'),seg('occ',r.occ,OCC,v=>lab('occ',v)),t('f.occupancy_help'),true)
+  +`<div class="s55-three">${field(t('f.max_occ'),input('max_occ',r.max_occ==null?'':r.max_occ,{ltr:true,inputmode:'numeric'}))}${field(t('f.adults'),input('adults',r.adults==null?'':r.adults,{ltr:true,inputmode:'numeric'}))}${field(t('f.children'),input('children',r.children==null?'':r.children,{ltr:true,inputmode:'numeric'}))}</div>`
+  +field(t('f.board'),seg('board',r.board,BOARD,v=>lab('board',v)),'',true);
+}
+function recValid(r){
+ return field(t('f.season'),input('season',r.season,{placeholder:t('f.season_ph')}))
   +`<div class="s55-two">${field(t('f.valid_from'),input('from',r.from,{type:'date',ltr:true}))}${field(t('f.valid_until'),input('until',r.until,{type:'date',ltr:true}))}</div>`
   +`<div class="s55-two">${field(t('f.min_stay'),input('min',r.min==null?'':r.min,{ltr:true,inputmode:'numeric'}))}${field(t('f.max_stay'),input('max',r.max==null?'':r.max,{ltr:true,inputmode:'numeric'}),t('f.max_stay_help'))}</div>`
   +field(t('f.weekday'),seg('wk',r.wk,['all','weekday','weekend'],v=>lab('wk',v)),'',true)
@@ -3621,16 +3650,16 @@ function overviewTab(r){
  const dest=r.destination?bdi(destName(r.destination))+(destDerived(r)?' '+chip(t('derived_prop'),'cc-chip--bare'):''):unknownChip();
  const identity=ovBlock(t('rec.summary'),'terms:identity',
   ovRow(t('f.destination'),dest)
-  +(budget?'':ovRow(t('f.room'),r.room?bdi(r.room)+(r.rc?' '+chip(lab('rc',r.rc),'cc-chip--bare'):''):unknownChip())+ovRow(t('f.occupancy'),lbl('occ',r.occ)))
+  +(budget?'':ovRow(t('f.room'),r.room?bdi(r.room)+(r.rc?' '+chip(lab('rc',r.rc),'cc-chip--bare'):''):unknownChip())+ovRow(t('f.occupancy'),r.occ?esc(lab('occ',r.occ))+' '+textAction(t('rec.edit_room'),'goto','data-goto="terms:room"'):chip(t('unset'),'cc-chip--warn-soft')+' '+textAction(t('rec.edit_room'),'goto','data-goto="terms:room"')))
   +ovRow(t('f.board'),lbl('board',r.board))
   +ovRow(t('f.season'),r.season?bdi(r.season):unknownChip())
   +ovRow(t('f.subtype'),r.subtype?esc(lab('sub',r.subtype)):chip(t('unset'),'cc-chip--warn-soft')),t('rec.edit_identity'));
- const dates=ovBlock(t('rec.dates'),'terms:stay',
+ const dates=ovBlock(t('rec.dates'),'terms:valid',
   ovRow(t('f.validity'),r.from||r.until?dateRange(r.from,r.until):unknownChip())
   +ovRow(t('f.blackout'),r.blackout.length?r.blackout.map(b=>dateRange(b.from,b.until)).join(', '):unknownChip())
   +ovRow(t('f.taxes'),taxLine(r))
   +(r.fees.length?r.fees.map(f=>ovRow(f.kind?t('fee.'+f.kind):t('f.fees'),feeValue(f))).join(''):'')
-  +ovRow(t('f.min_stay'),r.min==null?unknownChip():`<bdi>${esc(r.min)}</bdi>`),t('rec.edit_stay'));
+  +ovRow(t('f.min_stay'),r.min==null?unknownChip():`<bdi>${esc(r.min)}</bdi>`),t('rec.edit_valid'));
  const extras=budget?'':ovBlock(t('rec.extras'),'terms:extras',
   ovRow(t('f.extra_bed'),r.extra_bed.amount!=null&&r.extra_bed.cur?money(r.extra_bed.amount,r.extra_bed.cur)+' '+esc(lab('basis','per_room_night')):unknownChip())
   +ovRow(t('f.child_rules'),r.child_rules.length?r.child_rules.map(childText).join('<br>'):(r.imported||r.source?chip(t('acc.none_stated'),'cc-chip--muted'):unknownChip()))
@@ -3663,14 +3692,16 @@ function reviewTab(r){
   +sec('status',t('sec.status'),esc(t('sec.status.sub')),rateStatus(r));
 }
 function termsTab(r){
- const stSub=[r.occ?lab('occ',r.occ):'',r.board?lab('board',r.board):'',r.from||r.until?dateHe(r.from)+' - '+dateHe(r.until):'',r.blackout.length?(r.blackout.length===1?t('f.blackout_one'):r.blackout.length+' '+t('f.blackout')):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.stay.sub'));
- const prSub=[r.quote?t('acc.quote_required'):(r.rate==null||r.rate===''?t('acc.unknown'):(r.cur?r.cur+' '+Number(r.rate).toLocaleString('en-US'):Number(r.rate).toLocaleString('en-US')+' - '+t('rec.no_currency'))),r.basis?lab('basis',r.basis):'',r.cost_type?lab('ct',r.cost_type):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.pricing.sub'));
  const idSub=[isBudget(r)?t('sub.staff_lodging_budget'):(r.property?propName(r.property):(r.source_name?t('rec.source_name')+': '+r.source_name:t('acc.no_property'))),r.room||''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.identity.sub'));
+ const roomSub=isBudget(r)?(r.board?lab('board',r.board):esc(t('sec.room.sub'))):[r.rc?lab('rc',r.rc):'',r.occ?lab('occ',r.occ):t('unset'),r.board?lab('board',r.board):''].filter(Boolean).map(bdi).join(' - ');
+ const validSub=[r.season||'',r.from||r.until?dateHe(r.from)+' - '+dateHe(r.until):'',r.blackout.length?(r.blackout.length===1?t('f.blackout_one'):r.blackout.length+' '+t('f.blackout')):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.valid.sub'));
+ const prSub=[r.quote?t('acc.quote_required'):(r.rate==null||r.rate===''?t('acc.unknown'):(r.cur?r.cur+' '+Number(r.rate).toLocaleString('en-US'):Number(r.rate).toLocaleString('en-US')+' - '+t('rec.no_currency'))),r.basis?lab('basis',r.basis):'',r.cost_type?lab('ct',r.cost_type):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.pricing.sub'));
  const termsSub=[r.taxes?t('f.taxes')+': '+(r.fees.some(f=>f.treatment&&f.treatment!=='included')?lab('tax',r.taxes)+' '+t('acc.except')+' '+r.fees.filter(f=>f.treatment&&f.treatment!=='included').map(f=>f.kind?t('fee.'+f.kind):f.name).join(', '):lab('tax',r.taxes)):'',r.fees.length?(r.fees.length===1?t('f.fees_one'):r.fees.length+' '+t('f.fees')):'',r.release_days!=null?t('f.release')+' '+r.release_days:''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.terms.sub'));
- const extrasSub=[r.extra_bed.amount!=null&&r.extra_bed.cur?`${t('f.extra_bed')} ${r.extra_bed.cur} ${Number(r.extra_bed.amount).toLocaleString('en-US')}`:'',r.child_rules.length?(r.child_rules.length===1?t('f.child_rules_one'):`${r.child_rules.length} ${t('f.child_rules')}`):'',r.addons.length?(r.addons.length===1?t('f.addons_one'):`${r.addons.length} ${t('f.addons')}`):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.extras.sub'));
+ const extrasSub=[r.extra_bed.amount!=null&&r.extra_bed.cur?`${t('f.extra_bed')} ${r.extra_bed.cur} ${Number(r.extra_bed.amount).toLocaleString('en-US')}`:'',r.single_sup.amount!=null&&r.single_sup.cur?`${t('f.single_sup')} ${r.single_sup.cur} ${Number(r.single_sup.amount).toLocaleString('en-US')}`:'',r.child_rules.length?(r.child_rules.length===1?t('f.child_rules_one'):`${r.child_rules.length} ${t('f.child_rules')}`):'',r.addons.length?(r.addons.length===1?t('f.addons_one'):`${r.addons.length} ${t('f.addons')}`):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.extras.sub'));
  return sec('identity',t('sec.identity'),idSub,recIdentity(r))
-  +sec('stay',t('sec.stay'),stSub,recStay(r))
+  +sec('room',t('sec.room'),roomSub,recRoom(r))
   +sec('pricing',t('sec.pricing'),prSub,recPricing(r))
+  +sec('valid',t('sec.valid'),validSub,recValid(r))
   +sec('terms',t('sec.terms'),termsSub,rateTerms(r))
   +(isBudget(r)?'':sec('extras',t('sec.extras'),extrasSub,rateExtras(r)));
 }
@@ -3802,30 +3833,5 @@ window.addEventListener('beforeunload',e=>{if(model.dirty){e.preventDefault();e.
 render();
 
 </script>
-
-<style id="akn-style">
-#akn{position:fixed;inset-block-end:14px;inset-inline-end:14px;z-index:2147483000;font:13px/1.4 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;direction:rtl}
-#akn *{box-sizing:border-box}
-.akn-bar{display:flex;gap:4px;align-items:center;background:#fff;border:1px solid #dcdcd8;border-radius:999px;padding:4px;box-shadow:0 4px 16px rgba(0,0,0,.13)}
-.akn-b{appearance:none;border:0;background:transparent;color:#1a1a1a;font:inherit;cursor:pointer;padding:6px 11px;border-radius:999px;text-decoration:none;white-space:nowrap}
-.akn-b:hover{background:#f0f0ec}
-.akn-b[disabled]{opacity:.4;cursor:default}
-.akn-home{background:#a8112a;color:#fff}
-.akn-home:hover{background:#8d0e23}
-.akn-sep{width:1px;height:18px;background:#e3e3df}
-#akn-list{position:absolute;inset-block-end:46px;inset-inline-end:0;width:290px;max-height:60vh;overflow:auto;background:#fff;border:1px solid #dcdcd8;border-radius:12px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
-#akn-list[hidden]{display:none}
-.akn-g{font-size:11.5px;color:#7a7a7a;padding:8px 10px 4px}
-.akn-i{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:7px 10px;border-radius:8px;text-decoration:none;color:#1a1a1a}
-.akn-i:hover{background:#f0f0ec}
-.akn-cur{background:#f5e7ea;font-weight:600}
-.akn-v{font-size:11.5px;color:#7a7a7a;white-space:nowrap}
-@media print{#akn{display:none}}
-</style>
-<div id="akn" dir="rtl">
-<div id="akn-list" hidden><div class="akn-g">ספריית העיצוב</div><a class="akn-i" href="00-DESIGN-LIBRARY.html"><span class="akn-t">ספריית העיצוב</span><span class="akn-v">גרסה 4</span></a><div class="akn-g">פעיל</div><a class="akn-i akn-cur" href="2026-09-10-s55-catalog-accommodation.html"><span class="akn-t">קטלוג השירותים - לינה</span><span class="akn-v">גרסה 3</span></a><a class="akn-i" href="2026-09-08-s53-settings-integrations-v1.3.html"><span class="akn-t">הגדרות וחיבורים - v1.3</span><span class="akn-v">גרסה 1.3.6</span></a><a class="akn-i" href="2026-09-08-s53-settings-integrations.html"><span class="akn-t">הגדרות וחיבורים - v1.2</span><span class="akn-v">גרסה 1.2</span></a><div class="akn-g">ארכיון</div><a class="akn-i" href="2026-07-29-s35cd-order-card-redesign.html"><span class="akn-t">רדיזיין כרטיס ההזמנה</span><span class="akn-v">גרסה 4</span></a><a class="akn-i" href="2026-07-29-s35cd-cit-card.html"><span class="akn-t">כרטיס ה-CIT כתוכנית</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-partner-card.html"><span class="akn-t">כרטיס השותף</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-settings-area.html"><span class="akn-t">אזור ההגדרות - טיוטה ראשונה</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-folders-root-bulk.html"><span class="akn-t">בולק בשורש הסייר</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-pricing-flow-e2e.html"><span class="akn-t">תהליך התמחור המלא</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-calc-window-dialog.html"><span class="akn-t">חלון החישוב והדיאלוג</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-card-anatomy.html"><span class="akn-t">אנטומיית הכרטיס</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s35-dialog-and-dictionary.html"><span class="akn-t">הדיאלוג ומסך המילון</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-24-s32-five-elements.html"><span class="akn-t">חמישה אלמנטים</span><span class="akn-v">בעבודה</span></a><a class="akn-i" href="2026-08-21-s38-libfill-shells.html"><span class="akn-t">מעטפת ספריית העיצוב</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-08-29-s8-split-rail.html"><span class="akn-t">סרגל הצד</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-19-s37-assist.html"><span class="akn-t">עוזר ה-AI על הדשבורד</span><span class="akn-v">גרסה 5</span></a><a class="akn-i" href="2026-08-13-s41-tagon-backfill.html"><span class="akn-t">מסך המילוי לאחור בתיוג</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-12-s41-search.html"><span class="akn-t">חיפוש אחד על הכל</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-12-s41-screen-filerow.html"><span class="akn-t">שורת התוצאה בחיפוש</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-11-s41-explorer.html"><span class="akn-t">סייר התיקיות</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-07-31-s39-widget-mockup.html"><span class="akn-t">לוח ניהול הפרויקט</span><span class="akn-v">סטטוס לא ידוע</span></a></div>
-<div class="akn-bar"><a class="akn-b akn-home" href="../index.html">הלוח</a><span class="akn-sep"></span><a class="akn-b" href="00-DESIGN-LIBRARY.html" title="המסך הקודם">הקודם</a><a class="akn-b" href="2026-09-08-s53-settings-integrations-v1.3.html" title="המסך הבא">הבא</a><span class="akn-sep"></span><button class="akn-b" type="button" id="akn-toggle" aria-expanded="false">כל המסכים</button></div>
-</div>
-<script id="akn-script">(function(){var t=document.getElementById("akn-toggle"),l=document.getElementById("akn-list");function close(){l.hidden=true;t.setAttribute("aria-expanded","false");}t.addEventListener("click",function(e){e.stopPropagation();l.hidden=!l.hidden;t.setAttribute("aria-expanded",String(!l.hidden));if(!l.hidden){var c=l.querySelector(".akn-cur");if(c)c.scrollIntoView({block:"center"});}});document.addEventListener("click",function(e){if(!document.getElementById("akn").contains(e.target))close();});document.addEventListener("keydown",function(e){if(e.key==="Escape")close();});})();</script>
 </body>
 </html>
