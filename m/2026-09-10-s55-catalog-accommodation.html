@@ -3078,6 +3078,21 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
 .s55-rates td:nth-child(1), .s55-rates th:nth-child(1) { max-width:11rem; }
 .s55-rates td:nth-child(6), .s55-rates th:nth-child(6) { max-width:7.5rem; white-space:normal; }
 .s55-rates td:nth-child(1) .cc-chip, .s55-rates td:nth-child(6) { white-space:normal; }
+
+/* S55 v4.0 - property-first list and the Property workspace. Tokens only; no new colour, typeface, shadow or radius. */
+.s55-grp { margin:var(--spacing-lg) 0 var(--spacing-sm); color:var(--cc-text-2); font-size:0.95em; }
+.s55-wsbar { align-items:center; }
+.s55-matrix th[scope="row"] { text-align:start; vertical-align:middle; }
+.s55-matrix td.s55-cell { padding:0; vertical-align:middle; }
+.s55-cellbtn { display:block; width:100%; min-height:var(--cc-row-h); padding:var(--spacing-sm) var(--spacing-md); border:0; background:transparent; color:inherit; font:inherit; text-align:start; cursor:pointer; }
+.s55-cellbtn:hover { background:var(--cc-sunken); }
+.s55-cellbtn:focus-visible { outline:2px solid var(--cc-border-strong); outline-offset:-2px; }
+.s55-cell.is-selected { box-shadow:inset 0 0 0 2px var(--cc-border-strong); }
+.s55-hr { border:0; border-top:1px solid var(--cc-border); margin:var(--spacing-md) 0; }
+@media (max-width:700px){
+  .s55-matrix { display:block; overflow-x:auto; }
+  .s55-wsbar { flex-wrap:wrap; }
+}
 </style>
 </head>
 <body>
@@ -3329,7 +3344,28 @@ const copy={
  'guard.title':'שינויים שלא נשמרו','guard.body':'יש בטיוטה שינויים שלא נשמרו. אפשר להישאר לעריכה או לצאת ללא שמירת השינויים.','guard.stay':'חזרה לעריכה','guard.leave':'יציאה ללא שמירה',
  'demo_note':'דוגמת חזות בלבד. הנתונים בדויים. אין קריאה או כתיבה למערכת.',
  'err.name_required':'לפריט נדרש שם - נגזר או מוקלד.','err.prop_name_required':'לנכס נדרש שם.',
- 'miss.property':'נכס','miss.destination':'יעד','miss.subtype':'סוג התעריף','miss.basis':'בסיס תמחיר','miss.cost_type':'סוג עלות','miss.rate':'תעריף ומטבע או סימון "נדרשת הצעת מחיר"','miss.prefix':'חסר למוכנות: ','crumbs.aria':'נתיב ההגדרות','table.aria':'טבלת נתונים נגללת'
+ 'miss.property':'נכס','miss.destination':'יעד','miss.subtype':'סוג התעריף','miss.basis':'בסיס תמחיר','miss.cost_type':'סוג עלות','miss.rate':'תעריף ומטבע או סימון "נדרשת הצעת מחיר"','miss.prefix':'חסר למוכנות: ','crumbs.aria':'נתיב ההגדרות','table.aria':'טבלת נתונים נגללת',
+ 'ws.tab_props':'נכסים ותעריפים','ws.tab_all':'כל התעריפים',
+ 'ws.group_props':'נכסים','ws.group_budget':'תקציבי לינת צוות','ws.group_unresolved':'שורות שטרם שויכו לנכס',
+ 'ws.col_property':'נכס','ws.col_place':'מקום','ws.col_state':'מצב הצירופים','ws.col_sources':'ספקים ומקורות',
+ 'ws.combos':'{n} צירופים','ws.combo_one':'צירוף אחד','ws.combo_none':'אין צירופים',
+ 'ws.ready_n':'{n} מוכנים','ws.open_n':'{n} בבדיקה','ws.noprice_n':'{n} בלי מחיר',
+ 'ws.empty':'אין עדיין תעריפים תחת הנכס הזה. הוספת תעריף ראשון פותחת את הטבלה.',
+ 'ws.empty_props':'אין נכסים להצגה.','ws.back':'חזרה לרשימה',
+ 'ws.source':'הקשר מסחרי','ws.source_all':'כל המקורות','ws.source_one':'מקור מסחרי אחד',
+ 'ws.axis_occ':'תפוסה','ws.axis_board':'הסעדה','ws.axis_all':'הכל',
+ 'ws.matrix_rows':'סוג חדר','ws.matrix_cols':'עונה',
+ 'ws.cell_empty':'לא הוזן','ws.cell_noprice':'ללא מחיר','ws.cell_quote':'נדרשת הצעה','ws.cell_free':'ללא חיוב','ws.cell_notoffered':'לא נמכר','ws.cell_conflict':'יותר מרשומה אחת',
+ 'ws.cell_open':'פתיחת הרשומה המלאה','ws.cell_add':'הוספת תעריף כאן',
+ 'ws.selected':'המשבצת שנבחרה','ws.select_hint':'בחירת משבצת מציגה את פרטיה כאן, בלי לצאת מהמרחב.',
+ 'ws.add_room':'הוספת סוג חדר','ws.add_season':'הוספת עונה','ws.add_room_ph':'שם החדר כפי שהספק כותב אותו','ws.add_season_ph':'שם העונה',
+ 'ws.sparse_note':'משבצת ריקה אינה יוצרת רשומה. הטבלה מציגה רק את מה שהוזן בפועל, ואינה ממלאת את כל הצירופים האפשריים.',
+ 'ws.manual_note':'המסלול הרגיל הוא קליטה מהמקור בידי העוזר. הזנה ידנית היא חלופה, והיא נבנתה כאן כמסלול מלא: הוספת חדר או עונה פותחת שורה או עמודה, וכל משבצת נפתחת במקום.',
+ 'ws.no_axis':'עדיין אין סוגי חדר או עונות. הוסף אחד מהם כדי לפתוח את הטבלה.',
+ 'ws.unknown_room':'בלי שם חדר','ws.unknown_season':'בלי עונה',
+ 'ws.state_ready':'מוכן','ws.state_review':'בבדיקה',
+ 'ws.budget_row':'תקציב לפי לילה לאדם','ws.unresolved_row':'ממתין לשיוך נכס',
+ 'ws.prop_open':'פתיחת כרטיס הנכס',
 };
 const t=(k,vars)=>{if(!(k in copy))throw Error('מפתח מילון לא מוכר: '+k);let v=copy[k];if(vars)for(const [n,x] of Object.entries(vars))v=v.replaceAll('{'+n+'}',()=>String(x));return v;};
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3405,6 +3441,13 @@ const demo={
    basis:'per_night',rate:45,cur:'USD',quote:false,vat:'none',vat_rate:null,cost_type:'VAR_PAX',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],
    taxes:'included',fees:[],release_days:null,cancellation:'',
    addons:[],supplier:'c1',source:'s1',included:['ארוחת בוקר'],not_included:[],benefits:[],notes:'לינת נהג ומדריך מקומי, מלון לפי בחירת הספק',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-03'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r10',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Deluxe Mountain View',rc:'deluxe',occ:'TWIN',max_occ:3,adults:2,children:1,board:'HB',season:'חורף 2026-27',from:'2026-12-01',until:'2027-03-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:310,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r11',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Deluxe Mountain View',rc:'deluxe',occ:'DBL',max_occ:3,adults:2,children:1,board:'BB',season:'קיץ 2027',from:'2027-04-01',until:'2027-10-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:240,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r12',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Standard',rc:'standard',occ:'DBL',max_occ:3,adults:2,children:1,board:'BB',season:'חורף 2026-27',from:'2026-12-01',until:'2027-03-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:170,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r13',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Standard',rc:'standard',occ:'DBL',max_occ:3,adults:2,children:1,board:'BB',season:'קיץ 2027',from:'2027-04-01',until:'2027-10-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:null,cur:'',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[],quote:true},
+  {id:'r14',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Junior Suite',rc:'junior_suite',occ:'DBL',max_occ:3,adults:2,children:1,board:'HB',season:'חורף 2026-27',from:'2026-12-01',until:'2027-03-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:null,cur:'',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r15',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Junior Suite',rc:'junior_suite',occ:'DBL',max_occ:3,adults:2,children:1,board:'HB',season:'קיץ 2027',from:'2027-04-01',until:'2027-10-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:0,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r16',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Family Room',rc:'family',occ:'QUAD',max_occ:3,adults:2,children:1,board:'HB',season:'חורף 2026-27',from:'2026-12-01',until:'2027-03-31',wk:'all',min:1,max:null,blackout:[],basis:'per_room_night',rate:null,cur:'',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:'included',fees:[],release_days:null,cancellation:'',addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-11'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[],not_offered:true},
   {id:'r6',subtype:null,property:null,destination:null,room:'',rc:null,name:'Registon Plaza Samarkand - חדר זוגי (עונה גבוהה)',name_manual:true,moderation:'needs_review',occ:null,max_occ:null,adults:null,children:null,board:null,season:'',from:'',until:'',wk:null,min:null,max:null,blackout:[],
    basis:'per_night',rate:95,cur:'USD',quote:false,vat:'',vat_rate:null,cost_type:'VAR_PAX',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],
    taxes:null,fees:[],release_days:null,cancellation:'',
@@ -3412,7 +3455,7 @@ const demo={
    source_name:'',excerpt:'',questions:[]}
  ]
 };
-const model={route:'catalog',tab:'rates',q:'',filterProp:'',review:false,showArchived:false,record:null,dirty:false,open:{basics:true},rtab:'overview',qsel:null};
+const model={route:'catalog',tab:'props1',wsSource:'',wsOcc:'',wsBoard:'',wsCell:null,q:'',filterProp:'',review:false,showArchived:false,record:null,dirty:false,open:{basics:true},rtab:'overview',qsel:null};
 let dialogRevision=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
 const propOf=id=>demo.properties.find(p=>p.id===id)||null;
@@ -3487,8 +3530,90 @@ function propsView(){
  return bar+(list.length?table([t('acc.col_name'),t('acc.col_type'),t('acc.col_place'),t('acc.col_stars'),t('acc.col_rates'),t('acc.col_status'),t('acc.col_actions')],list.map(p=>{const n=demo.rates.filter(r=>r.property===p.id&&r.status!=='archived').length;return `<tr class="is-click" data-open="prop:${p.id}"><td class="primary">${bdi(p.name)}${p.aliases.length?`<div class="cc-help s55-sub">${bdi(p.aliases.join(', '))}</div>`:''}</td><td>${lbl('ptype',p.type)}</td><td>${p.city||p.country?bdi([p.city,p.country].filter(Boolean).join(', ')):unknownChip()}</td><td>${p.stars?esc(String(p.stars)):unknownChip()}</td><td>${chip(t('catalog.items_count',{n}))}</td><td>${chip(t('st.'+p.status),p.status==='active'?'cc-chip--ok-soft':'cc-chip--muted')}</td><td class="cell-actions">${iconAction(t('acc.edit'),'open','#i-pencil',`data-open="prop:${p.id}"`)}${p.status==='archived'?iconAction(t('acc.restore'),'restore-prop','#i-refresh-cw',`data-id="${p.id}"`):iconAction(t('acc.archive'),'archive-prop','#i-archive',`data-id="${p.id}"`)}</td></tr>`;})):`<div class="cc-empty s53-empty">${esc(t('acc.empty_props'))}</div>`);
 }
 function accommodation(){
- const tabs=[['rates',t('acc.tab_rates'),demo.rates.filter(r=>r.status!=='archived').length],['properties',t('acc.tab_properties'),demo.properties.filter(p=>p.status!=='archived').length]];
- return breadcrumbs([{label:t('settings.home'),route:'home'},{label:t('settings.catalog'),route:'catalog'},{label:t('cat.accommodation')}])+title(esc(t('cat.accommodation')),t('acc.desc'))+`<nav class="tabs s53-tabs" aria-label="${esc(t('cat.accommodation'))}">${tabs.map(([k,l,n])=>`<button type="button" class="tab ${model.tab===k?'active':''}" data-tab="${k}" ${model.tab===k?'aria-current="page"':''}>${esc(l)}<span class="tab-count">${n}</span></button>`).join('')}</nav>`+panel(model.tab==='rates'?ratesView():propsView());
+ const tabs=[['props1',t('ws.tab_props'),demo.properties.filter(p=>p.status!=='archived').length],['rates',t('ws.tab_all'),demo.rates.filter(r=>r.status!=='archived').length],['properties',t('acc.tab_properties'),demo.properties.filter(p=>p.status!=='archived').length]];
+ return breadcrumbs([{label:t('settings.home'),route:'home'},{label:t('settings.catalog'),route:'catalog'},{label:t('cat.accommodation')}])+title(esc(t('cat.accommodation')),t('acc.desc'))+`<nav class="tabs s53-tabs" aria-label="${esc(t('cat.accommodation'))}">${tabs.map(([k,l,n])=>`<button type="button" class="tab ${model.tab===k?'active':''}" data-tab="${k}" ${model.tab===k?'aria-current="page"':''}>${esc(l)}<span class="tab-count">${n}</span></button>`).join('')}</nav>`+panel(model.tab==='props1'?propsFirstView():model.tab==='rates'?ratesView():propsView());
+}
+
+/* ---------- Property-first list and Property workspace (D-565, consultant v2.1 §0/§7) ---------- */
+const wsRates=pid=>demo.rates.filter(r=>r.property===pid&&r.status!=='archived');
+const cellState=r=>{if(!r)return 'empty';if(r.not_offered)return 'notoffered';if(r.quote)return 'quote';if(r.rate===0)return 'free';if(r.rate==null||r.rate===''||!r.cur)return 'noprice';return 'amount';};
+function propStateLine(list){
+ if(!list.length)return chip(t('ws.combo_none'),'cc-chip--muted');
+ const ready=list.filter(isReady).length, open=list.filter(inReview).length, np=list.filter(r=>!r.quote&&(r.rate==null||r.rate===''||!r.cur)).length;
+ const bits=[chip(list.length===1?t('ws.combo_one'):t('ws.combos',{n:list.length}))];
+ if(ready)bits.push(chip(t('ws.ready_n',{n:ready}),'cc-chip--ok-soft'));
+ if(open)bits.push(chip(t('ws.open_n',{n:open}),'cc-chip--warn-soft'));
+ if(np)bits.push(chip(t('ws.noprice_n',{n:np}),'cc-chip--muted'));
+ return bits.join(' ');
+}
+function propsFirstView(){
+ const q=model.q.trim().toLowerCase();
+ const props=demo.properties.filter(p=>p.status!=='archived'&&(!q||[p.name,p.city,p.country,destName(p.destination),...p.aliases].some(v=>String(v||'').toLowerCase().includes(q))));
+ const budgets=demo.rates.filter(r=>r.status!=='archived'&&isBudget(r)&&(!q||[destName(r.destination),r.season,supName(r.supplier)].some(v=>String(v||'').toLowerCase().includes(q))));
+ const loose=demo.rates.filter(r=>r.status!=='archived'&&!isBudget(r)&&!r.property&&(!q||[r.source_name,r.name,r.room].some(v=>String(v||'').toLowerCase().includes(q))));
+ const bar=`<div class="cc-filterbar">${search(t('acc.search_props'))}<span class="cc-spacer"></span>${button(t('acc.new_property'),'new-prop')}</div>`;
+ const head=[t('ws.col_property'),t('ws.col_place'),t('ws.col_state'),t('ws.col_sources'),t('acc.col_actions')];
+ const propRows=props.map(p=>{const list=wsRates(p.id);
+  const srcs=[...new Set(list.map(r=>r.supplier).filter(Boolean))].map(id=>bdi(supName(id))).join(' · ');
+  return `<tr class="is-click" data-open="work:${p.id}"><td class="primary">${bdi(p.name)}${p.stars?`<div class="cc-help s55-sub">${esc(lbl('ptype',p.type))} · ${esc(String(p.stars))}</div>`:''}</td><td>${p.city||p.country?bdi([p.city,p.country].filter(Boolean).join(', ')):unknownChip()}</td><td>${propStateLine(list)}</td><td>${srcs||unknownChip()}</td><td class="cell-actions">${iconAction(t('ws.prop_open'),'open','#i-pencil',`data-open="prop:${p.id}"`)}</td></tr>`;});
+ const budgetRows=budgets.map(r=>`<tr class="is-click" data-open="rate:${r.id}"><td class="primary">${r.destination?bdi(destName(r.destination)):unknownChip()}<div class="cc-help s55-sub">${esc(t('ws.budget_row'))}</div></td><td>${r.season?esc(r.season):unknownChip()}</td><td>${amountText(r)}</td><td>${r.supplier?bdi(supName(r.supplier)):unknownChip()}</td><td class="cell-actions"></td></tr>`);
+ const looseRows=loose.map(r=>`<tr class="is-click" data-open="rate:${r.id}"><td class="primary">${r.source_name?bdi(r.source_name):r.name?bdi(r.name):unknownChip()}<div class="cc-help s55-sub">${esc(t('ws.unresolved_row'))}</div></td><td>${r.room?bdi(r.room):unknownChip()}</td><td>${amountText(r)}</td><td>${r.supplier?bdi(supName(r.supplier)):unknownChip()}</td><td class="cell-actions"></td></tr>`);
+ let out=bar+note(t('ws.sparse_note'));
+ out+=`<h3 class="s55-grp">${esc(t('ws.group_props'))}</h3>`+(propRows.length?table(head,propRows,'s55-rates'):`<div class="cc-empty s53-empty">${esc(t('ws.empty_props'))}</div>`);
+ if(budgetRows.length)out+=`<h3 class="s55-grp">${esc(t('ws.group_budget'))}</h3>`+table(head,budgetRows,'s55-rates');
+ if(looseRows.length)out+=`<h3 class="s55-grp">${esc(t('ws.group_unresolved'))}</h3>`+table(head,looseRows,'s55-rates');
+ return out;
+}
+function wsFiltered(pid){
+ return wsRates(pid).filter(r=>!isBudget(r)
+  &&(!model.wsSource||r.source===model.wsSource)
+  &&(!model.wsOcc||r.occ===model.wsOcc)
+  &&(!model.wsBoard||r.board===model.wsBoard));
+}
+function cellText(list){
+ if(!list.length)return `<span class="cc-help">${esc(t('ws.cell_empty'))}</span>`;
+ if(list.length>1)return chip(t('ws.cell_conflict'),'cc-chip--warn-soft');
+ const r=list[0],st=cellState(r);
+ if(st==='notoffered')return chip(t('ws.cell_notoffered'),'cc-chip--muted');
+ if(st==='quote')return chip(t('ws.cell_quote'),'cc-chip--muted');
+ if(st==='free')return chip(t('ws.cell_free'),'cc-chip--ok-soft');
+ if(st==='noprice')return chip(t('ws.cell_noprice'),'cc-chip--warn-soft');
+ return amountText(r)+(isReady(r)?'':`<div class="cc-help s55-sub">${esc(t('ws.state_review'))}</div>`);
+}
+function workPage(){
+ const pid=model.route.slice(5);const p=propOf(pid);
+ if(!p)return `<div class="cc-empty s53-empty">${esc(t('ws.empty_props'))}</div>`;
+ const all=wsRates(pid).filter(r=>!isBudget(r));
+ const list=wsFiltered(pid);
+ const rooms=[...new Set(list.map(r=>r.room||''))];
+ const seasons=[...new Set(list.map(r=>r.season||''))];
+ const srcIds=[...new Set(all.map(r=>r.source).filter(Boolean))];
+ const srcOpts=[['',t('ws.source_all')],...srcIds.map(id=>{const so=demo.sources.find(x=>x.id===id);return [id,(so?so.name:id)+(so&&so.company?' - '+(supName(so.company)||''):'')];})];
+ const occOpts=[['',t('ws.axis_all')],...[...new Set(all.map(r=>r.occ).filter(Boolean))].map(o=>[o,lab('occ',o)])];
+ const boardOpts=[['',t('ws.axis_all')],...[...new Set(all.map(r=>r.board).filter(Boolean))].map(b=>[b,lab('board',b)])];
+ const head=recordHead(bdi(p.name),`${chip(lbl('ptype',p.type))}${p.stars?' '+chip(String(p.stars)):''}${p.destination?' '+chip(destName(p.destination),'cc-chip--muted'):''}`,propStateLine(all));
+ const ctx=`<div class="cc-filterbar s55-wsbar">${srcIds.length>1?select('wsSource',model.wsSource,srcOpts,'data-ws-source'):srcIds.length===1?`<span class="cc-help">${esc(t('ws.source'))}: ${bdi(srcOpts[1][1])}</span>`:''}${select('wsOcc',model.wsOcc,occOpts,'data-ws-occ')}${select('wsBoard',model.wsBoard,boardOpts,'data-ws-board')}<span class="cc-spacer"></span>${button(t('ws.add_room'),'ws-add-room')}${button(t('ws.add_season'),'ws-add-season')}</div>`;
+ let grid;
+ if(!rooms.length||!seasons.length){grid=`<div class="cc-empty s53-empty">${esc(all.length?t('ws.no_axis'):t('ws.empty'))}</div>`;}
+ else{
+  const cols=[t('ws.matrix_rows'),...seasons.map(sn=>sn||t('ws.unknown_season'))];
+  const rows=rooms.map(rm=>{
+   const cells=seasons.map(sn=>{const hit=list.filter(r=>(r.room||'')===rm&&(r.season||'')===sn);
+    const key=`${rm}||${sn}`;const sel=model.wsCell===key?' is-selected':'';
+    return `<td class="s55-cell${sel}"><button type="button" class="s55-cellbtn" data-ws-cell="${esc(key)}">${cellText(hit)}</button></td>`;}).join('');
+   return `<tr><th scope="row" class="primary">${rm?bdi(rm):unknownChip()}</th>${cells}</tr>`;});
+  grid=table(cols,rows,'s55-matrix');
+ }
+ let detail='';
+ if(model.wsCell){
+  const [rm,sn]=model.wsCell.split('||');
+  const hit=list.filter(r=>(r.room||'')===rm&&(r.season||'')===sn);
+  const ttl=`${rm||t('ws.unknown_room')} - ${sn||t('ws.unknown_season')}`;
+  const body=hit.length?hit.map(r=>`<dl class="s55-ovlist"><dt>${esc(t('acc.col_rate'))}</dt><dd>${amountText(r)}</dd><dt>${esc(t('acc.col_basis'))}</dt><dd>${esc(basisLabel(r.basis))}</dd><dt>${esc(t('ws.axis_occ'))}</dt><dd>${r.occ?esc(lab('occ',r.occ)):unknownChip()}</dd><dt>${esc(t('ws.axis_board'))}</dt><dd>${r.board?esc(lab('board',r.board)):unknownChip()}</dd><dt>${esc(t('acc.col_status'))}</dt><dd>${statusChip(r)}</dd></dl>${textAction(t('ws.cell_open'),'open',`data-open="rate:${r.id}"`)}`).join('<hr class="s55-hr">')
+   :`<p class="cc-help">${esc(t('ws.cell_empty'))}</p>${button(t('ws.cell_add'),'ws-cell-add',`data-room="${esc(rm)}" data-season="${esc(sn)}" data-prop="${pid}"`)}`;
+  detail=`<section class="cc-section s55-ovblock"><div class="s55-ovhead"><h3>${esc(t('ws.selected'))}: ${esc(ttl)}</h3></div>${body}</section>`;
+ }else{detail=`<p class="cc-help">${esc(t('ws.select_hint'))}</p>`;}
+ return breadcrumbs([{label:t('settings.home'),route:'home'},{label:t('settings.catalog'),route:'catalog'},{label:t('cat.accommodation'),route:'cat-accommodation'},{label:p.name}])+head+panel(ctx+note(t('ws.manual_note'))+grid+detail);
 }
 function nextRound(id){return breadcrumbs([{label:t('settings.home'),route:'home'},{label:t('settings.catalog'),route:'catalog'},{label:t('cat.'+id)}])+title(esc(t('cat.'+id)),t('cat.'+id+'.desc'))+`<div class="cc-empty s53-empty">${esc(t('catalog.next_round'))}</div>`;}
 
@@ -3735,11 +3860,11 @@ function propPage(){
 }
 
 /* ---------- render, keeping scroll and focus across re-renders ---------- */
-function focusKey(el){if(!el||!el.dataset)return '';if(el.dataset.field)return `[data-field="${el.dataset.field}"]`;if(el.dataset.seg)return `[data-seg="${el.dataset.seg}"][data-value="${el.dataset.value}"]`;if(el.dataset.switch)return `[data-switch="${el.dataset.switch}"]`;if(el.dataset.secToggle)return `[data-sec-toggle="${el.dataset.secToggle}"]`;if(el.hasAttribute('data-search'))return '[data-search]';if(el.dataset.action)return `[data-action="${el.dataset.action}"]`+(el.dataset.rows?`[data-rows="${el.dataset.rows}"]`:'')+(el.dataset.index?`[data-index="${el.dataset.index}"]`:'')+(el.dataset.id?`[data-id="${el.dataset.id}"]`:'');if(el.dataset.fltReview!=null)return `[data-flt-review="${el.dataset.fltReview}"]`;if(el.dataset.fltArch!=null)return `[data-flt-arch="${el.dataset.fltArch}"]`;if(el.dataset.tab)return `[data-tab="${el.dataset.tab}"]`;if(el.dataset.rtab)return `[data-rtab="${el.dataset.rtab}"]`;if(el.dataset.q)return `[data-q="${el.dataset.q}"]`;return '';}
+function focusKey(el){if(!el||!el.dataset)return '';if(el.dataset.field)return `[data-field="${el.dataset.field}"]`;if(el.dataset.seg)return `[data-seg="${el.dataset.seg}"][data-value="${el.dataset.value}"]`;if(el.dataset.switch)return `[data-switch="${el.dataset.switch}"]`;if(el.dataset.secToggle)return `[data-sec-toggle="${el.dataset.secToggle}"]`;if(el.hasAttribute('data-search'))return '[data-search]';if(el.dataset.action)return `[data-action="${el.dataset.action}"]`+(el.dataset.rows?`[data-rows="${el.dataset.rows}"]`:'')+(el.dataset.index?`[data-index="${el.dataset.index}"]`:'')+(el.dataset.id?`[data-id="${el.dataset.id}"]`:'');if(el.dataset.fltReview!=null)return `[data-flt-review="${el.dataset.fltReview}"]`;if(el.dataset.fltArch!=null)return `[data-flt-arch="${el.dataset.fltArch}"]`;if(el.dataset.tab)return `[data-tab="${el.dataset.tab}"]`;if(el.dataset.rtab)return `[data-rtab="${el.dataset.rtab}"]`;if(el.dataset.wsCell!=null)return `[data-ws-cell="${el.dataset.wsCell}"]`;if(el.dataset.q)return `[data-q="${el.dataset.q}"]`;return '';}
 function render(focus=true){
  const y=window.scrollY;const act=document.activeElement;const key=focusKey(act);const sel=act&&act.selectionStart!=null?act.selectionStart:null;
  let v='';
- if(model.route==='home')v=home();else if(model.route==='catalog')v=catalog();else if(model.route==='cat-accommodation')v=accommodation();else if(model.route.startsWith('cat-'))v=nextRound(model.route.slice(4));else if(model.route.startsWith('rate:'))v=ratePage();else if(model.route.startsWith('prop:'))v=propPage();else{const e=entries.find(e=>e.id===model.route);v=breadcrumbs([{label:t('settings.home'),route:'home'},{label:t(e.key)}])+title(esc(t(e.key)),'')+note(t('settings.outside'));}
+ if(model.route==='home')v=home();else if(model.route==='catalog')v=catalog();else if(model.route==='cat-accommodation')v=accommodation();else if(model.route.startsWith('cat-'))v=nextRound(model.route.slice(4));else if(model.route.startsWith('rate:'))v=ratePage();else if(model.route.startsWith('prop:'))v=propPage();else if(model.route.startsWith('work:'))v=workPage();else{const e=entries.find(e=>e.id===model.route);v=breadcrumbs([{label:t('settings.home'),route:'home'},{label:t(e.key)}])+title(esc(t(e.key)),'')+note(t('settings.outside'));}
  byId('view').innerHTML=v;
  if(!focus){window.scrollTo({top:y,behavior:'instant'});if(key){const n=document.querySelector(key);if(n){n.focus({preventScroll:true});if(model._raw&&n.dataset&&n.dataset.field===model._raw.name&&n.value!==model._raw.value)n.value=model._raw.value;if(sel!=null&&n.setSelectionRange)try{n.setSelectionRange(sel,sel);}catch(e){}}}}
  else{byId('page-title')?.focus({preventScroll:true});}
@@ -3748,7 +3873,7 @@ function notify(text){const el=byId('status');el.textContent=text;el.hidden=fals
 function dialog(ttl,body,actions){const revision=++dialogRevision;const el=byId('dialog');byId('dialog-title').textContent=ttl;byId('dialog-body').innerHTML=body;byId('dialog-actions').innerHTML='';for(const a of actions){const b=document.createElement('button');b.type='button';b.className=actions.length>1&&a===actions.at(-1)?'cc-btn':'cc-btn cc-btn-bare';b.textContent=a.label;b.onclick=()=>{if(a.run&&a.run()===false)return;if(dialogRevision===revision)el.close();};byId('dialog-actions').append(b);}el.showModal();const first=byId('dialog-body').querySelector('input');if(first)first.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const btns=byId('dialog-actions').querySelectorAll('button');if(btns.length)btns[btns.length-1].click();}});}
 function guard(next){if(!model.dirty){next();return;}dialog(t('guard.title'),`<p>${esc(t('guard.body'))}</p>`,[{label:t('guard.stay')},{label:t('guard.leave'),run:()=>{model.dirty=false;next();}}]);}
 function go(dest){guard(()=>{byId('status').hidden=true;model.route=dest;model.record=null;model.dirty=false;model.open={identity:true};
- model.qsel=null;model.rtab='overview';model.open={identity:true};if(dest.startsWith('rate:')){const id=dest.slice(5);model.record={kind:'rate',id:id==='new'?null:id,draft:id==='new'?newRateDraft():clone(demo.rates.find(x=>x.id===id))};}
+ model.qsel=null;model.rtab='overview';model.open={identity:true};if(!dest.startsWith('work:')){model.wsCell=null;model.wsSource='';model.wsOcc='';model.wsBoard='';}if(dest.startsWith('rate:')){const id=dest.slice(5);model.record={kind:'rate',id:id==='new'?null:id,draft:id==='new'?newRateDraft():clone(demo.rates.find(x=>x.id===id))};}
  if(dest.startsWith('prop:')){model.open={basics:true};const id=dest.slice(5);model.record={kind:'prop',id:id==='new'?null:id,draft:id==='new'?newPropDraft():clone(demo.properties.find(x=>x.id===id))};}
  if(model.record&&model.record.kind==='rate'){const dr=model.record.draft;if(dr.imported&&dr.moderation==='needs_review')model.rtab='review';}
   if(dest!=='cat-accommodation'){model.q='';}model.qDraft=null;render();window.scrollTo({top:0,behavior:'instant'});});}
@@ -3783,6 +3908,7 @@ document.addEventListener('click',event=>{
  if(el.dataset.tab){model.tab=el.dataset.tab;model.q='';render(false);return;}
  if(el.dataset.rtab){model.rtab=el.dataset.rtab;render(false);return;}
  if(el.dataset.q){model.qsel=el.dataset.q;render(false);return;}
+ if(el.dataset.wsCell!=null){model.wsCell=model.wsCell===el.dataset.wsCell?null:el.dataset.wsCell;render(false);return;}
  if(el.dataset.fltReview!=null){model.review=el.dataset.fltReview==='1';render(false);return;}
  if(el.dataset.fltArch!=null){model.showArchived=el.dataset.fltArch==='1';render(false);return;}
  if(el.dataset.secToggle){const k=el.dataset.secToggle,was=model.open[k];const grp=SECGROUPS.find(g=>g.includes(k))||[k];grp.forEach(x=>{delete model.open[x];});model.open[k]=!was;render(false);return;}
@@ -3803,6 +3929,12 @@ document.addEventListener('click',event=>{
  else if(a==='archive-rate'||a==='restore-rate'){const r=demo.rates.find(x=>x.id===el.dataset.id);r.status=a==='archive-rate'?'archived':'active';render(false);document.querySelector('[data-search]')?.focus({preventScroll:true});notify(t('saved'));}
  else if(a==='archive-prop'||a==='restore-prop'){const p=demo.properties.find(x=>x.id===el.dataset.id);p.status=a==='archive-prop'?'archived':'active';render(false);notify(t('saved'));}
  else if(a==='goto'){const [tab,key]=String(el.dataset.goto).split(':');model.rtab=tab;const grp=SECGROUPS.find(g=>g.includes(key))||[];grp.forEach(x=>{delete model.open[x];});if(key)model.open[key]=true;render(false);setTimeout(()=>{const s=document.querySelector(`[data-sec="${key}"] .cc-sec__head`);if(s)s.focus({preventScroll:false});},0);}
+ else if(a==='ws-cell-add'){const pid=el.dataset.prop,rm=el.dataset.room,sn=el.dataset.season;guard(()=>{const r=newRateDraft();r.property=pid;r.destination=(propOf(pid)||{}).destination||null;r.room=rm;r.season=sn;r.occ=model.wsOcc||null;r.board=model.wsBoard||null;r.source=model.wsSource||'';r.subtype='room_rate';model.route='rate:new';model.record={kind:'rate',id:null,draft:r};model.dirty=true;model.open={identity:true};render();window.scrollTo({top:0,behavior:'instant'});});}
+ else if(a==='ws-add-room'||a==='ws-add-season'){const isRoom=a==='ws-add-room';const pid=model.route.slice(5);
+  dialog(t(isRoom?'ws.add_room':'ws.add_season'),`<label class="cc-label" for="ws-new">${esc(t(isRoom?'ws.add_room':'ws.add_season'))}</label><input class="cc-input" id="ws-new" placeholder="${esc(t(isRoom?'ws.add_room_ph':'ws.add_season_ph'))}" dir="auto">`,[{label:t('cancel')},{label:t('add_value'),run:()=>{const v=byId('ws-new').value.trim();if(!v)return false;
+   const r=newRateDraft();r.property=pid;r.destination=(propOf(pid)||{}).destination||null;r.subtype='room_rate';r.source=model.wsSource||'';
+   if(isRoom)r.room=v;else r.season=v;
+   model.route='rate:new';model.record={kind:'rate',id:null,draft:r};model.dirty=true;model.open={identity:true};render();window.scrollTo({top:0,behavior:'instant'});}}]);}
  else if(a==='save')save();
  else if(a==='discard'){if(!d)return;d.draft=d.id?clone((d.kind==='rate'?demo.rates:demo.properties).find(x=>x.id===d.id)):(d.kind==='rate'?newRateDraft():newPropDraft());model.dirty=false;render(false);}
  else if(a==='clear-prop'){if(destDerived(d.draft))d.draft.destination=null;d.draft.property=null;touch();render(false);}
@@ -3814,6 +3946,9 @@ document.addEventListener('input',event=>{
  const el=event.target;
  if(el.hasAttribute('data-search')){model.qDraft=el.value;return;}
  if(el.hasAttribute('data-filter-prop')){model.filterProp=el.value;render(false);return;}
+ if(el.hasAttribute('data-ws-source')){model.wsSource=el.value;model.wsCell=null;render(false);return;}
+ if(el.hasAttribute('data-ws-occ')){model.wsOcc=el.value;model.wsCell=null;render(false);return;}
+ if(el.hasAttribute('data-ws-board')){model.wsBoard=el.value;model.wsCell=null;render(false);return;}
  const d=model.record;if(!d)return;const name=el.dataset.field;if(!name)return;
  const r=d.draft;
  setPath(r,name,coerce(name,el.value));
