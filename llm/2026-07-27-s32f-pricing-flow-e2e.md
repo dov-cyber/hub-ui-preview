@@ -18,6 +18,7 @@
 
 https://dov-cyber.github.io/hub-ui-preview/m/2026-07-27-s32f-pricing-flow-e2e.html
 
+
 ## הטקסט שעל המסך
 
 הטקסט חולץ מהמסמך אוטומטית. הוא נועד לקריאת מודל ואינו תחליף לצפייה במסך.

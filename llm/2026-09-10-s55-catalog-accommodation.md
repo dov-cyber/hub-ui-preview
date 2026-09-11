@@ -1,6 +1,6 @@
 # קטלוג השירותים - לינה
 
-- מזהה: `2026-09-10-s55-catalog-accommodation` · גרסה 2
+- מזהה: `2026-09-10-s55-catalog-accommodation` · גרסה 3
 - תאריך: 10.09.2026
 - סטטוס: לאישור
 - קבוצה: פעיל
@@ -8,15 +8,30 @@
 
 ## מה המסך מכיל
 
-כרטיסי עשר הקטגוריות, רשימת תעריפים עם סינון לבדיקה, מרשם נכסים, עמוד רשומה מלא לתעריף ולנכס עם כותרת דביקה ומקטעים מתקפלים, תעריף צוות ותקציב לינת צוות, ופריט ישן בלי נכס.
+כרטיסי עשר הקטגוריות, רשימת תעריפים ומרשם נכסים; עמוד רשומה מלא בשלוש לשוניות - סקירה, מחיר ותנאים, בדיקה ומקור. רשומה מיובאת נכנסת ללשונית הבדיקה עם תור שאלות פתוחות לצד קטע המקור. תעריף צוות, תקציב לינת צוות ושורה מהקטלוג הישן.
 
 ## הערת סטטוס
 
-v2 - לאישור דב. v1 עם עורך במגירה נמשך באותו יום בהוראת דב (אין חלונות צפים).
+v3 - לאישור דב. נבנתה לפי כיוון העיצוב שנבחר בתשובת המאסטר מ-10.09.2026, אחרי שלושה סבבי ביקורת אדוורסרית. v2 (עמוד יחיד) ו-v1 (מגירה) נגנזו.
 
 ## המסך המעוצב
 
 https://dov-cyber.github.io/hub-ui-preview/m/2026-09-10-s55-catalog-accommodation.html
+
+## צילומי דפדפן
+
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/01-d-clean-overview.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/02-d-clean-terms.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/03-d-clean-review.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/04-d-import-review.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/05-d-import-overview.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/06-d-budget-terms.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/07-d-new-terms.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/08-d-narrow-review.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/09-m-clean-overview.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/10-m-import-review.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/11-m-clean-terms.png
+- https://dov-cyber.github.io/hub-ui-preview/shots/2026-09-10-s55-catalog-accommodation/index.txt
 
 ## הטקסט שעל המסך
 
@@ -25,7 +40,7 @@ https://dov-cyber.github.io/hub-ui-preview/m/2026-09-10-s55-catalog-accommodatio
 ```
 S55 - קטלוג השירותים - לינה - טיוטת עיצוב
 
-טיוטת עיצוב S55 - קטלוג השירותים, קטגוריה 1: לינה הדגמה מקומית בלבד. אין חיבור למערכת ואין שמירת נתונים. 10.09.2026 / v2.0 / לינה: נכסים ותעריפים / לאישור דב
+טיוטת עיצוב S55 - קטלוג השירותים, קטגוריה 1: לינה הדגמה מקומית בלבד. אין חיבור למערכת ואין שמירת נתונים. 10.09.2026 / v3.0 / לינה: עמוד רשומה בשלוש לשוניות / לאישור דב
 
 Authentico ™ Hub
 The AI Operating System for DMCs

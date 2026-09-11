@@ -3005,6 +3005,72 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
 .s55-list .cc-filterbar > select.cc-input { max-width:240px; }
 .s55-list .cc-empty, .s55-rec .cc-empty { margin-top:var(--spacing-md); }
 @media(max-width:760px){ .s55-two,.s55-three{ grid-template-columns:minmax(0,1fr);} .s55-row{ grid-template-columns:minmax(0,1fr) minmax(0,1fr);} .s55-rechead{ position:static; } }
+
+/* ---------- S55 v3: task tabs, overview and the review queue ---------- */
+.s55-rtabs { margin:var(--spacing-md) 0 0; }
+.s55-rtabpanel { margin-top:var(--spacing-md); }
+.s55-headline { display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--spacing-sm) var(--spacing-md); }
+.s55-headprice { font-weight:600; }
+.s55-headbasis { font-weight:400; color:var(--cc-text-2); }
+.s55-headmeta { color:var(--cc-text-2); margin-top:2px; }
+.s55-ovgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr)); gap:var(--spacing-md); align-items:start; }
+.s55-ovblock { padding:var(--spacing-md); }
+.s55-ovhead { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-sm); margin-bottom:var(--spacing-sm); }
+.s55-ovhead h3 { margin:0; font-size:1rem; }
+.s55-ovlist { margin:0; }
+.s55-ovrow { display:grid; grid-template-columns:minmax(0,10rem) minmax(0,1fr); gap:var(--spacing-sm); padding:6px 0; border-top:1px solid var(--cc-border); }
+.s55-ovrow:first-child { border-top:0; }
+.s55-ovrow dt { color:var(--cc-text-2); margin:0; }
+.s55-ovrow dd { margin:0; }
+.s55-qttl { margin:0 0 var(--spacing-sm); font-size:1rem; }
+.s55-qgrid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--spacing-md); align-items:start; }
+.s55-qlist { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--spacing-sm); }
+.s55-q { display:flex; width:100%; align-items:center; gap:var(--spacing-sm); text-align:start; background:var(--cc-surface);
+  border:1px solid var(--cc-border); border-radius:var(--cc-radius); padding:var(--spacing-sm) var(--spacing-md); min-height:var(--cc-row-h); cursor:pointer; }
+.s55-q:hover { background:var(--cc-sunken); }
+.s55-q.is-sel { border-color:var(--cc-warning-bar); background:var(--cc-sunken); }
+.s55-qn { flex:0 0 auto; width:1.5rem; height:1.5rem; border-radius:50%; border:1px solid var(--cc-border);
+  display:inline-flex; align-items:center; justify-content:center; font-size:.8125rem; }
+.s55-qt { display:flex; flex-direction:column; gap:2px; flex:1 1 auto; min-width:0; }
+.s55-qt small { color:var(--cc-text-2); }
+.s55-qanswer { background:var(--cc-surface); border:1px solid var(--cc-border); border-radius:var(--cc-radius); padding:var(--spacing-md); }
+.s55-qahead { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-sm); margin-bottom:var(--spacing-sm); }
+.s55-qahead h3 { margin:0; font-size:1rem; }
+.s55-excerpt { margin-top:var(--spacing-md); background:var(--cc-sunken); border:1px solid var(--cc-border); border-radius:var(--cc-radius); padding:var(--spacing-sm) var(--spacing-md); }
+.s55-exhead { display:flex; align-items:center; gap:var(--spacing-sm); color:var(--cc-text-2); }
+.s55-excerpt p { margin:var(--spacing-sm) 0; }
+.s55-qnote { margin-top:var(--spacing-sm); }
+.s55-row--fee { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,.7fr) minmax(0,.6fr) minmax(0,1fr) minmax(0,1fr) auto; }
+.s55-row--child { grid-template-columns:minmax(0,.6fr) minmax(0,.6fr) minmax(0,1fr) minmax(0,.7fr) minmax(0,.6fr) minmax(0,1fr) auto; }
+@media(max-width:900px){ .s55-qgrid{ grid-template-columns:minmax(0,1fr);} }
+@media(max-width:760px){
+  .s55-ovrow{ grid-template-columns:minmax(0,1fr); gap:0; }
+  .s55-row--fee,.s55-row--child{ grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+  .s55-headline{ gap:4px var(--spacing-sm); }
+}
+.s55-pick--empty { flex-wrap:wrap; }
+.s55-pick--empty .cc-input, .s55-pickselect { min-width:0; max-width:100%; flex:1 1 10rem; }
+/* ברוחב טלפון הסרגל נפתח מכווץ - אחרת עמודת התוכן מצטמצמת לשתי מילים בשורה.
+   זו הרחבה של המעטפת שנשמרה, לא ניווט חדש: אותם פריטים, אותו רכיב, מצב פתיחה אחר. */
+@media(max-width:760px){
+  .rail { width:56px; }
+  .rail .rail-label, .rail .rail-group, .rail .rail-fold, .rail .rail-toggle__hint { display:none; }
+  .rail .rail-item, .rail .rail-toggle { justify-content:center; padding:0; }
+  /* פס השמירה אינו דביק בטלפון - אחרת הוא מכסה את השדה האחרון ואת קטע המקור */
+  .s55-savebar { position:static; }
+}
+.s55-blockers { margin:0; padding-inline-start:1.2rem; }
+.s55-blockers li { padding:2px 0; }
+/* לשוניות הרשומה נשברות לשורה שנייה בטלפון במקום להיחתך */
+.s55-rtabs { flex-wrap:wrap; }
+@media(max-width:760px){
+  /* הכותרת נשארת דביקה גם בטלפון, בגובה מצומצם */
+  .s55-rechead { position:sticky; top:0; z-index:3; }
+  .s55-rechead .s55-headmeta { display:none; }
+  .s55-savebar { position:sticky; bottom:0; }
+}
+.s55-crumbname { display:inline-block; max-width:22ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:bottom; }
+@media(max-width:760px){ .s55-rec { padding-block-end:72px; } .s55-crumbname { max-width:14ch; } }
 </style>
 </head>
 <body>
@@ -3078,7 +3144,7 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
   <symbol id="i-arrow-swap" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol>
 </svg>
 <!-- /S53:SNAPSHOT SPRITE -->
-<div class="s53-review"><strong>טיוטת עיצוב S55 - קטלוג השירותים, קטגוריה 1: לינה</strong><span>הדגמה מקומית בלבד. אין חיבור למערכת ואין שמירת נתונים.</span><small>10.09.2026 / v2.0 / לינה: נכסים ותעריפים / לאישור דב</small></div>
+<div class="s53-review"><strong>טיוטת עיצוב S55 - קטלוג השירותים, קטגוריה 1: לינה</strong><span>הדגמה מקומית בלבד. אין חיבור למערכת ואין שמירת נתונים.</span><small>10.09.2026 / v3.0 / לינה: עמוד רשומה בשלוש לשוניות / לאישור דב</small></div>
 <header class="header">
  <div class="brand-block"><!-- S53:SNAPSHOT BRAND -->
 <svg class="brand-logo" viewBox="0 0 32.4 32.4" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Authentico"><path fill="#aa0000" d="M16.3,0C7.4-0.1,0.1,7.2,0,16.1s7.2,16.2,16.1,16.3c8.9,0.1,16.2-7.2,16.3-16.1v-0.2C32.3,7.2,25.2,0.1,16.3,0z M25.1,21.3c-0.8,0.2-1.6,0.1-2.4-0.1l-2.1-0.3c-0.8-0.1-1.6-0.4-2.2-0.4s-1.2-0.1-1.5,0.3s-0.1,0.9-0.1,1.2s0.3,2.2-0.3,2.2s-0.7-0.4-0.8-1.3s0.1-2-0.8-2.4c-0.9-0.3-1.8-0.5-2.7-0.6l-1.6-0.2l-3.2-0.2c-0.7-0.1-1.5-0.1-1.5-1s1.3-1.2,2.2-1.9c0.5-0.4,1.1-0.8,1.8-1c0.7-0.4,3.5-1.8,3.8-2.4c0.3-0.5,0.3-1,0.1-1.5c-0.1-0.3-1-2.6-0.8-3c0.3-0.4,0.7-0.4,1.1-0.2l0.3,0.4c0.3,0.5,0.8,2.6,1.1,2.8s0.2,0.5,1.2-0.1l2-1.2l1.3-1c0.4-0.3,1.3-0.7,1.6-1.2s1.5-0.9,1.5-0.5c0,0.5-0.2,0.9-0.6,1.2c-0.5,0.4-2.8,1.7-3.5,2.4L16.7,13c-0.5,0.4-0.9,1.1-0.9,1.8c0,1.3,0.3,2.7,0.8,3.9c0.4,0.5,1.1,0.8,1.8,0.8l3.1,0.6l3,0.8C25.1,20.9,25.3,21.2,25.1,21.3z M14.7,16c0.1,0.5,0.6,3-0.2,3l-2.8-0.3c-0.6,0-3-0.1-2.7-0.7c0.6-0.6,1.2-1,1.9-1.4c0.4-0.3,2.5-2.1,2.9-1.8C14.3,15,14.6,15.5,14.7,16z"/></svg>
@@ -3125,6 +3191,43 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
    Record editing is a full page with progressive disclosure (Master §43A, §43C), not a drawer.
    Every user-visible string goes through t(); the keys are a mockup proposal, not a production seed. */
 const copy={
+ 'f.validity':'תוקף','f.taxes_help':'זהו אופן החיוב הכללי של התעריף. חיוב שנקוב בשורת חיובי החובה גובר עליו, כדי שאותו מס לא ייספר פעמיים.',
+ 'acc.none':'אין','acc.none_stated':'לא נאמר במקור','acc.moderation':'בדיקת נתונים שהתקבלו','acc.reviewed':'נבדק',
+ 'prov.import':'ייבוא ממקור',
+ 'f.destination_help_derived':'נגזר מהנכס המקושר. אפשר לשנות ידנית, והשינוי נשמר.',
+ 'f.destination_help_plain':'מהמרשם הקנוני של היעדים. אינו נגזר משם חופשי.',
+ 'f.name_help_manual':'השם נכתב ידנית ואינו נדרס בשינוי הנכס, החדר, התפוסה, ההסעדה או העונה.',
+ 'miss.property_archived':'נכס בארכיון',
+ 'err.range_dates':'תאריך הסיום מוקדם מתאריך ההתחלה.','err.range_blackout':'בתאריכים החסומים יש טווח הפוך.','err.range_age':'בכללי הילדים יש גיל עליון נמוך מהתחתון.',
+ 'acc.mark_ready_confirm':'הסימון נשמר מיד ומעיד שאדם בדק את הנתונים שהתקבלו.','acc.marked':'הרשומה סומנה כמוכנה ונשמרה בהדגמה.',
+ 'f.blackout_one':'תאריך חסום אחד','f.fees_one':'חיוב חובה אחד','f.child_rules_one':'כלל ילדים אחד','f.addons_one':'תוספת אחת בתשלום',
+ 'sec.identity':'זהות התעריף','sec.identity.sub':'סוג, נכס, יעד, חדר ושם הפריט',
+ 'sec.stay':'שהות ותוקף','sec.stay.sub':'תפוסה, הסעדה, עונה ותאריכי תוקף',
+ 'sec.pricing':'תמחיר','sec.pricing.sub':'בסיס, סכום, סוג עלות ומע\u05b4מ',
+ 'rec.edit_identity':'עריכת זהות התעריף','rec.edit_stay':'עריכת שהות ותוקף','rec.edit_pricing':'עריכת תמחיר',
+ 'rec.edit_terms':'עריכת תנאים','rec.edit_extras':'עריכת תוספות','rec.edit_source':'עריכת מקור מסחרי',
+ 'f.readiness_short':'דרישות למופע','acc.except':'למעט',
+ 'rec.blockers':'מה חסר כדי לסמן כמוכן','rec.blockers_none':'לא חסר דבר כדי לסמן כמוכן.',
+ 'derived_prop':'נגזר מהנכס',
+ 'rt.overview':'סקירה','rt.terms':'מחיר ותנאים','rt.review':'בדיקה ומקור',
+ 'rec.tabs_aria':'מקטעי הרשומה','rec.edit':'עריכת פרטים','rec.source_name':'שם במקור','rec.no_currency':'מטבע לא צוין',
+ 'rec.summary':'פרטי הרשומה','rec.dates':'תאריכים ותנאים','rec.extras':'תוספות וכללי ילדים','rec.source':'מקור ומצב',
+ 'rec.open_all':'אפשר לצפות ולערוך את כל פרטי הרשומה גם לפני השלמת הבדיקה.',
+ 'q.title':'{n} שאלות פתוחות להשלמה','q.title_one':'שאלה פתוחה אחת להשלמה','q.none':'אין שאלות פתוחות ברשומה הזאת.',
+ 'q.answer':'פתרון לשאלה שנבחרה','q.required':'חובה','q.excerpt':'מקור לדוגמה',
+ 'q.excerpt_note':'זהו נתון שהתקבל ממקור חיצוני ולא אומת מול המרשם.',
+ 'q.property':'נכס לא מקושר','q.property_help':'יש לקשר את {name} לנכס במרשם.',
+ 'q.currency':'מטבע לא צוין','q.currency_help':'לא צוין מטבע עבור הסכום {rate}.',
+ 'q.board':'הסעדה לא ברורה','q.board_help':'במקור כתוב Breakfast: to be confirmed - יש לבחור הסעדה או לאמת מול הספק.',
+ 'q.blocked_one':'שאלה אחת עדיין פתוחה','q.blocked':'{n} שאלות עדיין פתוחות',
+ 'acc.save_draft':'שמירת טיוטה','acc.mark_ready':'סימון כמוכן',
+ 'acc.mark_ready_help':'סימון כמוכן הוא פעולת בדיקה מפורשת - אדם מאשר שהנתונים שהתקבלו נבדקו. הוא אינו זמין כל עוד יש שאלה פתוחה, והוא נפרד משמירת טיוטה.',
+ 'fee.city_tax':'מס עירוני','fee.resort_fee':'דמי אתר','fee.service_charge':'דמי שירות','fee.other':'חיוב אחר',
+ 'f.fees':'חיובי חובה','f.fees_help':'כל חיוב נושא סוג מוגדר ואופן חיוב. סכום שאינו ידוע נשאר ריק ומוצג כלא ידוע - לא כאפס ולא ככלול.',
+ 'f.child_rules':'כללי ילדים','f.child_rules_help':'כלל לכל טווח גיל: ללא חיוב, בתשלום, או לפי הצעה כשהמקור אינו אומר. גיל עליון ריק פירושו בלי גבול עליון.',
+ 'ct.free':'ללא חיוב','ct.paid':'בתשלום','ct.quote':'לפי הצעה',
+ 'row.kind':'סוג החיוב','row.treatment':'אופן החיוב','row.age_from':'מגיל','row.age_to':'עד גיל','row.rule_add':'הוספת כלל','row.fee_add':'הוספת חיוב',
+ 'row.age_to_ph':'ללא גבול',
  'settings.home':'הגדרות','settings.home_desc':'ניהול התוכן, הנתונים, הגישה והחיבורים של הארגון.',
  'settings.models':'ניהול מודלי AI','settings.templates':'ניהול תבניות','settings.permissions':'ניהול הרשאות',
  'settings.destinations':'ניהול יעדים','settings.dictionary':'ניהול מילון','settings.catalog':'קטלוג השירותים',
@@ -3165,15 +3268,15 @@ const copy={
  'f.destination':'יעד','f.destination_help':'מהמרשם הקנוני של היעדים. לתעריף חדר - נגזר מהנכס וניתן לשינוי; לתקציב לינה - נבחר ישירות במקום נכס.','f.destination_pick':'בחירת יעד',
  'f.room':'שם החדר הרשמי','f.room_help':'כפי שהנכס מכנה אותו; מוצג ללקוח','f.category':'קטגוריית חדר מנורמלת','f.name':'שם הפריט','f.name_help':'נגזר מהנכס, החדר, התפוסה, ההסעדה והעונה. עריכה ידנית נשמרת ואינה נדרסת.',
  'f.occupancy':'בסיס תפוסה','f.max_occ':'תפוסה מרבית','f.adults':'מבוגרים','f.children':'ילדים','f.board':'הסעדה',
- 'f.season':'שם העונה','f.season_ph':'למשל: עונה גבוהה','f.valid_from':'בתוקף מתאריך','f.valid_until':'בתוקף עד תאריך','f.weekday':'ימי השבוע','f.min_stay':'מינימום לילות','f.max_stay':'מקסימום לילות','f.max_stay_help':'ריק = לא ידוע; המנוע אינו מגביל','f.blackout':'תאריכים חסומים','f.blackout_help':'טווח שבו התעריף אינו תקף','f.blackout_add':'טווח',
+ 'f.season':'שם העונה','f.season_ph':'למשל: עונה גבוהה','f.valid_from':'בתוקף מתאריך','f.valid_until':'בתוקף עד תאריך','f.weekday':'ימי השבוע','f.min_stay':'מינימום לילות','f.max_stay':'מקסימום לילות','f.max_stay_help':'שדה ריק פירושו שלא נקבעה מגבלה עליונה.','f.blackout':'תאריכים חסומים','f.blackout_help':'טווח שבו התעריף אינו תקף','f.blackout_add':'טווח',
  'f.basis':'בסיס התמחיר','f.basis_help_room':'מומלץ לתעריף חדר: לחדר ללילה, עם סוג עלות קבוע לקבוצה. מספר החדרים ומספר הלילות נקבעים בשורת התקציב ולא כאן.','f.basis_help_budget':'תקציב = סכום לאיש ללילה: "ללילה" יחד עם סוג עלות "משתנה לפי נוסעים".',
- 'f.rate':'תעריף','f.currency':'מטבע','f.quote':'נדרשת הצעת מחיר','f.quote_help':'התעריף אינו ידוע. הפריט נשמר; המנוע אינו מתמחר עליו (מאסטר §5A).',
- 'f.vat':'מע"מ','f.vat_rate':'שיעור מע"מ','f.cost_type':'סוג עלות','f.cost_type_help':'קבוע לקבוצה = אינו מוכפל במספר הנוסעים (מומלץ לתעריף חדר); משתנה לפי נוסעים = מוכפל (תקציב לינת צוות)','f.pax_type':'סוג נוסע',
+ 'f.rate':'תעריף','f.currency':'מטבע','f.quote':'נדרשת הצעת מחיר','f.quote_help':'המחיר יימסר בהצעה מהספק. הפריט נשמר, ולא ייעשה בו שימוש בתמחור עד שיתקבל מחיר.',
+ 'f.vat':'מע"מ','f.vat_rate':'שיעור מע"מ','f.cost_type':'סוג עלות','f.cost_type_help':'קבוע לקבוצה - הסכום אינו מוכפל במספר הנוסעים, כמו מחיר חדר. משתנה לפי נוסעים - הסכום מוכפל במספר האנשים.','f.pax_type':'סוג נוסע',
  'f.extra_bed':'מיטה נוספת','f.extra_bed_help':'לחדר ללילה','f.single_sup':'תוספת יחיד','f.single_sup_help':'ללילה','f.child_free':'ילד עד גיל - ללא תשלום','f.child_rate':'תעריף ילד','f.child_rate_help':'ללילה, בחדר ההורים',
  'f.taxes':'מיסים ואגרות','f.city_tax':'מס עירוני','f.city_tax_help':'לנוסע ללילה; כשהמיסים משולמים במקום או מתווספים',
  'f.release':'שחרור (ימים לפני הגעה)','f.release_help':'דריסה של ברירת המחדל במקור המסחרי; ריק = לפי המקור, ובלי מקור - לא ידוע','f.cancellation':'מדיניות ביטול','f.cancellation_help':'דריסה של ברירת המחדל במקור המסחרי; ריק = לפי המקור, ובלי מקור - לא ידוע',
  'f.mandatory':'תוספות חובה','f.mandatory_help':'תוספת שהנכס מחייב בתאריכים מסוימים - למשל ארוחת גאלה','f.addons':'תוספות בתשלום לפי בקשה','f.addons_help':'תעריף קטלוגי לתוספת שנרכשת לפי בקשה - כניסה מוקדמת, יציאה מאוחרת, שדרוג. במופע היא שורת בת פשוטה (מאסטר §39A.11)',
- 'f.supplier':'ספק','f.supplier_help':'ריק = תעריף משותף. הספק נבחר ממרשם החברות; הסינון ליחס ספק פעיל נכנס כשהיחסים נולדים (פרוסה 6A)','f.source':'מקור מסחרי','f.source_help':'מקורות של הספק שנבחר בלבד; חוזה הוא סוג מקור אחד ואינו חובה','f.source_none':'ללא ספק - אין מקור',
+ 'f.supplier':'ספק','f.supplier_help':'הספק נבחר ממרשם החברות. תעריף בלי ספק הוא תעריף משותף לארגון.','f.source':'מקור מסחרי','f.source_help':'מקורות של הספק שנבחר בלבד; חוזה הוא סוג מקור אחד ואינו חובה','f.source_none':'ללא ספק - אין מקור',
  'f.included':'כלול','f.not_included':'לא כלול','f.benefits':'הטבות כלולות','f.notes':'הערות פנימיות',
  'f.status':'מצב','f.readiness':'דרישות מוכנות למופע','f.readiness_help':'מה נדרש כדי שמופע מהתעריף ייחשב מוכן','f.readiness_ph':'מספר אישור','f.provenance':'מקור הנתון','f.legacy':'גרסה ישנה (קריאה בלבד)','f.legacy_name':'שם ישן','f.legacy_catalog':'קטלוג ישן','f.legacy_unit':'יחידה ישנה',
  'row.name':'שם','row.amount':'סכום','row.currency':'מטבע','row.basis':'בסיס','row.add':'תוספת','row.remove':'הסרה','row.from':'מתאריך','row.until':'עד תאריך',
@@ -3183,7 +3286,7 @@ const copy={
  'st.active':'פעיל','st.suspended':'מושהה','st.archived':'בארכיון','st.new':'חדש - טרם נשמר',
  'basis.per_room_night':'לחדר ללילה','basis.per_night':'ללילה','basis.per_pax':'לנוסע','basis.per_group':'לקבוצה','basis.formula':'נוסחה',
  'sub.room_rate':'תעריף חדר','sub.staff_room_rate':'תעריף צוות','sub.staff_lodging_budget':'תקציב לינת צוות',
- 'sub.staff_room_rate.help':'תעריף מוזל לאיש צוות בנכס רשום - במלון הקבוצה או במלון אחר','sub.staff_lodging_budget.help':'סכום לאיש ללילה; המלון אינו ידוע ואינו רלוונטי - הספק הגדיר תקציב. נדרש יעד, לא נכס.',
+ 'sub.staff_room_rate.help':'תעריף מוזל לאיש צוות בנכס רשום - במלון הקבוצה או במלון אחר','sub.staff_lodging_budget.help':'סכום לאיש ללילה שהספק הגדיר, בלי מלון מסוים. נדרש יעד במקום נכס.',
  'occ.SGL':'יחיד','occ.DBL':'זוגי','occ.TWIN':'טווין','occ.TRPL':'שלושה','occ.QUAD':'ארבעה','occ.FAMILY':'משפחתי','occ.other':'אחר',
  'board.RO':'ללא ארוחות','board.BB':'ארוחת בוקר','board.HB':'חצי פנסיון','board.FB':'פנסיון מלא','board.AI':'הכל כלול','board.other':'אחר',
  'wk.all':'כל השבוע','wk.weekday':'ימי חול','wk.weekend':'סוף שבוע',
@@ -3197,10 +3300,10 @@ const copy={
  'prov.manual':'ידני','prov.migration':'הגירה מהקטלוג הישן','prov.new':'חדש - טרם נשמר','prov.dup':'שוכפל מתעריף קיים - טרם נשמר',
  'unset':'טרם נבחר','legacy_value':'ערך ישן - נשמר',
  'rail.geo':'GEO & SEO','rail.clusters':'אשכולות','rail.types':'סוגי תוכן','rail.refresh':'רענון מהאתר','rail.gsc':'Search Console','rail.intent':'סיווג Intent','rail.inventory':'מלאי תוכן','rail.health':'בריאות הפלטפורמה','rail.conn':'בדיקת חיבור',
- 'grp.content':'תוכן ונתונים','grp.access':'ניהול וגישה','grp.system':'חיבורים ומערכת','ph.geo':'lat, lng','ph.pct':'%',
+ 'grp.content':'תוכן ונתונים','grp.access':'ניהול וגישה','grp.system':'חיבורים ומערכת','ph.geo':'קו רוחב, קו אורך','ph.pct':'%',
  'e.dict':'מונחים, תוויות וטולטיפים של המערכת','e.dests':'שמות יעדים ותרגומים במרשם הקנוני','e.catalog':'שירותים, תעריפים, נכסים ומקורות מסחריים','e.models':'ברירת מחדל ובחירת מודל לפי פעולה','e.templates':'תבניות המייל הקיימות במקום אחד','e.perm':'תמונת מצב וכניסה להרשאות השותף','e.integrations':'חיבור למערכת חיצונית, מיפוי שדות ומדיניות סנכרון','e.appearance':'הגדרות התצוגה והעיצוב','e.flags':'דגלי מערכת ותצורה','derived':'נגזר','save':'שמירה','discard':'ביטול השינויים','cancel':'ביטול','close':'סגירה','add_value':'ערך','remove':'הסרה','on':'פעיל','off':'כבוי',
  'dirty':'שינויים שלא נשמרו','clean':'אין שינויים שלא נשמרו','saved':'נשמר בהדגמה. אין כתיבה למערכת.',
- 'guard.title':'שינויים שלא נשמרו','guard.body':'הטיוטה השתנתה בהדגמה. אפשר להישאר לעריכה או לצאת ללא שמירת השינויים.','guard.stay':'המשך עריכה','guard.leave':'יציאה ללא שמירה',
+ 'guard.title':'שינויים שלא נשמרו','guard.body':'יש בטיוטה שינויים שלא נשמרו. אפשר להישאר לעריכה או לצאת ללא שמירת השינויים.','guard.stay':'חזרה לעריכה','guard.leave':'יציאה ללא שמירה',
  'demo_note':'דוגמת חזות בלבד. הנתונים בדויים. אין קריאה או כתיבה למערכת.',
  'err.name_required':'לפריט נדרש שם - נגזר או מוקלד.','err.prop_name_required':'לנכס נדרש שם.',
  'miss.property':'נכס','miss.destination':'יעד','miss.subtype':'סוג התעריף','miss.basis':'בסיס תמחיר','miss.cost_type':'סוג עלות','miss.rate':'תעריף ומטבע או סימון "נדרשת הצעת מחיר"','miss.prefix':'חסר למוכנות: ','crumbs.aria':'נתיב ההגדרות','table.aria':'טבלת נתונים נגללת'
@@ -3241,6 +3344,10 @@ const RC=['standard','superior','deluxe','junior_suite','suite','family','other'
 const PTYPES=['hotel','resort','lodge','ryokan','villa','apartment','camp','other'];
 const STATUS=['active','suspended','archived'];
 const SUPB=['per_pax','per_room','per_room_night','per_pax_night','per_stay'];
+const FEEKIND=['city_tax','resort_fee','service_charge','other'];
+const CTREAT=['free','paid','quote'];
+const RTABS=['overview','terms','review'];
+const SECGROUPS=[['identity','stay','pricing','terms','extras'],['commercial','status'],['basics','place','contact','notes','rates']];
 const CURR=['USD','EUR','GEL','UZS','ILS'];
 const demo={
  destinations:[{id:'d-uz',name:'Uzbekistan'},{id:'d-ge',name:'Georgia'},{id:'d-am',name:'Armenia'}],
@@ -3253,25 +3360,36 @@ const demo={
  ],
  rates:[
   {id:'r1',subtype:'room_rate',property:'p1',destination:'d-uz',room:'Standard Double',rc:'standard',occ:'DBL',max_occ:2,adults:2,children:1,board:'BB',season:'עונה גבוהה',from:'2026-04-01',until:'2026-10-31',wk:'all',min:1,max:null,blackout:[{from:'2026-09-12',until:'2026-09-14'}],
-   basis:'per_room_night',rate:120,cur:'USD',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:30,cur:'USD'},single_sup:{amount:null,cur:null},child_free:6,child_rate:{amount:null,cur:null},taxes:'included',city_tax:{amount:null,cur:null},release_days:null,cancellation:'',
-   mandatory:[],addons:[{name:'כניסה מוקדמת מובטחת',amount:40,cur:'USD',basis:'per_room'},{name:'יציאה מאוחרת',amount:40,cur:'USD',basis:'per_room'}],
-   supplier:'c1',source:'s1',included:['ארוחת בוקר','Wi-Fi'],not_included:['מס עירוני'],benefits:[],notes:'',status:'active',readiness:['מספר אישור'],prov:{kind:'manual',at:'2026-09-03'},legacy:null,imported:false},
+   basis:'per_room_night',rate:120,cur:'USD',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:30,cur:'USD'},single_sup:{amount:null,cur:null},child_rules:[],
+   taxes:'included',fees:[{name:'מס עירוני',kind:'city_tax',amount:null,cur:'',basis:'per_pax_night',treatment:'added'}],release_days:null,cancellation:'',
+   addons:[{name:'כניסה מוקדמת מובטחת',amount:40,cur:'USD',basis:'per_room'},{name:'יציאה מאוחרת',amount:null,cur:'',basis:'per_room'}],
+   supplier:'c1',source:'s1',included:['ארוחת בוקר','Wi-Fi'],not_included:[],benefits:[],notes:'',status:'active',readiness:['מספר אישור'],prov:{kind:'manual',at:'2026-09-03'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
   {id:'r2',subtype:'room_rate',property:'p2',destination:'d-ge',room:'Deluxe Mountain View',rc:'deluxe',occ:'DBL',max_occ:3,adults:2,children:1,board:'HB',season:'חורף 2026-27',from:'2026-12-01',until:'2027-03-31',wk:'all',min:2,max:null,blackout:[{from:'2026-12-30',until:'2027-01-02'}],
-   basis:'per_room_night',rate:290,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:60,cur:'EUR'},single_sup:{amount:90,cur:'EUR'},child_free:4,child_rate:{amount:null,cur:null},taxes:'added',city_tax:{amount:null,cur:null},release_days:14,cancellation:'',
-   mandatory:[{name:'ארוחת גאלה 31.12',amount:95,cur:'EUR',basis:'per_pax'}],addons:[],
-   supplier:'c2',source:'s2',included:['חצי פנסיון'],not_included:[],benefits:['ספא'],notes:'',status:'active',readiness:['מספר אישור','שמות אורחים'],prov:{kind:'manual',at:'2026-09-05'},legacy:null,imported:false},
+   basis:'per_room_night',rate:290,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:60,cur:'EUR'},single_sup:{amount:90,cur:'EUR'},
+   child_rules:[{age_from:0,age_to:5,treatment:'free',amount:null,cur:'',basis:''},{age_from:6,age_to:11,treatment:'paid',amount:45,cur:'EUR',basis:'per_pax_night'},{age_from:12,age_to:null,treatment:'quote',amount:null,cur:'',basis:''}],
+   taxes:'added',fees:[{name:'ארוחת גאלה 31.12',kind:'other',amount:95,cur:'EUR',basis:'per_pax',treatment:'added'}],release_days:14,cancellation:'',
+   addons:[],supplier:'c2',source:'s2',included:['חצי פנסיון'],not_included:[],benefits:['ספא'],notes:'',status:'active',readiness:['מספר אישור','שמות אורחים'],prov:{kind:'manual',at:'2026-09-05'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
   {id:'r3',subtype:'staff_room_rate',property:'p2',destination:'d-ge',room:'Standard',rc:'standard',occ:'SGL',max_occ:1,adults:1,children:0,board:'HB',season:'חורף 2026-27',from:'2026-12-01',until:'2027-03-31',wk:'all',min:1,max:null,blackout:[],
-   basis:'per_room_night',rate:110,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_free:null,child_rate:{amount:null,cur:null},taxes:'added',city_tax:{amount:null,cur:null},release_days:null,cancellation:'',
-   mandatory:[],addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'תעריף מוזל למדריך ולנהג כשישנים עם הקבוצה',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-05'},legacy:null,imported:false},
-  {id:'r4',subtype:null,property:null,destination:null,room:'',rc:null,name:'Registon Plaza Samarkand - חדר זוגי (עונה גבוהה)',name_manual:true,moderation:'needs_review',occ:null,max_occ:null,adults:null,children:null,board:null,season:'',from:'',until:'',wk:null,min:null,max:null,blackout:[],
-   basis:'per_night',rate:95,cur:'USD',quote:false,vat:'',vat_rate:null,cost_type:'VAR_PAX',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_free:null,child_rate:{amount:null,cur:null},taxes:null,city_tax:{amount:null,cur:null},release_days:null,cancellation:'',
-   mandatory:[],addons:[],supplier:'c1',source:null,included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'migration',at:'2026-09-20'},legacy:{name:'Registon Plaza Samarkand - חדר זוגי (עונה גבוהה)',unit:'per_night',catalog:'hotels',cost_type:'VAR_PAX'},imported:true},
+   basis:'per_room_night',rate:110,cur:'EUR',quote:false,vat:'included',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],
+   taxes:'added',fees:[],release_days:null,cancellation:'',
+   addons:[],supplier:'c2',source:'s2',included:[],not_included:[],benefits:[],notes:'תעריף מוזל למדריך ולנהג כשישנים עם הקבוצה',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-05'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r4',subtype:'room_rate',property:null,destination:null,room:'Standard Double',rc:null,occ:'DBL',max_occ:null,adults:null,children:null,board:null,season:'',from:'2026-04-01',until:'2026-10-31',wk:null,min:null,max:null,blackout:[],
+   basis:'per_room_night',rate:120,cur:'',quote:false,vat:'',vat_rate:null,cost_type:'FIX_GROUP',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],
+   taxes:null,fees:[],release_days:null,cancellation:'',
+   addons:[],supplier:'c1',source:'s1',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],moderation:'needs_review',prov:{kind:'import',at:'2026-09-10'},legacy:null,imported:true,
+   source_name:'Registon Plaza',excerpt:'Registon Plaza / Standard Double / 120 / Breakfast: to be confirmed',questions:['property','currency','board']},
   {id:'r5',subtype:'staff_lodging_budget',property:null,destination:'d-uz',room:'',rc:null,occ:null,max_occ:null,adults:null,children:null,board:'BB',season:'2026',from:'2026-01-01',until:'2026-12-31',wk:null,min:null,max:null,blackout:[],
-   basis:'per_night',rate:45,cur:'USD',quote:false,vat:'none',vat_rate:null,cost_type:'VAR_PAX',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_free:null,child_rate:{amount:null,cur:null},taxes:'included',city_tax:{amount:null,cur:null},release_days:null,cancellation:'',
-   mandatory:[],addons:[],supplier:'c1',source:'s1',included:['ארוחת בוקר'],not_included:[],benefits:[],notes:'לינת נהג ומדריך מקומי, מלון לפי בחירת הספק',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-03'},legacy:null,imported:false}
+   basis:'per_night',rate:45,cur:'USD',quote:false,vat:'none',vat_rate:null,cost_type:'VAR_PAX',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],
+   taxes:'included',fees:[],release_days:null,cancellation:'',
+   addons:[],supplier:'c1',source:'s1',included:['ארוחת בוקר'],not_included:[],benefits:[],notes:'לינת נהג ומדריך מקומי, מלון לפי בחירת הספק',status:'active',readiness:[],prov:{kind:'manual',at:'2026-09-03'},legacy:null,imported:false,source_name:'',excerpt:'',questions:[]},
+  {id:'r6',subtype:null,property:null,destination:null,room:'',rc:null,name:'Registon Plaza Samarkand - חדר זוגי (עונה גבוהה)',name_manual:true,moderation:'needs_review',occ:null,max_occ:null,adults:null,children:null,board:null,season:'',from:'',until:'',wk:null,min:null,max:null,blackout:[],
+   basis:'per_night',rate:95,cur:'USD',quote:false,vat:'',vat_rate:null,cost_type:'VAR_PAX',pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],
+   taxes:null,fees:[],release_days:null,cancellation:'',
+   addons:[],supplier:'c1',source:null,included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'migration',at:'2026-08-20'},legacy:{name:'Registon Plaza Samarkand - חדר זוגי (עונה גבוהה)',unit:'per_night',catalog:'hotels',cost_type:'VAR_PAX'},imported:true,
+   source_name:'',excerpt:'',questions:[]}
  ]
 };
-const model={route:'catalog',tab:'rates',q:'',filterProp:'',review:false,showArchived:false,record:null,dirty:false,open:{basics:true}};
+const model={route:'catalog',tab:'rates',q:'',filterProp:'',review:false,showArchived:false,record:null,dirty:false,open:{basics:true},rtab:'overview',qsel:null};
 let dialogRevision=0;
 const clone=o=>JSON.parse(JSON.stringify(o));
 const propOf=id=>demo.properties.find(p=>p.id===id)||null;
@@ -3281,7 +3399,7 @@ const destName=id=>{const d=demo.destinations.find(d=>d.id===id);return d?d.name
 const isBudget=r=>r.subtype==='staff_lodging_budget';
 
 /* ---------- readiness (Master §5A minimal mandatory + contextual validation; §43E Ready / Needs Review) ---------- */
-function missingForReady(r){const m=[];if(!r.subtype)m.push(t('miss.subtype'));if(isBudget(r)){if(!r.destination)m.push(t('miss.destination'));}else if(!r.property)m.push(t('miss.property'));if(!r.basis)m.push(t('miss.basis'));if(!r.cost_type)m.push(t('miss.cost_type'));if(!r.quote&&(r.rate==null||r.rate===''||!r.cur))m.push(t('miss.rate'));return m;}
+function missingForReady(r){const m=[];if(!r.subtype)m.push(t('miss.subtype'));if(isBudget(r)){if(!r.destination)m.push(t('miss.destination'));}else if(!r.property)m.push(t('miss.property'));else if((propOf(r.property)||{}).status==='archived')m.push(t('miss.property_archived'));if(!r.basis)m.push(t('miss.basis'));if(!r.cost_type)m.push(t('miss.cost_type'));if(!r.quote&&(r.rate==null||r.rate===''||!r.cur))m.push(t('miss.rate'));return m;}
 const awaiting=r=>r.moderation==='needs_review';
 const isReady=r=>missingForReady(r).length===0&&!awaiting(r)&&r.moderation!=='rejected';
 const destDerived=r=>!!(r.property&&r.destination&&(propOf(r.property)||{}).destination===r.destination);
@@ -3298,7 +3416,7 @@ const panel=body=>`<section class="cc-section s53-panel s55-list">${body}</secti
 const table=(heads,rows,cls='')=>`<div class="cc-table-wrap s53-table-scroll" tabindex="0" aria-label="${esc(t('table.aria'))}"><table class="cc-table ${cls}"><thead><tr>${heads.map(h=>`<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 const note=(text,tone='info')=>`<p class="cc-msg cc-msg--${tone} s53-status">${esc(text)}</p>`;
 const field=(label,control,help='',span=false)=>`<div class="${span?'s53-span':''}"><label class="cc-label">${esc(label)}</label>${control}${help?`<div class="cc-help">${esc(help)}</div>`:''}</div>`;
-function input(name,value,opts={}){if(opts.inputmode&&!opts.type){opts.type='number';opts.step=opts.inputmode==='decimal'?'any':'1';}const cls=['cc-input',opts.ltr?'cc-input--ltr':''].filter(Boolean).join(' ');const attrs=[`class="${cls}"`,`data-field="${name}"`,`value="${esc(value)}"`,opts.type?`type="${opts.type}"`:'',opts.step?`step="${opts.step}" min="0"`:'',opts.inputmode?`inputmode="${opts.inputmode}"`:'',opts.placeholder?`placeholder="${esc(opts.placeholder)}"`:'',opts.disabled?'disabled':'',opts.dir?`dir="${opts.dir}"`:'',opts.aria?`aria-label="${esc(opts.aria)}"`:''].filter(Boolean).join(' ');return `<input ${attrs}>`;}
+function input(name,value,opts={}){if(opts.inputmode&&!opts.type){opts.type='text';}const cls=['cc-input',opts.ltr?'cc-input--ltr':''].filter(Boolean).join(' ');const attrs=[`class="${cls}"`,`data-field="${name}"`,`value="${esc(value)}"`,opts.type?`type="${opts.type}"`:'',opts.step?`step="${opts.step}" min="0"`:'',opts.inputmode?`inputmode="${opts.inputmode}"`:'',opts.placeholder?`placeholder="${esc(opts.placeholder)}"`:'',opts.disabled?'disabled':'',opts.dir?`dir="${opts.dir}"`:'',opts.aria?`aria-label="${esc(opts.aria)}"`:''].filter(Boolean).join(' ');return `<input ${attrs}>`;}
 const select=(name,value,options,extra='',cls='')=>`<select class="cc-input ${cls}" data-field="${name}" ${extra}>${options.map(([v,l])=>`<option value="${esc(v)}" ${String(v)===String(value==null?'':value)?'selected':''}>${esc(l)}</option>`).join('')}</select>`;
 /* segmented toggle (el-seg); unset = highlighted frame + attention chip (el-seg-unset) - never a default shown as a choice */
 const seg=(name,value,options,labelOf)=>{if(value&&!options.includes(value))options=[...options,value];return `<div class="s55-segrow"><div class="cc-seg ${value==null||value===''?'s55-seg-unset':''}" role="group">${options.map(v=>`<button type="button" class="${v===value?'is-active':''}" data-seg="${name}" data-value="${esc(v)}">${esc(labelOf(v))}</button>`).join('')}</div>${value==null||value===''?chip(t('unset'),'cc-chip--warn-soft'):''}</div>`;};
@@ -3307,7 +3425,7 @@ const tags=(name,values,placeholder)=>`<div class="cc-chipinput" role="group" da
 /* money = amount + currency, never a bare number (engineering §0) */
 const moneyField=(name,val,label)=>`<div class="s55-money">${input(name+'.amount',val.amount==null?'':val.amount,{ltr:true,inputmode:'decimal',aria:label})}${select(name+'.cur',val.cur||'',[['',t('acc.unknown')],...CURR.map(c=>[c,c])],`aria-label="${esc(t('f.currency'))}"`)}</div>`;
 /* boolean = the product switch (cc-switch), both states drawn */
-const sw=(name,on,label)=>`<span class="s55-switch"><button type="button" class="cc-switch ${on?'is-on':''}" role="switch" aria-checked="${on?'true':'false'}" data-switch="${name}" aria-label="${esc(label)}"><span class="cc-switch__track"><span class="cc-switch__knob"></span></span></button>${chip(on?t('on'):t('off'),'cc-chip--bare')}</span>`;
+const sw=(name,on,label,unset)=>`<span class="s55-switch"><button type="button" class="cc-switch ${on?'is-on':''}" role="switch" aria-checked="${on?'true':'false'}" data-switch="${name}" aria-label="${esc(label)}"><span class="cc-switch__track"><span class="cc-switch__knob"></span></span></button>${unset&&!on?chip(t('unset'),'cc-chip--warn-soft'):chip(on?t('on'):t('off'),'cc-chip--bare')}</span>`;
 const search=(placeholder)=>`<div class="cc-searchwrap"><button type="button" class="cc-searchgo" aria-label="${esc(t('acc.search_go'))}" data-action="search-go">${icon('#i-search','cc-icon--sm')}</button><input class="cc-input" aria-label="${esc(placeholder)}" placeholder="${esc(placeholder)}" value="${esc(model.qDraft!=null?model.qDraft:model.q)}" data-search>${model.q?`<button type="button" class="cc-searchclear" aria-label="${esc(t('acc.search_clear'))}" data-action="search-clear">✕</button>`:''}</div>`;
 const breadcrumbs=parts=>`<div class="cc-explorer-bar"><nav class="cc-crumbs" aria-label="${esc(t('crumbs.aria'))}">`+parts.map((p,i)=>(i?'<span class="sep" aria-hidden="true">›</span>':'')+(p.route?`<a href="#${p.route}" data-route="${p.route}">${bdi(p.label)}</a>`:`<b aria-current="page">${p.html||bdi(p.label)}</b>`)).join('')+'</nav></div>';
 /* collapsible section (el-ccsec) - progressive disclosure: a closed section shows a summary line */
@@ -3324,9 +3442,9 @@ function statusChip(r){if(r.status==='archived')return chip(t('st.archived'),'cc
 const inReview=r=>r.status==='active'&&!isReady(r)&&r.moderation!=='rejected';
 function rateRow(r){
  const p=propOf(r.property);
- const where=isBudget(r)?`${r.destination?bdi(destName(r.destination)):unknownChip()} ${chip(t('sub.staff_lodging_budget'))}`:p?`${bdi(p.name)}${p.status==='archived'?' '+chip(t('acc.prop_archived'),'cc-chip--muted'):p.status==='suspended'?' '+chip(t('acc.prop_suspended'),'cc-chip--muted'):''}${r.subtype==='staff_room_rate'?' '+chip(t('sub.staff_room_rate')):''}`:`${chip(t('acc.no_property'),'cc-chip--warn-soft')}${r.name_manual?`<div class="cc-help s55-sub">${bdi(r.name)}</div>`:''}`;
+ const where=isBudget(r)?`${r.destination?bdi(destName(r.destination)):unknownChip()} ${chip(t('sub.staff_lodging_budget'))}`:p?`${bdi(p.name)}${p.status==='archived'?' '+chip(t('acc.prop_archived'),'cc-chip--muted'):p.status==='suspended'?' '+chip(t('acc.prop_suspended'),'cc-chip--muted'):''}${r.subtype==='staff_room_rate'?' '+chip(t('sub.staff_room_rate')):''}`:`${chip(t('acc.no_property'),'cc-chip--warn-soft')}${r.source_name?`<div class="cc-help s55-sub">${esc(t('rec.source_name'))}: ${bdi(r.source_name)}</div>`:r.name_manual?`<div class="cc-help s55-sub">${bdi(r.name)}</div>`:''}`;
  const season=r.season||r.from||r.until?`${esc(r.season)}${r.from||r.until?`<div class="cc-help s55-sub">${dateRange(r.from,r.until)}</div>`:''}`:unknownChip();
- const rate=r.quote?chip(t('acc.quote_required'),'cc-chip--warn-soft'):money(r.rate,r.cur);
+ const rate=amountText(r);
  return `<tr class="is-click" data-open="rate:${r.id}"><td class="primary">${where}</td><td>${isBudget(r)?chip(t('acc.no_room'),'cc-chip--muted'):r.room?bdi(r.room)+(r.rc?`<div class="cc-help s55-sub">${lbl('rc',r.rc)}</div>`:''):unknownChip()}</td><td>${isBudget(r)?chip(t('acc.per_person'),'cc-chip--muted'):lbl('occ',r.occ)}</td><td>${lbl('board',r.board)}</td><td>${season}</td><td>${rate}</td><td>${basisLabel(r.basis)}${r.basis?`<div class="cc-help s55-sub">${lbl('ct',r.cost_type)}</div>`:''}</td><td>${r.supplier?bdi(supName(r.supplier)):chip(t('acc.shared'),'cc-chip--muted')}</td><td>${statusChip(r)}</td><td class="cell-actions">${iconAction(t('acc.edit'),'open','#i-pencil',`data-open="rate:${r.id}"`)}${iconAction(t('acc.duplicate'),'dup-rate','#i-copy',`data-id="${r.id}"`)}${r.status==='archived'?iconAction(t('acc.restore'),'restore-rate','#i-refresh-cw',`data-id="${r.id}"`):iconAction(t('acc.archive'),'archive-rate','#i-archive',`data-id="${r.id}"`)}</td></tr>`;
 }
 function ratesView(){
@@ -3351,42 +3469,69 @@ function nextRound(id){return breadcrumbs([{label:t('settings.home'),route:'home
 
 /* ---------- record pages (Master §43A: full record workspace, compact sticky header, progressive disclosure) ---------- */
 function recordHead(nameHtml,chips,summary){return `<div class="s55-rechead"><div class="s55-rechead__main"><h1 class="tool-view__title s55-rechead__title" id="page-title" tabindex="-1">${nameHtml}</h1><div class="s55-rechead__chips">${chips}</div></div><div class="s55-rechead__summary">${summary}</div><div class="s55-rechead__actions">${textAction(t('acc.back'),'back')}</div></div>`;}
-function savebar(block){return `<div class="cc-savebar s55-savebar">${model.dirty?'<span class="cc-savebar__dot" aria-hidden="true"></span>':''}<span class="cc-savebar__text">${esc(block||(model.dirty?t('dirty'):model.savedFlash?t('acc.saved_bar'):t('clean')))}</span>${model.dirty?textAction(t('discard'),'discard'):''}${button(t('save'),'save',model.dirty&&!block?'':'disabled')}</div>`;}
+function savebar(block,r){const mb=r&&r.imported&&r.moderation==='needs_review'?markBlock(r):'';return `<div class="cc-savebar s55-savebar">${model.dirty?'<span class="cc-savebar__dot" aria-hidden="true"></span>':''}<span class="cc-savebar__text">${esc(block||mb||(model.dirty?t('dirty'):model.savedFlash?t('acc.saved_bar'):t('clean')))}</span>${model.dirty?textAction(t('discard'),'discard'):''}${button(t('acc.save_draft'),'save',model.dirty&&!block?'':'disabled')}${r&&r.imported&&r.moderation==='needs_review'?button(t('acc.mark_ready'),'approve',mb?`disabled title="${esc(mb)}"`:''):''}</div>`;}
 function pick(name,value,labelOf,options,emptyChip,pickLabel,clearAction,derived,extraChip=''){
- if(value)return `<div class="cc-chipinput" role="group"><span class="cc-chip-rm">${bdi(labelOf(value))}${derived?chip(t('derived'),'cc-chip--bare'):''}${extraChip}<button type="button" data-action="${clearAction}" aria-label="${esc(t('remove'))}">${icon('#i-x','cc-icon--sm')}</button></span></div>`;
+ if(value)return `<div class="cc-chipinput" role="group"><span class="cc-chip-rm">${bdi(labelOf(value))}${derived?chip(t('derived_prop'),'cc-chip--bare'):''}${extraChip}<button type="button" data-action="${clearAction}" aria-label="${esc(t('remove'))}">${icon('#i-x','cc-icon--sm')}</button></span></div>`;
  return `<div class="cc-chipinput s55-pick--empty" role="group">${emptyChip}${select(name,'',[['',pickLabel],...options],'','s55-pickselect')}</div>`;
 }
-function rateBasics(r){
+function recIdentity(r){
  const budget=isBudget(r);
  return field(t('f.subtype'),seg('subtype',r.subtype,SUBTYPES,v=>lab('sub',v)),r.subtype==='staff_lodging_budget'?t('sub.staff_lodging_budget.help'):r.subtype==='staff_room_rate'?t('sub.staff_room_rate.help'):'',true)
   +(budget?field(t('f.destination'),pick('destination',r.destination,destName,demo.destinations.map(d=>[d.id,d.name]),chip(t('unset'),'cc-chip--warn-soft'),t('f.destination_pick'),'clear-dest',false),t('f.destination_help'))
    :field(t('f.property'),pick('property',r.property,id=>propName(id),demo.properties.filter(p=>p.status!=='archived').map(p=>[p.id,p.name+(p.status==='suspended'?' - '+t('acc.prop_suspended'):'')]),chip(t('acc.no_property'),'cc-chip--warn-soft'),t('f.property_pick'),'clear-prop',false,r.property&&propOf(r.property).status!=='active'?chip(t(propOf(r.property).status==='archived'?'acc.prop_archived':'acc.prop_suspended'),'cc-chip--muted'):''),t('f.property_help')))
-  +(budget?'':field(t('f.destination'),pick('destination',r.destination,destName,demo.destinations.map(d=>[d.id,d.name]),unknownChip(),t('f.destination_pick'),'clear-dest',destDerived(r)),t('f.destination_help')))
+  +(budget?'':field(t('f.destination'),pick('destination',r.destination,destName,demo.destinations.map(d=>[d.id,d.name]),unknownChip(),t('f.destination_pick'),'clear-dest',destDerived(r)),destDerived(r)?t('f.destination_help_derived'):t('f.destination_help_plain')))
   +(budget?'':field(t('f.room'),input('room',r.room,{dir:'auto'}),t('f.room_help'))+field(t('f.category'),select('rc',r.rc||'',[['',t('unset')],...(r.rc&&!RC.includes(r.rc)?[r.rc]:[]).concat(RC).map(v=>[v,lab('rc',v)])])))
-  +field(t('f.name'),`<div class="s55-derived">${input('name',displayName(r),{dir:'rtl'})}${r.name_manual?'':chip(t('derived'),'cc-chip--bare')}</div>`,t('f.name_help'),true)
-  +(budget?'':field(t('f.occupancy'),seg('occ',r.occ,OCC,v=>lab('occ',v)),'',true)+`<div class="s55-three">${field(t('f.max_occ'),input('max_occ',r.max_occ==null?'':r.max_occ,{ltr:true,inputmode:'numeric'}))}${field(t('f.adults'),input('adults',r.adults==null?'':r.adults,{ltr:true,inputmode:'numeric'}))}${field(t('f.children'),input('children',r.children==null?'':r.children,{ltr:true,inputmode:'numeric'}))}</div>`)
+  +field(t('f.name'),`<div class="s55-derived">${input('name',r.name_manual?(r.name||''):'',{dir:'rtl',placeholder:rateName(r)||t('f.name')})}${r.name_manual||!rateName(r).trim()?'':chip(t('derived'),'cc-chip--bare')}</div>`,r.name_manual?t('f.name_help_manual'):t('f.name_help'),true);
+}
+function recStay(r){
+ const budget=isBudget(r);
+ return (budget?'':field(t('f.occupancy'),seg('occ',r.occ,OCC,v=>lab('occ',v)),'',true)+`<div class="s55-three">${field(t('f.max_occ'),input('max_occ',r.max_occ==null?'':r.max_occ,{ltr:true,inputmode:'numeric'}))}${field(t('f.adults'),input('adults',r.adults==null?'':r.adults,{ltr:true,inputmode:'numeric'}))}${field(t('f.children'),input('children',r.children==null?'':r.children,{ltr:true,inputmode:'numeric'}))}</div>`)
   +field(t('f.board'),seg('board',r.board,BOARD,v=>lab('board',v)),'',true)
   +field(t('f.season'),input('season',r.season,{placeholder:t('f.season_ph')}))
   +`<div class="s55-two">${field(t('f.valid_from'),input('from',r.from,{type:'date',ltr:true}))}${field(t('f.valid_until'),input('until',r.until,{type:'date',ltr:true}))}</div>`
-  +field(t('f.basis'),seg('basis',r.basis,budget?['per_night','formula']:BASES,v=>has('basis.'+v)?t('basis.'+v):v+' ('+t('legacy_value')+')'),budget?t('f.basis_help_budget'):t('f.basis_help_room'),true)
+  +`<div class="s55-two">${field(t('f.min_stay'),input('min',r.min==null?'':r.min,{ltr:true,inputmode:'numeric'}))}${field(t('f.max_stay'),input('max',r.max==null?'':r.max,{ltr:true,inputmode:'numeric'}),t('f.max_stay_help'))}</div>`
+  +field(t('f.weekday'),seg('wk',r.wk,['all','weekday','weekend'],v=>lab('wk',v)),'',true)
+  +field(t('f.blackout'),rows('blackout',r.blackout,'dates'),t('f.blackout_help'),true);
+}
+function recPricing(r){
+ const budget=isBudget(r);
+ return field(t('f.basis'),seg('basis',r.basis,budget?['per_night','formula']:BASES,v=>has('basis.'+v)?t('basis.'+v):v+' ('+t('legacy_value')+')'),budget?t('f.basis_help_budget'):t('f.basis_help_room'),true)
   +field(t('f.rate'),`<div class="s55-money">${input('rate',r.rate==null?'':r.rate,{ltr:true,inputmode:'decimal',disabled:r.quote,aria:t('f.rate')})}${select('cur',r.cur||'',[['',t('acc.unknown')],...CURR.map(c=>[c,c])],(r.quote?'disabled ':'')+`aria-label="${esc(t('f.currency'))}"`)}</div>`)
-  +field(t('f.quote'),sw('quote',!!r.quote,t('f.quote')),t('f.quote_help'))
+  +field(t('f.quote'),sw('quote',!!r.quote,t('f.quote'),r.id==='new'),t('f.quote_help'))
   +`<div class="s55-two">${field(t('f.cost_type'),seg('cost_type',r.cost_type,['FIX_GROUP','VAR_PAX'],v=>lab('ct',v)),t('f.cost_type_help'))}${field(t('f.pax_type'),select('pax_type',r.pax_type||'',[['',t('unset')],['all',t('pt.all')],['adult',t('pt.adult')],['child',t('pt.child')]]))}</div>`
   +`<div class="s55-two">${field(t('f.vat'),select('vat',r.vat||'',[['',t('unset')],['included',t('vat.included')],['add',t('vat.add')],['none',t('vat.none')]]))}${field(t('f.vat_rate'),input('vat_rate',r.vat_rate==null?'':r.vat_rate,{ltr:true,inputmode:'decimal',placeholder:t('ph.pct')}))}</div>`;
 }
 function rateTerms(r){
- return `<div class="s55-two">${field(t('f.min_stay'),input('min',r.min==null?'':r.min,{ltr:true,inputmode:'numeric'}))}${field(t('f.max_stay'),input('max',r.max==null?'':r.max,{ltr:true,inputmode:'numeric'}),t('f.max_stay_help'))}</div>`
-  +field(t('f.weekday'),seg('wk',r.wk,['all','weekday','weekend'],v=>lab('wk',v)),'',true)
-  +field(t('f.blackout'),rows('blackout',r.blackout,'dates'),t('f.blackout_help'),true)
-  +field(t('f.taxes'),seg('taxes',r.taxes,['included','added','on_site'],v=>lab('tax',v)),'',true)
-  +field(t('f.city_tax'),moneyField('city_tax',r.city_tax,t('f.city_tax')),t('f.city_tax_help'))
+ return field(t('f.taxes'),seg('taxes',r.taxes,['included','added','on_site'],v=>lab('tax',v)),t('f.taxes_help'),true)
   +field(t('f.release'),input('release_days',r.release_days==null?'':r.release_days,{ltr:true,inputmode:'numeric'}),t('f.release_help'))
   +field(t('f.cancellation'),`<textarea class="cc-input" data-field="cancellation" rows="2">${esc(r.cancellation)}</textarea>`,t('f.cancellation_help'),true);
 }
+/* חיוב חובה - שם, סוג מוגדר, סכום, בסיס ואופן חיוב. סכום לא ידוע נשאר ריק (Q5). */
+function feeRows(list){
+ return `<div class="s55-rows" data-rows="fees">${list.map((x,i)=>`<div class="s55-row s55-row--fee">`
+  +input('fees.'+i+'.name',x.name,{aria:t('row.name'),dir:'auto'})
+  +select('fees.'+i+'.kind',x.kind||'',[['',t('unset')],...FEEKIND.map(k=>[k,t('fee.'+k)])],`aria-label="${esc(t('row.kind'))}"`)
+  +input('fees.'+i+'.amount',x.amount==null?'':x.amount,{ltr:true,inputmode:'decimal',aria:t('row.amount'),placeholder:t('acc.unknown')})
+  +select('fees.'+i+'.cur',x.cur||'',[['',t('acc.unknown')],...CURR.map(c=>[c,c])],`aria-label="${esc(t('row.currency'))}"`)
+  +select('fees.'+i+'.basis',x.basis||'',[['',t('unset')],...SUPB.map(b=>[b,t('sb.'+b)])],`aria-label="${esc(t('row.basis'))}"`)
+  +select('fees.'+i+'.treatment',x.treatment||'',[['',t('unset')],...['included','added','on_site'].map(v=>[v,t('tax.'+v)])],`aria-label="${esc(t('row.treatment'))}"`)
+  +iconAction(t('row.remove'),'row-rm','#i-x',`data-rows="fees" data-index="${i}"`)+`</div>`).join('')}<div>${textAction(t('row.fee_add'),'row-add','data-rows="fees" data-kind="fee"')}</div></div>`;
+}
+/* כלל ילדים - טווח גיל ואופן חיוב. "לפי הצעה" הוא מה שנרשם כשהמקור אינו אומר (Q9.3). */
+function childRows(list){
+ return `<div class="s55-rows" data-rows="child_rules">${list.map((x,i)=>`<div class="s55-row s55-row--child">`
+  +input('child_rules.'+i+'.age_from',x.age_from==null?'':x.age_from,{ltr:true,inputmode:'numeric',aria:t('row.age_from')})
+  +input('child_rules.'+i+'.age_to',x.age_to==null?'':x.age_to,{ltr:true,inputmode:'numeric',aria:t('row.age_to'),placeholder:t('row.age_to_ph')})
+  +select('child_rules.'+i+'.treatment',x.treatment||'',[['',t('unset')],...CTREAT.map(v=>[v,t('ct.'+v)])],`aria-label="${esc(t('row.treatment'))}"`)
+  +input('child_rules.'+i+'.amount',x.treatment==='paid'&&x.amount!=null?x.amount:'',{ltr:true,inputmode:'decimal',aria:t('row.amount'),placeholder:t('acc.unknown'),disabled:x.treatment!=='paid'})
+  +select('child_rules.'+i+'.cur',x.cur||'',[['',t('acc.unknown')],...CURR.map(c=>[c,c])],`aria-label="${esc(t('row.currency'))}"`+(x.treatment!=='paid'?' disabled':''))
+  +select('child_rules.'+i+'.basis',x.basis||'',[['',t('unset')],...SUPB.map(b=>[b,t('sb.'+b)])],`aria-label="${esc(t('row.basis'))}"`+(x.treatment!=='paid'?' disabled':''))
+  +iconAction(t('row.remove'),'row-rm','#i-x',`data-rows="child_rules" data-index="${i}"`)+`</div>`).join('')}<div>${textAction(t('row.rule_add'),'row-add','data-rows="child_rules" data-kind="child"')}</div></div>`;
+}
 function rateExtras(r){
  return `<div class="s55-two">${field(t('f.extra_bed'),moneyField('extra_bed',r.extra_bed,t('f.extra_bed')),t('f.extra_bed_help'))}${field(t('f.single_sup'),moneyField('single_sup',r.single_sup,t('f.single_sup')),t('f.single_sup_help'))}</div>`
-  +`<div class="s55-two">${field(t('f.child_free'),input('child_free',r.child_free==null?'':r.child_free,{ltr:true,inputmode:'numeric'}))}${field(t('f.child_rate'),moneyField('child_rate',r.child_rate,t('f.child_rate')),t('f.child_rate_help'))}</div>`
-  +field(t('f.mandatory'),rows('mandatory',r.mandatory,'money'),t('f.mandatory_help'),true)
+  +field(t('f.child_rules'),childRows(r.child_rules),t('f.child_rules_help'),true)
+  +field(t('f.fees'),feeRows(r.fees),t('f.fees_help'),true)
   +field(t('f.addons'),rows('addons',r.addons,'money'),t('f.addons_help'),true);
 }
 function rateCommercial(r){
@@ -3399,29 +3544,149 @@ function rateCommercial(r){
 }
 function rateStatus(r){
  const prov=r.prov.kind==='new'?t('prov.new'):r.prov.kind==='dup'?t('prov.dup'):`${lab('prov',r.prov.kind)} - ${dateHe(r.prov.at)}`;
- const mod=r.imported?`<div class="s53-span"><label class="cc-label">${esc(t('acc.needs_review'))}</label><div class="s55-segrow">${r.moderation==='rejected'?chip(t('acc.rejected'),'cc-chip--muted')+' '+esc(t('acc.rejected_note')):r.moderation==='needs_review'?button(t('acc.approve'),'approve',missingForReady(r).length?'disabled':'')+textAction(t('acc.reject'),'reject'):chip(t('acc.ready'),'cc-chip--ok-soft')}</div><div class="cc-help">${esc(t('acc.approve_help'))}</div></div>`:'';
+ const mod=r.imported?`<div class="s53-span"><label class="cc-label">${esc(t('acc.moderation'))}</label><div class="s55-segrow">${r.moderation==='rejected'?chip(t('acc.rejected'),'cc-chip--muted')+' '+esc(t('acc.rejected_note')):r.moderation==='needs_review'?chip(t('acc.needs_review'),'cc-chip--warn-soft')+textAction(t('acc.reject'),'reject'):chip(t('acc.reviewed'),'cc-chip--ok-soft')}</div><div class="cc-help">${esc(t('acc.mark_ready_help'))}</div></div>`:'';
  return (r.id==='new'?field(t('f.status'),chip(t('st.new'),'cc-chip--muted'),'',true):field(t('f.status'),seg('status',r.status,STATUS,v=>lab('st',v)),'',true))+mod
   +field(t('f.readiness'),tags('readiness',r.readiness,t('f.readiness_ph')),t('f.readiness_help'),true)
-  +`<div class="s53-span"><dl class="s53-readonly"><dt>${esc(t('f.provenance'))}</dt><dd>${esc(prov)}${r.imported?' '+chip(t('acc.needs_review'),'cc-chip--warn-soft'):''}</dd></dl></div>`
+  +`<div class="s53-span"><dl class="s53-readonly"><dt>${esc(t('f.provenance'))}</dt><dd>${esc(prov)}${r.imported&&r.moderation==='needs_review'?' '+chip(t('acc.needs_review'),'cc-chip--warn-soft'):''}</dd></dl></div>`
   +(r.legacy?`<details class="s53-span s55-legacy"><summary>${esc(t('f.legacy'))}</summary><dl class="s53-readonly"><dt>${esc(t('f.legacy_name'))}</dt><dd>${bdi(r.legacy.name)}</dd><dt>${esc(t('f.legacy_catalog'))}</dt><dd>${bdi(r.legacy.catalog)}</dd><dt>${esc(t('f.legacy_unit'))}</dt><dd>${bdi(r.legacy.unit)}</dd></dl></details>`:'');
 }
 function rateBlock(r){return displayName(r).trim()?'':t('err.name_required');}
-function ratePage(){
- const r=model.record.draft;const block=rateBlock(r);const miss=missingForReady(r);
- const chips=[r.subtype?chip(lab('sub',r.subtype)):chip(t('unset'),'cc-chip--warn-soft'),r.id==='new'?chip(t('st.new'),'cc-chip--muted'):statusChip(r),model.dirty?chip(t('dirty'),'cc-chip--warn-soft s55-dirtychip'):''].join('');
- const summary=[`<span>${r.quote?chip(t('acc.quote_required'),'cc-chip--warn-soft'):money(r.rate,r.cur)}${r.basis?' '+basisLabel(r.basis)+(r.cost_type?' - '+lbl('ct',r.cost_type):''):''}</span>`,`<span>${esc(t('f.supplier'))}: ${r.supplier?bdi(supName(r.supplier)):esc(t('acc.shared'))}</span>`,r.from||r.until?`<span>${dateRange(r.from,r.until)}</span>`:'',miss.length&&r.status!=='archived'?`<span class="cc-fg-warning">${esc(t('miss.prefix'))}${esc(miss.join(', '))}</span>`:!miss.length&&awaiting(r)?`<span class="cc-fg-warning">${esc(t('acc.awaiting'))}</span>`:''].filter(Boolean).join('');
- const termsSub=[r.min!=null?`${t('f.min_stay')} ${r.min}`:'',r.wk?lab('wk',r.wk):'',r.blackout.length?`${r.blackout.length} ${t('f.blackout')}`:'',r.taxes?`${t('f.taxes')}: ${lab('tax',r.taxes)}`:''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.terms.sub'));
- const extrasSub=[r.extra_bed.amount!=null&&r.extra_bed.cur?`${t('f.extra_bed')} ${r.extra_bed.cur} ${Number(r.extra_bed.amount).toLocaleString('en-US')}`:'',r.mandatory.length?`${r.mandatory.length} ${t('f.mandatory')}`:'',r.addons.length?`${r.addons.length} ${t('f.addons')}`:''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.extras.sub'));
+
+/* ---------- שאלות פתוחות: נגזרות מהרשומה ומרשימת השאלות שהוגדרה לה ---------- */
+const QDEF={
+ property:{ok:r=>!!r.property,label:()=>t('q.property'),help:r=>t('q.property_help',{name:r.source_name||''}),
+  control:r=>field(t('f.property'),pick('property',r.property,id=>propName(id),demo.properties.filter(p=>p.status!=='archived').map(p=>[p.id,p.name]),chip(t('acc.no_property'),'cc-chip--warn-soft'),t('f.property_pick'),'clear-prop',false),t('f.property_help'))},
+ currency:{ok:r=>!!r.cur,label:()=>t('q.currency'),help:r=>t('q.currency_help',{rate:r.rate==null?'':r.rate}),
+  control:r=>field(t('f.currency'),select('cur',r.cur||'',[['',t('acc.unknown')],...CURR.map(c=>[c,c])]),'')},
+ board:{ok:r=>!!r.board,label:()=>t('q.board'),help:()=>t('q.board_help'),
+  control:r=>field(t('f.board'),seg('board',r.board,BOARD,v=>lab('board',v)),'',true)}
+};
+const openQuestions=r=>(r.questions||[]).filter(k=>QDEF[k]&&!QDEF[k].ok(r));
+function rangeProblems(r){
+ const p=[];
+ if(r.from&&r.until&&r.from>r.until)p.push(t('err.range_dates'));
+ (r.blackout||[]).forEach(b=>{if(b.from&&b.until&&b.from>b.until)p.push(t('err.range_blackout'));});
+ (r.child_rules||[]).forEach(c=>{if(c.age_from!=null&&c.age_to!=null&&c.age_to!==''&&Number(c.age_to)<Number(c.age_from))p.push(t('err.range_age'));});
+ return [...new Set(p)];
+}
+function markBlock(r){const pr=rangeProblems(r);if(pr.length)return pr.join(' ');const n=openQuestions(r).length;if(n)return n===1?t('q.blocked_one'):t('q.blocked',{n});const m=missingForReady(r);return m.length?t('miss.prefix')+m.join(', '):'';}
+function amountText(r){
+ if(r.quote)return chip(t('acc.quote_required'),'cc-chip--warn-soft');
+ if(r.rate==null||r.rate==='')return unknownChip();
+ if(!r.cur)return `<bdi>${esc(Number(r.rate).toLocaleString('en-US'))}</bdi> - ${esc(t('rec.no_currency'))}`;
+ return money(r.rate,r.cur);
+}
+function crumbLabel(r){
+ if(isBudget(r))return esc(t('sub.staff_lodging_budget'));
+ if(r.property)return bdi(propName(r.property));
+ if(r.source_name)return bdi(r.source_name);
+ const n=displayName(r);return `<span class="s55-crumbname" title="${esc(n)}">${bdi(n)}</span>`;
+}
+function identityHtml(r){
+ if(isBudget(r))return `${esc(t('sub.staff_lodging_budget'))}${r.destination?' - '+bdi(destName(r.destination)):''}`;
+ if(r.property)return bdi(propName(r.property));
+ if(r.source_name)return `${esc(t('rec.source_name'))}: ${bdi(r.source_name)}`;
+ if(r.name_manual&&r.name)return bdi(r.name);
+ return chip(t('acc.no_property'),'cc-chip--warn-soft');
+}
+/* ---------- לשוניות הרשומה ---------- */
+function recTabs(r){
+ const qn=openQuestions(r).length;
+ const defs=[['overview',t('rt.overview'),0],['terms',t('rt.terms'),0],['review',t('rt.review'),qn]];
+ return `<nav class="tabs s53-tabs s55-rtabs" aria-label="${esc(t('rec.tabs_aria'))}">${defs.map(([k,l,n])=>`<button type="button" class="tab ${model.rtab===k?'active':''}" data-rtab="${k}" ${model.rtab===k?'aria-current="page"':''}>${esc(l)}${n?`<span class="tab-count">${n}</span>`:''}</button>`).join('')}</nav>`;
+}
+const ovRow=(label,value)=>`<div class="s55-ovrow"><dt>${esc(label)}</dt><dd>${value}</dd></div>`;
+function ovBlock(ttl,goto,body,editLabel){return `<section class="cc-section s55-ovblock"><div class="s55-ovhead"><h3>${esc(ttl)}</h3>${textAction(editLabel||t('rec.edit'),'goto',`data-goto="${goto}"`)}</div><dl class="s55-ovlist">${body}</dl></section>`;}
+function taxLine(r){
+ const out=r.fees.filter(f=>f.treatment&&f.treatment!=='included');
+ const base=r.taxes?esc(lab('tax',r.taxes)):unknownChip();
+ return out.length?`${base} - ${esc(t('acc.except'))} ${out.map(f=>f.kind?esc(t('fee.'+f.kind)):bdi(f.name)).join(', ')}`:base;
+}
+function feeValue(f){
+ const amount=f.amount==null||f.amount===''?unknownChip():(f.cur?money(f.amount,f.cur):`<bdi>${esc(Number(f.amount).toLocaleString('en-US'))}</bdi> - ${esc(t('rec.no_currency'))}`);
+ return `${f.treatment?esc(t('tax.'+f.treatment)):esc(t('unset'))} - ${amount}${f.basis?' - '+esc(t('sb.'+f.basis)):''}`;
+}
+function feeText(f){
+ const amount=f.amount==null||f.amount===''?unknownChip():(f.cur?money(f.amount,f.cur):`<bdi>${esc(Number(f.amount).toLocaleString('en-US'))}</bdi> - ${esc(t('rec.no_currency'))}`);
+ return `${f.kind?esc(t('fee.'+f.kind)):bdi(f.name)} - ${f.treatment?esc(t('tax.'+f.treatment)):esc(t('unset'))} - ${amount}`;
+}
+function childText(c){
+ const range=c.age_to==null||c.age_to===''?`${esc(t('row.age_from'))} ${esc(c.age_from)}`:`${esc(c.age_from)}-${esc(c.age_to)}`;
+ const treat=c.treatment?esc(t('ct.'+c.treatment)):esc(t('unset'));
+ const amount=c.treatment==='paid'?' - '+(c.amount!=null&&c.cur?money(c.amount,c.cur):unknownChip()):'';
+ return `<bdi dir="ltr">${range}</bdi> - ${treat}${amount}`;
+}
+function overviewTab(r){
+ const budget=isBudget(r);
+ const dest=r.destination?bdi(destName(r.destination))+(destDerived(r)?' '+chip(t('derived_prop'),'cc-chip--bare'):''):unknownChip();
+ const identity=ovBlock(t('rec.summary'),'terms:identity',
+  ovRow(t('f.destination'),dest)
+  +(budget?'':ovRow(t('f.room'),r.room?bdi(r.room)+(r.rc?' '+chip(lab('rc',r.rc),'cc-chip--bare'):''):unknownChip())+ovRow(t('f.occupancy'),lbl('occ',r.occ)))
+  +ovRow(t('f.board'),lbl('board',r.board))
+  +ovRow(t('f.season'),r.season?bdi(r.season):unknownChip())
+  +ovRow(t('f.subtype'),r.subtype?esc(lab('sub',r.subtype)):chip(t('unset'),'cc-chip--warn-soft')),t('rec.edit_identity'));
+ const dates=ovBlock(t('rec.dates'),'terms:stay',
+  ovRow(t('f.validity'),r.from||r.until?dateRange(r.from,r.until):unknownChip())
+  +ovRow(t('f.blackout'),r.blackout.length?r.blackout.map(b=>dateRange(b.from,b.until)).join(', '):unknownChip())
+  +ovRow(t('f.taxes'),taxLine(r))
+  +(r.fees.length?r.fees.map(f=>ovRow(f.kind?t('fee.'+f.kind):t('f.fees'),feeValue(f))).join(''):'')
+  +ovRow(t('f.min_stay'),r.min==null?unknownChip():`<bdi>${esc(r.min)}</bdi>`),t('rec.edit_stay'));
+ const extras=budget?'':ovBlock(t('rec.extras'),'terms:extras',
+  ovRow(t('f.extra_bed'),r.extra_bed.amount!=null&&r.extra_bed.cur?money(r.extra_bed.amount,r.extra_bed.cur)+' '+esc(lab('basis','per_room_night')):unknownChip())
+  +ovRow(t('f.child_rules'),r.child_rules.length?r.child_rules.map(childText).join('<br>'):(r.imported||r.source?chip(t('acc.none_stated'),'cc-chip--muted'):unknownChip()))
+  +ovRow(t('f.addons'),r.addons.length?r.addons.map(a=>`${bdi(a.name)} - ${a.amount!=null&&a.cur?money(a.amount,a.cur):unknownChip()}`).join('<br>'):unknownChip()),t('rec.edit_extras'));
+ const src=ovBlock(t('rec.source'),'review:commercial',
+  ovRow(t('f.supplier'),r.supplier?bdi(supName(r.supplier)):(r.id==='new'?chip(t('unset'),'cc-chip--warn-soft'):chip(t('acc.shared'),'cc-chip--muted')))
+  +ovRow(t('f.source'),r.source?bdi((demo.sources.find(s=>s.id===r.source)||{}).name):unknownChip())
+  +ovRow(t('f.provenance'),esc(r.prov.kind==='new'?t('prov.new'):r.prov.kind==='dup'?t('prov.dup'):lab('prov',r.prov.kind)+(r.prov.at?' - '+dateHe(r.prov.at):'')))
+  +ovRow(t('f.not_included'),r.not_included.length?r.not_included.map(bdi).join(', '):unknownChip())
+  +ovRow(t('f.readiness_short'),r.readiness.length?r.readiness.map(bdi).join(', '):unknownChip()),t('rec.edit_source'));
+ return `<div class="s55-ovgrid">${identity}${dates}${extras}${src}</div>`;
+}
+function questionPanel(r){
+ const qs=openQuestions(r);
+ if(!qs.length)return note(t('q.none'),'ok');
+ const sel=qs.includes(model.qsel)?model.qsel:qs[0];
+ const list=`<ol class="s55-qlist">${qs.map((k,i)=>`<li><button type="button" class="s55-q ${k===sel?'is-sel':''}" data-q="${k}" aria-current="${k===sel?'true':'false'}"><span class="s55-qn">${i+1}</span><span class="s55-qt"><b>${esc(QDEF[k].label())}</b><small>${esc(QDEF[k].help(r))}</small></span>${icon('#i-chevron-left','cc-icon--sm')}</button></li>`).join('')}</ol>`;
+ const answer=`<div class="s55-qanswer"><div class="s55-qahead"><h3>${esc(t('q.answer'))}</h3>${chip(t('q.required'),'cc-chip--warn-soft')}</div><div class="s53-editor-form">${QDEF[sel].control(r)}</div>${r.excerpt?`<div class="s55-excerpt"><div class="s55-exhead">${icon('#i-file-text','cc-icon--sm')}<span>${esc(t('q.excerpt'))}</span></div><p dir="ltr"><bdi>${esc(r.excerpt)}</bdi></p><div class="cc-help">${esc(t('q.excerpt_note'))}</div></div>`:''}</div>`;
+ return `<div class="s55-qgrid"><div class="s55-qcol"><h3 class="s55-qttl">${esc(qs.length===1?t('q.title_one'):t('q.title',{n:qs.length}))}</h3>${list}</div>${answer}</div><p class="cc-help s55-qnote">${esc(t('rec.open_all'))}</p>`;
+}
+function blockerPanel(r){
+ const m=missingForReady(r);
+ return `<section class="cc-section s55-ovblock"><div class="s55-ovhead"><h3>${esc(t('rec.blockers'))}</h3>${textAction(t('rec.edit_identity'),'goto','data-goto="terms:identity"')}</div>`
+  +(m.length?`<ul class="s55-blockers">${m.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<p class="cc-help">${esc(t('rec.blockers_none'))}</p>`)+`</section>`;
+}
+function reviewTab(r){
  const comSub=[r.supplier?supName(r.supplier):t('acc.shared'),r.included.length?`${t('f.included')}: ${r.included.join(', ')}`:''].filter(Boolean).map(bdi).join(' - ');
- return `<div class="s55-rec">`+breadcrumbs([{label:t('settings.home'),route:'home'},{label:t('settings.catalog'),route:'catalog'},{label:t('cat.accommodation'),route:'cat-accommodation'},{label:'',html:r.id==='new'?esc(t('acc.new_rate')):nameHtml(r)}])
-  +recordHead(r.id==='new'&&!displayName(r)?esc(t('acc.new_rate')):nameHtml(r),chips,summary)
-  +note(t('demo_note'))
-  +sec('basics',t('sec.basics'),esc(t('sec.basics.sub')),rateBasics(r))
-  +sec('terms',t('sec.terms'),termsSub,rateTerms(r))
-  +(isBudget(r)?'':sec('extras',t('sec.extras'),extrasSub,rateExtras(r)))
+ return (r.imported?(openQuestions(r).length?questionPanel(r):blockerPanel(r)):'')
   +sec('commercial',t('sec.commercial'),comSub,rateCommercial(r))
-  +sec('status',t('sec.status'),esc(t('sec.status.sub')),rateStatus(r))
-  +savebar(block)+'</div>';
+  +sec('status',t('sec.status'),esc(t('sec.status.sub')),rateStatus(r));
+}
+function termsTab(r){
+ const stSub=[r.occ?lab('occ',r.occ):'',r.board?lab('board',r.board):'',r.from||r.until?dateHe(r.from)+' - '+dateHe(r.until):'',r.blackout.length?(r.blackout.length===1?t('f.blackout_one'):r.blackout.length+' '+t('f.blackout')):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.stay.sub'));
+ const prSub=[r.quote?t('acc.quote_required'):(r.rate==null||r.rate===''?t('acc.unknown'):(r.cur?r.cur+' '+Number(r.rate).toLocaleString('en-US'):Number(r.rate).toLocaleString('en-US')+' - '+t('rec.no_currency'))),r.basis?lab('basis',r.basis):'',r.cost_type?lab('ct',r.cost_type):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.pricing.sub'));
+ const idSub=[isBudget(r)?t('sub.staff_lodging_budget'):(r.property?propName(r.property):(r.source_name?t('rec.source_name')+': '+r.source_name:t('acc.no_property'))),r.room||''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.identity.sub'));
+ const termsSub=[r.taxes?t('f.taxes')+': '+(r.fees.some(f=>f.treatment&&f.treatment!=='included')?lab('tax',r.taxes)+' '+t('acc.except')+' '+r.fees.filter(f=>f.treatment&&f.treatment!=='included').map(f=>f.kind?t('fee.'+f.kind):f.name).join(', '):lab('tax',r.taxes)):'',r.fees.length?(r.fees.length===1?t('f.fees_one'):r.fees.length+' '+t('f.fees')):'',r.release_days!=null?t('f.release')+' '+r.release_days:''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.terms.sub'));
+ const extrasSub=[r.extra_bed.amount!=null&&r.extra_bed.cur?`${t('f.extra_bed')} ${r.extra_bed.cur} ${Number(r.extra_bed.amount).toLocaleString('en-US')}`:'',r.child_rules.length?(r.child_rules.length===1?t('f.child_rules_one'):`${r.child_rules.length} ${t('f.child_rules')}`):'',r.addons.length?(r.addons.length===1?t('f.addons_one'):`${r.addons.length} ${t('f.addons')}`):''].filter(Boolean).map(bdi).join(' - ')||esc(t('sec.extras.sub'));
+ return sec('identity',t('sec.identity'),idSub,recIdentity(r))
+  +sec('stay',t('sec.stay'),stSub,recStay(r))
+  +sec('pricing',t('sec.pricing'),prSub,recPricing(r))
+  +sec('terms',t('sec.terms'),termsSub,rateTerms(r))
+  +(isBudget(r)?'':sec('extras',t('sec.extras'),extrasSub,rateExtras(r)));
+}
+function ratePage(){
+ const r=model.record.draft;const block=rateBlock(r);
+ const chips=[r.id==='new'?chip(t('st.new'),'cc-chip--muted'):statusChip(r),model.dirty?chip(t('dirty'),'cc-chip--warn-soft s55-dirtychip'):''].filter(Boolean).join('');
+ const line2=[isBudget(r)?esc(t('acc.per_person')):[r.room?bdi(r.room):'',r.occ?esc(lab('occ',r.occ)):'',r.board?esc(lab('board',r.board)):''].filter(Boolean).join(' - '),
+   r.supplier?esc(t('f.supplier'))+': '+bdi(supName(r.supplier)):(r.id==='new'?chip(t('unset'),'cc-chip--warn-soft'):esc(t('acc.shared')))].filter(Boolean).join(' | ');
+ const summary=`<div class="s55-headline"><span class="s55-headprice">${amountText(r)}${r.basis?' <span class="s55-headbasis">'+basisLabel(r.basis)+'</span>':''}</span>`
+  +`<span>${r.from||r.until?dateRange(r.from,r.until):esc(t('f.validity'))+': '+unknownChip()}</span>`+`</div><div class="s55-headmeta">${line2}</div>`;
+ return `<div class="s55-rec">`+breadcrumbs([{label:t('settings.home'),route:'home'},{label:t('settings.catalog'),route:'catalog'},{label:t('cat.accommodation'),route:'cat-accommodation'},{label:'',html:r.id==='new'?esc(t('acc.new_rate')):crumbLabel(r)}])
+  +recordHead(r.id==='new'&&!displayName(r)?esc(t('acc.new_rate')):identityHtml(r),chips,summary)
+  +recTabs(r)
+  +note(t('demo_note'))
+  +`<div class="s55-rtabpanel">${model.rtab==='overview'?overviewTab(r):model.rtab==='review'?reviewTab(r):termsTab(r)}</div>`
+  +savebar(block,r)+'</div>';
 }
 function propBlock(p){return p.name&&p.name.trim()?'':t('err.prop_name_required');}
 function propPage(){
@@ -3439,32 +3704,42 @@ function propPage(){
 }
 
 /* ---------- render, keeping scroll and focus across re-renders ---------- */
-function focusKey(el){if(!el||!el.dataset)return '';if(el.dataset.field)return `[data-field="${el.dataset.field}"]`;if(el.dataset.seg)return `[data-seg="${el.dataset.seg}"][data-value="${el.dataset.value}"]`;if(el.dataset.switch)return `[data-switch="${el.dataset.switch}"]`;if(el.dataset.secToggle)return `[data-sec-toggle="${el.dataset.secToggle}"]`;if(el.hasAttribute('data-search'))return '[data-search]';if(el.dataset.action)return `[data-action="${el.dataset.action}"]`+(el.dataset.rows?`[data-rows="${el.dataset.rows}"]`:'')+(el.dataset.id?`[data-id="${el.dataset.id}"]`:'');if(el.dataset.fltReview!=null)return `[data-flt-review="${el.dataset.fltReview}"]`;if(el.dataset.fltArch!=null)return `[data-flt-arch="${el.dataset.fltArch}"]`;if(el.dataset.tab)return `[data-tab="${el.dataset.tab}"]`;return '';}
+function focusKey(el){if(!el||!el.dataset)return '';if(el.dataset.field)return `[data-field="${el.dataset.field}"]`;if(el.dataset.seg)return `[data-seg="${el.dataset.seg}"][data-value="${el.dataset.value}"]`;if(el.dataset.switch)return `[data-switch="${el.dataset.switch}"]`;if(el.dataset.secToggle)return `[data-sec-toggle="${el.dataset.secToggle}"]`;if(el.hasAttribute('data-search'))return '[data-search]';if(el.dataset.action)return `[data-action="${el.dataset.action}"]`+(el.dataset.rows?`[data-rows="${el.dataset.rows}"]`:'')+(el.dataset.index?`[data-index="${el.dataset.index}"]`:'')+(el.dataset.id?`[data-id="${el.dataset.id}"]`:'');if(el.dataset.fltReview!=null)return `[data-flt-review="${el.dataset.fltReview}"]`;if(el.dataset.fltArch!=null)return `[data-flt-arch="${el.dataset.fltArch}"]`;if(el.dataset.tab)return `[data-tab="${el.dataset.tab}"]`;if(el.dataset.rtab)return `[data-rtab="${el.dataset.rtab}"]`;if(el.dataset.q)return `[data-q="${el.dataset.q}"]`;return '';}
 function render(focus=true){
  const y=window.scrollY;const act=document.activeElement;const key=focusKey(act);const sel=act&&act.selectionStart!=null?act.selectionStart:null;
  let v='';
  if(model.route==='home')v=home();else if(model.route==='catalog')v=catalog();else if(model.route==='cat-accommodation')v=accommodation();else if(model.route.startsWith('cat-'))v=nextRound(model.route.slice(4));else if(model.route.startsWith('rate:'))v=ratePage();else if(model.route.startsWith('prop:'))v=propPage();else{const e=entries.find(e=>e.id===model.route);v=breadcrumbs([{label:t('settings.home'),route:'home'},{label:t(e.key)}])+title(esc(t(e.key)),'')+note(t('settings.outside'));}
  byId('view').innerHTML=v;
- if(!focus){window.scrollTo({top:y,behavior:'instant'});if(key){const n=document.querySelector(key);if(n){n.focus({preventScroll:true});if(sel!=null&&n.setSelectionRange)try{n.setSelectionRange(sel,sel);}catch(e){}}}}
+ if(!focus){window.scrollTo({top:y,behavior:'instant'});if(key){const n=document.querySelector(key);if(n){n.focus({preventScroll:true});if(model._raw&&n.dataset&&n.dataset.field===model._raw.name&&n.value!==model._raw.value)n.value=model._raw.value;if(sel!=null&&n.setSelectionRange)try{n.setSelectionRange(sel,sel);}catch(e){}}}}
  else{byId('page-title')?.focus({preventScroll:true});}
 }
 function notify(text){const el=byId('status');el.textContent=text;el.hidden=false;}
-function dialog(ttl,body,actions){const revision=++dialogRevision;const el=byId('dialog');byId('dialog-title').textContent=ttl;byId('dialog-body').innerHTML=body;byId('dialog-actions').innerHTML='';for(const a of actions){const b=document.createElement('button');b.type='button';b.className=actions.length>1&&a===actions.at(-1)?'cc-btn':'cc-btn cc-btn-bare';b.textContent=a.label;b.onclick=()=>{if(a.run&&a.run()===false)return;if(dialogRevision===revision)el.close();};byId('dialog-actions').append(b);}el.showModal();}
+function dialog(ttl,body,actions){const revision=++dialogRevision;const el=byId('dialog');byId('dialog-title').textContent=ttl;byId('dialog-body').innerHTML=body;byId('dialog-actions').innerHTML='';for(const a of actions){const b=document.createElement('button');b.type='button';b.className=actions.length>1&&a===actions.at(-1)?'cc-btn':'cc-btn cc-btn-bare';b.textContent=a.label;b.onclick=()=>{if(a.run&&a.run()===false)return;if(dialogRevision===revision)el.close();};byId('dialog-actions').append(b);}el.showModal();const first=byId('dialog-body').querySelector('input');if(first)first.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const btns=byId('dialog-actions').querySelectorAll('button');if(btns.length)btns[btns.length-1].click();}});}
 function guard(next){if(!model.dirty){next();return;}dialog(t('guard.title'),`<p>${esc(t('guard.body'))}</p>`,[{label:t('guard.stay')},{label:t('guard.leave'),run:()=>{model.dirty=false;next();}}]);}
-function go(dest){guard(()=>{byId('status').hidden=true;model.route=dest;model.record=null;model.dirty=false;model.open={basics:true};
- if(dest.startsWith('rate:')){const id=dest.slice(5);model.record={kind:'rate',id:id==='new'?null:id,draft:id==='new'?newRateDraft():clone(demo.rates.find(x=>x.id===id))};}
- if(dest.startsWith('prop:')){const id=dest.slice(5);model.record={kind:'prop',id:id==='new'?null:id,draft:id==='new'?newPropDraft():clone(demo.properties.find(x=>x.id===id))};}
- if(dest!=='cat-accommodation')model.q='';render();window.scrollTo({top:0,behavior:'instant'});});}
-const newRateDraft=()=>{const p=propOf(model.filterProp);return {id:'new',subtype:null,property:p?p.id:null,destination:p?p.destination||null:null,room:'',rc:null,occ:null,max_occ:null,adults:null,children:null,board:null,season:'',from:'',until:'',wk:null,min:null,max:null,blackout:[],basis:null,rate:null,cur:'',quote:false,vat:'',vat_rate:null,cost_type:null,pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_free:null,child_rate:{amount:null,cur:null},taxes:null,city_tax:{amount:null,cur:null},release_days:null,cancellation:'',mandatory:[],addons:[],supplier:'',source:'',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'new',at:''},legacy:null,imported:false,moderation:null};};
+function go(dest){guard(()=>{byId('status').hidden=true;model.route=dest;model.record=null;model.dirty=false;model.open={identity:true};
+ model.qsel=null;model.rtab='overview';model.open={identity:true};if(dest.startsWith('rate:')){const id=dest.slice(5);model.record={kind:'rate',id:id==='new'?null:id,draft:id==='new'?newRateDraft():clone(demo.rates.find(x=>x.id===id))};}
+ if(dest.startsWith('prop:')){model.open={basics:true};const id=dest.slice(5);model.record={kind:'prop',id:id==='new'?null:id,draft:id==='new'?newPropDraft():clone(demo.properties.find(x=>x.id===id))};}
+ if(model.record&&model.record.kind==='rate'){const dr=model.record.draft;if(dr.imported&&dr.moderation==='needs_review')model.rtab='review';}
+  if(dest!=='cat-accommodation'){model.q='';}model.qDraft=null;render();window.scrollTo({top:0,behavior:'instant'});});}
+const newRateDraft=()=>{const p=propOf(model.filterProp);return {id:'new',subtype:null,property:p?p.id:null,destination:p?p.destination||null:null,room:'',rc:null,occ:null,max_occ:null,adults:null,children:null,board:null,season:'',from:'',until:'',wk:null,min:null,max:null,blackout:[],basis:null,rate:null,cur:'',quote:false,vat:'',vat_rate:null,cost_type:null,pax_type:'',extra_bed:{amount:null,cur:null},single_sup:{amount:null,cur:null},child_rules:[],taxes:null,release_days:null,cancellation:'',fees:[],addons:[],supplier:'',source:'',included:[],not_included:[],benefits:[],notes:'',status:'active',readiness:[],prov:{kind:'new',at:''},legacy:null,imported:false,moderation:null,source_name:'',excerpt:'',questions:[]};};
 const newPropDraft=()=>({id:'new',name:'',type:'',stars:'',country:'',city:'',destination:'',address:'',geo:'',website:'',phone:'',email:'',reservation:'',aliases:[],notes:'',status:'active'});
 function setPath(obj,path,val){const ks=path.split('.');let o=obj;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks.at(-1)]=val;}
-const NUM=new Set(['max_occ','adults','children','min','max','child_free','stars','rate','vat_rate','release_days']);
-function coerce(name,val){const last=name.split('.').at(-1);if(NUM.has(name)||last==='amount')return val===''?null:Number(val);if(['rc','property','supplier','source','reservation','destination','type'].includes(name))return val===''?null:val;return val;}
+const NUM=new Set(['max_occ','adults','children','min','max','stars','rate','vat_rate','release_days']);
+const NUM_LAST=new Set(['amount','age_from','age_to']);
+function coerce(name,val){const last=name.split('.').at(-1);if(NUM.has(name)||NUM_LAST.has(last))return val===''?null:Number(val);if(['rc','property','supplier','source','reservation','destination','type'].includes(name))return val===''?null:val;return val;}
+/* שדות ענף שאינם מוצגים בסוג הנוכחי אינם נשמרים - אחרת הרשומה סותרת את מה שהמסך מראה */
+function pruneBranch(r){
+ if(isBudget(r)){r.property=null;r.room='';r.rc=null;r.occ=null;r.max_occ=null;r.adults=null;r.children=null;
+  r.child_rules=[];r.extra_bed={amount:null,cur:null};r.single_sup={amount:null,cur:null};r.addons=[];}
+ r.child_rules.forEach(c=>{if(c.treatment!=='paid'){c.amount=null;c.cur='';c.basis='';}});
+ return r;
+}
 function save(){
  const d=model.record;if(!d)return;
+ if(d.kind==='rate')pruneBranch(d.draft);
  if(d.kind==='rate'){if(d.draft.prov.kind==='new'||d.draft.prov.kind==='dup')d.draft.prov={kind:'manual',at:'2026-09-10'};if(d.id){const i=demo.rates.findIndex(x=>x.id===d.id);demo.rates[i]=clone(d.draft);}else{d.draft.id='r'+(demo.rates.length+1);demo.rates.push(clone(d.draft));d.id=d.draft.id;model.route='rate:'+d.id;}}
  else{if(d.id){const i=demo.properties.findIndex(x=>x.id===d.id);demo.properties[i]=clone(d.draft);}else{d.draft.id='p'+(demo.properties.length+1);demo.properties.push(clone(d.draft));d.id=d.draft.id;model.route='prop:'+d.id;}}
- model.dirty=false;model.savedFlash=true;render(false);document.querySelector('[data-action="save"]')?.focus({preventScroll:true});setTimeout(()=>{model.savedFlash=false;const bar=document.querySelector('.s55-savebar');if(bar&&!model.dirty)bar.outerHTML=savebar(d.kind==='rate'?rateBlock(d.draft):propBlock(d.draft));},2500);
+ model.dirty=false;model.savedFlash=true;render(false);document.querySelector('[data-action="save"]')?.focus({preventScroll:true});setTimeout(()=>{model.savedFlash=false;if(model.record!==d)return;const bar=document.querySelector('.s55-savebar');if(bar&&!model.dirty)bar.outerHTML=savebar(d.kind==='rate'?rateBlock(d.draft):propBlock(d.draft),d.kind==='rate'?d.draft:null);},2500);
 }
 function touch(){model.dirty=true;}
 document.addEventListener('click',event=>{
@@ -3475,31 +3750,34 @@ document.addEventListener('click',event=>{
  if(el.dataset.route){event.preventDefault();go(el.dataset.route);return;}
  if(el.dataset.open){go(el.dataset.open);return;}
  if(el.dataset.tab){model.tab=el.dataset.tab;model.q='';render(false);return;}
+ if(el.dataset.rtab){model.rtab=el.dataset.rtab;render(false);return;}
+ if(el.dataset.q){model.qsel=el.dataset.q;render(false);return;}
  if(el.dataset.fltReview!=null){model.review=el.dataset.fltReview==='1';render(false);return;}
  if(el.dataset.fltArch!=null){model.showArchived=el.dataset.fltArch==='1';render(false);return;}
- if(el.dataset.secToggle){model.open[el.dataset.secToggle]=!model.open[el.dataset.secToggle];render(false);return;}
+ if(el.dataset.secToggle){const k=el.dataset.secToggle,was=model.open[k];const grp=SECGROUPS.find(g=>g.includes(k))||[k];grp.forEach(x=>{delete model.open[x];});model.open[k]=!was;render(false);return;}
  const d=model.record;
  if(el.dataset.seg){if(!d)return;const r=d.draft;r[el.dataset.seg]=el.dataset.value;
-  if(el.dataset.seg==='subtype'){if(el.dataset.value==='staff_lodging_budget'){if(destDerived(r))r.destination=null;r.property=null;if(r.basis==='per_room_night')r.basis=null;}else if(!r.destination&&r.property){r.destination=(propOf(r.property)||{}).destination||null;}}
+  if(el.dataset.seg==='subtype'){if(el.dataset.value==='staff_lodging_budget'){if(r.basis==='per_room_night')r.basis=null;}else if(!r.destination&&r.property){r.destination=(propOf(r.property)||{}).destination||null;}}
   touch();render(false);return;}
- if(el.dataset.switch){if(!d)return;const r=d.draft;r[el.dataset.switch]=!r[el.dataset.switch];if(el.dataset.switch==='quote'&&r.quote){r.rate=null;r.cur='';}touch();render(false);return;}
+ if(el.dataset.switch){if(!d)return;const r=d.draft;r[el.dataset.switch]=!r[el.dataset.switch];if(el.dataset.switch==='quote'){if(r.quote){r._q={rate:r.rate,cur:r.cur};r.rate=null;r.cur='';}else if(r._q){r.rate=r._q.rate;r.cur=r._q.cur;delete r._q;}}touch();render(false);return;}
  if(el.dataset.tagRm){d.draft[el.dataset.tagRm].splice(Number(el.dataset.index),1);touch();render(false);return;}
  if(el.dataset.tagAdd){const name=el.dataset.tagAdd;const ph=el.dataset.placeholder||'';dialog(t('add_value'),`<label class="cc-label" for="tag-new">${esc(t('add_value'))}</label><input class="cc-input" id="tag-new" placeholder="${esc(ph)}" dir="auto">`,[{label:t('cancel')},{label:t('add_value'),run:()=>{const v=byId('tag-new').value.trim();if(!v)return false;if(!d.draft[name].some(x=>x.toLowerCase()===v.toLowerCase()))d.draft[name].push(v);touch();render(false);}}]);return;}
  const a=el.dataset.action;if(!a)return;
  if(a==='new-rate')go('rate:new');else if(a==='new-prop')go('prop:new');else if(a==='back')go('cat-accommodation');
  else if(a==='search-clear'){model.q='';model.qDraft=null;render(false);document.querySelector('[data-search]')?.focus();}
  else if(a==='search-go'){model.q=model.qDraft!=null?model.qDraft:model.q;model.qDraft=null;render(false);}
- else if(a==='approve'){d.draft.moderation='ready';touch();render(false);}
+ else if(a==='approve'){dialog(t('acc.mark_ready'),`<p>${esc(t('acc.mark_ready_confirm'))}</p>`,[{label:t('guard.stay')},{label:t('acc.mark_ready'),run:()=>{d.draft.moderation='ready';save();notify(t('acc.marked'));}}]);}
  else if(a==='reject'){d.draft.moderation='rejected';touch();render(false);}
- else if(a==='dup-rate'){const src=demo.rates.find(x=>x.id===el.dataset.id);guard(()=>{const r=clone(src);r.id='new';r.season='';r.from='';r.until='';r.blackout=[];r.prov={kind:'dup',at:''};r.imported=false;r.legacy=null;r.moderation=null;r.status='active';if(r.name_manual){r.name_manual=false;delete r.name;}model.route='rate:new';model.record={kind:'rate',id:null,draft:r};model.dirty=true;model.open={basics:true};render();window.scrollTo({top:0,behavior:'instant'});});}
- else if(a==='archive-rate'||a==='restore-rate'){const r=demo.rates.find(x=>x.id===el.dataset.id);r.status=a==='archive-rate'?'archived':'active';render(false);notify(t('saved'));}
+ else if(a==='dup-rate'){const src=demo.rates.find(x=>x.id===el.dataset.id);guard(()=>{model.open={identity:true};const r=clone(src);r.id='new';r.season='';r.from='';r.until='';r.blackout=[];r.prov={kind:'dup',at:''};r.imported=false;r.legacy=null;r.moderation=null;r.status='active';if(r.name_manual){r.name_manual=false;delete r.name;}model.route='rate:new';model.record={kind:'rate',id:null,draft:r};model.dirty=true;model.open={basics:true};render();window.scrollTo({top:0,behavior:'instant'});});}
+ else if(a==='archive-rate'||a==='restore-rate'){const r=demo.rates.find(x=>x.id===el.dataset.id);r.status=a==='archive-rate'?'archived':'active';render(false);document.querySelector('[data-search]')?.focus({preventScroll:true});notify(t('saved'));}
  else if(a==='archive-prop'||a==='restore-prop'){const p=demo.properties.find(x=>x.id===el.dataset.id);p.status=a==='archive-prop'?'archived':'active';render(false);notify(t('saved'));}
+ else if(a==='goto'){const [tab,key]=String(el.dataset.goto).split(':');model.rtab=tab;const grp=SECGROUPS.find(g=>g.includes(key))||[];grp.forEach(x=>{delete model.open[x];});if(key)model.open[key]=true;render(false);setTimeout(()=>{const s=document.querySelector(`[data-sec="${key}"] .cc-sec__head`);if(s)s.focus({preventScroll:false});},0);}
  else if(a==='save')save();
  else if(a==='discard'){if(!d)return;d.draft=d.id?clone((d.kind==='rate'?demo.rates:demo.properties).find(x=>x.id===d.id)):(d.kind==='rate'?newRateDraft():newPropDraft());model.dirty=false;render(false);}
  else if(a==='clear-prop'){if(destDerived(d.draft))d.draft.destination=null;d.draft.property=null;touch();render(false);}
  else if(a==='clear-dest'){d.draft.destination=null;touch();render(false);}
- else if(a==='row-add'){d.draft[el.dataset.rows].push(el.dataset.kind==='dates'?{from:'',until:''}:{name:'',amount:null,cur:'',basis:''});touch();render(false);}
- else if(a==='row-rm'){d.draft[el.dataset.rows].splice(Number(el.dataset.index),1);touch();render(false);}
+ else if(a==='row-add'){const k=el.dataset.kind;d.draft[el.dataset.rows].push(k==='dates'?{from:'',until:''}:k==='fee'?{name:'',kind:'',amount:null,cur:'',basis:'',treatment:''}:k==='child'?{age_from:null,age_to:null,treatment:'',amount:null,cur:'',basis:''}:{name:'',amount:null,cur:'',basis:''});touch();render(false);}
+ else if(a==='row-rm'){const g=el.dataset.rows;d.draft[g].splice(Number(el.dataset.index),1);touch();render(false);document.querySelector(`[data-action="row-add"][data-rows="${g}"]`)?.focus({preventScroll:true});}
 });
 document.addEventListener('input',event=>{
  const el=event.target;
@@ -3508,7 +3786,8 @@ document.addEventListener('input',event=>{
  const d=model.record;if(!d)return;const name=el.dataset.field;if(!name)return;
  const r=d.draft;
  setPath(r,name,coerce(name,el.value));
- if(name==='name'){r.name_manual=el.value.trim()!=='';if(!r.name_manual)delete r.name;}
+ model._raw={name:name,value:el.value};
+ if(name==='name'){r.name_manual=el.value.trim()!=='';if(!r.name_manual)delete r.name;else r.name=el.value;}
  if(name==='property'&&r.property&&(!r.destination||r.destination===d._prevDest)){r.destination=(propOf(r.property)||{}).destination||null;}
  if(name==='property')d._prevDest=r.property?(propOf(r.property)||{}).destination||null:null;
  if(name==='supplier'){r.source=null;}
@@ -3544,7 +3823,7 @@ render();
 @media print{#akn{display:none}}
 </style>
 <div id="akn" dir="rtl">
-<div id="akn-list" hidden><div class="akn-g">ספריית העיצוב</div><a class="akn-i" href="00-DESIGN-LIBRARY.html"><span class="akn-t">ספריית העיצוב</span><span class="akn-v">גרסה 4</span></a><div class="akn-g">פעיל</div><a class="akn-i akn-cur" href="2026-09-10-s55-catalog-accommodation.html"><span class="akn-t">קטלוג השירותים - לינה</span><span class="akn-v">גרסה 2</span></a><a class="akn-i" href="2026-09-08-s53-settings-integrations-v1.3.html"><span class="akn-t">הגדרות וחיבורים - v1.3</span><span class="akn-v">גרסה 1.3.6</span></a><a class="akn-i" href="2026-09-08-s53-settings-integrations.html"><span class="akn-t">הגדרות וחיבורים - v1.2</span><span class="akn-v">גרסה 1.2</span></a><div class="akn-g">ארכיון</div><a class="akn-i" href="2026-07-29-s35cd-order-card-redesign.html"><span class="akn-t">רדיזיין כרטיס ההזמנה</span><span class="akn-v">גרסה 4</span></a><a class="akn-i" href="2026-07-29-s35cd-cit-card.html"><span class="akn-t">כרטיס ה-CIT כתוכנית</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-partner-card.html"><span class="akn-t">כרטיס השותף</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-settings-area.html"><span class="akn-t">אזור ההגדרות - טיוטה ראשונה</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-folders-root-bulk.html"><span class="akn-t">בולק בשורש הסייר</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-pricing-flow-e2e.html"><span class="akn-t">תהליך התמחור המלא</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-calc-window-dialog.html"><span class="akn-t">חלון החישוב והדיאלוג</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-card-anatomy.html"><span class="akn-t">אנטומיית הכרטיס</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s35-dialog-and-dictionary.html"><span class="akn-t">הדיאלוג ומסך המילון</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-24-s32-five-elements.html"><span class="akn-t">חמישה אלמנטים</span><span class="akn-v">בעבודה</span></a><a class="akn-i" href="2026-08-21-s38-libfill-shells.html"><span class="akn-t">מעטפת ספריית העיצוב</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-08-29-s8-split-rail.html"><span class="akn-t">סרגל הצד</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-19-s37-assist.html"><span class="akn-t">עוזר ה-AI על הדשבורד</span><span class="akn-v">גרסה 5</span></a><a class="akn-i" href="2026-08-13-s41-tagon-backfill.html"><span class="akn-t">מסך המילוי לאחור בתיוג</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-12-s41-search.html"><span class="akn-t">חיפוש אחד על הכל</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-12-s41-screen-filerow.html"><span class="akn-t">שורת התוצאה בחיפוש</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-11-s41-explorer.html"><span class="akn-t">סייר התיקיות</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-07-31-s39-widget-mockup.html"><span class="akn-t">לוח ניהול הפרויקט</span><span class="akn-v">סטטוס לא ידוע</span></a></div>
+<div id="akn-list" hidden><div class="akn-g">ספריית העיצוב</div><a class="akn-i" href="00-DESIGN-LIBRARY.html"><span class="akn-t">ספריית העיצוב</span><span class="akn-v">גרסה 4</span></a><div class="akn-g">פעיל</div><a class="akn-i akn-cur" href="2026-09-10-s55-catalog-accommodation.html"><span class="akn-t">קטלוג השירותים - לינה</span><span class="akn-v">גרסה 3</span></a><a class="akn-i" href="2026-09-08-s53-settings-integrations-v1.3.html"><span class="akn-t">הגדרות וחיבורים - v1.3</span><span class="akn-v">גרסה 1.3.6</span></a><a class="akn-i" href="2026-09-08-s53-settings-integrations.html"><span class="akn-t">הגדרות וחיבורים - v1.2</span><span class="akn-v">גרסה 1.2</span></a><div class="akn-g">ארכיון</div><a class="akn-i" href="2026-07-29-s35cd-order-card-redesign.html"><span class="akn-t">רדיזיין כרטיס ההזמנה</span><span class="akn-v">גרסה 4</span></a><a class="akn-i" href="2026-07-29-s35cd-cit-card.html"><span class="akn-t">כרטיס ה-CIT כתוכנית</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-partner-card.html"><span class="akn-t">כרטיס השותף</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-settings-area.html"><span class="akn-t">אזור ההגדרות - טיוטה ראשונה</span><span class="akn-v">גרסה 1</span></a><a class="akn-i" href="2026-07-29-s35cd-folders-root-bulk.html"><span class="akn-t">בולק בשורש הסייר</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-pricing-flow-e2e.html"><span class="akn-t">תהליך התמחור המלא</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-calc-window-dialog.html"><span class="akn-t">חלון החישוב והדיאלוג</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s32f-card-anatomy.html"><span class="akn-t">אנטומיית הכרטיס</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-27-s35-dialog-and-dictionary.html"><span class="akn-t">הדיאלוג ומסך המילון</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-07-24-s32-five-elements.html"><span class="akn-t">חמישה אלמנטים</span><span class="akn-v">בעבודה</span></a><a class="akn-i" href="2026-08-21-s38-libfill-shells.html"><span class="akn-t">מעטפת ספריית העיצוב</span><span class="akn-v">מאושר</span></a><a class="akn-i" href="2026-08-29-s8-split-rail.html"><span class="akn-t">סרגל הצד</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-19-s37-assist.html"><span class="akn-t">עוזר ה-AI על הדשבורד</span><span class="akn-v">גרסה 5</span></a><a class="akn-i" href="2026-08-13-s41-tagon-backfill.html"><span class="akn-t">מסך המילוי לאחור בתיוג</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-12-s41-search.html"><span class="akn-t">חיפוש אחד על הכל</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-12-s41-screen-filerow.html"><span class="akn-t">שורת התוצאה בחיפוש</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-08-11-s41-explorer.html"><span class="akn-t">סייר התיקיות</span><span class="akn-v">סטטוס לא ידוע</span></a><a class="akn-i" href="2026-07-31-s39-widget-mockup.html"><span class="akn-t">לוח ניהול הפרויקט</span><span class="akn-v">סטטוס לא ידוע</span></a></div>
 <div class="akn-bar"><a class="akn-b akn-home" href="../index.html">הלוח</a><span class="akn-sep"></span><a class="akn-b" href="00-DESIGN-LIBRARY.html" title="המסך הקודם">הקודם</a><a class="akn-b" href="2026-09-08-s53-settings-integrations-v1.3.html" title="המסך הבא">הבא</a><span class="akn-sep"></span><button class="akn-b" type="button" id="akn-toggle" aria-expanded="false">כל המסכים</button></div>
 </div>
 <script id="akn-script">(function(){var t=document.getElementById("akn-toggle"),l=document.getElementById("akn-list");function close(){l.hidden=true;t.setAttribute("aria-expanded","false");}t.addEventListener("click",function(e){e.stopPropagation();l.hidden=!l.hidden;t.setAttribute("aria-expanded",String(!l.hidden));if(!l.hidden){var c=l.querySelector(".akn-cur");if(c)c.scrollIntoView({block:"center"});}});document.addEventListener("click",function(e){if(!document.getElementById("akn").contains(e.target))close();});document.addEventListener("keydown",function(e){if(e.key==="Escape")close();});})();</script>

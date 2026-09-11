@@ -18,6 +18,7 @@
 
 https://dov-cyber.github.io/hub-ui-preview/m/2026-08-21-s38-libfill-shells.html
 
+
 ## הטקסט שעל המסך
 
 הטקסט חולץ מהמסמך אוטומטית. הוא נועד לקריאת מודל ואינו תחליף לצפייה במסך.
