@@ -29,7 +29,7 @@ Authentico™ Hub - ספריית העיצוב
 ספריית העיצוב
 Authentico™ Hub · המראה של הקוד
 
-נבנתה מהקוד · 199 טוקנים · 1056 מחלקות · 73 סמלים · 119 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 13.09.2026, 23:32
+נבנתה מהקוד · 199 טוקנים · 1056 מחלקות · 73 סמלים · 119 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 14.09.2026, 11:14
 
 מפתח
 0 · אינדקס האלמנטים מצויר
@@ -554,7 +554,7 @@ source sha1 5fd1ad0f94a7
 
 ## 1ב. קטלוג המחלקות - כל מחלקה שהמוצר מצהיר, מצביה, צרכניה, והאם הספרייה מציירת אותה ↑
 
-source sha1 81547ea786e5
+source sha1 21a1188beb6c
 
 🔴 נגזר, ואינו נכתב ביד - מ-global.css, מגושי הסגנון של הרכיבים, ומסימון הרכיבים - כולל מחלקות שמוחלות מקוד (className · classList). node tools/library-build.js . עריכה ידנית נמחקת בבנייה הבאה, ובדיקה W מפילה קומיט שבו הקוד זז והספרייה לא.
 
@@ -860,7 +860,7 @@ source sha1 81547ea786e5
 
 .cc-btn--row | global.css | - | screens/creation/Step6Result.svelte | לא | -
 
-.cc-btn--sm | global.css | - | components/assistant/AssistantPanel.svelte screens/creation/CreationScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/registry/CitBase.svelte screens/registry/ContactListField.svelte screens/registry/DialogPanel.svelte screens/registry/DocPickerDialog.svelte screens/registry/FolderPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/RichMailEditor.svelte screens/registry/SegmentBudget.svelte screens/registry/SegmentsSection.svelte screens/settings/CatalogPanel.svelte screens/settings/DictionaryPanel.svelte screens/settings/ModelPanel.svelte screens/tools/TagBackfillScreen.svelte | כן | -
+.cc-btn--sm | global.css | - | components/assistant/AssistantPanel.svelte screens/creation/CreationScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/registry/CitBase.svelte screens/registry/ContactListField.svelte screens/registry/DialogPanel.svelte screens/registry/DocPickerDialog.svelte screens/registry/FolderPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/RichMailEditor.svelte screens/registry/SegmentBudget.svelte screens/registry/SegmentsSection.svelte screens/settings/CatalogPanel.svelte screens/settings/DictionaryPanel.svelte screens/settings/ModelPanel.svelte screens/tools/TagBackfillScreen.svelte | כן | -
 
 .cc-btn--text | global.css | :hover | screens/clusters/ClustersScreen.svelte screens/content/ContentScreen.svelte screens/entities/C11Blocks.svelte screens/entities/ContentBlocks.svelte screens/entities/Savebar.svelte screens/registry/PartnersScreen.svelte | בגלריה | -
 
@@ -1002,7 +1002,7 @@ source sha1 81547ea786e5
 
 .cc-gsc-table | global.css | - | screens/entities/GscTable.svelte | כן | -
 
-.cc-help | global.css screens/registry/RichMailEditor.svelte | - | components/assistant/AssistantPanel.svelte screens/clusters/ClustersScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/creation/Step7Delivery.svelte screens/registry/AssignPartnerDialog.svelte screens/registry/CitBase.svelte screens/registry/ContactListField.svelte screens/registry/DestinationForm.svelte screens/registry/DestinationPickDialog.svelte screens/registry/DialogPanel.svelte screens/registry/DocPickerDialog.svelte screens/registry/FolderPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/MailSendLog.svelte screens/registry/MailTemplatesDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/OrderPickDialog.svelte screens/registry/PartnerCreateDialog.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingOrder.svelte screens/registry/RichMailEditor.svelte screens/registry/SegmentBudget.svelte screens/registry/SegmentsSection.svelte screens/settings/CatalogPanel.svelte screens/settings/DestinationsPanel.svelte screens/settings/DictionaryPanel.svelte screens/settings/IntegrationsPanel.svelte screens/settings/ModelPanel.svelte screens/settings/SettingsScreen.svelte | כן | -
+.cc-help | global.css screens/registry/RichMailEditor.svelte | - | components/assistant/AssistantPanel.svelte screens/clusters/ClustersScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/creation/Step7Delivery.svelte screens/registry/AssignPartnerDialog.svelte screens/registry/CitBase.svelte screens/registry/ContactListField.svelte screens/registry/DestinationForm.svelte screens/registry/DestinationPickDialog.svelte screens/registry/DialogPanel.svelte screens/registry/DocPickerDialog.svelte screens/registry/FolderPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/MailSendLog.svelte screens/registry/MailTemplatesDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/OrderPickDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnerCreateDialog.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingOrder.svelte screens/registry/RichMailEditor.svelte screens/registry/SegmentBudget.svelte screens/registry/SegmentsSection.svelte screens/settings/CatalogPanel.svelte screens/settings/DestinationsPanel.svelte screens/settings/DictionaryPanel.svelte screens/settings/IntegrationsPanel.svelte screens/settings/ModelPanel.svelte screens/settings/SettingsScreen.svelte | כן | -
 
 .cc-icon | global.css screens/creation/Step6Result.svelte screens/creation/Step7Delivery.svelte screens/registry/OrderDrawer.svelte | :hover | App.svelte components/assistant/AssistantPanel.svelte components/layout/Header.svelte components/layout/Login.svelte components/layout/Rail.svelte screens/clusters/ClustersScreen.svelte screens/content/ContentScreen.svelte screens/creation/CreationScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step4Assign.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/creation/Step7Delivery.svelte screens/creation/StepBar.svelte screens/entities/BodySelectorDialog.svelte screens/entities/BulkBar.svelte screens/entities/C11Blocks.svelte screens/entities/CompareGrid.svelte screens/entities/ConfirmDialog.svelte screens/entities/ContentBlocks.svelte screens/entities/EntityDetail.svelte screens/entities/EntityList.svelte screens/entities/GscTable.svelte screens/entities/PromptDialog.svelte screens/entities/PublishGate.svelte screens/entities/Savebar.svelte screens/entities/Timeline.svelte screens/registry/AssignPartnerDialog.svelte screens/registry/CitBase.svelte screens/registry/DestinationPickDialog.svelte screens/registry/DocPickerDialog.svelte screens/registry/FolderPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/MailSendLog.svelte screens/registry/MailTemplatesDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/OrderPickDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/SegmentsSection.svelte screens/settings/CatalogPanel.svelte screens/settings/DestinationsPanel.svelte screens/settings/IntegrationsPanel.svelte screens/settings/ModelPanel.svelte screens/settings/SettingsHome.svelte screens/settings/SettingsScreen.svelte screens/tools/GscSyncScreen.svelte screens/tools/IntentScreen.svelte screens/tools/JournalScreen.svelte screens/tools/PlatformHealth.svelte screens/tools/TagBackfillScreen.svelte screens/tools/ToolView.svelte | כן | -
 
@@ -1444,7 +1444,5 @@ source sha1 81547ea786e5
 
 .docrow | screens/creation/Step1Source.svelte | - | screens/creation/Step1Source.svelte | לא | -
 
-.donecheck | global.css | - | screens/creation/StepBar.svelte | כן | -
-
-.dot | screens/creation/Step5Review.svelte | - | screens/creati
+.donecheck | global.css | - | screens/creation/StepBar.svelte
 ```
