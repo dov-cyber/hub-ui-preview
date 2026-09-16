@@ -29,7 +29,7 @@ Authentico™ Hub - ספריית העיצוב
 ספריית העיצוב
 Authentico™ Hub · המראה של הקוד
 
-נבנתה מהקוד · 199 טוקנים · 1056 מחלקות · 73 סמלים · 124 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 16.09.2026, 11:28
+נבנתה מהקוד · 199 טוקנים · 1056 מחלקות · 73 סמלים · 124 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 16.09.2026, 15:15
 
 מפתח
 0 · אינדקס האלמנטים מצויר
@@ -554,7 +554,7 @@ source sha1 5fd1ad0f94a7
 
 ## 1ב. קטלוג המחלקות - כל מחלקה שהמוצר מצהיר, מצביה, צרכניה, והאם הספרייה מציירת אותה ↑
 
-source sha1 ae20ac4a28fc
+source sha1 726bc3a79958
 
 🔴 נגזר, ואינו נכתב ביד - מ-global.css, מגושי הסגנון של הרכיבים, ומסימון הרכיבים - כולל מחלקות שמוחלות מקוד (className · classList). node tools/library-build.js . עריכה ידנית נמחקת בבנייה הבאה, ובדיקה W מפילה קומיט שבו הקוד זז והספרייה לא.
 
@@ -956,7 +956,7 @@ source sha1 ae20ac4a28fc
 
 .cc-fg-deco | global.css | - | screens/registry/DocPickerDialog.svelte screens/registry/FolderPickerDialog.svelte screens/registry/FoldersScreen.svelte | בגלריה | -
 
-.cc-fg-dim | global.css | - | screens/clusters/ClustersScreen.svelte screens/content/ContentScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/creation/Step7Delivery.svelte screens/entities/BodySelectorDialog.svelte screens/entities/C11Blocks.svelte screens/entities/ContentBlocks.svelte screens/entities/EntityList.svelte screens/entities/GscTable.svelte screens/entities/PublishGate.svelte screens/registry/DestinationPickDialog.svelte screens/registry/DocPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/OrderPickDialog.svelte screens/registry/PartnerPickDialog.svelte screens/registry/PartnersScreen.svelte screens/registry/SegmentsSection.svelte screens/tools/JournalScreen.svelte screens/tools/PlatformHealth.svelte | בגלריה | -
+.cc-fg-dim | global.css | - | screens/clusters/ClustersScreen.svelte screens/content/ContentScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step3Group.svelte screens/creation/Step5Review.svelte screens/creation/Step6Result.svelte screens/creation/Step7Delivery.svelte screens/entities/BodySelectorDialog.svelte screens/entities/C11Blocks.svelte screens/entities/ContentBlocks.svelte screens/entities/EntityList.svelte screens/entities/GscTable.svelte screens/entities/PublishGate.svelte screens/registry/DestinationPickDialog.svelte screens/registry/DocPickerDialog.svelte screens/registry/FoldersScreen.svelte screens/registry/MailSendDialog.svelte screens/registry/OrderDrawer.svelte screens/registry/OrderPickDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnerPickDialog.svelte screens/registry/PartnersScreen.svelte screens/registry/SegmentsSection.svelte screens/tools/JournalScreen.svelte screens/tools/PlatformHealth.svelte | בגלריה | -
 
 .cc-fg-soft | global.css | - | screens/creation/Step3Group.svelte screens/entities/BodySelectorDialog.svelte screens/entities/C11Blocks.svelte screens/entities/ContentBlocks.svelte screens/entities/PublishGate.svelte | בגלריה | -
 
@@ -1120,9 +1120,9 @@ source sha1 ae20ac4a28fc
 
 .cc-section-title--tight | global.css | - | screens/registry/MailTemplatesDialog.svelte | לא | -
 
-.cc-seg | global.css | :focus-visible | screens/clusters/ClustersScreen.svelte screens/content/ContentScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step5Review.svelte screens/registry/MailSendDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/SegmentBudget.svelte screens/settings/DictionaryPanel.svelte screens/tools/GscSyncScreen.svelte screens/tools/IntentScreen.svelte screens/tools/JournalScreen.svelte screens/tools/TagBackfillScreen.svelte | כן | -
+.cc-seg | global.css | :focus-visible | screens/clusters/ClustersScreen.svelte screens/content/ContentScreen.svelte screens/creation/Step1Source.svelte screens/creation/Step2Product.svelte screens/creation/Step5Review.svelte screens/registry/MailSendDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnerPickDialog.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/SegmentBudget.svelte screens/settings/DictionaryPanel.svelte screens/tools/GscSyncScreen.svelte screens/tools/IntentScreen.svelte screens/tools/JournalScreen.svelte screens/tools/TagBackfillScreen.svelte | כן | -
 
-.cc-seg--sm | global.css screens/creation/Step5Review.svelte | - | screens/creation/Step5Review.svelte screens/registry/MailSendDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/SegmentBudget.svelte screens/settings/DictionaryPanel.svelte screens/tools/TagBackfillScreen.svelte | כן | -
+.cc-seg--sm | global.css screens/creation/Step5Review.svelte | - | screens/creation/Step5Review.svelte screens/registry/MailSendDialog.svelte screens/registry/OrdersScreen.svelte screens/registry/PartnerPickDialog.svelte screens/registry/PartnersScreen.svelte screens/registry/PricingHead.svelte screens/registry/PricingOrder.svelte screens/registry/SegmentBudget.svelte screens/settings/DictionaryPanel.svelte screens/tools/TagBackfillScreen.svelte | כן | -
 
 .cc-seg--unset | screens/registry/PricingOrder.svelte | :hover | screens/registry/PricingOrder.svelte | בגלריה | -
 
@@ -1428,7 +1428,5 @@ source sha1 ae20ac4a28fc
 
 .dlgp | screens/registry/DialogPanel.svelte | - | screens/registry/DialogPanel.svelte | בגלריה | -
 
-.dlgp--side | screens/registry/DialogPanel.svelte | - | screens/registry/DialogPanel.svelte | בגלריה | -
-
-.dlgp-live | screens/registry/DialogPanel
+.dlgp--side | screens/regi
 ```
