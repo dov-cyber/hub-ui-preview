@@ -1,12 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
-<title>S53 - הגדרות וחיבורים - טיוטת עיצוב</title>
-<!-- S53:SNAPSHOT CSS -->
-<style id="s53-canonical-css">
+<title>מוקאפ HUB-READ-SAFETY - סדר אנשי הקשר: מסך המילוי לאחור</title>
+<style>
+/* 1:1: spa/src/global.css כלשונו (הועתק מהדיסק 17.09.2026) */
 /* ============================================================================
    Authentico™ Hub SPA - global.css
    PORTED AS-IS from archive/legacy-gas-geo/Dashboard.html <style> block
@@ -2574,64 +2572,48 @@ button.cc-sec__head { width: 100%; background: transparent; border: none; font: 
 .rec-edge--add { border-right: 4px solid var(--cc-action); }
 .rec-edge--replace { border-right: 4px solid var(--cc-warning-bar); }
 
-</style>
-<!-- /S53:SNAPSHOT CSS -->
-<style id="s53-layout">
-/* Proposed composition only. Shared component declarations above remain verbatim.
-   No new palette, typeface, shadow or radius. Layout proposal needs Dov approval. */
-body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
-[hidden] { display:none !important; }
-.s53-review { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-md); padding:var(--spacing-sm) 24px; background:var(--cc-info-bg); border-bottom:1px solid var(--cc-border); color:var(--cc-text-2); font-size:13px; }
-.s53-review small { margin-inline-start:auto; }
-.shell-body { min-height:calc(100vh - 116px); }
-.s53-workspace { width:100%; margin-inline:auto; padding:24px; }
-.s53-stack { display:grid; gap:24px; }
-.s53-group { display:grid; gap:var(--spacing-md); }
-.s53-group h2 { margin:0; font-size:15px; font-weight:600; }
-.s53-head { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:var(--spacing-lg); margin-bottom:24px; }
-.s53-head h1 { margin:0; }
-.s53-head p { max-width:none; }
-.s53-card { width:100%; text-align:start; font-family:var(--cc-font); }
-.s53-card p { margin:0; font-size:14px; color:var(--cc-text-2); line-height:1.5; }
-.s53-card .cc-card-head { width:100%; }
-.s53-card .cc-card-head > .cc-icon:last-child { margin-inline-start:auto; }
-.s53-card:disabled { cursor:default; background:var(--cc-bg); }
-.s53-card:disabled:hover { box-shadow:none; border-color:var(--cc-border); }
-.s53-card:disabled .cc-card-name, .s53-card:disabled p, .s53-card:disabled .cc-icon { color:var(--cc-text-disabled); }
-.s53-toolbar { display:flex; align-items:center; gap:var(--spacing-md); flex-wrap:wrap; margin-bottom:var(--spacing-lg); }
-.s53-toolbar .cc-input { max-width:320px; }
-.s53-toolbar .cc-spacer { margin-inline-start:auto; }
-.s53-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; max-width:900px; }
-.s53-form .cc-input { width:100%; }
-.s53-form .s53-span { grid-column:1/-1; }
-.s53-panel { padding:22px 24px; }
-.s53-form-note { margin:0; color:var(--cc-text-2); font-size:14px; }
-.s53-table-scroll { overflow:auto; max-width:100%; border-radius:var(--cc-radius); }
-.s53-table-scroll table { min-width:620px; }
-.s53-mapping { min-width:820px !important; }
-.s53-mapping .cc-input { width:100%; min-width:150px; }
-.s53-mapping small { display:block; color:var(--cc-text-3); margin-top:4px; }
-.s53-tabs { margin-bottom:var(--spacing-lg); }
-.s53-empty { border:1px solid var(--cc-border); border-radius:var(--cc-radius); background:var(--cc-surface); }
-.s53-summary { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin:var(--spacing-lg) 0; }
-.s53-status { margin-bottom:var(--spacing-lg); }
-.s53-quiet { color:var(--cc-text-3); font-size:13px; }
-.s53-steps { display:grid; gap:var(--spacing-md); }
-.s53-readonly { margin:0; display:grid; grid-template-columns:minmax(130px,1fr) 2fr; gap:var(--spacing-md); }
-.s53-readonly dt { color:var(--cc-text-2); }
-.s53-readonly dd { margin:0; overflow-wrap:anywhere; }
-.s53-dialog { width:min(500px,calc(100vw - 32px)); max-height:90vh; overflow:auto; color:var(--cc-text); }
-.s53-dialog::backdrop { background:var(--cc-scrim); }
-.s53-dialog h2 { margin-block-start:0; }
-.s53-dialog .cc-input { width:100%; }
-.s53-dialog-actions { flex-wrap:wrap; }
-.s53-dialog-actions button:last-child { margin-inline-start:auto; }
-.s53-review-details { margin-top:24px; padding-top:16px; border-top:1px solid var(--cc-border); font-size:13px; color:var(--cc-text-2); }
-.s53-review-details summary { cursor:pointer; min-height:var(--cc-row-h); }
-.s53-review-details li { margin:8px 0; }
-:focus-visible { outline:2px solid var(--cc-action); outline-offset:2px; }
-@media(max-width:1050px) { .s53-workspace { padding:20px; } .cc-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:760px) { .s53-workspace { padding:16px; } .cc-grid,.s53-form { grid-template-columns:minmax(0,1fr); } .s53-form .s53-span { grid-column:auto; } .s53-readonly { grid-template-columns:1fr; } .header-left { display:none; } .s53-review { padding:8px 16px; } }
+/* S53: connection-state presentation. Existing dot geometry and tokens;
+   independent from the permission-sync applied/observed provenance family. */
+.cc-connection-status { display: inline-flex; align-items: center; gap: var(--spacing-sm); }
+.cc-connection-status::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+.cc-connection-status--neutral::before { background: var(--cc-text-3); }
+.cc-connection-status--success::before { background: var(--status-impl-dot); }
+.cc-connection-status--error::before { background: var(--status-suspended-dot); }
+.cc-connection-status--pending::before { background: var(--status-pending-dot); }
+
+/* 1:1: SegmentsSection.svelte - שדה הבחירה של השותף (seg-pickfield) */
+.seg-pickfield { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: var(--cc-row-h);
+    width: 100%; border: 1px solid var(--cc-border-strong); border-radius: var(--cc-radius-sm);
+    background: var(--cc-surface); padding: 6px 12px; cursor: pointer; text-align: start;
+    font: 15px var(--cc-font); color: var(--cc-text); }
+  .seg-pickfield:hover:not(:disabled) { border-color: var(--cc-action); }
+.seg-pickfield:hover:not(:disabled) { border-color: var(--cc-action); }
+.seg-pickfield:disabled { background: var(--cc-bg); cursor: default; }
+.seg-pick-chev { margin-inline-start: auto; color: var(--cc-text-3); font-size: 12px; }
+.seg-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--cc-sunken);
+    border-radius: var(--cc-radius-pill); padding: 3px 10px; font-size: 13px; font-weight: 600; color: var(--cc-text-2); }
+  .seg-pill-x { color: var(--cc-text-3); cursor: pointer; padding: 0 2px; }
+/* 1:1: TagBackfillScreen.svelte - tool-field ו-tool-spin המקומיים */
+.tool-field { margin-top: 16px; }
+  .tool-field__label { font-size: 13px; font-weight: 600; color: var(--cc-text-2); margin-bottom: 7px; display: block; }
+.tool-field__label { font-size: 13px; font-weight: 600; color: var(--cc-text-2); margin-bottom: 7px; display: block; }
+.tool-field__hint { font-size: 12px; color: var(--cc-text-3); margin-top: 6px; }
+.tool-spin { width: 15px; height: 15px; border: 2px solid var(--tool-spin); border-top-color: transparent; border-radius: 50%; animation: cc-spin .8s linear infinite; flex-shrink: 0; display: inline-block; margin-inline-end: 8px; vertical-align: -2px; }
+/* mk- = פיגום מוקאפ בלבד */
+body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
+.mk-h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.mk-sub{font-size:13px;color:var(--cc-text-2);margin-bottom:18px;max-width:900px}
+.mk-sec{margin:30px 0 12px;font-size:15px;font-weight:600;color:var(--cc-action);border-bottom:1px solid var(--cc-border);padding-bottom:6px}
+.mk-frame{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--cc-radius);margin-bottom:18px;overflow:hidden}
+.mk-note{background:var(--cc-sunken);border:1px solid var(--cc-border);border-radius:var(--cc-radius-sm);padding:14px 16px;font-size:13px;margin:10px 0 18px;max-width:900px}
+.mk-note b{color:var(--cc-action)}
+.mk-note ul{margin:6px 22px 0 0}
+.mk-note li{margin-bottom:5px}
+.mk-tbl{width:100%;max-width:900px;border-collapse:collapse;font-size:13px;background:var(--cc-surface);margin-bottom:18px}
+.mk-tbl th,.mk-tbl td{border:1px solid var(--cc-border);padding:7px 10px;text-align:right;vertical-align:top}
+.mk-tbl th{background:var(--cc-sunken);font-weight:600;color:var(--cc-text-2)}
+.mk-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.mk-dlg-stage{background:var(--cc-scrim, rgba(0,0,0,.35));padding:28px;display:flex;justify-content:center}
 </style>
 </head>
 <body>
@@ -2645,616 +2627,175 @@ body { margin:0; background:var(--cc-bg); color:var(--cc-text); }
 #akp select{margin-inline-start:auto;font:inherit;padding:5px 8px;border:1px solid #dcdcd8;border-radius:8px;background:#fff;max-width:min(46vw,300px)}
 @media print{#akp{display:none}}
 </style>
-<nav id="akp" aria-label="נתיב"><a href="../index.html">לוח המוקאפים</a><span class="akp-sep" aria-hidden="true">›</span><b>הגדרות וחיבורים - v1.2</b><span class="akp-meta">גרסה 1.2 - מאושר</span><select id="akp-go" aria-label="מעבר למסך אחר"><optgroup label="ספריית העיצוב"><option value="00-DESIGN-LIBRARY.html">ספריית העיצוב - גרסה 4</option></optgroup><optgroup label="פעיל"><option value="2026-09-17-hrs-contacts-order-backfill.html">סדר אנשי הקשר - מילוי לאחור - גרסה 1.0</option><option value="2026-09-10-s55-catalog-accommodation.html">קטלוג השירותים - לינה - גרסה 3.1</option><option value="2026-09-08-s53-settings-integrations-v1.3.html">הגדרות וחיבורים - v1.3 - גרסה 1.3.6</option><option value="2026-09-08-s53-settings-integrations.html" selected>הגדרות וחיבורים - v1.2 - גרסה 1.2</option></optgroup><optgroup label="ארכיון"><option value="2026-07-29-s35cd-order-card-redesign.html">רדיזיין כרטיס ההזמנה - גרסה 4</option><option value="2026-07-29-s35cd-cit-card.html">כרטיס ה-CIT כתוכנית - גרסה 1</option><option value="2026-07-29-s35cd-partner-card.html">כרטיס השותף - גרסה 1</option><option value="2026-07-29-s35cd-settings-area.html">אזור ההגדרות - טיוטה ראשונה - גרסה 1</option><option value="2026-07-29-s35cd-folders-root-bulk.html">בולק בשורש הסייר</option><option value="2026-07-27-s32f-pricing-flow-e2e.html">תהליך התמחור המלא</option><option value="2026-07-27-s32f-calc-window-dialog.html">חלון החישוב והדיאלוג</option><option value="2026-07-27-s32f-card-anatomy.html">אנטומיית הכרטיס</option><option value="2026-07-27-s35-dialog-and-dictionary.html">הדיאלוג ומסך המילון</option><option value="2026-07-24-s32-five-elements.html">חמישה אלמנטים</option><option value="2026-08-21-s38-libfill-shells.html">מעטפת ספריית העיצוב</option><option value="2026-08-29-s8-split-rail.html">סרגל הצד</option><option value="2026-08-19-s37-assist.html">עוזר ה-AI על הדשבורד - גרסה 5</option><option value="2026-08-13-s41-tagon-backfill.html">מסך המילוי לאחור בתיוג</option><option value="2026-08-12-s41-search.html">חיפוש אחד על הכל</option><option value="2026-08-12-s41-screen-filerow.html">שורת התוצאה בחיפוש</option><option value="2026-08-11-s41-explorer.html">סייר התיקיות</option><option value="2026-07-31-s39-widget-mockup.html">לוח ניהול הפרויקט</option></optgroup></select></nav>
+<nav id="akp" aria-label="נתיב"><a href="../index.html">לוח המוקאפים</a><span class="akp-sep" aria-hidden="true">›</span><b>סדר אנשי הקשר - מילוי לאחור</b><span class="akp-meta">גרסה 1.0 - מאושר</span><select id="akp-go" aria-label="מעבר למסך אחר"><optgroup label="ספריית העיצוב"><option value="00-DESIGN-LIBRARY.html">ספריית העיצוב - גרסה 4</option></optgroup><optgroup label="פעיל"><option value="2026-09-17-hrs-contacts-order-backfill.html" selected>סדר אנשי הקשר - מילוי לאחור - גרסה 1.0</option><option value="2026-09-10-s55-catalog-accommodation.html">קטלוג השירותים - לינה - גרסה 3.1</option><option value="2026-09-08-s53-settings-integrations-v1.3.html">הגדרות וחיבורים - v1.3 - גרסה 1.3.6</option><option value="2026-09-08-s53-settings-integrations.html">הגדרות וחיבורים - v1.2 - גרסה 1.2</option></optgroup><optgroup label="ארכיון"><option value="2026-07-29-s35cd-order-card-redesign.html">רדיזיין כרטיס ההזמנה - גרסה 4</option><option value="2026-07-29-s35cd-cit-card.html">כרטיס ה-CIT כתוכנית - גרסה 1</option><option value="2026-07-29-s35cd-partner-card.html">כרטיס השותף - גרסה 1</option><option value="2026-07-29-s35cd-settings-area.html">אזור ההגדרות - טיוטה ראשונה - גרסה 1</option><option value="2026-07-29-s35cd-folders-root-bulk.html">בולק בשורש הסייר</option><option value="2026-07-27-s32f-pricing-flow-e2e.html">תהליך התמחור המלא</option><option value="2026-07-27-s32f-calc-window-dialog.html">חלון החישוב והדיאלוג</option><option value="2026-07-27-s32f-card-anatomy.html">אנטומיית הכרטיס</option><option value="2026-07-27-s35-dialog-and-dictionary.html">הדיאלוג ומסך המילון</option><option value="2026-07-24-s32-five-elements.html">חמישה אלמנטים</option><option value="2026-08-21-s38-libfill-shells.html">מעטפת ספריית העיצוב</option><option value="2026-08-29-s8-split-rail.html">סרגל הצד</option><option value="2026-08-19-s37-assist.html">עוזר ה-AI על הדשבורד - גרסה 5</option><option value="2026-08-13-s41-tagon-backfill.html">מסך המילוי לאחור בתיוג</option><option value="2026-08-12-s41-search.html">חיפוש אחד על הכל</option><option value="2026-08-12-s41-screen-filerow.html">שורת התוצאה בחיפוש</option><option value="2026-08-11-s41-explorer.html">סייר התיקיות</option><option value="2026-07-31-s39-widget-mockup.html">לוח ניהול הפרויקט</option></optgroup></select></nav>
 <script id="akp-script">document.getElementById("akp-go").addEventListener("change",function(e){if(e.target.value)location.href=e.target.value;});</script>
 
-<!-- S53:SNAPSHOT SPRITE -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="i-boxes" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
-  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
-  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
-  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
-  <symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
-  <symbol id="i-check-check" viewBox="0 0 24 24"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></symbol><symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol><symbol id="i-zoom-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></symbol><symbol id="i-zoom-out" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="8" x2="14" y1="11" y2="11"/></symbol>
-  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
-  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
-  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
-  <symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
-  <symbol id="i-circle-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol>
-  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></symbol>
-  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
-  <symbol id="i-loader" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></symbol>
-  <symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol>
-  <symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
-  <symbol id="i-circle-user" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></symbol>
-  <symbol id="i-more-vertical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
-  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></symbol><symbol id="i-list-ordered" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M4 16h2a1 1 0 0 1 0 2H4"/></symbol>
-  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 3 3.5 5.5v15L9 18l6 3 5.5-2.5v-15L15 6 9 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></symbol>
-  <symbol id="i-network" viewBox="0 0 24 24"><path d="M5.931 6.936l1.275 4.249m5.607 5.609l4.251 1.275"/><path d="M11.683 12.317l5.759 -5.759"/><path d="M5.5 5.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path d="M18.5 5.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path d="M18.5 18.5m-1.5 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0"/><path d="M8.5 15.5m-4.5 0a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0"/></symbol>
-  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></symbol>
-  <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></symbol>
-  <symbol id="i-minimize" viewBox="0 0 24 24"><path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M3 21l7-7"/></symbol>
-  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
-  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
-  <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></symbol>
-  <symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></symbol>
-  <symbol id="i-chart-bar" viewBox="0 0 24 24"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></symbol>
-  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
-  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
-  <symbol id="i-table" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></symbol>
-  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
-  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
-  <symbol id="i-chart-pie" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
-  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
-  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
-  <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
-  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
-  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
-  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
-  <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
-  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></symbol>
-  <symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
-  <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
-  <!-- S8-S9 registry / folder-explorer icons (roadmap 4.8), Lucide style -->
-  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
-  <symbol id="i-user-plus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></symbol>
-  <symbol id="i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="m7.5 4.27 9 5.15"/></symbol>
-  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
-  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
-  <symbol id="i-folder-plus" viewBox="0 0 24 24"><path d="M12 10v6"/><path d="M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
-  <symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
-  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
-  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
-  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
-  <symbol id="i-arrow-swap" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol>
-</svg>
-<!-- /S53:SNAPSHOT SPRITE -->
-<div class="s53-review"><strong>טיוטת עיצוב S53</strong><span>הדגמה מקומית בלבד. אין חיבור למערכת ואין שמירת נתונים.</span><small>08.09.2026 / v1.2 / אושר; הטיפוגרפיה לפי Studio</small></div>
-<header class="header">
- <div class="brand-block"><!-- S53:SNAPSHOT BRAND -->
-<svg class="brand-logo" viewBox="0 0 32.4 32.4" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Authentico"><path fill="#aa0000" d="M16.3,0C7.4-0.1,0.1,7.2,0,16.1s7.2,16.2,16.1,16.3c8.9,0.1,16.2-7.2,16.3-16.1v-0.2C32.3,7.2,25.2,0.1,16.3,0z M25.1,21.3c-0.8,0.2-1.6,0.1-2.4-0.1l-2.1-0.3c-0.8-0.1-1.6-0.4-2.2-0.4s-1.2-0.1-1.5,0.3s-0.1,0.9-0.1,1.2s0.3,2.2-0.3,2.2s-0.7-0.4-0.8-1.3s0.1-2-0.8-2.4c-0.9-0.3-1.8-0.5-2.7-0.6l-1.6-0.2l-3.2-0.2c-0.7-0.1-1.5-0.1-1.5-1s1.3-1.2,2.2-1.9c0.5-0.4,1.1-0.8,1.8-1c0.7-0.4,3.5-1.8,3.8-2.4c0.3-0.5,0.3-1,0.1-1.5c-0.1-0.3-1-2.6-0.8-3c0.3-0.4,0.7-0.4,1.1-0.2l0.3,0.4c0.3,0.5,0.8,2.6,1.1,2.8s0.2,0.5,1.2-0.1l2-1.2l1.3-1c0.4-0.3,1.3-0.7,1.6-1.2s1.5-0.9,1.5-0.5c0,0.5-0.2,0.9-0.6,1.2c-0.5,0.4-2.8,1.7-3.5,2.4L16.7,13c-0.5,0.4-0.9,1.1-0.9,1.8c0,1.3,0.3,2.7,0.8,3.9c0.4,0.5,1.1,0.8,1.8,0.8l3.1,0.6l3,0.8C25.1,20.9,25.3,21.2,25.1,21.3z M14.7,16c0.1,0.5,0.6,3-0.2,3l-2.8-0.3c-0.6,0-3-0.1-2.7-0.7c0.6-0.6,1.2-1,1.9-1.4c0.4-0.3,2.5-2.1,2.9-1.8C14.3,15,14.6,15.5,14.7,16z"/></svg>
-<!-- /S53:SNAPSHOT BRAND --></div>
- <div class="header-center"><div class="full-name">Authentico<sup>™</sup> Hub</div><div class="studio-tagline">The AI Operating System for DMCs</div></div>
- <div class="header-left"><span class="cc-chip">ארגון לדוגמה</span></div>
-</header>
-<div class="shell-body">
- <nav class="rail" id="rail" aria-label="ניווט ראשי">
-  <button class="rail-toggle" id="rail-toggle" aria-label="כיווץ התפריט" aria-expanded="true"><svg class="cc-icon" aria-hidden="true"><use href="#i-menu"></use></svg><svg class="cc-icon cc-icon--sm rail-toggle__hint" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button>
-  <a class="rail-item" href="#outside" data-outside title="הזמנות והצעות"><svg class="cc-icon" aria-hidden="true"><use href="#i-package"></use></svg><span class="rail-label">הזמנות והצעות</span></a>
-  <a class="rail-item" href="#outside" data-outside title="שותפים"><svg class="cc-icon" aria-hidden="true"><use href="#i-users"></use></svg><span class="rail-label">שותפים</span></a>
-  <a class="rail-item" href="#outside" data-outside title="סייר תיקיות"><svg class="cc-icon" aria-hidden="true"><use href="#i-folder"></use></svg><span class="rail-label">סייר תיקיות</span></a>
-  <a class="rail-item" href="#outside" data-outside title="יצירת תוכן"><svg class="cc-icon" aria-hidden="true"><use href="#i-sparkles"></use></svg><span class="rail-label">יצירת תוכן</span></a>
-  <a class="rail-item" href="#outside" data-outside title="תיוג הקבצים"><svg class="cc-icon" aria-hidden="true"><use href="#i-tag"></use></svg><span class="rail-label">תיוג הקבצים</span></a>
-  <div class="rail-sep"></div>
-  <button class="rail-fold" id="rail-fold" aria-expanded="true" aria-controls="rail-ak"><span class="rail-label">אותנטיקו</span><svg class="cc-icon cc-icon--sm rail-fold__caret" aria-hidden="true"><use href="#i-chevron-left"></use></svg></button>
-  <div class="rail-fold-body" id="rail-ak"></div>
-  <div class="rail-spacer"></div><div class="rail-sep"></div>
-  <a class="rail-item" href="#outside" data-outside title="יומן"><svg class="cc-icon" aria-hidden="true"><use href="#i-history"></use></svg><span class="rail-label">יומן</span></a>
-  <a class="rail-item rail-item--disabled" href="#outside" aria-disabled="true" data-outside title="דוחות"><svg class="cc-icon" aria-hidden="true"><use href="#i-chart-pie"></use></svg><span class="rail-label">דוחות</span></a>
-  <a class="rail-item active" href="#home" data-route="home" aria-current="page" title="הגדרות"><svg class="cc-icon" aria-hidden="true"><use href="#i-settings"></use></svg><span class="rail-label">הגדרות</span></a>
- </nav>
- <main class="content-area" id="main"><div class="s53-workspace tool-view__col tool-view__col--wide">
-  <div id="status" class="cc-msg cc-msg--info s53-status" role="status" hidden></div>
-  <div id="view"></div>
-  <details class="s53-review-details"><summary>על המוקאפ והבדיקה</summary><ul>
-   <li>הצעת חזות לכל אזור ההגדרות. הפעולות הקיימות, ההרשאות והדגלים אינם משתנים.</li>
-   <li>הדוגמאות קבועות ובדויות. עריכה ושמירה פועלות בזיכרון הלשונית בלבד ונמחקות בטעינה מחדש.</li>
-   <li>מיפוי וחיבורים הם הדגמת היעד. אין חיבור אמיתי למערכת חיצונית, אימות חשבון, הפעלה או הרצה.</li>
-   <li>הגיליון המשותף, סמלי הספרייה וסמל המותג משובצים מהמקור. תוספות הפריסה בלבד מוצעות לאישור.</li>
-   <li>דפי הניהול הקיימים מוצגים בדוגמאות מצומצמות. עורכי העומק נשארים ברכיביהם; אין כאן אישור להסרת יכולת.</li>
-   <li>בדיקת דפדפן ואישור חזותי נרשמים בנפרד. פתיחת הקובץ אינה אישור עיצוב או פריסה.</li>
-  </ul></details>
- </div></main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-list-ordered" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M4 16h2a1 1 0 0 1 0 2H4"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+<symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+</defs></svg>
+<div class="mk-h1">סדר אנשי הקשר - מסך המילוי לאחור (HUB-READ-SAFETY)</div>
+<div class="mk-sub">מוקאפ מאושר (דב, 17.09.2026), גרסה 1.0. כלי מפעיל אחד במסגרת הכלים (tool-view), בשלושה חלקים: בדיקה אצל שותף, ספירה בכל הארגון, תיקון. כל המספרים כאן הם <b>דוגמה</b> ולא נתונים.</div>
+
+<div class="mk-note">
+<b>מה המסך עושה, במשפט:</b> מוסיף לאנשי הקשר הקיימים את תווית המיון, כדי שכרטיס השותף יוכל להציג אותם בדפים ובסדר הנכון - ובודק לפני ואחרי. הוא אינו משנה שם, טלפון או כל פרט אחר.
+<ul>
+<li><b>מי רואה אותו</b>: מפעיל הארגון בלבד, ומאחורי מתג משלו. כשהמתג כבוי - הכלי מרונדר מושבת במקומו (כמו כל כלי אחר), ובסיום המילוי המתג נכבה.</li>
+<li><b>בשם מי</b>: כל פעולה נשלחת עם החשבון המחובר, ונרשמת ביומן בשמו.</li>
+<li><b>אין המשך אוטומטי</b>: כל לחיצה על "תיקון" היא טווח אחד, באישור נפרד. אין כאן מתג "אוטומטי" כמו בתיוג הקבצים - בכוונה.</li>
+<li><b>בחירת השותף</b> פותחת את חלון בחירת השותף הקיים (AssignPartnerDialog), כמו בכרטיס ההזמנה.</li>
+</ul>
 </div>
-<dialog class="app-dialog s53-dialog" id="dialog" aria-labelledby="dialog-title"><h2 id="dialog-title" class="app-dialog__title"></h2><div id="dialog-body" class="app-dialog__body"></div><div id="dialog-actions" class="app-dialog__actions s53-dialog-actions"></div></dialog>
-<script id="s53-app">
-'use strict';
-// Mockup-only dictionary proposal. These keys are not a production dictionary seed.
-const copy = {
- 'settings.home':'הגדרות','settings.home_desc':'ניהול התוכן, הנתונים, הגישה והחיבורים של הארגון.',
- 'settings.models':'ניהול מודלי AI','settings.templates':'ניהול תבניות',
- 'settings.permissions':'ניהול הרשאות','settings.destinations':'ניהול יעדים','settings.dictionary':'ניהול מילון',
- 'settings.catalog':'קטלוג השירותים','settings.integrations':'חיבורים למערכות','settings.appearance':'ניהול תצוגה',
- 'settings.flags':'דגלים ומאפיינים','settings.future':'טרם זמין','settings.demo':'הדגמת עיצוב',
- 'mapping.inbound':'מהמערכת החיצונית אל \u2066Hub\u2069','mapping.outbound':'מ-\u2066Hub\u2069 אל המערכת החיצונית',
- 'mapping.bidirectional':'דו-כיווני','mapping.disabled':'ללא העברת נתונים',
- 'mapping.draft_save':'שמירת טיוטה בהדגמה','mapping.preview':'תצוגה מקדימה לדוגמה',
- 'mapping.activation':'הפעלת המיפוי','mapping.manual':'ידנית','mapping.scheduled':'לפי תזמון',
- 'mapping.event':'לפי אירוע','mapping.ignored':'דולג','mapping.redacted':'הערכים אינם זמינים לצפייה',
- 'entity.Trip.title':'שם הטיול','entity.Trip.group_name':'שם הקבוצה','entity.Trip.client_name':'שם הלקוח',
- 'entity.Trip.client_emails':'כתובות מייל','entity.Trip.client_phones':'מספרי טלפון','entity.Trip.country':'מדינה',
- 'entity.Trip.date_start':'תחילת הטיול','entity.Trip.date_end':'סיום הטיול',
- 'entity.Trip.group_composition.adults':'מספר מבוגרים','entity.Trip.group_composition.children':'מספר ילדים','entity.Trip.group_composition.infants':'מספר תינוקות',
- 'mapping.external':'המערכת החיצונית','mapping.hub':'\u2068Hub\u2069','mapping.manual_review':'בדיקה ידנית'
-};
-const t=key=>{if(!(key in copy))throw Error('Unknown copy key: '+key);return copy[key];};
-const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const icon=id=>`<svg class="cc-icon" aria-hidden="true"><use href="${id}"></use></svg>`;
-const entries=[
- {id:'dict',key:'settings.dictionary',icon:'#i-book',desc:'מונחים, תוויות וטולטיפים של המערכת',group:'תוכן ונתונים'},
- {id:'dests',key:'settings.destinations',icon:'#i-globe',desc:'שמות יעדים ותרגומים במרשם הקנוני',group:'תוכן ונתונים'},
- {id:'catalog',key:'settings.catalog',icon:'#i-boxes',desc:'שירותים, תעריפים ונתוני שותפים',group:'תוכן ונתונים'},
- {id:'models',key:'settings.models',icon:'#i-sliders',desc:'ברירת מחדל ובחירת מודל לפי פעולה',group:'ניהול וגישה'},
- {id:'templates',key:'settings.templates',icon:'#i-file-text',desc:'תבניות המייל הקיימות במקום אחד',group:'ניהול וגישה'},
- {id:'perm',key:'settings.permissions',icon:'#i-shield',desc:'תמונת מצב וכניסה להרשאות השותף',group:'ניהול וגישה'},
- {id:'integrations',key:'settings.integrations',icon:'#i-network',desc:'חיבור למערכת חיצונית, מיפוי שדות ומדיניות סנכרון',group:'חיבורים ומערכת',demo:true},
- {id:'appearance',key:'settings.appearance',icon:'#i-layout',desc:'הגדרות התצוגה והעיצוב',group:'חיבורים ומערכת',future:true},
- {id:'flags',key:'settings.flags',icon:'#i-flag',desc:'דגלי מערכת ותצורה',group:'חיבורים ומערכת',future:true}
-];
-const model={route:'home',tab:'connection',dirty:false,saved:false,preview:false,scenario:'normal',query:'',dictionary:[{key:'demo.term',label:'מונח לדוגמה',tip:'הסבר בדוי לצורך בדיקת העיצוב'}],mapping:[
- {key:'title',external:'journey_name',direction:'inbound',authority:'external'},
- {key:'date_start',external:'departure_date',direction:'inbound',authority:'external'},
- {key:'date_end',external:'return_date',direction:'disabled',authority:'hub'}
-]};
-model.preferences={default:'a',consult:'inherit',operation:'inherit'};
-model.mapping.forEach(row=>{row.transform='identity';row.conflict_policy='none';});
-// S53:ENTITY-CONTRACT
-const targetContract = {
-  "entity": "Trip",
-  "contract_id": "Trip.header.patch",
-  "version": 3,
-  "completeness": "partial_header_patch",
-  "fields": [
-    {
-      "key": "title",
-      "type": "text",
-      "label_key": "entity.Trip.title",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [
-        "trim"
-      ],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 1000
-      },
-      "fingerprint": "135c391c4d3f02b80fbd8436a558f660f89d06a799029de9d47f939327b65b81"
-    },
-    {
-      "key": "group_name",
-      "type": "text",
-      "label_key": "entity.Trip.group_name",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [
-        "trim"
-      ],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 1000
-      },
-      "fingerprint": "11b3637ed579038e44cab2f8a91df928be7eb6e8b8a729f5ccf5cc9e37941d36"
-    },
-    {
-      "key": "client_name",
-      "type": "text",
-      "label_key": "entity.Trip.client_name",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [
-        "trim"
-      ],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 1000
-      },
-      "fingerprint": "a856708d72b4026d2bfdbe342f1a311ce9eb3f12feef1a92c0411d32d7fdd375"
-    },
-    {
-      "key": "country",
-      "type": "text",
-      "label_key": "entity.Trip.country",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [
-        "trim"
-      ],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 1000
-      },
-      "fingerprint": "40756b14dd2d7544b22d3f8d5af0ec043be57c09a76e3b7b2697e352dc9a69f0"
-    },
-    {
-      "key": "client_emails",
-      "type": "emails",
-      "label_key": "entity.Trip.client_emails",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [
-        "unique"
-      ],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "maxItems": 100,
-        "type": "array",
-        "items": {
-          "type": "string",
-          "maxLength": 254,
-          "format": "email",
-          "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
-        }
-      },
-      "fingerprint": "67e07ac13be039df983b6df4865714827603c13cbe762d6189891aa1a3d73b7b"
-    },
-    {
-      "key": "client_phones",
-      "type": "phones",
-      "label_key": "entity.Trip.client_phones",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [
-        "trim_array",
-        "unique"
-      ],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "maxItems": 100,
-        "type": "array",
-        "items": {
-          "type": "string",
-          "minLength": 3,
-          "maxLength": 40,
-          "allOf": [
-            {
-              "pattern": "^\\+?[0-9 ()-]+$(?![\\s\\S])"
-            },
-            {
-              "pattern": "[0-9]"
-            }
-          ]
-        }
-      },
-      "fingerprint": "9e14a9d2209064c85ce04aaaf1c24fd77cec16474457ab4188a294e0d56f40ae"
-    },
-    {
-      "key": "date_start",
-      "type": "date",
-      "label_key": "entity.Trip.date_start",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string",
-        "format": "date",
-        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
-      },
-      "fingerprint": "fca05fd6b2a7a73e691d08bc602bc15c8ab547401388ebee1f3d8ee3927d09de"
-    },
-    {
-      "key": "date_end",
-      "type": "date",
-      "label_key": "entity.Trip.date_end",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string",
-        "format": "date",
-        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
-      },
-      "fingerprint": "1a2e694c7ede9987f3314b51bf0be75016a41851876a9c8e6f699bd1024af69e"
-    },
-    {
-      "key": "group_composition.adults",
-      "type": "count",
-      "label_key": "entity.Trip.group_composition.adults",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "fingerprint": "88c40ab7d2a90b3add94c5a0133e20a6b6958c9ebffd30e796af29b2752fc1fb"
-    },
-    {
-      "key": "group_composition.children",
-      "type": "count",
-      "label_key": "entity.Trip.group_composition.children",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "fingerprint": "f4dc3eb8327a0fb925cb46c94f657e2afdca053b4f954ec93044d7b8c43885bb"
-    },
-    {
-      "key": "group_composition.infants",
-      "type": "count",
-      "label_key": "entity.Trip.group_composition.infants",
-      "sources": [
-        "hub/01-data-model.md#4.2",
-        "coworker-notes/drafts/s50-plan/S50-PLAN-ENGINEERING-SPEC.md#1.14"
-      ],
-      "validation_origin": "S53 initial defensive bounds; subject to entity-contract review",
-      "exchange": {
-        "inbound": true,
-        "outbound": false
-      },
-      "normalization": [],
-      "json_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 9007199254740991
-      },
-      "fingerprint": "010177fce5f5d736846c864e0c4977c0f19c9bd39b5e70608c419b748abc5771"
-    }
-  ],
-  "invariants": [
-    {
-      "kind": "date_order",
-      "start": "date_start",
-      "end": "date_end"
-    }
-  ],
-  "fingerprint": "bab2122df60677c5b832d7a99a1241250865cc992a591233de7fe930e10aa6c5"
-};
-// /S53:ENTITY-CONTRACT
-const hubFields=targetContract.fields.map(field=>({...field,label:t(field.label_key)}));
-model.entity_contract={contract_id:targetContract.contract_id,version:targetContract.version,fingerprint:targetContract.fingerprint};
-// Deliberately synthetic describe catalogue. No provider discovery or customer values.
-const externalFields=[
- ['journey_name','שם מסע לדוגמה','text'],['party_name','שם קבוצה לדוגמה','text'],['traveller_name','שם נוסע לדוגמה','text'],
- ['email_list','רשימת מיילים לדוגמה','emails'],['phone_list','רשימת טלפונים לדוגמה','phones'],['destination_name','מדינה לדוגמה','text'],
- ['departure_date','תאריך יציאה לדוגמה','date'],['return_date','תאריך חזרה לדוגמה','date'],
- ['adult_count','מספר מבוגרים לדוגמה','count'],['child_count','מספר ילדים לדוגמה','count'],['infant_count','מספר תינוקות לדוגמה','count']
-].map(([key,label,type])=>({key,label,type}));
-const policyMatrix={
- inbound:{external:['none','merge_missing'],hub:['manual_review'],external_create_hub_maintain:['manual_review'],read_only_mirror:['none']},
- outbound:{hub:['none']},bidirectional:{bidirectional_with_policy:['manual_review','external_wins','hub_wins']},
- disabled:{external:['none'],hub:['none'],external_create_hub_maintain:['none'],read_only_mirror:['none'],bidirectional_with_policy:['none']}
-};
-const policyLabels={linked_record_ids:'מזהי רשומות מקושרות',external:'המערכת החיצונית קובעת',hub:'הנתון ב-\u2068Hub\u2069 קובע',external_create_hub_maintain:'מילוי ראשוני מבחוץ, המשך ניהול ב-\u2068Hub\u2069',read_only_mirror:'עותק להשוואה בלבד, ללא כתיבה לשדה',bidirectional_with_policy:'סמכות דו-כיוונית לפי מדיניות',none:'לפי הסמכות, ללא כלל התנגשות נוסף',manual_review:'העברה לבדיקה ידנית',external_wins:'הערך החיצוני קובע',hub_wins:'הערך ב-\u2068Hub\u2069 קובע',merge_missing:'הוספת ערכים חסרים לרשימה',identity:'ללא המרה',first_string:'חילוץ טקסט וניקוי רווחים',string_list:'ניקוי ואיחוד רשימת טקסטים',number:'המרה למספר',date:'אימות תאריך \u2068ISO\u2069',ascii_country:'טקסט מדינה בתווי \u2068ASCII\u2069'};
-const typeLabels={text:'טקסט',emails:'רשימת מיילים',phones:'רשימת טלפונים',date:'תאריך \u2068ISO\u2069',count:'מספר שלם לא שלילי'};
-let mappingEditor=null;
-const canEditMapping=()=>['normal','changed'].includes(model.scenario);
-function allowedTransforms(row){
- if(row.direction==='disabled')return ['identity','number','first_string','string_list','linked_record_ids','ascii_country','date'];
- const source=externalFields.find(f=>f.key===row.external),target=hubFields.find(f=>f.key===row.key);
- if(!source||!target)return [];
- if(source.type===target.type)return ['identity',...({text:['first_string'],emails:['string_list'],phones:['string_list'],date:['date'],count:['number']}[target.type]||[]),...(row.key==='country'?['ascii_country']:[])];
- // A typed string may be parsed, but only real record validation can establish that its value is valid.
- if(source.type==='text'&&target.type==='count')return ['number'];
- if(source.type==='text'&&target.type==='date')return ['date'];
- if(source.type==='text'&&['emails','phones'].includes(target.type))return ['string_list'];
- return [];
-}
-function allowedConflicts(row){const choices=policyMatrix[row.direction]?.[row.authority]||[];const type=hubFields.find(f=>f.key===row.key)?.type;return choices.filter(c=>c!=='merge_missing'||['emails','phones'].includes(type));}
-function mappingErrors(row,index){
- const errors=[];
- if(!hubFields.some(f=>f.key===row.key)||!externalFields.some(f=>f.key===row.external))errors.push('יש לבחור שדה קנוני ושדה מתיאור המערכת החיצונית.');
- if(!['inbound','disabled'].includes(row.direction))errors.push('כיוון זה טרם זמין בדוגמה.');
- if(!policyMatrix[row.direction]?.[row.authority])errors.push('יש לבחור סמכות המתאימה לכיוון.');
- if(!allowedConflicts(row).includes(row.conflict_policy))errors.push('יש לבחור מדיניות התנגשות המתאימה לכיוון, לסמכות ולסוג השדה.');
- if(!allowedTransforms(row).includes(row.transform))errors.push('יש לבחור המרה המתאימה לסוגי השדות. אין בדיקה של ערכי ספק במוקאפ.');
- if(model.mapping.some((r,i)=>i!==index&&r.external===row.external&&r.key===row.key))errors.push('צמד השדות הזה כבר קיים במיפוי.');
- const writes=r=>r.direction==='inbound'&&r.authority!=='read_only_mirror';
- if(writes(row)&&model.mapping.some((r,i)=>i!==index&&writes(r)&&(r.key===row.key||r.key.startsWith(row.key+'.')||row.key.startsWith(r.key+'.'))))errors.push('שדה היעד כבר מקבל נתונים ממיפוי אחר. יש לערוך את המיפוי הקיים.');
- return [...new Set(errors)];
-}
-function applyMapping(row,index){
- if(!canEditMapping())return ['המיפוי אינו זמין לעריכה במצב זה.'];
- const errors=mappingErrors(row,index);if(errors.length)return errors;
- const {label,...next}=row;
- if(index!==null&&JSON.stringify(model.mapping[index])===JSON.stringify(next))return [];
- if(index===null){if(model.mapping.length>=200)return ['הגעת למספר השורות המרבי.'];model.mapping.push(next);}else if(!model.mapping[index])return ['השורה אינה זמינה עוד.'];else model.mapping[index]=next;
- model.dirty=JSON.stringify(model.mapping)!==JSON.stringify(savedMapping)||JSON.stringify(model.preferences)!==JSON.stringify(savedPreferences);model.preview=false;return [];
-}
-let savedMapping=structuredClone(model.mapping);
-let savedPreferences=structuredClone(model.preferences);
-// Synthetic server stand-in, memory-only. Revocation clears view cache, not this fake stored configuration.
-const demoStore={mapping:structuredClone(model.mapping),preferences:structuredClone(model.preferences)};
-function discardDraft(){model.mapping=structuredClone(savedMapping);model.preferences=structuredClone(savedPreferences);model.dirty=false;model.preview=false;}
-function saveDraft(){savedMapping=structuredClone(model.mapping);savedPreferences=structuredClone(model.preferences);demoStore.mapping=structuredClone(model.mapping);demoStore.preferences=structuredClone(model.preferences);model.dirty=false;model.saved=true;}
-const byId=id=>document.getElementById(id);
-const title=(name,desc,actions='')=>`<div class="s53-head"><div><h1 class="tool-view__title" id="page-title" tabindex="-1">${esc(name)}</h1><p class="tool-view__desc">${esc(desc)}</p></div>${actions}</div>`;
-const button=(label,action,extra='')=>`<button class="cc-btn" data-action="${action}" ${extra}>${label}</button>`;
-const breadcrumbs=()=>{const current=entries.find(e=>e.id===model.route);return `<div class="cc-explorer-bar"><nav class="cc-crumbs" aria-label="נתיב ההגדרות"><a href="#home" data-route="home"><bdi>${t('settings.home')}</bdi></a><span class="sep" aria-hidden="true">›</span><b aria-current="page"><bdi>${esc(t(current.key))}</bdi></b></nav></div>`;};
-const field=(label,control)=>`<div>${control.replace('<input ',`<input aria-label="${esc(label)}" `).replace('<select ',`<select aria-label="${esc(label)}" `)}<div class="cc-help">${esc(label)}</div></div>`;
-const panel=body=>`<section class="cc-section s53-panel">${body}</section>`;
-const table=(heads,rows,cls='')=>`<div class="cc-table-wrap s53-table-scroll" tabindex="0" aria-label="טבלת נתונים נגללת"><table class="cc-table ${cls}"><thead><tr>${heads.map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
-const note=(text,tone='info')=>`<p class="cc-msg cc-msg--${tone} s53-status">${text}</p>`;
-function home(){return title(t('settings.home'),t('settings.home_desc'))+`<div class="s53-stack">${[...new Set(entries.map(e=>e.group))].map(group=>`<section class="s53-group"><h2>${group}</h2><div class="cc-grid">${entries.filter(e=>e.group===group).map(e=>`<button class="cc-card s53-card" data-route="${e.id}" ${e.future?'disabled':''}><span class="cc-card-head">${icon(e.icon)}<span class="cc-card-name" data-copy="${e.key}">${t(e.key)}</span>${e.future?'':icon('#i-chevron-left')}</span><p>${e.desc}</p>${e.future?`<span class="cc-card-chips"><span class="cc-chip cc-chip--muted">${t('settings.future')}</span></span>`:e.demo?`<span class="cc-card-chips"><span class="cc-chip">${t('settings.demo')}</span></span>`:''}</button>`).join('')}</div></section>`).join('')}</div>`;}
-function legacy(){
- const e=entries.find(e=>e.id===model.route);
- let body='';
- const info=note('דוגמת חזות בלבד. נתוני ההדגמה אינם נתוני המערכת. היכולות ועורכי העומק הקיימים נשמרים ברכיב המקורי.');
- if(model.route==='dict') body=`<div class="s53-toolbar"><input class="cc-input" id="dict-search" aria-label="חיפוש מונח" placeholder="חיפוש מונח או מפתח" value="${esc(model.query)}"><select class="cc-input" aria-label="קבוצה"><option>קבוצת הדגמה</option></select><span class="cc-spacer"></span>${button('טעינת מונחים מהריפו','unavailable')}</div>`+table(['מפתח','תווית בעברית','טולטיפ','פעולות'],model.dictionary.filter(r=>(r.key+' '+r.label).toLowerCase().includes(model.query.toLowerCase())).map(r=>`<tr><td><bdi>${esc(r.key)}</bdi></td><td>${esc(r.label)}</td><td>${esc(r.tip)}</td><td>${button('עריכה','edit-term')} ${button('היסטוריה ושחזור','history-term')}</td></tr>`))+`<p class="cc-help">ולידציה, תצוגה מקדימה, גרסאות ומונחים שדולגו נשמרים במימוש הקיים.</p>`;
- if(model.route==='models')body=panel(`<div class="s53-form"><div><label class="cc-label" for="model-default">מודל ברירת מחדל</label><select id="model-default" class="cc-input" data-local-edit="default"><option value="a" ${model.preferences.default==='a'?'selected':''}>מודל לדוגמה א</option><option value="b" ${model.preferences.default==='b'?'selected':''}>מודל לדוגמה ב</option></select><p class="cc-help">השמות בדויים. אין כאן בחירה של ספק או שינוי מודל במערכת.</p></div><div><label class="cc-label" for="model-consult">מודל להתייעצויות</label><select id="model-consult" class="cc-input" data-local-edit="consult"><option value="inherit" ${model.preferences.consult==='inherit'?'selected':''}>ברירת המחדל</option><option value="b" ${model.preferences.consult==='b'?'selected':''}>מודל לדוגמה ב</option></select></div><div class="s53-span">${table(['פעולה','מודל'],['<tr><td>פעולה לדוגמה</td><td><select class="cc-input" aria-label="מודל לפעולה" disabled><option>ברירת המחדל</option><option>מודל לדוגמה ב</option></select></td></tr>'])}</div></div>${savebar()}<p class="cc-help">חריגות לפי פעולה, שחזור וניהול רשימת המודלים נשארים בפאנל המקורי.</p>`);
- if(model.route==='dests')body=`<div class="s53-toolbar"><input class="cc-input" aria-label="חיפוש יעד" placeholder="חיפוש יעד" data-filter-table>${button('יעד חדש','unavailable')}</div>`+table(['שם קנוני','עברית','תרגום נוסף','פעולות'],['<tr><td><bdi>Example Destination</bdi></td><td>יעד לדוגמה</td><td><bdi>Пример</bdi></td><td>'+button('עריכה','unavailable')+'</td></tr>'])+`<p class="cc-help">המרשם הקנוני, העריכה ובדיקות התקינות נשמרים; אין שינוי במשמעות יעד.</p>`;
- if(model.route==='catalog')body=`<div class="s53-toolbar"><label class="cc-label" for="cat-partner">שותף</label><select id="cat-partner" class="cc-input"><option>בחירת שותף</option><option>שותף לדוגמה</option></select>${button('בחירת קטלוג','catalog-types')}${button('פריט חדש','unavailable')}<span class="cc-spacer"></span>${button('ארכיון','unavailable')}</div>`+table(['פריט','קטלוג','שותף','פעולות'],['<tr><td>שירות לדוגמה</td><td>מלונות</td><td>שותף לדוגמה</td><td>'+button('עריכה','unavailable')+'</td></tr>'])+note('הבחירה המשותפת, שיוך השותף, המטבע ועורכי הקטלוגים נשמרים לפי המימוש הקיים. הדוגמה אינה משנה ברירת מחדל או כללי תמחור.');
- if(model.route==='perm')body=note('הרשאות מנוהלות בכרטיס השותף, באותו רכיב קיים. המסך הזה הוא תמונת מצב וכניסה אליו בלבד.')+`<div class="s53-toolbar"><input class="cc-input" aria-label="חיפוש שותף" placeholder="חיפוש שותף" data-filter-table></div>`+table(['שותף','אנשי קשר','מצב גישה','פעולה'],['<tr><td>שותף לדוגמה</td><td>איש קשר לדוגמה</td><td><span class="cc-chip">מצב הדגמה: טרם נבדק</span></td><td>'+button('פתיחת כרטיס השותף','partner')+'</td></tr>'])+`<p class="cc-help">הוענק בפועל, נצפה כתואם, ממתין, נכשל וללא גישה נשארים מצבים שונים. הדגמה זו אינה מעניקה הרשאה.</p>`;
- return breadcrumbs()+title(t(e.key),e.desc)+info+body;
-}
-function savebar(){return `<div class="cc-savebar s53-save"><span class="cc-savebar__text" id="save-label">${model.dirty?'שינויים שלא נשמרו':'אין שינויים שלא נשמרו'}</span>${button('שמירה בהדגמה','save-local',model.dirty?'':'disabled')}</div>`;}
-const rowLabel=row=>{const field=hubFields.find(f=>f.key===row.key);return field?t(field.label_key):row.key;};
-function mappingTable(){return table(['שדה ב-\u2068Hub\u2069','שדה במערכת החיצונית','כיוון וסמכות','המרה והתנגשות','פעולות'],model.mapping.map((r,i)=>`<tr><td>${esc(rowLabel(r))}<small><bdi>${esc(r.key)}</bdi></small></td><td><bdi>${esc(r.external)}</bdi><small>תיאור ספק בדוי</small></td><td>${t('mapping.'+r.direction)}<small>${esc(policyLabels[r.authority])}</small></td><td>${esc(policyLabels[r.transform])}<small>${esc(policyLabels[r.conflict_policy])}</small></td><td>${button('עריכה','edit-mapping',`data-index="${i}" ${!canEditMapping()?'disabled':''} aria-label="עריכת מיפוי ${esc(rowLabel(r))}"`)} ${button('הסרה','remove-mapping',`data-index="${i}" ${!canEditMapping()?'disabled':''} aria-label="הסרת מיפוי ${esc(rowLabel(r))}"`)}</td></tr>`),'s53-mapping');}
-function editorSelect(id,label,value,choices){
- const list=choices.slice();if(!list.some(c=>c.value===value))list.unshift({value,label:value?(policyLabels[value]||value)+' - יש לבחור מחדש':'יש לבחור',disabled:true});
- return `<div><label class="cc-label" for="map-${id}">${esc(label)}</label><select class="cc-input" id="map-${id}" data-editor="${id}">${list.map(c=>`<option value="${esc(c.value)}" ${c.value===value?'selected':''} ${c.disabled?'disabled':''}>${esc(c.label)}</option>`).join('')}</select></div>`;
-}
-function mappingEditorBody(){
- const r=mappingEditor.row;
- const fields=list=>list.map(f=>({value:f.key,label:(f.label_key?t(f.label_key):f.label)+' - \u2068'+f.key+'\u2069 - '+typeLabels[f.type]}));
- const policies=keys=>keys.map(value=>({value,label:policyLabels[value]}));
- const errors=mappingErrors(r,mappingEditor.index);
- const effect=r.direction==='disabled'?'אין העברת נתונים לשדה זה.':({external:r.conflict_policy==='merge_missing'?'ערכים חסרים יצורפו לרשימה, בכפוף לאימות הרשומה.':'הערך החיצוני עשוי להחליף ערך קיים ב-\u2068Hub\u2069. זהו תכנון בלבד.',hub:'אין דריסה של הערך ב-\u2068Hub\u2069. הבדל יועבר לבדיקה ידנית.',external_create_hub_maintain:'מילוי רק כשהשדה חסר; הבדל מול ערך קיים יועבר לבדיקה ידנית. אין כאן יצירת רשומה.',read_only_mirror:'נשמר עותק להשוואה בלבד, ללא כתיבה לשדה העסקי.'}[r.authority]||'יש להשלים בחירה תקינה.');
- return note('עריכת שורה בטיוטת הדגמה. אין נתוני לקוח, חיבור או כתיבה למערכת.')+'<div class="s53-stack">'+
- editorSelect('external','שדה במערכת החיצונית',r.external,fields(externalFields))+
- editorSelect('key','שדה קנוני ב-\u2068Hub\u2069',r.key,fields(hubFields))+
- editorSelect('direction','כיוון העברת הנתונים',r.direction,['inbound','outbound','bidirectional','disabled'].map(value=>({value,label:t('mapping.'+value)+(['outbound','bidirectional'].includes(value)?' (טרם זמין)':''),disabled:['outbound','bidirectional'].includes(value)})))+
- editorSelect('authority','סמכות הנתון',r.authority,policies(Object.keys(policyMatrix[r.direction]||{})))+
- editorSelect('transform','המרה',r.transform,policies(allowedTransforms(r)))+
- editorSelect('conflict_policy','מדיניות התנגשות',r.conflict_policy,policies(allowedConflicts(r)))+
- `<p class="cc-help">${esc(effect)}</p><p class="cc-help">אימות סוגי הבחירה אינו אימות נתוני ספק. ערכים, הרשאות וטווח תאריכים ייבדקו ברשומה בפועל. קוד המרה חופשי אינו נתמך.</p><div id="mapping-error" role="status">${errors.length?note(errors.map(esc).join('<br>'),'warning'):'<p class="cc-help">הבחירות מתאימות לדוגמה. טרם בוצעה בדיקת ספק.</p>'}</div></div>`;
-}
-function openMappingEditor(index){
- if(!canEditMapping())return;
- mappingEditor={index,row:index===null?{key:'',external:'',direction:'inbound',authority:'external',transform:'identity',conflict_policy:'none'}:structuredClone(model.mapping[index]),changed:false};
- if(!mappingEditor.row){mappingEditor=null;return;}
- dialog(index===null?'הוספת מיפוי שדה':'עריכת מיפוי שדה',mappingEditorBody(),[
- {label:'ביטול',run:()=>{mappingEditor=null;}},
- {label:index===null?'הוספה לטיוטה בהדגמה':'עדכון הטיוטה בהדגמה',run:()=>{
-  if(!mappingEditor)return false;
-  const before=JSON.stringify(model.mapping);
-  const errors=applyMapping(mappingEditor.row,mappingEditor.index);
-  if(errors.length){byId('mapping-error').innerHTML=note(errors.map(esc).join('<br>'),'warning');return false;}
-  mappingEditor=null;render();if(before===JSON.stringify(model.mapping)){notify('לא בוצע שינוי בשורה.');return;}notify('השורה עודכנה בטיוטה המקומית. עדיין נדרשת שמירת הטיוטה; סנכרון לא הופעל.');
- }}]);
-}
-function removeMapping(index){
- if(!canEditMapping()||!model.mapping[index])return;
- if(model.mapping.length===1){notify('המיפוי חייב לכלול לפחות שורה אחת. אפשר להשבית את העברת הנתונים בשורה האחרונה.');return;}
- const row=model.mapping[index];
- dialog('הסרת שורה מהטיוטה',`<p>להסיר את המיפוי עבור ${esc(rowLabel(row))}? ההסרה נוגעת לטיוטת ההדגמה בלבד, ולא מוחקת רשומות או נתונים.</p>`,[{label:'ביטול'},{label:'הסרה מהטיוטה',run:()=>{if(!canEditMapping())return;model.mapping.splice(index,1);model.dirty=true;model.preview=false;render();notify('השורה הוסרה מהטיוטה. אפשר לצאת ללא שמירה כדי לשחזר את הטיוטה השמורה.');}}]);
-}
-function integrations(){
- const tabs=[['connection','החיבור'],['mapping','מיפוי שדות'],['policy','אופן ההרצה'],['preview','בדיקה והפעלה'],['history','היסטוריה וחריגים']];
- const header=breadcrumbs()+title(t('settings.integrations'),'ניהול חיבור חיצוני ומדיניות העברת הנתונים של הארגון.',`<span class="cc-chip">הדגמה בלבד</span>`);
- const states=`<div class="s53-toolbar"><label for="scenario" class="cc-label">מצב לבדיקת העיצוב</label><select id="scenario" class="cc-input"><option value="normal">טיוטת חיבור לדוגמה</option><option value="empty">אין חיבורים</option><option value="loading">טעינת תיאור שדות</option><option value="error">טעינה נכשלה</option><option value="changed">תיאור השדות השתנה</option><option value="revoked">הרשאה בוטלה</option></select></div>`;
- if(model.scenario==='empty')return header+states+`<section class="cc-empty s53-empty">${icon('#i-arrow-swap')}<h4>עדיין אין חיבורים</h4><p>חיבור אמיתי למערכת חיצונית יתווסף לאחר השלמת התשתית ובחירת ספק.</p><button class="cc-btn" disabled>הוספת חיבור</button><p class="cc-help">אין כרגע מערכת חיצונית שניתן לחבר. אפשר לחזור לטיוטת ההדגמה בבורר שלמעלה.</p></section>`;
- if(model.scenario==='revoked')return header+states+note('ההרשאה לצפייה בחיבור בוטלה. פרטי החיבור והמיפוי הוסרו מתצוגת ההדגמה. אין אפשרות לבדוק, לשמור או להריץ. ביטול הרשאה אינו מוחק את התצורה השמורה.','warning');
- if(model.scenario==='loading')return header+states+note('טעינת תיאור השדות מהמערכת החיצונית... הדמיה בלבד, ללא בקשה חיצונית.');
- if(model.scenario==='error')return header+states+note('טעינת תיאור השדות נכשלה. קוד בטוח: schema_unavailable. לא בוצעה העברת נתונים.','danger')+button('ניסיון חוזר בהדגמה','retry-schema');
- const navigation=`<nav class="tabs s53-tabs" aria-label="שלבי הגדרת החיבור">${tabs.map(([key,label])=>`<button class="tab ${model.tab===key?'active':''}" data-tab="${key}" ${model.tab===key?'aria-current="page"':''}>${label}</button>`).join('')}</nav>`;
- let body='';
- if(model.tab==='connection')body=panel(`<div class="s53-form"><div><label class="cc-label" for="connection-name">שם החיבור</label><input class="cc-input" id="connection-name" value="חיבור לדוגמה" readonly><p class="cc-help">הזהות הארגונית נקבעת בשרת, לא בשדה שניתן לעריכה.</p></div><div><label class="cc-label" for="provider-name">מערכת חיצונית</label><input class="cc-input" id="provider-name" value="מערכת הדגמה" readonly></div><div class="s53-span"><dl class="s53-readonly"><dt>ארגון</dt><dd>ארגון לדוגמה</dd><dt>חשבון חיצוני קשור</dt><dd>לא קושר חשבון</dd><dt>אימות החיבור</dt><dd>לא הוגדר</dd><dt>בדיקת תקינות ספק</dt><dd>לא בוצעה</dd><dt>העברת הנתונים האחרונה</dt><dd>לא בוצעה</dd></dl></div><div class="s53-span">${note('פרטי הזדהות אינם מוזנים כאן. חיבור, חידוש הרשאה ושינוי החשבון הקשור דורשים תהליך הרשאות נפרד.')}<div class="s53-toolbar"><button class="cc-btn" disabled>חיבור חשבון</button><button class="cc-btn" disabled>חידוש הרשאה</button><button class="cc-btn" disabled>השהיית החיבור</button></div></div></div>`);
- if(model.tab==='mapping')body=`<div class="s53-toolbar"><label class="cc-label" for="hub-object">סוג רשומה ב-\u2068Hub\u2069</label><select id="hub-object" class="cc-input"><option>טיול - דוגמה בלבד</option><option disabled>חברה - טרם זמין</option><option disabled>איש קשר - טרם זמין</option><option disabled>פריט קטלוג - טרם זמין</option><option disabled>מקור מסחרי - טרם זמין</option></select><span class="cc-chip">טיוטה לא פעילה</span></div>`+button('הוספת מיפוי שדה','add-mapping',canEditMapping()?'':'disabled')+mappingTable()+`<p class="cc-help">מפתחות הדוגמה נועדו לבדיקת הפריסה. המיפוי בפועל ייטען מהחוזה הקנוני ומתיאור החיבור למערכת החיצונית, ולא ממסד הנתונים או מהמודל הישן.</p>`+note('כיוון, סמכות, המרה ומדיניות התנגשות הם הגדרות נפרדות. העורך מאפשר לבחור אותם בנפרד. שינוי בחירה אינו משנה אוטומטית מדיניות אחרת; אי התאמה דורשת בחירה מפורשת.')+savebar();
- if(model.tab==='policy')body=panel(`<div class="s53-form"><div class="s53-span"><span class="cc-label">אופן ההרצה</span><div class="cc-seg" aria-label="אופן ההרצה"><button type="button" class="is-active" aria-pressed="true">${t('mapping.manual')}</button><button type="button" disabled title="מנוע התזמון טרם זמין">${t('mapping.scheduled')}</button><button type="button" disabled title="חוזה האירועים טרם זמין">${t('mapping.event')}</button></div></div><div class="s53-span">${note('הרצה ידנית תחייב אישור נפרד. אוטומציה תפעל רק תחת גרסת מדיניות שאושרה מראש. בדוגמה אין מנוע הרצה ואין שינוי בנתונים.')}<dl class="s53-readonly"><dt>תזמון ואזור זמן</dt><dd>טרם הוגדרו</dd><dt>כלל שעון קיץ</dt><dd>טרם הוגדר</dd><dt>הרצה הבאה</dt><dd>לא נקבעה</dd><dt>גרסה פעילה</dt><dd>אין</dd><dt>יצירת רשומה ומעברי שלב</dt><dd>לא הוגדרו. אין יצירה או שינוי שלב דרך מיפוי השדות.</dd><dt>כלל שמייצר הזמנה</dt><dd>טרם זמין. כלל כזה דורש הפעלה מוגנת נפרדת.</dd></dl></div></div>`);
- if(model.tab==='preview')body=note('תצוגה מקדימה אינה כתיבה. הנתונים כאן בדויים; אין השוואה לרשומות אמיתיות.')+button(t('mapping.preview'),'preview',model.scenario==='changed'?'disabled':'')+(model.preview?previewRows():'')+`<div class="cc-savebar s53-save"><span class="cc-savebar__text">אין גרסה פעילה. שמירת טיוטה אינה מפעילה סנכרון.</span><button class="cc-btn" disabled>${t('mapping.activation')}</button><button class="cc-btn" disabled>הרצה עכשיו</button></div><p class="cc-help">הפעלה והרצה חסומות עד להשלמת החיבור למערכת החיצונית, ההרשאות ומנוע הביצוע. אין אישור מדומה.</p>`;
- if(model.tab==='history')body=table(['סוג','מצב','מידע'],['<tr><td>הרצות</td><td>לא בוצעה הרצה</td><td>אין חותמת זמן או תוצאת הצלחה</td></tr>',`<tr><td>דוגמת התנגשות</td><td>${t('mapping.manual_review')}</td><td>${t('mapping.redacted')}</td></tr>`])+`<p class="cc-help">במימוש המצומצם הנוכחי מוצגים שדה, מדיניות, מצב וסימוני הסתרה בלבד. ביעד הקנוני נדרשת גם השוואת ערכים מורשית ונפרדת לפי הרשאות השדה. צפייה זו ופתרון התנגשויות טרם זמינים; אין להסיק שהדוגמה מגדירה את חוזה הנתונים הסופי.</p><button class="cc-btn" disabled>פתרון התנגשות</button> <button class="cc-btn" disabled>ניסיון חוזר</button>`;
- return header+states+navigation+(model.scenario==='changed'?note('תיאור השדות השתנה. אפשר לערוך את טיוטת ההדגמה. אימות מחדש מול המערכת החיצונית טרם זמין, ולכן תצוגה מקדימה והפעלה נשארות חסומות גם אחרי העריכה.','warning'): '')+body;
-}
-function previewRows(){const ignored=model.mapping.filter(r=>r.direction==='disabled');const considered=model.mapping.filter(r=>r.direction!=='disabled');return `<div class="s53-summary"><span class="cc-chip">${considered.length} שדות בדוגמה לבדיקה</span><span class="cc-chip">${ignored.length} שדות דולגו</span><span class="cc-chip">אין תוצאת סנכרון</span></div>`+table(['שדה','מצב','סיבה'],model.mapping.map(r=>`<tr><td>${esc(rowLabel(r))}</td><td>${r.direction==='disabled'?'דולג':'טרם נבדק מול ספק'}</td><td>${r.direction==='disabled'?'העברת הנתונים מושבתת לשדה זה':'תכנון מקומי בלבד; אין נתוני ספק'}</td></tr>`));}
-function render(focus=true){byId('view').innerHTML=model.route==='home'?home():model.route==='integrations'?integrations():legacy();const s=byId('scenario');if(s)s.value=model.scenario;if(focus)byId('page-title')?.focus({preventScroll:true});}
-function notify(text){const el=byId('status');el.textContent=text;el.hidden=false;}
-function dialog(title,body,actions){const el=byId('dialog');byId('dialog-title').textContent=title;byId('dialog-body').innerHTML=body;byId('dialog-actions').innerHTML='';for(const a of actions){const b=document.createElement('button');b.className='cc-btn';b.textContent=a.label;b.onclick=()=>{if(a.run&&a.run()===false)return;el.close();};byId('dialog-actions').append(b);}el.showModal();}
-function guard(next){if(!model.dirty){next();return;}dialog('שינויים שלא נשמרו','<p>הטיוטה השתנתה בהדגמה. אפשר להישאר לעריכה או לצאת ללא שמירת השינויים.</p>',[{label:'המשך עריכה'},{label:'יציאה ללא שמירה',run:()=>{discardDraft();next();}}]);}
-function route(dest){if(!entries.some(e=>e.id===dest&&!e.future)&&dest!=='home')return;guard(()=>{byId('status').hidden=true;if(dest==='templates'){dialog(t('settings.templates'),'<p>במערכת נפתח כאן אותו דיאלוג תבניות שקיים גם באזור השותף, ללא רכיב מקביל.</p><label class="cc-label" for="template-demo">תבנית לדוגמה</label><textarea class="cc-input" id="template-demo" rows="5" readonly>תוכן בדוי להמחשת רוחב שדה העריכה בלבד.</textarea>',[{label:'סגירה'}]);return;}model.route=dest;model.query='';render();});}
-document.addEventListener('click',event=>{
- const el=event.target.closest('button,a');if(!el)return;
- if(el.hasAttribute('data-outside')){event.preventDefault();notify('המסך הזה מחוץ למוקאפ Settings. לא נפתח אתר ולא בוצעה פעולה.');return;}
- if(el.dataset.route){event.preventDefault();route(el.dataset.route);return;}
- if(el.dataset.tab){model.tab=el.dataset.tab;render(false);document.querySelector('[data-tab=\"'+model.tab+'\"]')?.focus();return;}
- const action=el.dataset.action;
- if(action==='add-mapping')openMappingEditor(null);
- if(action==='edit-mapping')openMappingEditor(Number(el.dataset.index));
- if(action==='remove-mapping')removeMapping(Number(el.dataset.index));
- if(action==='save-local'){if(model.route==='integrations'&&model.scenario==='revoked')return;saveDraft();render();notify('הטיוטה נשמרה בזיכרון ההדגמה בלבד. אין גרסה פעילה ולא הופעל סנכרון.');}
- if(action==='preview'){if(model.scenario!=='normal')return;model.preview=true;render();}
- if(action==='retry-schema'){model.scenario='normal';render();}
- if(action==='unavailable')notify('פעולה זו שייכת לרכיב הקיים ואינה מופעלת במוקאפ. אין שינוי בנתונים.');
- if(action==='partner')dialog('כניסה להרשאות השותף','<p>במערכת הפעולה פותחת את כרטיס השותף באזור אנשי הקשר. אין כאן עורך הרשאות נוסף ואין הענקת גישה.</p>',[{label:'סגירה'}]);
- if(action==='catalog-types')dialog('בחירת קטלוג','<p>רשימת הקטלוגים ועורכי העומק נשמרים מהמערכת הקיימת. זהו עיצוב מעטפת בלבד; אין קטלוגים חדשים.</p>',[{label:'סגירה'}]);
- if(action==='history-term')dialog('היסטוריית מונח','<p>דוגמה בלבד. הגרסאות והשחזור נשארים ברכיב המילון הקיים; אין כאן היסטוריה אמיתית.</p>',[{label:'סגירה'}]);
- if(action==='edit-term'){const row=model.dictionary[0];dialog('עריכת מונח לדוגמה',`<label class="cc-label" for="term-label">תווית בעברית</label><input class="cc-input" id="term-label" value="${esc(row.label)}"><label class="cc-label" for="term-tip">טולטיפ</label><textarea class="cc-input" id="term-tip" rows="3">${esc(row.tip)}</textarea><p class="cc-help" id="term-error" role="status">שמירה בזיכרון ההדגמה בלבד.</p>`,[{label:'ביטול'},{label:'שמירה בהדגמה',run:()=>{const label=byId('term-label').value.trim();if(!label){byId('term-error').textContent='נדרשת תווית למונח.';return false;}row.label=label;row.tip=byId('term-tip').value;render();notify('מונח ההדגמה עודכן. המילון האמיתי לא השתנה.');}}]);}
-});
-document.addEventListener('change',event=>{const el=event.target;if(el.dataset?.editor){if(!mappingEditor||!canEditMapping())return;const key=el.dataset.editor;if(!['external','key','direction','authority','transform','conflict_policy'].includes(key))return;mappingEditor.row[key]=el.value;mappingEditor.changed=true;byId('dialog-body').innerHTML=mappingEditorBody();byId('map-'+key)?.focus();return;}if(el.id==='scenario'){const value=el.value;if(value==='revoked'){model.scenario=value;mappingEditor=null;if(byId('dialog').open)byId('dialog').close();byId('dialog-body').innerHTML='';byId('dialog-actions').innerHTML='';model.mapping=[];savedMapping=[];model.dirty=false;model.saved=false;model.preview=false;render();return;}guard(()=>{if(model.scenario==='revoked'){model.mapping=structuredClone(demoStore.mapping);savedMapping=structuredClone(demoStore.mapping);}model.scenario=value;model.preview=false;render();});el.value=model.scenario;}if(el.hasAttribute('data-local-edit')){model.preferences[el.dataset.localEdit]=el.value;model.dirty=true;const bar=document.querySelector('.s53-save');if(bar)bar.outerHTML=savebar();}});
-document.addEventListener('input',event=>{if(event.target.id==='dict-search'){model.query=event.target.value;const start=event.target.selectionStart;render(false);byId('dict-search').focus();byId('dict-search').setSelectionRange(start,start);}if(event.target.hasAttribute('data-filter-table')){const q=event.target.value.toLowerCase();document.querySelectorAll('#view tbody tr').forEach(row=>row.hidden=!row.textContent.toLowerCase().includes(q));}});
-byId('dialog').addEventListener('cancel',event=>{if(mappingEditor?.changed){event.preventDefault();byId('mapping-error').innerHTML=note('יש שינויים בעורך. להשלכתם לחצו ביטול; להמשך העריכה הישארו בחלון.','warning');}else mappingEditor=null;});
-byId('dialog').addEventListener('close',()=>{mappingEditor=null;});
-window.addEventListener('beforeunload',event=>{if(model.dirty||mappingEditor?.changed){event.preventDefault();event.returnValue='';}});
-byId('rail-toggle').onclick=()=>{const closed=byId('rail').classList.toggle('collapsed');byId('rail-toggle').setAttribute('aria-expanded',String(!closed));byId('rail-toggle').setAttribute('aria-label',closed?'הרחבת התפריט':'כיווץ התפריט');byId('rail-ak').hidden=closed?false:byId('rail-fold').getAttribute('aria-expanded')!=='true';};
-byId('rail-fold').onclick=()=>{const open=byId('rail-fold').getAttribute('aria-expanded')!=='true';byId('rail-fold').setAttribute('aria-expanded',String(open));byId('rail-ak').hidden=!open;};
-byId('rail-ak').innerHTML=[['#i-list','GEO & SEO'],['#i-network','אשכולות'],['#i-file-text','סוגי תוכן'],['#i-refresh-cw','רענון מהאתר'],['#i-chart-bar','Search Console'],['#i-target','סיווג Intent'],['#i-table','מלאי תוכן'],['#i-activity','בריאות הפלטפורמה'],['#i-cloud','בדיקת חיבור']].map(([id,label])=>`<a href="#outside" class="rail-item rail-item--nested" data-outside title="${label}">${icon(id)}<span class="rail-label">${label}</span></a>`).join('');
-render(false);
-</script>
+
+<div class="mk-sec">1. הכלי, לפני כל פעולה</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="tool-view__title">סדר אנשי הקשר - מילוי לאחור</div>
+  <div class="tool-view__desc">הוספת תווית המיון לאנשי הקשר הקיימים, כדי שכרטיס השותף יציג אותם בדפים ובסדר הנכון. הכלי אינו משנה שם, טלפון או כל פרט אחר.</div>
+
+  <div class="tool-result" style="margin-top:16px">
+    <div class="tool-result__title">בדיקה אצל שותף - קריאה בלבד</div>
+    <div class="tool-field" style="margin-top:0"><span class="tool-field__label">שותף</span>
+      <button class="seg-pickfield"><span style="color:var(--cc-text-3)">בחירת שותף</span><span class="seg-pick-chev">▾</span></button></div>
+    <div class="tool-field"><span class="tool-field__label">אנשי קשר</span>
+      <div class="cc-seg cc-seg--sm"><button class="is-active">פעילים</button><button>בארכיון</button></div>
+      <div class="tool-field__hint">פעילים ובארכיון נבדקים בנפרד, ואינם מסוכמים יחד.</div></div>
+    <div class="tool-field"><span class="tool-field__label">אנשי קשר בכל עמוד</span>
+      <div class="cc-seg cc-seg--sm"><button class="is-active">2</button><button>50</button></div>
+      <div class="tool-field__hint">עמוד קטן בודק מעבר בין עמודים גם אצל שותף עם מעט אנשי קשר.</div></div>
+    <div class="mk-row"><button class="cc-btn cc-btn--primary" disabled><svg class="cc-icon cc-icon--sm"><use href="#i-eye"/></svg>בדיקה</button></div>
+  </div>
+
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">ספירה ותיקון בכל הארגון</div>
+    <div class="tool-field" style="margin-top:0"><span class="tool-field__label">מאיפה להתחיל</span>
+      <div class="cc-seg cc-seg--sm"><button class="is-active">מההתחלה</button><button disabled>מהמקום שבו נעצרה הריצה האחרונה</button></div></div>
+    <div class="tool-field"><span class="tool-field__label">כמה אנשי קשר לכל היותר</span>
+      <div class="cc-seg cc-seg--sm"><button class="is-active">3</button><button>25</button><button>100</button></div>
+      <div class="tool-field__hint">אנשי הקשר עוברים לפי סדר פנימי, ויכולים להיות של שותפים שונים.</div></div>
+    <div class="mk-row">
+      <button class="cc-btn"><svg class="cc-icon cc-icon--sm"><use href="#i-list-ordered"/></svg>ספירה בלי שינוי</button>
+      <button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>תיקון</button>
+    </div>
+  </div>
+</div></div></div>
+
+<div class="mk-sec">2. בדיקה אצל שותף - התוצאה (תקין)</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="cc-msg cc-msg--success"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-check"/></svg>
+    <span>כל אנשי הקשר הפעילים של <bdi>שותף לדוגמה</bdi> נושאים תווית עדכנית, והסדר בשרת תואם. נקראו <bdi>7</bdi> עמודים, כל איש קשר פעם אחת.</span></div>
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">שותף <bdi>שותף לדוגמה</bdi> · פעילים · 2 בכל עמוד</div>
+    <div class="tool-result__row"><span class="k">אנשי קשר שמתאימים</span><span class="v"><bdi>13</bdi></span></div>
+    <div class="tool-result__row"><span class="k">עם תווית מיון</span><span class="v"><bdi>13</bdi></span></div>
+    <div class="tool-result__row"><span class="k">בגרסה העדכנית</span><span class="v"><bdi>13</bdi></span></div>
+    <div class="tool-result__row"><span class="k">סדר לא מדויק (נספר ומוצג)</span><span class="v"><bdi>0</bdi></span></div>
+    <div class="tool-result__row"><span class="k">בדיקת סדר השפה בשרת</span><span class="v">תואם</span></div>
+    <div class="tool-result__row"><span class="k">עמודים שנקראו · אנשי קשר שהוחזרו</span><span class="v"><bdi>7</bdi> · <bdi>13</bdi></span></div>
+    <div class="tool-result__row"><span class="k">כפולים · חסרים בקריאה</span><span class="v"><bdi>0</bdi> · <bdi>0</bdi></span></div>
+  </div>
+</div></div></div>
+
+<div class="mk-sec">3. בדיקה אצל שותף - לפני התיקון (חלק מאנשי הקשר בלי תווית)</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="cc-msg cc-msg--warning"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
+    <span><bdi>9</bdi> מתוך <bdi>13</bdi> אנשי הקשר הפעילים עדיין בלי תווית, והבדיקה לא ראתה אותם. הקריאה עברה רק על <bdi>4</bdi> שיש להם תווית.</span></div>
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">שותף <bdi>שותף לדוגמה</bdi> · פעילים · 2 בכל עמוד</div>
+    <div class="tool-result__row"><span class="k">אנשי קשר שמתאימים</span><span class="v"><bdi>13</bdi></span></div>
+    <div class="tool-result__row"><span class="k">עם תווית מיון</span><span class="v"><bdi>4</bdi></span></div>
+    <div class="tool-result__row"><span class="k">בגרסה העדכנית · בגרסה ישנה</span><span class="v"><bdi>4</bdi> · <bdi>0</bdi></span></div>
+    <div class="tool-result__row"><span class="k">בלי תווית</span><span class="v"><bdi>9</bdi></span></div>
+    <div class="tool-result__row"><span class="k">בדיקת סדר השפה בשרת</span><span class="v">תואם</span></div>
+    <div class="tool-result__row"><span class="k">עמודים שנקראו · אנשי קשר שהוחזרו</span><span class="v"><bdi>2</bdi> · <bdi>4</bdi></span></div>
+  </div>
+</div></div></div>
+
+<div class="mk-sec">4. ספירה בלי שינוי - התוצאה</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="cc-msg cc-msg--info"><svg class="cc-icon cc-icon--sm"><use href="#i-info"/></svg>
+    <span>שום דבר לא נכתב. אנשי הקשר עשויים להשתנות עד שהתיקון ירוץ.</span></div>
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">ספירה · מההתחלה · עד 3 אנשי קשר</div>
+    <div class="tool-result__row"><span class="k">נבדקו</span><span class="v"><bdi>3</bdi></span></div>
+    <div class="tool-result__row"><span class="k">צריכים תווית · תווית ישנה</span><span class="v"><bdi>3</bdi> · <bdi>0</bdi></span></div>
+    <div class="tool-result__row"><span class="k">כבר תקינים</span><span class="v"><bdi>0</bdi></span></div>
+    <div class="tool-result__row"><span class="k">הסתיימו כל אנשי הקשר בארגון</span><span class="v">לא - נותרו עוד</span></div>
+  </div>
+</div></div></div>
+
+<div class="mk-sec">5. חלון האישור לפני התיקון (app-dialog, רוחב 400)</div>
+<div class="mk-frame"><div class="mk-dlg-stage">
+  <div class="app-dialog" style="width:400px">
+    <div class="app-dialog__title">תיקון של עד <bdi>3</bdi> אנשי קשר</div>
+    <div class="app-dialog__body">מההתחלה, לפי הסדר הפנימי - אנשי הקשר יכולים להיות של שותפים שונים. תתווסף להם תווית מיון בלבד, והפעולה תירשם ביומן בשמך. בסיום הכלי ייעצר ולא ימשיך מעצמו.</div>
+    <div class="app-dialog__actions">
+      <button class="cc-btn cc-btn--danger">אישור התיקון</button>
+      <button class="cc-btn">ביטול</button>
+    </div>
+  </div>
+</div></div>
+
+<div class="mk-sec">6. בזמן התיקון</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="cc-msg cc-msg--progress"><span class="tool-spin"></span><span>מתקן עד <bdi>3</bdi> אנשי קשר...</span></div>
+  <div class="mk-row"><button class="cc-btn" disabled>ספירה בלי שינוי</button><button class="cc-btn cc-btn--primary" disabled><span class="tool-spin"></span>תיקון</button></div>
+</div></div></div>
+
+<div class="mk-sec">7. התיקון הסתיים</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="cc-msg cc-msg--success"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-check"/></svg>
+    <span>הטווח הושלם: <bdi>3</bdi> אנשי קשר קיבלו תווית. הפעולה נרשמה ביומן - תחילה וסיום. להמשך בוחרים "מהמקום שבו נעצרה הריצה האחרונה" ומאשרים שוב.</span></div>
+  <div class="tool-result" style="margin-top:14px">
+    <div class="tool-result__title">תיקון · 17.09.2026, 14:05 · מפעיל הארגון</div>
+    <div class="tool-result__row"><span class="k">נבדקו · קיבלו תווית</span><span class="v"><bdi>3</bdi> · <bdi>3</bdi></span></div>
+    <div class="tool-result__row"><span class="k">כבר היו תקינים · דולגו (נמחקו בינתיים)</span><span class="v"><bdi>0</bdi> · <bdi>0</bdi></span></div>
+    <div class="tool-result__row"><span class="k">נכשלו</span><span class="v"><bdi>0</bdi></span></div>
+    <div class="tool-result__row"><span class="k">רישום ביומן</span><span class="v">תחילה ✓ · סיום ✓</span></div>
+    <div class="tool-result__row"><span class="k">שלושת אנשי הקשר, אחרי התיקון</span><span class="v">איש קשר א · איש קשר ב · איש קשר ג - תווית עדכנית</span></div>
+    <div class="tool-result__row"><span class="k">כל אנשי הקשר בארגון עברו</span><span class="v">לא - נותרו עוד</span></div>
+  </div>
+  <div class="mk-row"><button class="cc-btn"><svg class="cc-icon cc-icon--sm"><use href="#i-list-ordered"/></svg>ספירה בלי שינוי</button><button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>תיקון</button></div>
+</div></div></div>
+
+<div class="mk-sec">8. נוסחי תקלה - שורה אחת כל אחד, ואינם מסכים נוספים</div>
+<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
+  <div class="cc-msg cc-msg--danger"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
+    <span>סדר השפה בשרת אינו תואם את הסדר השמור. אין לתקן ואין להפעיל את המסך החדש - יש לפנות לבדיקה.</span></div>
+  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
+    <span>הספירה לא נמדדה הפעם - לא ידוע כמה אנשי קשר בלי תווית. (לעולם לא מוצג אפס.)</span></div>
+  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
+    <span>התיקון רץ, אבל רישום הסיום ביומן לא נכתב. התוצאה שעל המסך היא הרישום היחיד של הריצה הזו - לשמור צילום.</span></div>
+  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
+    <span>התיקון נעצר באמצע: <bdi>1</bdi> איש קשר קיבל תווית לפני העצירה. שום דבר לא ימשיך מעצמו.</span></div>
+</div></div></div>
+
+<div class="mk-sec">מלאי האלמנטים</div>
+<table class="mk-tbl">
+<tr><th>האלמנט</th><th>שם הספרייה</th><th>מקור</th></tr>
+<tr><td>מעטפת, כותרת ותיאור</td><td>tool-view · tool-view__col · tool-view__title · tool-view__desc</td><td>קיים (global.css)</td></tr>
+<tr><td>כרטיסי החלקים והתוצאה</td><td>tool-result · tool-result__title · tool-result__row</td><td>קיים (global.css)</td></tr>
+<tr><td>תווית ורמז לשדה</td><td>tool-field · tool-field__label · tool-field__hint</td><td>קיים - מקומי בשלושת מסכי הכלים (TagBackfill · GscSync · Intent)</td></tr>
+<tr><td>בחירת ערך</td><td>cc-seg · cc-seg--sm</td><td>קיים</td></tr>
+<tr><td>שדה השותף</td><td>seg-pickfield · seg-pick-chev, פותח את AssignPartnerDialog</td><td>קיים (SegmentsSection, Step3Group)</td></tr>
+<tr><td>כפתורים</td><td>cc-btn · cc-btn--primary · cc-btn--danger (בחלון בלבד)</td><td>קיים</td></tr>
+<tr><td>הבאנרים</td><td>cc-msg--info · --success · --warning · --danger · --progress + tool-spin</td><td>קיים</td></tr>
+<tr><td>חלון האישור</td><td>app-dialog · app-dialog__title · __body · __actions (מוסכמת ConfirmDialog: החיובי ראשון)</td><td>קיים</td></tr>
+<tr><td>פריט בסרגל הצד</td><td>rail item "סדר אנשי הקשר", אייקון i-list-ordered</td><td>קיים (הדפוס של "תיוג הקבצים")</td></tr>
+</table>
+
+<div class="mk-sec">יומן הקובץ</div>
+<table class="mk-tbl">
+<tr><th>התאריך</th><th>מה השתנה</th><th>מי</th></tr>
+<tr><td>2026-09-17</td><td>המוקאפ נוצר ב-HUB-READ-SAFETY, באישור דב להכין סקיצה. הגישה נקבעה בתשובת היועץ להחזרה 11 (§3) ובתיקוני המודל §B.6.</td><td>Coworker</td></tr>
+<tr><td>2026-09-17</td><td>אושר על ידי דב ("OK"). השמות והכתובת בדוגמאות הוחלפו בשמות גנריים לפני הפרסום באתר הציבורי - אין במסך נתוני אמת.</td><td>Coworker</td></tr>
+</table>
+
 </body>
 </html>
