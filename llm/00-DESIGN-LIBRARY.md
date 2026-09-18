@@ -29,17 +29,17 @@ Authentico™ Hub - ספריית העיצוב
 ספריית העיצוב
 Authentico™ Hub · המראה של הקוד
 
-נבנתה מהקוד · 199 טוקנים · 1056 מחלקות · 73 סמלים · 126 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 17.09.2026, 21:02
+נבנתה מהקוד · 199 טוקנים · 1058 מחלקות · 73 סמלים · 127 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 18.09.2026, 21:42
 
 מפתח
 0 · אינדקס האלמנטים מצויר
 1 · יסודות מצויר
 
 הטוקנים 199 נגזר
-קטלוג המחלקות 1056 נגזר
+קטלוג המחלקות 1058 נגזר
 טיפוגרפיה נגזר
 RTL נגזר
-הגלריה 420 נגזר
+הגלריה 421 נגזר
 ההדמיה 0 נגזר
 שער הפרוזה 36 נגזר
 מנגנוני פריסה, המחלקות שאינן נושא, ותור הזוגות המועמדים נגזר
@@ -266,7 +266,7 @@ source sha1 5fd1ad0f94a7
 
 --cc-danger-fg | #991b1b | global.css :root | 7 (7 טוקן · 0 ליטרל ברכיב · 0 מוטבע) | global.css 23 screens/creation/Step2Product.svelte 1 screens/creation/Step5Review.svelte 1 screens/tools/IntentScreen.svelte 1 screens/tools/ToolView.svelte 1
 
---cc-divider | #ededed | global.css :root | 1 (1 טוקן · 0 ליטרל ברכיב · 0 מוטבע) | components/assistant/AssistantPanel.svelte 4 global.css 24 screens/creation/Step2Product.svelte 3 screens/creation/Step5Review.svelte 2 screens/creation/Step6Result.svelte 3 screens/creation/Step7Delivery.svelte 2 screens/registry/DestinationPickDialog.svelte 1 screens/registry/DocPickerDialog.svelte 1 screens/registry/FolderPickerDialog.svelte 1 screens/registry/MailSendDialog.svelte 2 screens/registry/OrderDrawer.svelte 1 screens/registry/OrderPickDialog.svelte 1 screens/registry/PartnerPickDialog.svelte 1 screens/registry/PartnersScreen.svelte 2 screens/registry/PricingOrder.svelte 2 screens/registry/SegmentBudget.svelte 2 screens/settings/CatalogPanel.svelte 1 screens/settings/DictionaryPanel.svelte 1 screens/settings/ModelPanel.svelte 4 screens/settings/SettingsScreen.svelte 1
+--cc-divider | #ededed | global.css :root | 1 (1 טוקן · 0 ליטרל ברכיב · 0 מוטבע) | components/assistant/AssistantPanel.svelte 4 global.css 24 screens/creation/Step2Product.svelte 3 screens/creation/Step5Review.svelte 2 screens/creation/Step6Result.svelte 3 screens/creation/Step7Delivery.svelte 2 screens/registry/DestinationPickDialog.svelte 1 screens/registry/DocPickerDialog.svelte 1 screens/registry/FolderPickerDialog.svelte 1 screens/registry/MailSendDialog.svelte 2 screens/registry/OrderDrawer.svelte 1 screens/registry/OrderPickDialog.svelte 1 screens/registry/PartnerPickDialog.svelte 1 screens/registry/PartnersScreen.svelte 2 screens/registry/PricingOrder.svelte 2 screens/registry/SegmentBudget.svelte 2 screens/settings/CatalogPanel.svelte 1 screens/settings/DictionaryPanel.svelte 1 screens/settings/ModelPanel.svelte 4 screens/settings/SettingsScreen.svelte 2
 
 --cc-ease | 140ms cubic-bezier(.2,0,0,1) | global.css :root | - | global.css 25 screens/settings/ModelPanel.svelte 1
 
@@ -554,7 +554,7 @@ source sha1 5fd1ad0f94a7
 
 ## 1ב. קטלוג המחלקות - כל מחלקה שהמוצר מצהיר, מצביה, צרכניה, והאם הספרייה מציירת אותה ↑
 
-source sha1 188986445fed
+source sha1 a5bb79f257cb
 
 🔴 נגזר, ואינו נכתב ביד - מ-global.css, מגושי הסגנון של הרכיבים, ומסימון הרכיבים - כולל מחלקות שמוחלות מקוד (className · classList). node tools/library-build.js . עריכה ידנית נמחקת בבנייה הבאה, ובדיקה W מפילה קומיט שבו הקוד זז והספרייה לא.
 
@@ -564,7 +564,7 @@ source sha1 188986445fed
 
 המצבים הם הפסאודו-מחלקות שהקוד מצהיר על המחלקה (hover · focus · disabled · ...). "בספרייה" - האם הפרוזה של הספרייה מציירת אלמנט עם המחלקה הזאת; לא פירושו שהמוצר מרנדר משהו שהספרייה אינה מראה, והוא נקוב גם בסעיף הסטיות. מחלקה שמוצהרת ברכיב חלה בספרייה רק בתוך עוטף data-lib-src של אותו רכיב - התחליף של הספרייה לתיחום של Svelte (גם :global() נשאר בתוך העוטף). מה שהסורק אינו רואה : מחלקה שנבנית מביטוי בלי ליטרל ( class={expr} ) - 15 קבצים עם אתרים כאלה: screens/clusters/ClustersScreen.svelte 5 screens/entities/C11Blocks.svelte 12 screens/entities/CompareGrid.svelte 1 screens/entities/ContentBlocks.svelte 12 screens/entities/EntitiesScreen.svelte 1 screens/entities/EntityDetail.svelte 4 screens/entities/EntityList.svelte 4 screens/entities/GscTable.svelte 1 screens/entities/PublishGate.svelte 1 screens/entities/SeoEditGrid.svelte 3 screens/registry/FoldersScreen.svelte 1 screens/registry/OrderDrawer.svelte 2 screens/registry/OrdersScreen.svelte 2 screens/registry/PartnersScreen.svelte 2 screens/tools/ContactsOrderBackfillScreen.svelte 2 .
 
-מחלקה (1056) | מוצהרת ב | מצבים | מקומות השימוש | בספרייה | עיצוב מוטבע
+מחלקה (1058) | מוצהרת ב | מצבים | מקומות השימוש | בספרייה | עיצוב מוטבע
 
 .acc-cell | screens/registry/PartnersScreen.svelte | - | screens/registry/PartnersScreen.svelte | לא | -
 
