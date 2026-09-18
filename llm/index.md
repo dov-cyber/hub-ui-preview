@@ -68,6 +68,15 @@
 - מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-09-08-s53-settings-integrations.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-09-08-s53-settings-integrations.md
 - הערה: מאושר בידי דב, 08.09.2026. בדיקת דפדפן וזרימות עדיין נדרשת; אין אישור פריסה.
 
+### ניהול הרשאות - הסיכום נספר בשרת - מאושר
+
+המסך הקיים בהגדרות אחרי שספירת נקודות ההרשאה עוברת לשרת: ספירה רק כשהיא נכונה, "מתעדכן · נשארו N" עם כפתור המשך, ו"לא ידוע" עם הסיבה - לעולם לא 0. מאחורי מתג משלו.
+
+- תאריך: 18.09.2026 · סשן: HUB-READ-SAFETY
+- מזהה: `2026-09-18-hrs-permissions-summary` · גרסה 1.0
+- מסך: https://dov-cyber.github.io/hub-ui-preview/m/2026-09-18-hrs-permissions-summary.html · טקסט: https://dov-cyber.github.io/hub-ui-preview/llm/2026-09-18-hrs-permissions-summary.md
+- הערה: גרסה 1.0 אושרה על ידי דב, 18.09.2026 ("מאשר"). הבסיס: תיקון C בתיקוני המודל v8 (§C.4-§C.5) והכרעות D-585 · D-586. בלי הודעת "מתעדכן" בכרטיס השותף (דב: "לא מוסיפים"). הקוד שבשרת נבנה; המסך טרם נבנה.
+
 ## ארכיון
 
 ### רדיזיין כרטיס ההזמנה - בעבודה

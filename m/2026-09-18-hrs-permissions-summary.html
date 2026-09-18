@@ -2,9 +2,9 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<title>מוקאפ HUB-READ-SAFETY - סדר אנשי הקשר: מסך המילוי לאחור</title>
+<title>מוקאפ HUB-READ-SAFETY - ניהול הרשאות: הסיכום נספר בשרת</title>
 <style>
-/* 1:1: spa/src/global.css כלשונו (הועתק מהדיסק 17.09.2026) */
+/* 1:1: spa/src/global.css כלשונו (הועתק מהדיסק 18.09.2026) */
 /* ============================================================================
    Authentico™ Hub SPA - global.css
    PORTED AS-IS from archive/legacy-gas-geo/Dashboard.html <style> block
@@ -2581,24 +2581,30 @@ button.cc-sec__head { width: 100%; background: transparent; border: none; font: 
 .cc-connection-status--error::before { background: var(--status-suspended-dot); }
 .cc-connection-status--pending::before { background: var(--status-pending-dot); }
 
-/* 1:1: SegmentsSection.svelte - שדה הבחירה של השותף (seg-pickfield) */
-.seg-pickfield { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: var(--cc-row-h);
-    width: 100%; border: 1px solid var(--cc-border-strong); border-radius: var(--cc-radius-sm);
-    background: var(--cc-surface); padding: 6px 12px; cursor: pointer; text-align: start;
-    font: 15px var(--cc-font); color: var(--cc-text); }
-  .seg-pickfield:hover:not(:disabled) { border-color: var(--cc-action); }
-.seg-pickfield:hover:not(:disabled) { border-color: var(--cc-action); }
-.seg-pickfield:disabled { background: var(--cc-bg); cursor: default; }
-.seg-pick-chev { margin-inline-start: auto; color: var(--cc-text-3); font-size: 12px; }
-.seg-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--cc-sunken);
-    border-radius: var(--cc-radius-pill); padding: 3px 10px; font-size: 13px; font-weight: 600; color: var(--cc-text-2); }
-  .seg-pill-x { color: var(--cc-text-3); cursor: pointer; padding: 0 2px; }
-/* 1:1: TagBackfillScreen.svelte - tool-field ו-tool-spin המקומיים */
-.tool-field { margin-top: 16px; }
-  .tool-field__label { font-size: 13px; font-weight: 600; color: var(--cc-text-2); margin-bottom: 7px; display: block; }
-.tool-field__label { font-size: 13px; font-weight: 600; color: var(--cc-text-2); margin-bottom: 7px; display: block; }
-.tool-field__hint { font-size: 12px; color: var(--cc-text-3); margin-top: 6px; }
-.tool-spin { width: 15px; height: 15px; border: 2px solid var(--tool-spin); border-top-color: transparent; border-radius: 50%; animation: cc-spin .8s linear infinite; flex-shrink: 0; display: inline-block; margin-inline-end: 8px; vertical-align: -2px; }
+/* 1:1: SettingsScreen.svelte - הסגנון המקומי כלשונו */
+
+  .settings-workspace { width:100%; min-width:0; margin-inline:auto; padding:24px; }
+  .settings-panel { padding:22px 24px; min-width:0; }
+  @media (max-width:600px) {
+    .settings-workspace { padding:var(--spacing-md); }
+    .settings-panel { padding:var(--spacing-md); }
+  }
+  .set-picker { border: 1px solid var(--cc-border); border-radius: 10px; overflow: hidden; }
+  .set-pk { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 13px; border: 0; border-bottom: 1px solid var(--cc-divider); background: transparent; cursor: pointer; font: inherit; color: var(--cc-text); text-align: start; }
+  .set-pk:last-child { border-bottom: 0; }
+  .set-pk:hover { background: var(--cc-bg); }
+  /* S31e: the permissions-overview row primitives (mockup-approved) */
+  .set-pk__meta { font-size: 11.5px; color: var(--cc-text-3); display: inline-flex; align-items: center; gap: 5px; }
+  .set-pk__sep { color: var(--cc-text-disabled); }
+  .set-pk__dots { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 10px; font-size: 12.5px; flex: 0 0 auto; }
+  .set-pk__none { font-size: 11.5px; color: var(--cc-text-3); }
+  .pdot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-inline-end: 4px; vertical-align: middle; }
+  .pdot--g { background: var(--pdot-green); }
+  /* S32 (B-444): hollow = observed by a dry-run, never applied by us. */
+  .pdot--prev { background: transparent; box-shadow: inset 0 0 0 2px var(--pdot-green); }
+  .pdot--y { background: var(--pdot-yellow); } .pdot--r { background: var(--pdot-red); } .pdot--n { background: var(--pdot-none); }
+  .set-pk__warn { font-size: 11px; padding: 1px 9px; border-radius: var(--cc-radius-pill); background: var(--set-warn-bg); color: var(--set-warn-fg); border: 1px solid var(--set-warn-border); }
+
 /* mk- = פיגום מוקאפ בלבד */
 body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);padding:24px;line-height:1.5}
 .mk-h1{font-size:22px;font-weight:600;margin-bottom:4px}
@@ -2627,254 +2633,74 @@ body{font-family:var(--cc-font);background:var(--cc-bg);color:var(--cc-text);pad
 #akp select{margin-inline-start:auto;font:inherit;padding:5px 8px;border:1px solid #dcdcd8;border-radius:8px;background:#fff;max-width:min(46vw,300px)}
 @media print{#akp{display:none}}
 </style>
-<nav id="akp" aria-label="נתיב"><a href="../index.html">לוח המוקאפים</a><span class="akp-sep" aria-hidden="true">›</span><b>סדר אנשי הקשר - מילוי לאחור</b><span class="akp-meta">גרסה 1.1 - מאושר</span><select id="akp-go" aria-label="מעבר למסך אחר"><optgroup label="ספריית העיצוב"><option value="00-DESIGN-LIBRARY.html">ספריית העיצוב - גרסה 4</option></optgroup><optgroup label="פעיל"><option value="2026-09-17-hrs-contacts-order-backfill.html" selected>סדר אנשי הקשר - מילוי לאחור - גרסה 1.1</option><option value="2026-09-10-s55-catalog-accommodation.html">קטלוג השירותים - לינה - גרסה 3.1</option><option value="2026-09-08-s53-settings-integrations-v1.3.html">הגדרות וחיבורים - v1.3 - גרסה 1.3.6</option><option value="2026-09-08-s53-settings-integrations.html">הגדרות וחיבורים - v1.2 - גרסה 1.2</option><option value="2026-09-18-hrs-permissions-summary.html">ניהול הרשאות - הסיכום נספר בשרת - גרסה 1.0</option></optgroup><optgroup label="ארכיון"><option value="2026-07-29-s35cd-order-card-redesign.html">רדיזיין כרטיס ההזמנה - גרסה 4</option><option value="2026-07-29-s35cd-cit-card.html">כרטיס ה-CIT כתוכנית - גרסה 1</option><option value="2026-07-29-s35cd-partner-card.html">כרטיס השותף - גרסה 1</option><option value="2026-07-29-s35cd-settings-area.html">אזור ההגדרות - טיוטה ראשונה - גרסה 1</option><option value="2026-07-29-s35cd-folders-root-bulk.html">בולק בשורש הסייר</option><option value="2026-07-27-s32f-pricing-flow-e2e.html">תהליך התמחור המלא</option><option value="2026-07-27-s32f-calc-window-dialog.html">חלון החישוב והדיאלוג</option><option value="2026-07-27-s32f-card-anatomy.html">אנטומיית הכרטיס</option><option value="2026-07-27-s35-dialog-and-dictionary.html">הדיאלוג ומסך המילון</option><option value="2026-07-24-s32-five-elements.html">חמישה אלמנטים</option><option value="2026-08-21-s38-libfill-shells.html">מעטפת ספריית העיצוב</option><option value="2026-08-29-s8-split-rail.html">סרגל הצד</option><option value="2026-08-19-s37-assist.html">עוזר ה-AI על הדשבורד - גרסה 5</option><option value="2026-08-13-s41-tagon-backfill.html">מסך המילוי לאחור בתיוג</option><option value="2026-08-12-s41-search.html">חיפוש אחד על הכל</option><option value="2026-08-12-s41-screen-filerow.html">שורת התוצאה בחיפוש</option><option value="2026-08-11-s41-explorer.html">סייר התיקיות</option><option value="2026-07-31-s39-widget-mockup.html">לוח ניהול הפרויקט</option></optgroup></select></nav>
+<nav id="akp" aria-label="נתיב"><a href="../index.html">לוח המוקאפים</a><span class="akp-sep" aria-hidden="true">›</span><b>ניהול הרשאות - הסיכום נספר בשרת</b><span class="akp-meta">גרסה 1.0 - מאושר</span><select id="akp-go" aria-label="מעבר למסך אחר"><optgroup label="ספריית העיצוב"><option value="00-DESIGN-LIBRARY.html">ספריית העיצוב - גרסה 4</option></optgroup><optgroup label="פעיל"><option value="2026-09-17-hrs-contacts-order-backfill.html">סדר אנשי הקשר - מילוי לאחור - גרסה 1.1</option><option value="2026-09-10-s55-catalog-accommodation.html">קטלוג השירותים - לינה - גרסה 3.1</option><option value="2026-09-08-s53-settings-integrations-v1.3.html">הגדרות וחיבורים - v1.3 - גרסה 1.3.6</option><option value="2026-09-08-s53-settings-integrations.html">הגדרות וחיבורים - v1.2 - גרסה 1.2</option><option value="2026-09-18-hrs-permissions-summary.html" selected>ניהול הרשאות - הסיכום נספר בשרת - גרסה 1.0</option></optgroup><optgroup label="ארכיון"><option value="2026-07-29-s35cd-order-card-redesign.html">רדיזיין כרטיס ההזמנה - גרסה 4</option><option value="2026-07-29-s35cd-cit-card.html">כרטיס ה-CIT כתוכנית - גרסה 1</option><option value="2026-07-29-s35cd-partner-card.html">כרטיס השותף - גרסה 1</option><option value="2026-07-29-s35cd-settings-area.html">אזור ההגדרות - טיוטה ראשונה - גרסה 1</option><option value="2026-07-29-s35cd-folders-root-bulk.html">בולק בשורש הסייר</option><option value="2026-07-27-s32f-pricing-flow-e2e.html">תהליך התמחור המלא</option><option value="2026-07-27-s32f-calc-window-dialog.html">חלון החישוב והדיאלוג</option><option value="2026-07-27-s32f-card-anatomy.html">אנטומיית הכרטיס</option><option value="2026-07-27-s35-dialog-and-dictionary.html">הדיאלוג ומסך המילון</option><option value="2026-07-24-s32-five-elements.html">חמישה אלמנטים</option><option value="2026-08-21-s38-libfill-shells.html">מעטפת ספריית העיצוב</option><option value="2026-08-29-s8-split-rail.html">סרגל הצד</option><option value="2026-08-19-s37-assist.html">עוזר ה-AI על הדשבורד - גרסה 5</option><option value="2026-08-13-s41-tagon-backfill.html">מסך המילוי לאחור בתיוג</option><option value="2026-08-12-s41-search.html">חיפוש אחד על הכל</option><option value="2026-08-12-s41-screen-filerow.html">שורת התוצאה בחיפוש</option><option value="2026-08-11-s41-explorer.html">סייר התיקיות</option><option value="2026-07-31-s39-widget-mockup.html">לוח ניהול הפרויקט</option></optgroup></select></nav>
 <script id="akp-script">document.getElementById("akp-go").addEventListener("change",function(e){if(e.target.value)location.href=e.target.value;});</script>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="i-list-ordered" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M4 16h2a1 1 0 0 1 0 2H4"/></symbol>
-<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
-<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
-<symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
-<symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
-<symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
-<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
-<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-<symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
-</defs></svg>
-<div class="mk-h1">סדר אנשי הקשר - מסך המילוי לאחור (HUB-READ-SAFETY)</div>
-<div class="mk-sub">מוקאפ מאושר (דב, 17.09.2026), גרסה 1.1 - יושרה לקוד שנבנה ואושרה באותו יום. כלי מפעיל אחד במסגרת הכלים (tool-view), בשלושה חלקים: בדיקה אצל שותף, ספירה בכל הארגון, תיקון. כל המספרים כאן הם <b>דוגמה</b> ולא נתונים.</div>
-
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol><symbol id="i-loader" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></symbol><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol><symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol></defs></svg>
+<div class="mk-h1">ניהול הרשאות - הסיכום נספר בשרת (HUB-READ-SAFETY, תיקון C)</div>
+<div class="mk-sub">מוקאפ מאושר (דב, 18.09.2026), גרסה 1.0. המסך הקיים בהגדרות, "ניהול הרשאות", אחרי שהספירה עוברת לשרת. <b>מה שמשתנה הוא רק המצבים החדשים של שורה</b> - כל השאר נשאר כפי שהוא. כל המספרים והשמות כאן הם <b>דוגמה</b> ולא נתונים.</div>
 <div class="mk-note">
-<b>מה המסך עושה, במשפט:</b> מוסיף לאנשי הקשר הקיימים את תווית המיון, כדי שכרטיס השותף יוכל להציג אותם בדפים ובסדר הנכון - ובודק לפני ואחרי. הוא אינו משנה שם, טלפון או כל פרט אחר.
+<b>מה משתנה, במשפט:</b> היום המסך טוען את אנשי הקשר של כל שותף וסופר אותם בדפדפן, ומעל תקרה הוא אומר "לא נספר". אחרי השינוי השרת סופר את כל אנשי הקשר הפעילים של השותף, בלי תקרה, ומחזיר ספירה רק כשהיא נכונה. כשהיא עוד לא נכונה, השורה אומרת למה.
 <ul>
-<li><b>מי משתמש בו</b>: מפעיל הפלטפורמה בלבד, ומאחורי מתג משלו. הפריט בסרגל מוצג לכל משתמש מחובר, כמו שאר הכלים, ומי שאינו המפעיל מקבל הודעת סירוב. כשהמתג כבוי - הכלי מרונדר מושבת במקומו (כמו כל כלי אחר), ובסיום המילוי המתג נכבה.</li>
-<li><b>בשם מי</b>: כל פעולה נשלחת עם החשבון המחובר, ונרשמת ביומן בשמו.</li>
-<li><b>אין המשך אוטומטי</b>: כל לחיצה על "תיקון" היא טווח אחד, באישור נפרד. אין כאן מתג "אוטומטי" כמו בתיוג הקבצים - בכוונה.</li>
-<li><b>בחירת השותף</b> פותחת את חלון בחירת השותף הקיים (PartnerPickDialog), עם פעילים ובארכיון.</li>
+<li><b>משפט הסבר חדש</b> מתחת לתיאור: הנקודות הן תוצאת ההחלה שלנו, ולא מה שפתוח עכשיו בתיקייה.</li>
+<li><b>שורה שמתעדכנת</b> אחרי שינוי הרשאת ברירת המחדל של שותף: "מתעדכן · נשארו N", ולצידה כפתור "המשך". בזמן ההטמעה הכפתור מוצג רק למפעיל הפלטפורמה. אצל כל משתמש אחר השורה אומרת רק שהיא מתעדכנת.</li>
+<li><b>שורה שאינה נספרת</b> אומרת "לא ידוע" ולמה, ולעולם לא מציגה 0.</li>
+<li><b>מאחורי מתג משלו</b> (FEATURE_SPA_ACCESS_DOTS_STORED). כשהמתג כבוי - המסך של היום, בלי שינוי.</li>
 </ul>
 </div>
 
-<div class="mk-sec">1. הכלי, לפני כל פעולה</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="tool-view__title">סדר אנשי הקשר - מילוי לאחור</div>
-  <div class="tool-view__desc">הוספת תווית המיון לאנשי הקשר הקיימים, כדי שכרטיס השותף יציג אותם בדפים ובסדר הנכון. הכלי אינו משנה שם, טלפון או כל פרט אחר.</div>
+<div class="mk-sec">1. המסך, עם כל מצבי השורה</div>
+<div class="mk-frame"><section class="cc-section settings-panel">
+<div class="tool-view__title">ניהול הרשאות</div>
+<div class="tool-view__desc">תמונת מצב רוחבית: לכל שותף - ספירת נקודות הסנכרון (ירוק מלא = הוענק על ידינו · ירוק חלול = נצפה כתואם בתצוגה מקדימה, בלי שהענקנו · צהוב = ממתין להחלה · אדום = כשל). לחיצה פותחת את כרטיס השותף, ישירות על אזור אנשי הקשר - שם ההרשאות מנוהלות בפועל.</div>
+<div class="cc-help" style="margin-top:6px"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-info"></use></svg> הנקודות מתארות את מה שהחלנו בעצמנו בכל שותף, ואינן אומרות מה פתוח עכשיו בתיקייה.</div>
+<div class="tool-field"><input class="cc-input" placeholder="חיפוש שותף..."></div>
+<div class="set-picker">
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה א</bdi><span class="set-pk__meta"><bdi>Georgia</bdi><span class="set-pk__sep">·</span><bdi>P-012</bdi><span class="set-pk__sep">·</span><bdi>7 אנשי קשר</bdi></span><span class="set-pk__dots"><span title="הוחל ותואם - ההרשאה הוענקה על ידינו"><span class="pdot pdot--g"></span>4</span><span title="נצפה כתואם בתצוגה מקדימה - ההרשאה לא הוענקה על ידינו"><span class="pdot pdot--prev"></span>1</span><span title="ממתין להחלה"><span class="pdot pdot--y"></span>2</span><span class="set-pk__warn">שינויים שטרם הוחלו</span></span></button>
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ב</bdi><span class="set-pk__meta"><bdi>Armenia</bdi><span class="set-pk__sep">·</span><bdi>P-031</bdi><span class="set-pk__sep">·</span><bdi>ללא אנשי קשר</bdi></span><span class="set-pk__dots"><span class="set-pk__none">אין למי להעניק גישה</span></span></button>
+<div style="display:flex;align-items:center;border-bottom:1px solid var(--cc-divider)">
+<button class="set-pk" style="border-bottom:0"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ג</bdi><span class="set-pk__meta"><bdi>Uzbekistan</bdi><span class="set-pk__sep">·</span><bdi>P-044</bdi><span class="set-pk__sep">·</span><bdi>12 אנשי קשר</bdi></span><span class="set-pk__dots"><span class="set-pk__none"><svg class="cc-icon cc-icon--sm cc-spin" aria-hidden="true"><use href="#i-loader"></use></svg> מתעדכן · נשארו <bdi>5</bdi></span></span></button>
+<button class="cc-btn cc-btn--sm" style="margin-inline-end:13px;flex:0 0 auto"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-play"></use></svg>המשך</button>
+</div>
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ד</bdi><span class="set-pk__meta"><bdi>Kazakhstan</bdi><span class="set-pk__sep">·</span><bdi>P-050</bdi><span class="set-pk__sep">·</span><bdi>9 אנשי קשר</bdi></span><span class="set-pk__dots"><span class="set-pk__none" title="חלק מאנשי הקשר עוד לא עודכנו לפי הרשאת ברירת המחדל הנוכחית">לא ידוע · <bdi>3</bdi> עוד לא עודכנו</span></span></button>
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ה</bdi><span class="set-pk__meta"><bdi>Kyrgyzstan</bdi><span class="set-pk__sep">·</span><bdi>P-057</bdi><span class="set-pk__sep">·</span><bdi>4 אנשי קשר</bdi></span><span class="set-pk__dots"><span class="set-pk__none" title="השותף עוד לא הוכן לספירה בשרת">לא ידוע · עוד לא הוכן לספירה</span></span></button>
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ו</bdi><span class="set-pk__meta"><bdi>Tajikistan</bdi><span class="set-pk__sep">·</span><bdi>P-061</bdi><span class="set-pk__sep">·</span><bdi>לא נספר</bdi></span><span class="set-pk__dots"><span class="set-pk__none" title="הספירה לא הצליחה, והסיבה נרשמה">לא ידוע · הספירה לא הצליחה</span></span></button>
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ז</bdi><span class="set-pk__meta"><bdi>Turkmenistan</bdi><span class="set-pk__sep">·</span><bdi>P-066</bdi><span class="set-pk__sep">·</span><bdi>לא נספר</bdi></span><span class="set-pk__dots"><span class="set-pk__none" title="השותף שמור בלי שיוך לארגון, ולכן חלק מאנשי הקשר שלו עלולים לא להיספר">לא ידוע · השותף בלי שיוך לארגון</span></span></button>
+</div>
+<div class="cc-help" style="margin-top:6px">הרשימה הגיעה לסופה · <bdi>7</bdi> · מספר השורות המוצגות אינו מספר כולל · הסדר: לפי שם, כפי שהוא שמור (אותיות לטיניות לפני עברית)</div>
+</section></div>
 
-  <div class="tool-result" style="margin-top:16px">
-    <div class="tool-result__title">בדיקה אצל שותף - קריאה בלבד</div>
-    <div class="tool-field" style="margin-top:0"><span class="tool-field__label">שותף</span>
-      <button class="seg-pickfield"><span class="cc-fg-dim">בחירת שותף</span><span class="seg-pick-chev">▾</span></button></div>
-    <div class="tool-field"><span class="tool-field__label">אנשי קשר</span>
-      <div class="cc-seg cc-seg--sm"><button class="is-active">פעילים</button><button>בארכיון</button></div>
-      <div class="tool-field__hint">פעילים ובארכיון נבדקים בנפרד, ואינם מסוכמים יחד.</div></div>
-    <div class="tool-field"><span class="tool-field__label">אנשי קשר בכל עמוד</span>
-      <div class="cc-seg cc-seg--sm"><button class="is-active">2</button><button>50</button></div>
-      <div class="tool-field__hint">עמוד קטן בודק מעבר בין עמודים גם אצל שותף עם מעט אנשי קשר.</div></div>
-    <div class="mk-row"><button class="cc-btn cc-btn--primary" disabled><svg class="cc-icon cc-icon--sm"><use href="#i-eye"/></svg>בדיקה</button></div>
-  </div>
+<div class="mk-sec">2. אחרי "המשך" - השורה חוזרת לספירה</div>
+<div class="mk-frame"><section class="cc-section settings-panel"><div class="set-picker">
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ג</bdi><span class="set-pk__meta"><bdi>Uzbekistan</bdi><span class="set-pk__sep">·</span><bdi>P-044</bdi><span class="set-pk__sep">·</span><bdi>12 אנשי קשר</bdi></span><span class="set-pk__dots"><span title="הוחל ותואם - ההרשאה הוענקה על ידינו"><span class="pdot pdot--g"></span>9</span><span title="ממתין להחלה"><span class="pdot pdot--y"></span>3</span><span class="set-pk__warn">שינויים שטרם הוחלו</span></span></button>
+</div></section></div>
+<div class="mk-note">"המשך" מעדכן עד מספר קבוע של אנשי קשר בכל לחיצה. כשיש עוד, השורה נשארת "מתעדכן · נשארו N". אם בינתיים שונתה שוב הרשאת ברירת המחדל, העדכון מתחיל מההתחלה, והשורה אומרת זאת: "השתנה שוב, מתחיל מההתחלה". איש קשר שהעדכון שלו נכשל נשאר ברשימה, ונוסה שוב בלחיצה הבאה.</div>
 
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">ספירה ותיקון בכל הארגון</div>
-    <div class="tool-field" style="margin-top:0"><span class="tool-field__label">מאיפה להתחיל</span>
-      <div class="cc-seg cc-seg--sm"><button class="is-active">מההתחלה</button><button disabled>מהמקום שבו נעצרה הריצה האחרונה</button></div></div>
-    <div class="tool-field"><span class="tool-field__label">כמה אנשי קשר לכל היותר</span>
-      <div class="cc-seg cc-seg--sm"><button class="is-active">3</button><button>25</button><button>100</button></div>
-      <div class="tool-field__hint">אנשי הקשר עוברים לפי סדר פנימי, ויכולים להיות של שותפים שונים.</div></div>
-    <div class="mk-row">
-      <button class="cc-btn"><svg class="cc-icon cc-icon--sm"><use href="#i-list-ordered"/></svg>ספירה בלי שינוי</button>
-      <button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>תיקון</button>
-    </div>
-  </div>
-</div></div></div>
+<div class="mk-sec">3. מה המשתמש רואה כשאינו מפעיל הפלטפורמה (בזמן ההטמעה)</div>
+<div class="mk-frame"><section class="cc-section settings-panel"><div class="set-picker">
+<button class="set-pk"><svg class="cc-icon cc-icon--sm" aria-hidden="true"><use href="#i-shield"></use></svg><bdi class="cc-strong">שותף לדוגמה ג</bdi><span class="set-pk__meta"><bdi>Uzbekistan</bdi><span class="set-pk__sep">·</span><bdi>P-044</bdi><span class="set-pk__sep">·</span><bdi>12 אנשי קשר</bdi></span><span class="set-pk__dots"><span class="set-pk__none">מתעדכן · נשארו <bdi>5</bdi></span></span></button>
+</div></section></div>
 
-<div class="mk-sec">2. בדיקה אצל שותף - התוצאה (תקין)</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--success"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-check"/></svg>
-    <span>כל אנשי הקשר שנבדקו נושאים תווית עדכנית, והסדר בשרת תואם. נקראו <bdi>7</bdi> עמודים, וכל <bdi>13</bdi> בעלי התווית הגיעו פעם אחת.</span></div>
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">שותף <bdi>שותף לדוגמה</bdi> · פעילים · 2 בכל עמוד</div>
-    <div class="tool-result__row"><span class="k">אנשי קשר שמתאימים</span><span class="v"><bdi>13</bdi></span></div>
-    <div class="tool-result__row"><span class="k">עם תווית מיון</span><span class="v"><bdi>13</bdi></span></div>
-    <div class="tool-result__row"><span class="k">בגרסה העדכנית · בגרסה ישנה</span><span class="v"><bdi>13</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">בלי תווית</span><span class="v"><bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">סדר לא מדויק (נספר ומוצג)</span><span class="v"><bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">בדיקת סדר השפה בשרת</span><span class="v">תואם</span></div>
-    <div class="tool-result__row"><span class="k">עמודים שנקראו · אנשי קשר שהוחזרו</span><span class="v"><bdi>7</bdi> · <bdi>13</bdi></span></div>
-    <div class="tool-result__row"><span class="k">כפולים · לא לפי הסדר</span><span class="v"><bdi>0</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">נקראו · מתוך בעלי תווית</span><span class="v"><bdi>13</bdi> · <bdi>13</bdi></span></div>
-  </div>
-</div></div></div>
-
-<div class="mk-sec">3. בדיקה אצל שותף - לפני התיקון (חלק מאנשי הקשר בלי תווית)</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--warning"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span><bdi>9</bdi> מתוך <bdi>13</bdi> אנשי הקשר עדיין בלי תווית, והבדיקה לא ראתה אותם. הקריאה עברה רק על <bdi>4</bdi> שיש להם תווית.</span></div>
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">שותף <bdi>שותף לדוגמה</bdi> · פעילים · 2 בכל עמוד</div>
-    <div class="tool-result__row"><span class="k">אנשי קשר שמתאימים</span><span class="v"><bdi>13</bdi></span></div>
-    <div class="tool-result__row"><span class="k">עם תווית מיון</span><span class="v"><bdi>4</bdi></span></div>
-    <div class="tool-result__row"><span class="k">בגרסה העדכנית · בגרסה ישנה</span><span class="v"><bdi>4</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">בלי תווית</span><span class="v"><bdi>9</bdi></span></div>
-    <div class="tool-result__row"><span class="k">סדר לא מדויק (נספר ומוצג)</span><span class="v"><bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">בדיקת סדר השפה בשרת</span><span class="v">לא תואם</span></div>
-    <div class="tool-result__row"><span class="k">עמודים שנקראו · אנשי קשר שהוחזרו</span><span class="v"><bdi>2</bdi> · <bdi>4</bdi></span></div>
-    <div class="tool-result__row"><span class="k">כפולים · לא לפי הסדר</span><span class="v"><bdi>0</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">נקראו · מתוך בעלי תווית</span><span class="v"><bdi>4</bdi> · <bdi>4</bdi></span></div>
-  </div>
-</div></div></div>
-
-<div class="mk-sec">3א. חלק 1 אחרי בחירת שותף, וחלק 2 כשאפשר להמשיך מהריצה האחרונה</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--warning"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>התחלות ריצה בלי רישום סיום: <bdi>16.09.2026, 09:00</bdi>. הן נעצרו באמצע, וכל איש קשר שנכתב בהן נכתב במלואו. ועוד <bdi>2</bdi> שאינן מוצגות כאן.</span></div>
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">בדיקה אצל שותף - קריאה בלבד</div>
-    <div class="tool-field" style="margin-top:0"><span class="tool-field__label">שותף</span>
-      <button class="seg-pickfield"><span class="seg-pill"><bdi>שותף לדוגמה</bdi></span><span class="seg-pick-chev">▾</span></button></div>
-    <div class="tool-field"><span class="tool-field__label">אנשי קשר</span>
-      <div class="cc-seg cc-seg--sm"><button>פעילים</button><button class="is-active">בארכיון</button></div>
-      <div class="tool-field__hint">פעילים ובארכיון נבדקים בנפרד, ואינם מסוכמים יחד.</div></div>
-    <div class="tool-field"><span class="tool-field__label">אנשי קשר בכל עמוד</span>
-      <div class="cc-seg cc-seg--sm"><button>2</button><button class="is-active">50</button></div>
-      <div class="tool-field__hint">עמוד קטן בודק מעבר בין עמודים גם אצל שותף עם מעט אנשי קשר.</div></div>
-    <div class="mk-row"><button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-eye"/></svg>בדיקה</button></div>
-  </div>
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">ספירה ותיקון בכל הארגון</div>
-    <div class="tool-field" style="margin-top:0"><span class="tool-field__label">מאיפה להתחיל</span>
-      <div class="cc-seg cc-seg--sm"><button>מההתחלה</button><button class="is-active">מהמקום שבו נעצרה הריצה האחרונה</button></div>
-      <div class="tool-field__hint">הריצה האחרונה: <bdi>17.09.2026, 14:05</bdi>.</div></div>
-    <div class="tool-field"><span class="tool-field__label">כמה אנשי קשר לכל היותר</span>
-      <div class="cc-seg cc-seg--sm"><button>3</button><button class="is-active">25</button><button>100</button></div>
-      <div class="tool-field__hint">אנשי הקשר עוברים לפי סדר פנימי, ויכולים להיות של שותפים שונים.</div></div>
-    <div class="mk-row">
-      <button class="cc-btn"><svg class="cc-icon cc-icon--sm"><use href="#i-list-ordered"/></svg>ספירה בלי שינוי</button>
-      <button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>תיקון</button>
-    </div>
-  </div>
-</div></div></div>
-
-<div class="mk-sec">4. ספירה בלי שינוי - התוצאה</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--info"><svg class="cc-icon cc-icon--sm"><use href="#i-info"/></svg>
-    <span>שום דבר לא נכתב. אנשי הקשר עשויים להשתנות עד שהתיקון ירוץ.</span></div>
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">ספירה · מההתחלה · עד 3 אנשי קשר</div>
-    <div class="tool-result__row"><span class="k">נבדקו</span><span class="v"><bdi>3</bdi></span></div>
-    <div class="tool-result__row"><span class="k">צריכים תווית · תווית ישנה</span><span class="v"><bdi>3</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">כבר תקינים</span><span class="v"><bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">הסתיימו כל אנשי הקשר בארגון</span><span class="v">לא - נותרו עוד</span></div>
-  </div>
-</div></div></div>
-
-<div class="mk-sec">5. חלון האישור לפני התיקון (app-dialog, רוחב 400)</div>
-<div class="mk-frame"><div class="mk-dlg-stage">
-  <div class="app-dialog" style="width:400px">
-    <div class="app-dialog__title">תיקון של עד <bdi>3</bdi> אנשי קשר</div>
-    <div class="app-dialog__body">מההתחלה, לפי הסדר הפנימי - אנשי הקשר יכולים להיות של שותפים שונים. תתווסף להם תווית מיון בלבד, והפעולה תירשם ביומן בשמך. בסיום הכלי ייעצר ולא ימשיך מעצמו.</div>
-    <div class="app-dialog__actions">
-      <button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-check"/></svg>אישור התיקון</button>
-      <button class="cc-btn">ביטול</button>
-    </div>
-  </div>
-</div></div>
-
-<div class="mk-sec">6. בזמן התיקון</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--progress"><span class="tool-spin"></span><span>מתקן עד <bdi>3</bdi> אנשי קשר...</span></div>
-  <div class="mk-row"><button class="cc-btn" disabled><svg class="cc-icon cc-icon--sm"><use href="#i-list-ordered"/></svg>ספירה בלי שינוי</button><button class="cc-btn cc-btn--primary" disabled><span class="tool-spin"></span>תיקון</button></div>
-</div></div></div>
-
-<div class="mk-sec">7. התיקון הסתיים</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--success"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-check"/></svg>
-    <span>הטווח הושלם: <bdi>3</bdi> אנשי קשר קיבלו תווית. הפעולה נרשמה ביומן - תחילה וסיום. להמשך בוחרים להתחיל מהמקום שבו נעצרה הריצה האחרונה, ומאשרים שוב.</span></div>
-  <div class="tool-result" style="margin-top:14px">
-    <div class="tool-result__title">תיקון · 17.09.2026, 14:05 · עד 3 אנשי קשר</div>
-    <div class="tool-result__row"><span class="k">נבדקו · קיבלו תווית</span><span class="v"><bdi>3</bdi> · <bdi>3</bdi></span></div>
-    <div class="tool-result__row"><span class="k">כבר היו תקינים · דולגו (נמחקו בינתיים)</span><span class="v"><bdi>0</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">כבר נשאו את התווית בזמן התיקון · אינם בארגון הזה</span><span class="v"><bdi>0</bdi> · <bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">נכשלו</span><span class="v"><bdi>0</bdi></span></div>
-    <div class="tool-result__row"><span class="k">רישום ביומן</span><span class="v">תחילה כן · סיום כן</span></div>
-    <div class="tool-result__row"><span class="k">אנשי הקשר, אחרי התיקון</span><span class="v"><bdi>איש קשר א</bdi> - תווית עדכנית · <bdi>איש קשר ב</bdi> - בלי תווית עדכנית · <bdi>c0099</bdi> - לא נמצא (הרשימה קוצרה)</span></div>
-    <div class="tool-result__row"><span class="k">כל אנשי הקשר בארגון עברו</span><span class="v">לא - נותרו עוד</span></div>
-  </div>
-  <div class="mk-row"><button class="cc-btn"><svg class="cc-icon cc-icon--sm"><use href="#i-list-ordered"/></svg>ספירה בלי שינוי</button><button class="cc-btn cc-btn--primary"><svg class="cc-icon cc-icon--sm"><use href="#i-play"/></svg>תיקון</button></div>
-</div></div></div>
-
-<div class="mk-sec">8. כל נוסחי ההודעה והרמז - שורה אחת כל אחד, ואינם מסכים נוספים</div>
-<div class="mk-frame"><div class="tool-view"><div class="tool-view__col">
-  <div class="cc-msg cc-msg--danger"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>סדר השפה בשרת אינו תואם את הסדר השמור. אין לתקן ואין להפעיל את המסך החדש - יש לפנות לבדיקה.</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>הספירה לא נמדדה הפעם - לא ידוע כמה אנשי קשר בלי תווית. (לעולם לא מוצג אפס.)</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>התיקון רץ, אבל רישום הסיום ביומן לא נכתב. התוצאה שעל המסך היא הרישום היחיד של הריצה הזו - לשמור צילום.</span></div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>התיקון נעצר: <bdi>(הודעת השרת כלשונה)</bdi>. שום דבר לא ימשיך מעצמו; מצב הריצות נקרא מחדש.</span></div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span><bdi>1</bdi> אנשי קשר נכשלו ונשארו בלי תווית עדכנית; <bdi>2</bdi> קיבלו תווית. שום דבר לא ימשיך מעצמו.</span></div>
-  <div class="cc-msg cc-msg--success" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-check"/></svg>
-    <span>כל אנשי הקשר בארגון עברו. בריצה הזו <bdi>2</bdi> קיבלו תווית. הפעולה נרשמה ביומן - תחילה וסיום.</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>נקראו <bdi>4</bdi> אנשי קשר שונים, והספירה בתחילת הבדיקה מנתה <bdi>5</bdi> בעלי תווית. ההפרש יכול לבוא משינוי שנעשה במהלך הקריאה או מעמוד שדילג, והבדיקה אינה מבחינה ביניהם - כדאי לבדוק שוב.</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>חלק מהתוויות אינן בגרסה העדכנית, או שסדר השפה בשרת לא אומת. נקראו <bdi>13</bdi> אנשי קשר.</span></div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>מצב הריצות לא נקרא: <bdi>(הודעת השרת כלשונה)</bdi></span></div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>הבדיקה נכשלה: <bdi>(הודעת השרת כלשונה)</bdi></span></div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>הספירה נכשלה: <bdi>(הודעת השרת כלשונה)</bdi></span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>הקריאה החוזרת של אנשי הקשר נכשלה: <bdi>(הודעת השרת כלשונה)</bdi></span></div>
-  <div class="tool-field__hint">הריצה האחרונה לא הסתיימה נקי - היו בה כשלים או שנעצרה באמצע. מתחילים מההתחלה, כדי לא לדלג על מה שנשאר.</div>
-  <div class="cc-msg cc-msg--progress" style="margin-top:10px"><span class="tool-spin"></span><span>סופר עד <bdi>25</bdi> אנשי קשר...</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>התיקון לא התחיל: ריצה אחרת התחילה בינתיים. לבדוק את המסך ולאשר שוב.</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>יש <bdi>3</bdi> התחלות ריצה שאי אפשר להכריע עליהן - היומן נקרא עד התקרה, ולכן אינן מוצגות אחת אחת.</span></div>
-  <div class="tool-field__hint">אין עדיין ריצה קודמת</div>
-  <div class="tool-field__hint">הריצה האחרונה הגיעה לסוף - אין מאיפה להמשיך</div>
-  <div class="tool-field__hint">הריצה האחרונה לא רשמה מקום עצירה</div>
-  <div class="tool-field__hint">אנשי קשר שנכשלו בריצה האחרונה - <bdi>60</bdi> בסך הכול, ואלה המזוהים: <bdi>c0042</bdi>. הרשימה חלקית.</div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>הקריאה בעמודים לא הייתה תקינה: <bdi>0</bdi> חזרו פעמיים, <bdi>0</bdi> לא הגיעו לפי הסדר, ונקראו <bdi>4</bdi> מתוך <bdi>5</bdi> שיש להם תווית. הקריאה לא הגיעה לסוף.</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>ריצת תיקון התחילה ב-<bdi>17.09.2026, 14:03</bdi> ועדיין לא נרשם לה סיום. ייתכן שהיא רצה עכשיו, ולכן התיקון חסום בינתיים - לרענן את המסך בעוד כמה דקות.</span></div>
-  <div class="cc-msg cc-msg--warning" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-triangle-alert"/></svg>
-    <span>התיקון לא התחיל: מקום ההתחלה השתנה בין האישור לשליחה. לבדוק את המסך ולאשר שוב.</span></div>
-  <div class="cc-msg cc-msg--danger" style="margin-top:10px"><svg class="cc-icon cc-icon--sm"><use href="#i-circle-alert"/></svg>
-    <span>הכלי מיועד למפעיל הפלטפורמה בלבד.</span></div>
-  <div class="cc-msg cc-msg--info" style="margin-top:10px"><span>הכלי טרם הופעל.</span></div>
-  <div class="tool-field__hint">בריצה האחרונה היו כשלים - מתחילים מההתחלה כדי לא לדלג עליהם</div>
-</div></div></div>
-
-<div class="mk-sec">מלאי האלמנטים</div>
+<div class="mk-sec">4. מצבי השורה - מה כל אחד אומר, ומתי</div>
 <table class="mk-tbl">
-<tr><th>האלמנט</th><th>שם הספרייה</th><th>מקור</th></tr>
-<tr><td>מעטפת, כותרת ותיאור</td><td>tool-view · tool-view__col · tool-view__title · tool-view__desc</td><td>קיים (global.css)</td></tr>
-<tr><td>כרטיסי החלקים והתוצאה</td><td>tool-result · tool-result__title · tool-result__row</td><td>קיים (global.css)</td></tr>
-<tr><td>תווית ורמז לשדה</td><td>tool-field · tool-field__label · tool-field__hint</td><td>קיים - מקומי בשלושת מסכי הכלים (TagBackfill · GscSync · Intent)</td></tr>
-<tr><td>בחירת ערך</td><td>cc-seg · cc-seg--sm</td><td>קיים</td></tr>
-<tr><td>ערך נבחר בשדה</td><td>seg-pill</td><td>קיים (SegmentsSection)</td></tr>
-<tr><td>שדה השותף</td><td>seg-pickfield · seg-pick-chev, פותח את PartnerPickDialog</td><td>קיים (SegmentsSection, Step3Group)</td></tr>
-<tr><td>כפתורים</td><td>cc-btn · cc-btn--primary</td><td>קיים</td></tr>
-<tr><td>הבאנרים</td><td>cc-msg--info · --success · --warning · --danger · --progress + tool-spin</td><td>קיים</td></tr>
-<tr><td>חלון האישור</td><td>app-dialog · app-dialog__title · __body · __actions (מוסכמת ConfirmDialog: החיובי ראשון)</td><td>קיים</td></tr>
-<tr><td>פריט בסרגל הצד</td><td>rail item "סדר אנשי הקשר", אייקון i-list-ordered</td><td>קיים (הדפוס של "תיוג הקבצים")</td></tr>
+<tr><th>מה כתוב בשורה</th><th>מתי</th><th>מה אפשר לעשות</th></tr>
+<tr><td>הנקודות והמספרים</td><td>כל אנשי הקשר הפעילים של השותף עודכנו לפי הרשאת ברירת המחדל הנוכחית</td><td>לחיצה פותחת את כרטיס השותף</td></tr>
+<tr><td>אין למי להעניק גישה</td><td>לשותף אין אנשי קשר פעילים</td><td>-</td></tr>
+<tr><td>מתעדכן · נשארו N</td><td>הרשאת ברירת המחדל שונתה, והעדכון עוד לא הסתיים</td><td>"המשך" - למפעיל הפלטפורמה בזמן ההטמעה</td></tr>
+<tr><td>לא ידוע · N עוד לא עודכנו</td><td>חלק מאנשי הקשר לא עודכנו, ואין עדכון פתוח</td><td>מפעיל הפלטפורמה משלים</td></tr>
+<tr><td>לא ידוע · עוד לא הוכן לספירה</td><td>השותף עוד לא עבר את ההכנה לספירה בשרת</td><td>מפעיל הפלטפורמה משלים</td></tr>
+<tr><td>לא ידוע · הספירה לא הצליחה</td><td>השרת לא הצליח לספור, והסיבה נרשמה</td><td>לרענן מאוחר יותר</td></tr>
+<tr><td>לא ידוע · השותף בלי שיוך לארגון</td><td>שותף ישן שנשמר בלי שיוך לארגון</td><td>-</td></tr>
 </table>
 
-<div class="mk-sec">יומן הקובץ</div>
+<div class="mk-sec">5. אלמנטים - מה קיים ומה נוסף</div>
 <table class="mk-tbl">
-<tr><th>התאריך</th><th>מה השתנה</th><th>מי</th></tr>
-<tr><td>2026-09-17</td><td>המוקאפ נוצר ב-HUB-READ-SAFETY, באישור דב להכין סקיצה. הגישה נקבעה בתשובת היועץ להחזרה 11 (§3) ובתיקוני המודל §B.6.</td><td>Coworker</td></tr>
-<tr><td>2026-09-17</td><td>אושר על ידי דב ("OK"). השמות והכתובת בדוגמאות הוחלפו בשמות גנריים לפני הפרסום באתר הציבורי - אין במסך נתוני אמת.</td><td>Coworker</td></tr>
-<tr><td>2026-09-17</td><td>גרסה 1.1 - יושרה לקוד שנבנה, אחרי ביקורת; ממתינה לאישור דב. כפתור האישור בחלון כחול ולא אדום (החלון המשותף מרנדר כך כל אישור); חלון הבחירה הוא PartnerPickDialog; ההודעות אינן נוקבות בשם השותף ובסטטוס; שורה חדשה "נקראו · מתוך בעלי תווית", וקריאה שחסרה בה שורה היא תקלה ולא הצלחה; כל שמונה השורות בשני מצבי הבדיקה; מצב 3א חדש (שותף נבחר, "מהמקום שבו נעצרה" פעיל, ריצות שלא נסגרו); שורה "תוקנו בינתיים · עברו לארגון אחר"; "כן/לא" ברישום ביומן במקום סימנים; ריצה פתוחה חוסמת רק כמה דקות; הודעות חדשות בסעיף 8; הפריט בסרגל מוצג לכולם והשימוש למפעיל הפלטפורמה בלבד; הצבע העמום עבר למחלקה cc-fg-dim.</td><td>Coworker</td></tr>
-<tr><td>2026-09-17</td><td>סבב ביקורת שני: ההודעה על הפרש בין הנקראים לספירה אינה מאשימה את הקריאה אלא נוקבת בשתי האפשרויות; "הריצה האחרונה לא הסתיימה נקי" במקום "היו כשלים"; רמז עם אנשי הקשר שנכשלו; שלושה נוסחים נפרדים ל"התיקון לא התחיל"; "ועוד X שאינן מוצגות" לריצות שלא נסגרו; שורת המצבים נוקבת בעובדה ולא בסיבה; וכל שאר ההודעות והרמזים מצוירים בסעיף 8.</td><td>Coworker</td></tr>
-<tr><td>2026-09-17</td><td>סבב ביקורת שלישי: רמז אנשי הקשר שנכשלו נוקב בסך הכול ואומר כשהרשימה חלקית; הודעה נפרדת כשיש התחלות ריצה שאי אפשר להכריע עליהן; נוסח רביעי ל"התיקון לא התחיל"; וכל שאר הנוסחים והערכים שלא צוירו - ספירה בתהליך, "לא נמצא", "הרשימה קוצרה", "לא תואם", "הקריאה לא הגיעה לסוף" ושלושת רמזי הסיבה.</td><td>Coworker</td></tr>
-<tr><td>2026-09-17</td><td>גרסה 1.1 אושרה על ידי דב ("מאשר הכל"), ובכלל זה כפתור האישור הכחול בחלון.</td><td>Coworker</td></tr>
+<tr><th>אלמנט</th><th>מחלקות</th><th>מקור</th></tr>
+<tr><td>הפאנל, הכותרת, התיאור, החיפוש</td><td>cc-section · settings-panel · tool-view__title · tool-view__desc · tool-field · cc-input</td><td>קיים - SettingsScreen</td></tr>
+<tr><td>שורת שותף ונקודותיה</td><td>set-picker · set-pk · set-pk__meta · set-pk__dots · set-pk__none · set-pk__warn · pdot</td><td>קיים - SettingsScreen</td></tr>
+<tr><td>משפט ההסבר</td><td>cc-help + i-info</td><td>קיים (global.css)</td></tr>
+<tr><td>"מתעדכן" עם סמל טעינה</td><td>set-pk__none + cc-icon cc-spin + i-loader</td><td>קיים - צירוף חדש</td></tr>
+<tr><td>כפתור "המשך" לצד השורה</td><td>cc-btn cc-btn--sm + i-play</td><td>קיים - מיקום חדש: אח של השורה ולא בתוכה, מפני שהשורה עצמה כפתור</td></tr>
 </table>
-
 </body>
 </html>
