@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <title>Authentico&#8482; Hub - ספריית העיצוב</title>
 <!-- LIB:DERIVED css -->
-<!-- global.css של המוצר, מילה במילה. sha1(source)=48c2fad44d13. אין לערוך כאן: המקור הוא studio-platform/spa/src/global.css, ובדיקה W מפילה עותק שהתיישן. הסמן הוא hash של המקור ולא קומיט: לסוכן אין git, וקומיט שהיה נחתם בבנייה היה הקומיט שלפני זה שנושא אותה. -->
-<style data-lib-derived="global.css" data-lib-hash="48c2fad44d13">
+<!-- global.css של המוצר, מילה במילה. sha1(source)=8c7c7b0fcbf5. אין לערוך כאן: המקור הוא studio-platform/spa/src/global.css, ובדיקה W מפילה עותק שהתיישן. הסמן הוא hash של המקור ולא קומיט: לסוכן אין git, וקומיט שהיה נחתם בבנייה היה הקומיט שלפני זה שנושא אותה. -->
+<style data-lib-derived="global.css" data-lib-hash="8c7c7b0fcbf5">
 /* ============================================================================
    Authentico™ Hub SPA - global.css
    PORTED AS-IS from archive/legacy-gas-geo/Dashboard.html <style> block
@@ -1307,16 +1307,17 @@ code { background: var(--auth-bg); padding: 2px 6px; border-radius: 4px; font-si
   white-space: pre-wrap;
 }
 
-/* AI preview - render content like the site (theme authenticonew). Values: shared/brand-assets/site-theme-authenticonew-style.css */
+/* AI preview - render content like the site (theme authenticonew). Values: shared/brand-assets/site-theme-authenticonew-style.css
+   The font files are self-hosted (spa/public/fonts/open-sans-hebrew/) - the CSP does not allow the website as a font origin. */
 @font-face {
   font-family: 'Open Sans Hebrew';
   font-style: normal; font-weight: 400;
-  src: url('https://authentico.co.il/wp-content/themes/authenticonew/fonts/opensanshebrew-regular-webfont.woff') format('woff');
+  src: url('/fonts/open-sans-hebrew/opensanshebrew-regular-webfont.woff') format('woff');
 }
 @font-face {
   font-family: 'Open Sans Hebrew';
   font-style: normal; font-weight: 700;
-  src: url('https://authentico.co.il/wp-content/themes/authenticonew/fonts/opensanshebrew-bold-webfont.woff') format('woff');
+  src: url('/fonts/open-sans-hebrew/opensanshebrew-bold-webfont.woff') format('woff');
 }
 .ai-excerpt-preview {
   font-family: 'Open Sans Hebrew', Arial, sans-serif;
@@ -3575,7 +3576,7 @@ body.lib-body{padding:0}
   <span class="lib-topbar__sub">Authentico&#8482; Hub &#183; המראה של הקוד</span>
   <i class="lib-topbar__gap"></i>
 <!-- LIB:DERIVED stamp -->
-<span class="lib-stamp"><i class="lib-stamp__dot"></i>נבנתה מהקוד · 199 טוקנים · 1058 מחלקות · 73 סמלים · 129 קובצי מקור · global.css 48c2fad44d13 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 21.09.2026, 12:49</span>
+<span class="lib-stamp"><i class="lib-stamp__dot"></i>נבנתה מהקוד · 199 טוקנים · 1058 מחלקות · 73 סמלים · 129 קובצי מקור · global.css 8c7c7b0fcbf5 · ספרייט e368d1d7fc44 · עודכנה לאחרונה 23.09.2026, 10:15</span>
 <!-- /LIB:DERIVED stamp -->
 </div>
 
@@ -6657,7 +6658,7 @@ body.lib-body{padding:0}
   <div class="lib-rule">🔴 <b>ולמה הנקודות העיוורות יושבות גם כאן</b>: <b>כל</b> מנגנון מפרסם את שלו, ומכומת - גם גוש שאינו מרנדר סעיף. <b>מניין כיסוי בלי נקודה עיוורת מוצהרת הוא חסם תחתון שמוצג כמדידה</b>, ואי אפשר לתכנן לפיו.</div>
   <div class="lib-tblwrap"><table class="lib-tbl lib-tbl--dense"><tr><th>הגוש (14)</th><th>סמן המקור</th><th>הנקודה העיוורת שלו</th></tr>
 <tr><td class="lib-code">sprite</td><td class="lib-code">e368d1d7fc44</td><td>הגוש מטמיע את ה-<svg> הראשון בבית הספרייט. סמל שיושב בבית ומחוץ לגוש אינו נישא כאן: <b>0</b>.</td></tr>
-<tr><td class="lib-code">css</td><td class="lib-code">1d2a167361dc</td><td>🔴 הסמן בשורה הזאת הוא של <b>הצירוף</b> - global.css, הגיליונות הנוספים וכל גושי הרכיבים; <b>הסמן של global.css לבדו מופיע בסרגל הזהות שבראש המסמך</b>, וזה הסמן שמשווים אליו כשקוראים את הגיליון המשותף. התיחום של הרכיבים כאן הוא עוטף <span class="lib-code">data-lib-src</span> ואינו התיחום של Svelte: כלל שנשען על סדר קדימויות אחר עשוי להיראות אחרת. הוזרקו <b>47</b> גושי רכיב.</td></tr>
+<tr><td class="lib-code">css</td><td class="lib-code">0ee5e2268e49</td><td>🔴 הסמן בשורה הזאת הוא של <b>הצירוף</b> - global.css, הגיליונות הנוספים וכל גושי הרכיבים; <b>הסמן של global.css לבדו מופיע בסרגל הזהות שבראש המסמך</b>, וזה הסמן שמשווים אליו כשקוראים את הגיליון המשותף. התיחום של הרכיבים כאן הוא עוטף <span class="lib-code">data-lib-src</span> ואינו התיחום של Svelte: כלל שנשען על סדר קדימויות אחר עשוי להיראות אחרת. הוזרקו <b>47</b> גושי רכיב.</td></tr>
 <tr><td class="lib-code">tokens</td><td class="lib-code">5fd1ad0f94a7</td><td>טוקן ששמו נבנה בזמן ריצה אינו נראה. הרשומות האנונימיות הן <b>ערכי צבע בלבד</b> - ערך ליטרלי שאינו צבע (מידה, צל מורכב) אינו נאסף, וכך גם ליטרל בתוך <span class="lib-code">global.css</span>, שהוא הבית שבו ערך הופך לטוקן. 🔴 <b>והערך שמוצג הוא ההצהרה האחרונה בסדר המסמך</b> - זה מה שגובר בקובץ אחד; <b>הטבלה אינה מדגמת תנאים</b>, ולכן הצהרה בתוך שאילתת מדיה נקראת כאן כערך רגיל אף שהיא גוברת בתנאי שלה בלבד. <b>היום: 0</b> טוקנים מוצהרים בתוך כלל תנאי.</td></tr>
 <tr><td class="lib-code">classes</td><td class="lib-code">a5bb79f257cb</td><td>מחלקה שנבנית מביטוי בלי ליטרל אינה נראית: <b>53</b> אתרים ב-<b>15</b> קבצים. 🔴 <b>ייחוס הסגנון המוטבע קורא מאפיין <span class="lib-code">style</span> שערכו במרכאות</b>, ושתי צורות נוספות אינן נקראות כלל ונמדדות כאן: <span class="lib-code">style={…}</span> - <b>13</b> מופעים, ו-<span class="lib-code">style:prop={…}</span> - <b>0</b> מופעים. <b>הראשונה אינה קטנה</b>, וחלק ממופעיה נושאים צבע.</td></tr>
 <tr><td class="lib-code">typography</td><td class="lib-code">a21d0da615a2</td><td>מ-<span class="lib-code">global.css</span> בלבד. טיפוגרפיה שרכיב מצהיר אינה כאן - היא בקטלוג המחלקות.</td></tr>
@@ -6668,7 +6669,7 @@ body.lib-body{padding:0}
 <tr><td class="lib-code">buckets</td><td class="lib-code">ca9b3631db2e</td><td>הייחוס הוא לפי <b>נושא הכלל</b> (D-421). מחלקה שמופיעה רק כאב אינה בשתי הקטגוריות הראשונות אלא בשלישית, ומספרן <b>9</b>. תור הזוגות משווה סט מאפיינים <b>וערכים</b>, ולכן שתי מחלקות שעושות אותה עבודה בערכים שונים אינן נפגשות בו.</td></tr>
 <tr><td class="lib-code">sources</td><td class="lib-code">6cd4fbd05aa3</td><td>הרשימה מציגה סמן לכל גוש נגזר. <b>מה שהיא אינה אומרת</b>: אם הסמן חושב מהמקור הנכון - היא מודדת זהות בין הגוש למה שהמחולל מייצר מאותו קלט, ולא את בחירת הקלט.</td></tr>
 <tr><td class="lib-code">divergences</td><td class="lib-code">3fd53f5f2589</td><td>הרשימות נגזרות <b>מסריקה אחת</b> ואינן מאומתות בקורא שני ובלתי תלוי של המקור; מה שמחליף קורא שני הוא רתמת הפגמים השתולים ושוויון שתי האגרגציות, ולכל אחת מהן נקודה עיוורת משלה שנאמרת בשער.</td></tr>
-<tr><td class="lib-code">stamp</td><td class="lib-code">f954d80133e9</td><td>החותמת מונה את מה שנמדד ואינה אומרת אם מה שנמדד נכון - "נגזר" אינו נרדף ל"נכון" (PI §2).</td></tr>
+<tr><td class="lib-code">stamp</td><td class="lib-code">7154766ad32b</td><td>החותמת מונה את מה שנמדד ואינה אומרת אם מה שנמדד נכון - "נגזר" אינו נרדף ל"נכון" (PI §2).</td></tr>
 <tr><td class="lib-code">rail</td><td class="lib-code">12bb44048c9b</td><td>המפתח נגזר מכותרות הסעיפים; כותרת בלי מספר סעיף אינה נכנסת אליו, וסעיף בלי עוגן מפיל את השער ואינו מגיע למסמך.</td></tr>
   </table></div>
 </div>
@@ -7508,7 +7509,7 @@ body.lib-body{padding:0}
   <p class="lib-none">אין קבוצות מוגדרות היום - הגדרת הקבוצה הראשונה היא מעשה תיחום הרביזיה הראשונה, והשדה קיים כדי שהיא תוגדר לפני שהשריפה מתחילה.</p>
   <h3 class="lib-h3">הזדקנות המחגר - תאריך זרע לרשומה, וקיפאון לרשימה</h3>
   <div class="lib-rule">🔴 <b>שני מנגנוני לחץ, ושניהם דוח ולא שער</b> (4.5): <b>תאריך הזרע נכתב על הרשומה בזריעה ונקרא, לעולם לא מחושב</b> - לבנייה אין שעון; רשומת חוב בלי תאריך מפילה, כי בלעדיו הגיל אינו ניתן לקריאה. <b>והקיפאון נמדד ברמת הרשימה, ביחידת בניות שנגעו בקובץ ולא בימים</b> - רשימה שקפאה על פני שלושים בניות היא רשימה ששלושים הזדמנויות עברו לידה, ושלושים יום בלי עבודה אינם אומרים דבר (אישור כותב הברייף, ונרשם כדי שלא "יתוקן" חזרה). המונה יושב ב-<span class="lib-code">tools/library-generations.json</span>, נכתב בידי הבנייה בלבד.</div>
-  <ul class="lib-list"><li><span class="lib-code">anonymousTokens</span> - החברות קפואה זה <b>63</b> בניות · הגודל קפוא זה <b>63</b> בניות</li><li><span class="lib-code">candidatePairsOpen</span> - החברות קפואה זה <b>44</b> בניות · הגודל קפוא זה <b>44</b> בניות</li><li><span class="lib-code">duplicateForms</span> - החברות קפואה זה <b>65</b> בניות · הגודל קפוא זה <b>65</b> בניות</li><li><span class="lib-code">inlineDesignFiles</span> - החברות קפואה זה <b>54</b> בניות · הגודל קפוא זה <b>54</b> בניות</li><li><span class="lib-code">libOnlySelectors</span> - החברות קפואה זה <b>77</b> בניות · הגודל קפוא זה <b>76</b> בניות</li><li><span class="lib-code">nonShifting</span> - החברות קפואה זה <b>55</b> בניות · הגודל קפוא זה <b>55</b> בניות</li><li><span class="lib-code">tokenValueSplit</span> - החברות קפואה זה <b>70</b> בניות · הגודל קפוא זה <b>70</b> בניות</li><li><span class="lib-code">undeclaredInCode</span> - החברות קפואה זה <b>77</b> בניות · הגודל קפוא זה <b>76</b> בניות</li><li><span class="lib-code">unresolvedTokensInCode</span> - החברות קפואה זה <b>77</b> בניות · הגודל קפוא זה <b>76</b> בניות</li><li><span class="lib-code">unusedLocalClasses</span> - החברות קפואה זה <b>26</b> בניות · הגודל קפוא זה <b>26</b> בניות</li></ul>
+  <ul class="lib-list"><li><span class="lib-code">anonymousTokens</span> - החברות קפואה זה <b>64</b> בניות · הגודל קפוא זה <b>64</b> בניות</li><li><span class="lib-code">candidatePairsOpen</span> - החברות קפואה זה <b>45</b> בניות · הגודל קפוא זה <b>45</b> בניות</li><li><span class="lib-code">duplicateForms</span> - החברות קפואה זה <b>66</b> בניות · הגודל קפוא זה <b>66</b> בניות</li><li><span class="lib-code">inlineDesignFiles</span> - החברות קפואה זה <b>55</b> בניות · הגודל קפוא זה <b>55</b> בניות</li><li><span class="lib-code">libOnlySelectors</span> - החברות קפואה זה <b>78</b> בניות · הגודל קפוא זה <b>77</b> בניות</li><li><span class="lib-code">nonShifting</span> - החברות קפואה זה <b>56</b> בניות · הגודל קפוא זה <b>56</b> בניות</li><li><span class="lib-code">tokenValueSplit</span> - החברות קפואה זה <b>71</b> בניות · הגודל קפוא זה <b>71</b> בניות</li><li><span class="lib-code">undeclaredInCode</span> - החברות קפואה זה <b>78</b> בניות · הגודל קפוא זה <b>77</b> בניות</li><li><span class="lib-code">unresolvedTokensInCode</span> - החברות קפואה זה <b>78</b> בניות · הגודל קפוא זה <b>77</b> בניות</li><li><span class="lib-code">unusedLocalClasses</span> - החברות קפואה זה <b>27</b> בניות · הגודל קפוא זה <b>27</b> בניות</li></ul>
   <div class="lib-rule"><b>המחגר</b> נזרע ב-<span class="lib-code">tools/library-ratchet.json</span> (2026-08-21; שלוש רשימות הדליים נזרעו ב-2026-08-22 · רשימת מי שאינו זז נזרעה ב-2026-08-23 · מרשם ההכרעות המקומיות נזרע ב-2026-08-26), והשער מוכיח "זהה לזרע": פריט חדש מפיל, ופריט שנסגר חייב לצאת מהזרע. <b>השומר על הזרע עצמו הוא סקירת ההפרש</b>, כמו בכל מחגר בפרויקט. 🔴 <b>ומרשם אינו חוב</b>: לרשימות המרשם אין יעד אפס - כניסה אליהן היא הכרעת עיצוב שנרשמת, ויציאה חייבת לצאת מהזרע.</div>
   <div class="lib-rule"><b>מה שהמראה אינה רואה, ונאמר</b>: סגנון מוטבע (<span class="lib-code">style=""</span>) בסימון המוצר אינו משתקף - המראה מכסה CSS; אלמנט <span class="lib-code">hidden</span> בפרוזה נספר כ"מצויר" (היום: 0); אלמנט מוצר בפרוזה עם סגנון מוטבע - היום 60, <b>ומהם 17 נושאים הכרעת עיצוב</b> (צבע · מסגרת · גופן) ולא גודל דמו. 🔴 <b>זה נמדד ולא נטען</b>: הנוסח הקודם כאן אמר שכולם גודל דמו, וזה לא היה נכון. <b>ומה שזה אומר</b>: הערוץ המוטבע בפרוזה של הספרייה אינו נקרא בידי שער העותקים, שקורא גושי סגנון בלבד - ולכן ערך שנכתב כך יכול לסתור את הכלל המשותף בלי ששער ייפול. והפניות שנבנות בזמן ריצה (רשימה 9) אינן נפתרות.</div>
   <h3 class="lib-h3">1. קיים בספרייה בלבד (0) - סגנון שהספרייה מחזיקה ואינו קיים במוצר · מחגר</h3>
